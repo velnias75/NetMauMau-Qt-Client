@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SuitLabel</class>
+ <widget class="QLabel" name="SuitLabel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>6</width>
+    <height>14</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>12</pointsize>
+   </font>
+  </property>
+  <property name="alignment">
+   <set>Qt::AlignCenter</set>
+  </property>
+  <property name="suitDescription" stdset="0">
+   <cstring></cstring>
+  </property>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

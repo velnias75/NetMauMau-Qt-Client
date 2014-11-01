@@ -1,0 +1,10 @@
+.kdev4
+.svn
+Makefile
+nmm-qt-client.kdev4
+nmm-qt-client.pro.user
+src/release
+src/debug
+src/Makefile*
+src/nmm-qt-client*
+src/ui_*.h
