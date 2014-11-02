@@ -28,6 +28,8 @@ class MainWindow;
 
 class Client : public QThread, public NetMauMau::Client::AbstractClient {
 	Q_OBJECT
+	Q_PROPERTY(bool online READ isOnline NOTIFY offline)
+
 public:
 	Client(MainWindow *const w, const QString &player, const std::string &server, uint16_t port);
 	~Client();
@@ -87,14 +89,20 @@ signals:
 	void cCardAccepted(const QByteArray &) const;
 	void cJackSuit(NetMauMau::Common::ICard::SUIT) const;
 
+	void offline(bool);
+
 protected:
 	virtual void run();
 
 private:
+	bool isOnline() const;
+
+private:
 	MainWindow *const m_mainWindow;
 	bool m_disconnectNow;
-	NetMauMau::Common::ICard *m_cardToPlay;
+	mutable NetMauMau::Common::ICard *m_cardToPlay;
 	NetMauMau::Common::ICard::SUIT m_chosenSuit;
+	bool m_online;
 };
 
 #endif // CLIENT_H

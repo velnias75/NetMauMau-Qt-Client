@@ -3,6 +3,14 @@
  <author>Heiko Schäfer &lt;heiko@rangun.de&gt;</author>
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>769</width>
+    <height>460</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>NetMauMau Client</string>
   </property>
@@ -107,6 +115,7 @@
      <string>&amp;File</string>
     </property>
     <addaction name="actionServer"/>
+    <addaction name="actionReconnect"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -138,6 +147,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionServer"/>
+   <addaction name="actionReconnect"/>
    <addaction name="separator"/>
    <addaction name="actionExit"/>
   </widget>
@@ -425,11 +435,31 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset resource="icons.qrc">
-     <normaloff>:/nmm_qt_client.png</normaloff>:/nmm_qt_client.png</iconset>
+    <iconset theme="help-about">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;About %1</string>
+   </property>
+  </action>
+  <action name="actionReconnect">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="go-previous">
+     <normaloff/>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Re&amp;connect</string>
+   </property>
+   <property name="toolTip">
+    <string>Reconnect to last server</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>

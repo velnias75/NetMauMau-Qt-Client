@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	setWindowTitle(QCoreApplication::applicationName() + " " +
 				   QCoreApplication::applicationVersion());
 
+	QObject::connect(m_ui->actionReconnect, SIGNAL(triggered()), this, SLOT(serverAccept()));
 	QObject::connect(m_ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 	QObject::connect(m_ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
 
@@ -85,6 +86,9 @@ void MainWindow::serverAccept() {
 	m_maxPlayerCount = sd->getMaxPlayerCount();
 	m_client = new Client(this, sd->getPlayerName(), std::string(as.left(p).toStdString()),
 						  p != -1 ? as.mid(p + 1).toUInt() : 8899);
+
+	QObject::connect(m_client, SIGNAL(offline(bool)),
+					 m_ui->actionReconnect, SLOT(setEnabled(bool)));
 
 	m_ui->localPlayerDock->setWindowTitle(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
@@ -143,6 +147,7 @@ void MainWindow::serverAccept() {
 		clientError(QString("While connecting to <b>%1</b>: <i>%2</i>")
 					.arg(as).arg(e.what()));
 		m_serverDlg->setProperty("forceRefresh", true);
+		m_ui->actionReconnect->setEnabled(false);
 	}
 }
 
@@ -318,6 +323,8 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &) {
 												 : msg, 2000);
 	clientNextPlayer(QString::fromUtf8(m_client->getPlayerName().c_str()));
 	enableMyCards(true);
+	m_pickCardPrepended = false;
+
 }
 
 void MainWindow::clientChooseJackSuitRequest() {

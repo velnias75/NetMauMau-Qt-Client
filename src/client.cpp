@@ -26,8 +26,9 @@
 #include "cardtools.h"
 
 Client::Client(MainWindow *const w, const QString &player, const std::string &server,
-			   uint16_t port) : QThread(), NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server,
-																			 port), m_mainWindow(w), m_disconnectNow(false), m_cardToPlay(0L) {
+			   uint16_t port) : QThread(),
+	NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server, port), m_mainWindow(w),
+	m_disconnectNow(false), m_cardToPlay(0L), m_online(false) {
 
 	qRegisterMetaType<CARDS>("Client::CARDS");
 	qRegisterMetaType<STATS>("Client::STATS");
@@ -44,16 +45,26 @@ Client::Client(MainWindow *const w, const QString &player, const std::string &se
 }
 
 Client::~Client() {
+	emit offline(true);
 	if(m_mainWindow) m_mainWindow->disconnect();
+}
+
+bool Client::isOnline() const {
+	return m_online;
 }
 
 void Client::run() {
 
 	try {
+		m_online = true;
+		emit offline(false);
 		play();
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 		emit cError(e.what());
 	}
+
+	m_online = false;
+	emit offline(true);
 }
 
 void Client::disconnectNow() {
@@ -74,7 +85,13 @@ NetMauMau::Common::ICard *Client::playCard(const CARDS &cards) const {
 
 	waitForCard.exec();
 
-	qDebug(">> Server: playCard(%s)", m_cardToPlay ? m_cardToPlay->description().c_str() : "SUSPEND");
+	if(m_disconnectNow) {
+		m_cardToPlay = 0L;
+		qDebug(">> Server: playCard(SUSPEND) [because of a disconnect request]");
+	} else {
+		qDebug(">> Server: playCard(%s)", m_cardToPlay ? m_cardToPlay->description().c_str() :
+														 "SUSPEND");
+	}
 
 	return m_cardToPlay;
 }
@@ -90,8 +107,8 @@ NetMauMau::Common::ICard::SUIT Client::getJackSuitChoice() const {
 
 	waitForSuit.exec();
 
-	qDebug(">> Server: getJackSuitChoice(%s)", NetMauMau::Common::suitToSymbol(m_chosenSuit,
-																			   false).c_str());
+	qDebug(">> Server: getJackSuitChoice(%s)",
+		   NetMauMau::Common::suitToSymbol(m_chosenSuit, false).c_str());
 
 	return m_chosenSuit;
 }
