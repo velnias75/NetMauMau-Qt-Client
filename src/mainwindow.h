@@ -102,6 +102,7 @@ private:
 	QBrush m_stdBackground;
 	uint m_maxPlayerCount;
 	bool m_pickCardPrepended;
+	QDialog *m_connectionLogDlg;
 };
 
 #endif // MAINWINDOW_H

@@ -25,11 +25,12 @@
 #include "ui_mainwindow.h"
 #include "serverdialog.h"
 #include "cardtools.h"
+#include "connectionlogdialog.h"
 
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
-	m_serverDlg(new ServerDialog()), m_model(), m_cards(), m_lastPlayedCard(0L),
+	m_serverDlg(new ServerDialog(this)), m_model(), m_cards(), m_lastPlayedCard(0L),
 	m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(), m_maxPlayerCount(0),
-	m_pickCardPrepended(false) {
+	m_pickCardPrepended(false), m_connectionLogDlg(new ConnectionLogDialog(0L)) {
 
 	m_ui->setupUi(this);
 
@@ -38,6 +39,10 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	setWindowTitle(QCoreApplication::applicationName() + " " +
 				   QCoreApplication::applicationVersion());
 
+	QObject::connect(m_ui->actionConnectionlog, SIGNAL(toggled(bool)),
+					 m_connectionLogDlg, SLOT(setShown(bool)));
+	QObject::connect(m_connectionLogDlg, SIGNAL(rejected()),
+					 m_ui->actionConnectionlog, SLOT(toggle()));
 	QObject::connect(m_ui->actionReconnect, SIGNAL(triggered()), this, SLOT(serverAccept()));
 	QObject::connect(m_ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 	QObject::connect(m_ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
@@ -66,14 +71,17 @@ MainWindow::~MainWindow() {
 
 	clearMyCards(true);
 	destroyClient();
+
 	delete m_ui;
 	delete m_serverDlg;
 	delete m_lastPlayedCard;
+	delete m_connectionLogDlg;
 
 }
 
 void MainWindow::closeEvent(QCloseEvent *e) {
 	writeSettings();
+	m_connectionLogDlg->close();
 	e->accept();
 }
 
@@ -441,6 +449,10 @@ void MainWindow::writeSettings() {
 	settings.setValue("cardsDock", dockWidgetArea(m_ui->cardsTurnDock));
 	settings.setValue("localPlayerDock", dockWidgetArea(m_ui->localPlayerDock));
 	settings.endGroup();
+
+	settings.beginGroup("ConnectionLog");
+	settings.setValue("visible", m_connectionLogDlg->isVisible());
+	settings.endGroup();
 }
 
 void MainWindow::readSettings() {
@@ -464,6 +476,11 @@ void MainWindow::readSettings() {
 	settings.beginGroup("Player");
 	m_ui->localPlayerDock->setWindowTitle(settings.value("name", "Local player").toString());
 	settings.endGroup();
+
+	settings.beginGroup("ConnectionLog");
+	m_connectionLogDlg->setVisible(settings.value("visible", false).toBool());
+	settings.endGroup();
+
 }
 
 void MainWindow::about() {

@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>769</width>
-    <height>460</height>
+    <height>456</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -107,7 +107,7 @@
      <x>0</x>
      <y>0</y>
      <width>769</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -126,7 +126,14 @@
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQt"/>
    </widget>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionConnectionlog"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menu_View"/>
    <addaction name="menu_Help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -341,8 +348,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>658</width>
-               <height>72</height>
+               <width>651</width>
+               <height>84</height>
               </rect>
              </property>
              <layout class="QHBoxLayout" name="myCardsLayout"/>
@@ -424,6 +431,9 @@
    <property name="shortcut">
     <string>Ctrl+Q</string>
    </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionAboutQt">
    <property name="text">
@@ -462,6 +472,20 @@
     <string>Ctrl+R</string>
    </property>
   </action>
+  <action name="actionConnectionlog">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Connection &amp;log...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -476,7 +500,8 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>openCard</tabstop>
+  <tabstop>myCardsScrollArea</tabstop>
+  <tabstop>suspendButton</tabstop>
  </tabstops>
  <resources>
   <include location="icons.qrc"/>

@@ -36,7 +36,8 @@ SOURCES += main.cpp mainwindow.cpp \
     cardwidget.cpp \
     jackchoosedialog.cpp \
     suitlabel.cpp \
-    suitradiobutton.cpp
+    suitradiobutton.cpp \
+    connectionlogdialog.cpp
 
 HEADERS  += mainwindow.h \
     serverdialog.h \
@@ -44,14 +45,16 @@ HEADERS  += mainwindow.h \
     cardwidget.h \
     jackchoosedialog.h \
     suitlabel.h \
-    suitradiobutton.h
+    suitradiobutton.h \
+    connectionlogdialog.h
 
 FORMS    +=  serverdialog.ui \
     mainwindow.ui \
     cardwidget.ui \
     jackchoosedialog.ui \
     suitlabel.ui \
-    suitradiobutton.ui
+    suitradiobutton.ui \
+    connectionlogdialog.ui
 
 RESOURCES += icons.qrc
 
