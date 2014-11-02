@@ -86,7 +86,7 @@ void MainWindow::serverAccept() {
 	m_client = new Client(this, sd->getPlayerName(), std::string(as.left(p).toStdString()),
 						  p != -1 ? as.mid(p + 1).toUInt() : 8899);
 
-	m_ui->playerGroup->setTitle(QString::fromUtf8(m_client->getPlayerName().c_str()));
+	m_ui->localPlayerDock->setWindowTitle(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
 	try {
 
@@ -430,6 +430,9 @@ void MainWindow::writeSettings() {
 	settings.beginGroup("MainWindow");
 	settings.setValue("size", size());
 	settings.setValue("pos", pos());
+	settings.setValue("toolBar_pos", toolBarArea(m_ui->toolBar));
+	settings.setValue("cardsDock", dockWidgetArea(m_ui->cardsTurnDock));
+	settings.setValue("localPlayerDock", dockWidgetArea(m_ui->localPlayerDock));
 	settings.endGroup();
 }
 
@@ -440,10 +443,19 @@ void MainWindow::readSettings() {
 	settings.beginGroup("MainWindow");
 	resize(settings.value("size", size()).toSize());
 	move(settings.value("pos", pos()).toPoint());
+	addToolBar(static_cast<Qt::ToolBarArea>(settings.value("toolBar_pos",
+														   Qt::TopToolBarArea).toInt()),
+			   m_ui->toolBar);
+	addDockWidget(static_cast<Qt::DockWidgetArea>(settings.value("cardsDock",
+																 Qt::LeftDockWidgetArea).toInt()),
+				  m_ui->cardsTurnDock);
+	addDockWidget(static_cast<Qt::DockWidgetArea>(settings.value("localPlayerDock",
+																 Qt::BottomDockWidgetArea).toInt()),
+				  m_ui->localPlayerDock);
 	settings.endGroup();
 
 	settings.beginGroup("Player");
-	m_ui->playerGroup->setTitle(settings.value("name", "Local player").toString());
+	m_ui->localPlayerDock->setWindowTitle(settings.value("name", "Local player").toString());
 	settings.endGroup();
 }
 

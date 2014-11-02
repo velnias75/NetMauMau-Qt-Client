@@ -59,4 +59,8 @@ void SuitLabel::styleSuit() {
 	}
 
 	setText(QString::fromUtf8(suitDesc.constData()));
+
+	QFont f = font();
+	f.setPointSize(12);
+	setFont(f);
 }
