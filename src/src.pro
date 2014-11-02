@@ -53,4 +53,6 @@ FORMS    +=  serverdialog.ui \
     suitlabel.ui \
     suitradiobutton.ui
 
+RESOURCES += icons.qrc
+
 DISTFILES += COPYING

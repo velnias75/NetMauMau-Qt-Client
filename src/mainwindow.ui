@@ -14,6 +14,10 @@
   <property name="windowTitle">
    <string>NetMauMau Client</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/nmm_qt_client.png</normaloff>:/nmm_qt_client.png</iconset>
+  </property>
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
@@ -371,6 +375,10 @@
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/nmm_qt_client.png</normaloff>:/nmm_qt_client.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;About %1</string>
    </property>
@@ -391,7 +399,9 @@
  <tabstops>
   <tabstop>openCard</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionExit</sender>
