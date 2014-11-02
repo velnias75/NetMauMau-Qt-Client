@@ -21,6 +21,7 @@
 #include "cardtools.h"
 
 SuitRadioButton::SuitRadioButton(QWidget *p, const QByteArray &suitDesc) : QRadioButton(p) {
+
 	setupUi(this);
 
 	if(!suitDesc.isEmpty()) setProperty("suitDescription", suitDesc);
@@ -52,7 +53,7 @@ void SuitRadioButton::styleSuit() {
 
 	if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
 					   s == NetMauMau::Common::ICard::DIAMONDS)) {
-		setStyleSheet("QRadioButton {color: red;}");
+		setStyleSheet("color: red;");
 	} else {
 		setStyleSheet(QString::null);
 	}

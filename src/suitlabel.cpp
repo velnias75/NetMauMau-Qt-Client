@@ -53,7 +53,7 @@ void SuitLabel::styleSuit() {
 
 	if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
 					   s == NetMauMau::Common::ICard::DIAMONDS)) {
-		setStyleSheet("QLabel {color: red;}");
+		setStyleSheet("color: red;");
 	} else {
 		setStyleSheet(QString::null);
 	}

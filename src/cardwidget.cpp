@@ -95,7 +95,7 @@ void CardWidget::styleCard() {
 	if(NetMauMau::Common::parseCardDesc(cardDesc.constData(), &s, &r)) {
 		if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
 						   s == NetMauMau::Common::ICard::DIAMONDS)) {
-			setStyleSheet("QPushButton {color: red;}");
+			setStyleSheet("color: red;");
 		} else {
 			setStyleSheet(m_defaultStyleSheet);
 		}
