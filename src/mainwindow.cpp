@@ -57,12 +57,16 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_model.setHorizontalHeaderItem(2, new QStandardItem("Message"));
 
 	m_ui->remotePlayersView->setModel(&m_model);
+	resizeColumns();
 
 	QObject::connect(m_ui->suspendButton, SIGNAL(clicked()), this, SLOT(suspend()));
 
 	QObject::connect(m_serverDlg, SIGNAL(accepted()), this, SLOT(serverAccept()));
 	QObject::connect(m_serverDlg, SIGNAL(refreshing()), this, SLOT(statusRefreshing()));
 	QObject::connect(m_serverDlg, SIGNAL(refreshed()), this, SLOT(statusRefreshed()));
+
+	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+					 this, SLOT(resizeColumns()));
 
 	readSettings();
 }
@@ -79,6 +83,11 @@ MainWindow::~MainWindow() {
 
 }
 
+void MainWindow::resizeColumns() {
+	m_ui->remotePlayersView->resizeColumnToContents(0);
+	m_ui->remotePlayersView->resizeColumnToContents(1);
+}
+
 void MainWindow::closeEvent(QCloseEvent *e) {
 	writeSettings();
 	m_connectionLogDlg->close();
@@ -92,8 +101,9 @@ void MainWindow::serverAccept() {
 	const int p = as.indexOf(':');
 
 	m_maxPlayerCount = sd->getMaxPlayerCount();
-	m_client = new Client(this, sd->getPlayerName(), std::string(as.left(p).toStdString()),
-						  p != -1 ? as.mid(p + 1).toUInt() : 8899);
+	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
+						  std::string(as.left(p).toStdString()), p != -1 ? as.mid(p + 1).toUInt()
+																		 : 8899);
 
 	QObject::connect(m_client, SIGNAL(offline(bool)),
 					 m_ui->actionReconnect, SLOT(setEnabled(bool)));
@@ -432,6 +442,7 @@ void MainWindow::destroyClient() {
 	m_ui->openCard->setProperty("cardDescription", QVariant());
 	m_ui->jackSuit->setProperty("suitDescription", QVariant());
 
+	resizeColumns();
 	clearMyCards(true);
 
 	centralWidget()->setEnabled(false);

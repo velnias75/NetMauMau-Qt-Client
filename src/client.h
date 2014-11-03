@@ -23,6 +23,7 @@
 #include <QThread>
 
 #include "abstractclient.h"
+#include "connectionlogdialog.h"
 
 class MainWindow;
 
@@ -31,7 +32,8 @@ class Client : public QThread, public NetMauMau::Client::AbstractClient {
 	Q_PROPERTY(bool online READ isOnline NOTIFY offline)
 
 public:
-	Client(MainWindow *const w, const QString &player, const std::string &server, uint16_t port);
+	Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
+		   const std::string &server, uint16_t port);
 	~Client();
 
 	virtual NetMauMau::Common::ICard *playCard(const CARDS &cards) const;
@@ -95,7 +97,9 @@ protected:
 	virtual void run();
 
 private:
-	bool isOnline() const;
+	bool isOnline() const _PURE;
+	void log(const QString &,
+			 ConnectionLogDialog::DIRECTION dir = ConnectionLogDialog::FROM_SERVER) const;
 
 private:
 	MainWindow *const m_mainWindow;
@@ -103,6 +107,7 @@ private:
 	mutable NetMauMau::Common::ICard *m_cardToPlay;
 	NetMauMau::Common::ICard::SUIT m_chosenSuit;
 	bool m_online;
+	ConnectionLogDialog *const m_connectionLogDialog;
 };
 
 #endif // CLIENT_H

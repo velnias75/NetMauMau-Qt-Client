@@ -100,7 +100,7 @@ void ServerDialog::doubleClick() {
 
 			timeval tv = { 0, 500 };
 
-			const Client::PLAYERLIST &pl((Client(0L, playerName->text().toUtf8().constData(),
+			const Client::PLAYERLIST &pl((Client(0L, 0L, playerName->text().toUtf8().constData(),
 												 std::string(srv.toStdString()),
 												 static_cast<uint16_t>(port))).playerList(&tv));
 
@@ -217,7 +217,7 @@ bool ServerDialog::isOnline(int row) const {
 
 		timeval tv = { 0, 500 };
 
-		const Client::CAPABILITIES &caps((Client(0L, playerName->text().toUtf8().constData(),
+		const Client::CAPABILITIES &caps((Client(0L, 0L, playerName->text().toUtf8().constData(),
 												 std::string(srv.toStdString()),
 												 static_cast<uint16_t>(port))).capabilities(&tv));
 

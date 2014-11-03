@@ -22,12 +22,28 @@
 
 #include "connectionlogdialog.h"
 
-ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : QDialog(p, Qt::Window) {
+ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : QDialog(p, Qt::Window),
+	m_entryFont("Monospace"), m_model(),
+	m_toIcon(QApplication::style()->standardIcon(QStyle::SP_ArrowRight)),
+	m_fromIcon(QApplication::style()->standardIcon(QStyle::SP_ArrowLeft)) {
+
 	setupUi(this);
+
 	setAttribute(Qt::WA_QuitOnClose, false);
+
 	QIcon icon;
 	icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
 	setWindowIcon(icon);
+
+	m_entryFont.setStyleHint(QFont::TypeWriter);
+
+	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+					 logView, SLOT(resizeColumnsToContents()));
+	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+					 logView, SLOT(scrollToBottom()));
+
+	logView->setModel(&m_model);
+
 	readSettings();
 }
 
@@ -35,6 +51,25 @@ void ConnectionLogDialog::closeEvent(QCloseEvent *e) {
 	emit reject();
 	writeSettings();
 	e->accept();
+}
+
+void ConnectionLogDialog::addEntry(const QString &e, DIRECTION dir) {
+
+	QList<QStandardItem *> items;
+
+	items << new QStandardItem();
+	items.back()->setData(dir == TO_SERVER || dir == TO_CLIENT ? m_toIcon : m_fromIcon,
+						  Qt::DecorationRole);
+	items.back()->setSelectable(false);
+	items << new QStandardItem(dir == TO_SERVER || dir == FROM_SERVER ? "Server" : "Client");
+	items.back()->setFont(m_entryFont);
+	items.back()->setSelectable(false);
+	items << new QStandardItem(e);
+	items.back()->setFont(m_entryFont);
+	items.back()->setSelectable(false);
+
+	m_model.appendRow(items);
+
 }
 
 void ConnectionLogDialog::writeSettings() {

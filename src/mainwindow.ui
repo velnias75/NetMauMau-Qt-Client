@@ -107,7 +107,7 @@
      <x>0</x>
      <y>0</y>
      <width>769</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -348,8 +348,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>651</width>
-               <height>84</height>
+               <width>658</width>
+               <height>72</height>
               </rect>
              </property>
              <layout class="QHBoxLayout" name="myCardsLayout"/>

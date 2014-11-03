@@ -20,13 +20,20 @@
 #ifndef CONNECTIONLOGDIALOG_H
 #define CONNECTIONLOGDIALOG_H
 
+#include <QStandardItemModel>
+
 #include "ui_connectionlogdialog.h"
 
 class ConnectionLogDialog : public QDialog, private Ui::ConnectionLogDialog {
 	Q_OBJECT
 
 public:
+	typedef enum { FROM_CLIENT, TO_CLIENT, FROM_SERVER, TO_SERVER } DIRECTION;
+
 	explicit ConnectionLogDialog(QWidget *parent = 0);
+
+public slots:
+	void addEntry(const QString &, DIRECTION = FROM_SERVER);
 
 protected:
 	virtual void closeEvent(QCloseEvent *e);
@@ -34,6 +41,12 @@ protected:
 private:
 	void writeSettings();
 	void readSettings();
+
+private:
+	QFont m_entryFont;
+	QStandardItemModel m_model;
+	QIcon m_toIcon;
+	QIcon m_fromIcon;
 };
 
 #endif // CONNECTIONLOGDIALOG_H

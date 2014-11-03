@@ -31,6 +31,7 @@ class MainWindow;
 }
 
 class CardWidget;
+class ConnectionLogDialog;
 
 class MainWindow : public QMainWindow {
 	Q_OBJECT
@@ -79,6 +80,8 @@ private slots:
 	void clientJackSuit(NetMauMau::Common::ICard::SUIT);
 	void clientNextPlayer(const QString &);
 
+	void resizeColumns();
+
 private:
 	void destroyClient();
 	void clearMyCards(bool del);
@@ -102,7 +105,7 @@ private:
 	QBrush m_stdBackground;
 	uint m_maxPlayerCount;
 	bool m_pickCardPrepended;
-	QDialog *m_connectionLogDlg;
+	ConnectionLogDialog *m_connectionLogDlg;
 };
 
 #endif // MAINWINDOW_H

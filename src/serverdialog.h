@@ -23,6 +23,7 @@
 #include <QDialog>
 #include <QStandardItemModel>
 
+#include "linkercontrol.h"
 #include "ui_serverdialog.h"
 
 class IconDelegate;
@@ -42,7 +43,7 @@ private:
 	bool isOnline(int row) const;
 
 	void forceRefresh(bool b);
-	bool isForceRefresh() const;
+	bool isForceRefresh() const _PURE;
 
 	void saveServers();
 
