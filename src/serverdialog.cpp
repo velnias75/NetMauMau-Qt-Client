@@ -248,7 +248,7 @@ bool ServerDialog::isOnline(int row) const {
 		players->setText(NA);
 		players->setToolTip("");
 		version->setText(NA);
-		server->setToolTip(e.what());
+		server->setToolTip(QString::fromUtf8(e.what()));
 		return false;
 	}
 

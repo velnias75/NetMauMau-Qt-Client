@@ -60,7 +60,7 @@ void Client::run() {
 		emit offline(false);
 		play();
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
-		emit cError(e.what());
+		emit cError(QString::fromUtf8(e.what()));
 	}
 
 	m_online = false;

@@ -163,7 +163,7 @@ void MainWindow::serverAccept() {
 
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 		clientError(QString("While connecting to <b>%1</b>: <i>%2</i>")
-					.arg(as).arg(e.what()));
+					.arg(as).arg(QString::fromUtf8(e.what())));
 		m_serverDlg->setProperty("forceRefresh", true);
 		m_ui->actionReconnect->setEnabled(false);
 	}
