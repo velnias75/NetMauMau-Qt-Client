@@ -17,7 +17,10 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QMessageBox>
+
 #include <QApplication>
+#include <QSettings>
 
 #include "mainwindow.h"
 
@@ -27,6 +30,10 @@ int main(int argc, char *argv[]) {
 	QCoreApplication::setOrganizationDomain("rangun.de");
 	QCoreApplication::setApplicationName(PACKAGE_NAME);
 	QCoreApplication::setApplicationVersion(PACKAGE_VERSION);
+
+#ifdef _WIN32
+	QSettings::setDefaultFormat(QSettings::IniFormat);
+#endif
 
 	QApplication a(argc, argv);
 

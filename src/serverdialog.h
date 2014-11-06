@@ -54,6 +54,7 @@ private slots:
 	void enableRemoveAndOkButton(const QItemSelection &sel, const QItemSelection &desel);
 	void removeSelected();
 	void addSever();
+	void resize();
 
 signals:
 	void refresh();

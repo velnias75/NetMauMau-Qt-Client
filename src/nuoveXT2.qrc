@@ -1,0 +1,9 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file alias="list-add.png">list-add.png</file>
+<file alias="list-remove.png">list-remove.png</file>
+<file alias="network-server.png">network-server.png</file>
+<file alias="application-exit.png">application-exit.png</file>
+<file alias="go-previous.png">go-previous.png</file>
+</qresource>
+</RCC>

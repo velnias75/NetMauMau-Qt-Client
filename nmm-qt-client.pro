@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += gui core
 TEMPLATE = subdirs app
 SUBDIRS += src
 CONFIG += ordered debug_and_release

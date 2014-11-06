@@ -34,6 +34,18 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 
 	m_ui->setupUi(this);
 
+	if(!m_ui->actionReconnect->icon().hasThemeIcon("go-previous")) {
+		m_ui->actionReconnect->setIcon(QIcon(":/go-previous.png"));
+	}
+
+	if(!m_ui->actionServer->icon().hasThemeIcon("network-server")) {
+		m_ui->actionServer->setIcon(QIcon(":/network-server.png"));
+	}
+
+	if(!m_ui->actionExit->icon().hasThemeIcon("application-exit")) {
+		m_ui->actionExit->setIcon(QIcon(":/application-exit.png"));
+	}
+
 	m_ui->actionAbout->setText(m_ui->actionAbout->text().arg(QCoreApplication::applicationName()));
 
 	setWindowTitle(QCoreApplication::applicationName() + " " +
@@ -46,6 +58,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	QObject::connect(m_ui->actionReconnect, SIGNAL(triggered()), this, SLOT(serverAccept()));
 	QObject::connect(m_ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 	QObject::connect(m_ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
+	QObject::connect(m_ui->actionServer, SIGNAL(triggered()), m_serverDlg, SLOT(show()));
 
 	QFont fnt("Monospace");
 	fnt.setStyleHint(QFont::TypeWriter);
@@ -380,10 +393,6 @@ void MainWindow::statusRefreshing() {
 
 void MainWindow::statusRefreshed() {
 	statusBar()->clearMessage();
-}
-
-void MainWindow::on_actionServer_activated() {
-	m_serverDlg->show();
 }
 
 void MainWindow::enableMyCards(bool b) {

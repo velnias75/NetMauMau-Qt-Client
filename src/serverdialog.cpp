@@ -25,6 +25,10 @@
 
 namespace {
 const char *NA = "n/a";
+const QRegExp hostRex("^(?=.{1,255}$)[0-9A-Za-z]" \
+					  "(?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?" \
+					  "(?:\\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|-)" \
+					  "{0,61}[0-9A-Za-z])?)*\\.?$");
 }
 
 ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(false) {
@@ -33,6 +37,8 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 
 	QStringList labels;
 	labels << "Server" << "Server version" << "AI" << "Players";
+
+	hostEdit->setValidator(new QRegExpValidator(hostRex));
 
 	m_model.setHorizontalHeaderLabels(labels);
 
@@ -45,23 +51,43 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	playerName->setText(settings.value("name", "Qt Client").toString());
 	settings.endGroup();
 
-	for(int i = 0; i < servers.size(); ++i) {
-		m_model.setItem(i, 0, new QStandardItem(servers[i]));
-		m_model.setItem(i, 1, new QStandardItem(NA));
-		m_model.setItem(i, 2, new QStandardItem());
-		m_model.setItem(i, 3, new QStandardItem(NA));
+	for(int i = 0, j = 0; i < servers.size(); ++i) {
+		const QString &tHost(servers[i].trimmed());
+		if(!tHost.simplified().isEmpty() && hostRex.exactMatch(tHost.left(tHost.indexOf(':')))) {
+			m_model.setItem(j, 0, new QStandardItem(tHost));
+			m_model.setItem(j, 1, new QStandardItem(NA));
+			m_model.item(j, 1)->setTextAlignment(Qt::AlignCenter);
+			m_model.setItem(j, 2, new QStandardItem());
+			m_model.item(j, 2)->setSizeHint(QSize());
+			m_model.setItem(j, 3, new QStandardItem(NA));
+			m_model.item(j, 3)->setTextAlignment(Qt::AlignCenter);
+			++j;
+		} else {
+			qWarning("\"%s\" is no valid host name", tHost.toUtf8().constData());
+		}
 	}
 
 	checkOnline();
 
 	availServerView->setModel(&m_model);
-	availServerView->resizeColumnsToContents();
+
+	QObject::connect(&m_model, SLOT(rowsInserted(const QModelIndex &, int, int)), this, SLOT(resize()));
+
+	resize();
 
 	refreshButton->setShortcutEnabled(true);
 	refreshButton->setShortcut(QKeySequence::Refresh);
 
 	if(!refreshButton->icon().hasThemeIcon("view-refresh")) {
 		refreshButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_BrowserReload));
+	}
+
+	if(!removeButton->icon().hasThemeIcon("list-remove")) {
+		removeButton->setIcon(QIcon(":/list-remove.png"));
+	}
+
+	if(!addButton->icon().hasThemeIcon("list-add")) {
+		addButton->setIcon(QIcon(":/list-add.png"));
 	}
 
 	connectButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_DialogOkButton));
@@ -155,6 +181,12 @@ void ServerDialog::enableAddButton(const QString &str) {
 	addButton->setEnabled(str.length() > 0);
 }
 
+void ServerDialog::resize() {
+	for(int i = 0; i < 3; ++i) {
+		availServerView->resizeColumnToContents(i);
+	}
+}
+
 void ServerDialog::checkOnline() const {
 
 	emit refreshing();
@@ -221,7 +253,7 @@ bool ServerDialog::isOnline(int row) const {
 												 std::string(srv.toStdString()),
 												 static_cast<uint16_t>(port))).capabilities(&tv));
 
-		qDebug("Server %s is online", host.toStdString().c_str());
+		qDebug("Server \"%s\" is online", host.toStdString().c_str());
 
 		ulong curPCnt = (QString(caps.find("CUR_PLAYERS")->second.c_str())).toULong();
 		ulong maxPCnt = (QString(caps.find("MAX_PLAYERS")->second.c_str())).toULong();
@@ -242,7 +274,7 @@ bool ServerDialog::isOnline(int row) const {
 		}
 
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
-		qDebug("Server %s is offline: %s", host.toStdString().c_str(), e.what());
+		qDebug("Server \"%s\" is offline: %s", host.toStdString().c_str(), e.what());
 		ai->setCheckState(Qt::Unchecked);
 		ai->setToolTip("");
 		players->setText(NA);
@@ -265,16 +297,19 @@ void ServerDialog::addSever() {
 	row.back()->setEnabled(false);
 	row << new QStandardItem(NA);
 	row.back()->setEnabled(false);
+	row.back()->setTextAlignment(Qt::AlignCenter);
 	row << new QStandardItem();
 	row.back()->setCheckable(true);
 	row.back()->setEnabled(false);
 	row << new QStandardItem(NA);
 	row.back()->setEnabled(false);
+	row.back()->setTextAlignment(Qt::AlignCenter);
 
 	m_model.appendRow(row);
 
 	saveServers();
 	checkOnline();
+	resize();
 
 }
 

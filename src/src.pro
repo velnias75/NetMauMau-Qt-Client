@@ -1,4 +1,5 @@
 CONFIG += debug_and_release
+CONFIG += rtti exceptions
 
 VERSION = 0.0
 
@@ -19,15 +20,17 @@ CONFIG(debug, debug|release) {
          ../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a
 } else {
      TARGET = nmm-qt-client
+     win32:CONFIG += staticlib
      DEFINES += NDEBUG _GLIBCXX_VISIBILITY=0 QT_NO_DEBUG_OUTPUT
-     # INCLUDEPATH += "../../netmaumau/src/include"
-     INCLUDEPATH += "/usr/include/netmaumau"
-     QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing -Wformat \
+     unix:INCLUDEPATH += "/usr/include/netmaumau"
+     win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
+     unix:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing -Wformat \
      -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \
      -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wdisabled-optimization
-      LIBS    += -lnetmaumaucommon -lnetmaumauclient
-#     LIBS    += "../../netmaumau/release/src/client/.libs/libnetmaumauclient.a" \
-#         "../../netmaumau/release/src/common/.libs/libnetmaumaucommon.a"
+     win32:QMAKE_CXXFLAGS += -O2 -fomit-frame-pointer -fstrict-aliasing
+     win32:LIBS    += /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
+                /usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
+     unix:LIBS += -lnetmaumaucommon -lnetmaumauclient
 }
 
 SOURCES += main.cpp mainwindow.cpp \
@@ -56,6 +59,6 @@ FORMS    +=  serverdialog.ui \
     suitradiobutton.ui \
     connectionlogdialog.ui
 
-RESOURCES += icons.qrc
+RESOURCES += icons.qrc nuoveXT2.qrc
 
 DISTFILES += COPYING

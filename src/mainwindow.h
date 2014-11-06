@@ -49,8 +49,6 @@ signals:
 	void chosenSuite(NetMauMau::Common::ICard::SUIT);
 
 private slots:
-	void on_actionServer_activated();
-
 	void about();
 
 	void serverAccept();
