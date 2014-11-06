@@ -171,6 +171,7 @@ void MainWindow::serverAccept() {
 
 		centralWidget()->setEnabled(true);
 		m_ui->actionServer->setEnabled(false);
+		m_connectionLogDlg->clear();
 
 		m_client->start(QThread::LowestPriority);
 

@@ -32,6 +32,8 @@ public:
 
 	explicit ConnectionLogDialog(QWidget *parent = 0);
 
+	void clear();
+
 public slots:
 	void addEntry(const QString &, DIRECTION = FROM_SERVER);
 
