@@ -20,7 +20,7 @@ CONFIG(debug, debug|release) {
          ../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a
 } else {
      TARGET = nmm-qt-client
-     win32:CONFIG += staticlib
+     win32:CONFIG += static
      DEFINES += NDEBUG _GLIBCXX_VISIBILITY=0 QT_NO_DEBUG_OUTPUT
      unix:INCLUDEPATH += "/usr/include/netmaumau"
      win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
@@ -60,5 +60,7 @@ FORMS    +=  serverdialog.ui \
     connectionlogdialog.ui
 
 RESOURCES += icons.qrc nuoveXT2.qrc
+
+RC_FILE += appicon.rc
 
 DISTFILES += COPYING
