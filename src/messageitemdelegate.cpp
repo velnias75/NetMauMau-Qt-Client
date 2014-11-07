@@ -25,7 +25,10 @@
 #include "messageitemdelegate.h"
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -34,8 +37,6 @@
 
 namespace {
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 const QString SUITS[4] = {
 	QString::fromUtf8("\u2666"),
 	QString::fromUtf8("\u2665"),
@@ -44,20 +45,10 @@ const QString SUITS[4] = {
 };
 
 }
-=======
->>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
-=======
-=======
->>>>>>> Stashed changes
-const QString SUITES[4] = {
-	QString::fromUtf8(NetMauMau::Common::getSuitSymbols()[0].c_str()),
-	QString::fromUtf8(NetMauMau::Common::getSuitSymbols()[1].c_str()),
-	QString::fromUtf8(NetMauMau::Common::getSuitSymbols()[2].c_str()),
-	QString::fromUtf8(NetMauMau::Common::getSuitSymbols()[3].c_str())
-};
-
-}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -75,9 +66,6 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 	QStyleOptionViewItemV4 opt(option);
 	initStyleOption(&opt, index);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< HEAD
 	if(m_cardDetect) {
 
 		for(int i = 0; i < 4; ++i) {
@@ -102,19 +90,6 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 		}
 	}
 
-=======
->>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
-=======
-=======
->>>>>>> Stashed changes
-//	for(int i = 0; i < 4; ++i) {
-//		qDebug("%s", SUITES[i].constData());
-//	}
-
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 	m_doc->setHtml(opt.text);
 
 	return m_doc;
@@ -132,7 +107,10 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -143,8 +121,11 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======

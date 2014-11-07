@@ -431,11 +431,15 @@ void MainWindow::updatePlayerStat(const QString &player, std::size_t count, cons
 		if(count < 2) {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>").arg(count));
 =======
 			cnt->setText(QString("<span style=\"color:red;\">%1</span>").arg(count));
 >>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
+=======
+			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>").arg(count));
+>>>>>>> Stashed changes
 =======
 			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>").arg(count));
 >>>>>>> Stashed changes
