@@ -429,7 +429,11 @@ void MainWindow::updatePlayerStat(const QString &player, std::size_t count, cons
 		cnt->setTextAlignment(Qt::AlignCenter);
 
 		if(count < 2) {
+<<<<<<< HEAD
 			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>").arg(count));
+=======
+			cnt->setText(QString("<span style=\"color:red;\">%1</span>").arg(count));
+>>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
 		} else if(count != static_cast<std::size_t>(-1)) {
 			cnt->setText(QString("%1").arg(count));
 		}

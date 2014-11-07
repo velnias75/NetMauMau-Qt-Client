@@ -23,6 +23,7 @@
 #include <QAbstractTextDocumentLayout>
 
 #include "messageitemdelegate.h"
+<<<<<<< HEAD
 #include "cardtools.h"
 
 namespace {
@@ -35,6 +36,8 @@ const QString SUITS[4] = {
 };
 
 }
+=======
+>>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
 
 MessageItemDelegate::MessageItemDelegate(QObject *p, bool cardDetect) : QStyledItemDelegate(p),
 	m_cardDetect(cardDetect), m_doc(new QTextDocument()) {}
@@ -49,6 +52,7 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 	QStyleOptionViewItemV4 opt(option);
 	initStyleOption(&opt, index);
 
+<<<<<<< HEAD
 	if(m_cardDetect) {
 
 		for(int i = 0; i < 4; ++i) {
@@ -73,6 +77,8 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 		}
 	}
 
+=======
+>>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
 	m_doc->setHtml(opt.text);
 
 	return m_doc;
@@ -88,10 +94,13 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	QRect textRect = style->alignedRect(opt.direction, opt.displayAlignment, opt.decorationSize,
 										style->subElementRect(QStyle::SE_ItemViewItemText, &opt));
 
+<<<<<<< HEAD
 	opt.text = QString::null;
 	opt.state = QStyle::State_None;
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
+=======
+>>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
 	painter->save();
 	painter->translate(textRect.topLeft());
 	doc(option, index)->drawContents(painter);
