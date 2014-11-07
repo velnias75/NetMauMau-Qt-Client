@@ -26,11 +26,15 @@
 #include "serverdialog.h"
 #include "cardtools.h"
 #include "connectionlogdialog.h"
+#include "messageitemdelegate.h"
 
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
 	m_serverDlg(new ServerDialog(this)), m_model(), m_cards(), m_lastPlayedCard(0L),
 	m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(), m_maxPlayerCount(0),
-	m_pickCardPrepended(false), m_connectionLogDlg(new ConnectionLogDialog(0L)) {
+	m_pickCardPrepended(false), m_connectionLogDlg(new ConnectionLogDialog(0L)),
+	m_nameItemDelegate(new MessageItemDelegate(this, false)),
+	m_countItemDelegate(new MessageItemDelegate(this, false)),
+	m_messageItemDelegate(new MessageItemDelegate(this)) {
 
 	m_ui->setupUi(this);
 
@@ -69,7 +73,14 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_model.setHorizontalHeaderItem(1, new QStandardItem("Cards"));
 	m_model.setHorizontalHeaderItem(2, new QStandardItem("Message"));
 
+	m_ui->remotePlayersView->setItemDelegateForColumn(0, m_nameItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(1, m_countItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(2, m_messageItemDelegate);
+
+	m_ui->remotePlayersView->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+	m_ui->remotePlayersView->horizontalHeader()->setClickable(false);
 	m_ui->remotePlayersView->setModel(&m_model);
+
 	resizeColumns();
 
 	QObject::connect(m_ui->suspendButton, SIGNAL(clicked()), this, SLOT(suspend()));
@@ -93,6 +104,9 @@ MainWindow::~MainWindow() {
 	delete m_serverDlg;
 	delete m_lastPlayedCard;
 	delete m_connectionLogDlg;
+	delete m_nameItemDelegate;
+	delete m_countItemDelegate;
+	delete m_messageItemDelegate;
 
 }
 
@@ -412,8 +426,11 @@ void MainWindow::updatePlayerStat(const QString &player, std::size_t count, cons
 		QStandardItem *cnt = m_model.item(m_model.indexFromItem(ml.front()).row(), 1);
 		QStandardItem *msg = m_model.item(m_model.indexFromItem(ml.front()).row(), 2);
 
-		if(count != static_cast<std::size_t>(-1)) {
-			cnt->setTextAlignment(Qt::AlignCenter);
+		cnt->setTextAlignment(Qt::AlignCenter);
+
+		if(count < 2) {
+			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>").arg(count));
+		} else if(count != static_cast<std::size_t>(-1)) {
 			cnt->setText(QString("%1").arg(count));
 		}
 
