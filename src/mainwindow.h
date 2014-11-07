@@ -22,6 +22,7 @@
 
 #include <QMainWindow>
 #include <QStandardItemModel>
+#include <QStyledItemDelegate>
 
 #include "client.h"
 #include "jackchoosedialog.h"
@@ -104,6 +105,9 @@ private:
 	uint m_maxPlayerCount;
 	bool m_pickCardPrepended;
 	ConnectionLogDialog *m_connectionLogDlg;
+	QStyledItemDelegate *m_nameItemDelegate;
+	QStyledItemDelegate *m_countItemDelegate;
+	QStyledItemDelegate *m_messageItemDelegate;
 };
 
 #endif // MAINWINDOW_H

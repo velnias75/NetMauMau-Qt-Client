@@ -17,38 +17,30 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONNECTIONLOGDIALOG_H
-#define CONNECTIONLOGDIALOG_H
+#ifndef MESSAGEITEMDELEGATE_H
+#define MESSAGEITEMDELEGATE_H
 
-#include <QStandardItemModel>
+#include <QStyledItemDelegate>
 
-#include "ui_connectionlogdialog.h"
+class QTextDocument;
 
-class ConnectionLogDialog : public QDialog, private Ui::ConnectionLogDialog {
+class MessageItemDelegate : public QStyledItemDelegate {
 	Q_OBJECT
-
 public:
-	typedef enum { FROM_CLIENT, TO_CLIENT, FROM_SERVER, TO_SERVER } DIRECTION;
-
-	explicit ConnectionLogDialog(QWidget *parent = 0);
-
-	void clear();
-
-public slots:
-	void addEntry(const QString &, DIRECTION = FROM_SERVER);
+	explicit MessageItemDelegate(QObject *parent = 0, bool cardDetect = true);
+	virtual ~MessageItemDelegate();
 
 protected:
-	virtual void closeEvent(QCloseEvent *e);
+	void paint(QPainter *painter, const QStyleOptionViewItem &option,
+			   const QModelIndex &index) const;
+	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
-	void writeSettings();
-	void readSettings();
+	QTextDocument *doc(const QStyleOptionViewItem &option, const QModelIndex &txt) const;
 
 private:
-	QFont m_entryFont;
-	QStandardItemModel m_model;
-	QIcon m_toIcon;
-	QIcon m_fromIcon;
+	const bool m_cardDetect;
+	QTextDocument *m_doc;
 };
 
-#endif // CONNECTIONLOGDIALOG_H
+#endif // MESSAGEITEMDELEGATE_H

@@ -71,7 +71,8 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 
 	availServerView->setModel(&m_model);
 
-	QObject::connect(&m_model, SLOT(rowsInserted(const QModelIndex &, int, int)), this, SLOT(resize()));
+	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+					 this, SLOT(resize()));
 
 	resize();
 

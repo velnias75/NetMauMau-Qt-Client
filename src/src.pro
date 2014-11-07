@@ -40,7 +40,8 @@ SOURCES += main.cpp mainwindow.cpp \
     jackchoosedialog.cpp \
     suitlabel.cpp \
     suitradiobutton.cpp \
-    connectionlogdialog.cpp
+    connectionlogdialog.cpp \
+    messageitemdelegate.cpp
 
 HEADERS  += mainwindow.h \
     serverdialog.h \
@@ -49,7 +50,8 @@ HEADERS  += mainwindow.h \
     jackchoosedialog.h \
     suitlabel.h \
     suitradiobutton.h \
-    connectionlogdialog.h
+    connectionlogdialog.h \
+    messageitemdelegate.h
 
 FORMS    +=  serverdialog.ui \
     mainwindow.ui \

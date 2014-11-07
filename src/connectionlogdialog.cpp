@@ -57,12 +57,12 @@ void ConnectionLogDialog::addEntry(const QString &e, DIRECTION dir) {
 
 	QList<QStandardItem *> items;
 
-	items << new QStandardItem();
-	items.back()->setData(dir == TO_SERVER || dir == TO_CLIENT ? m_toIcon : m_fromIcon,
-						  Qt::DecorationRole);
-	items.back()->setSelectable(false);
 	items << new QStandardItem(dir == TO_SERVER || dir == FROM_SERVER ? "Server" : "Client");
 	items.back()->setFont(m_entryFont);
+	items.back()->setSelectable(false);
+	items << new QStandardItem();
+	items.back()->setData(dir == TO_SERVER || dir == TO_CLIENT ? m_fromIcon : m_toIcon,
+						  Qt::DecorationRole);
 	items.back()->setSelectable(false);
 	items << new QStandardItem(e);
 	items.back()->setFont(m_entryFont);
@@ -70,6 +70,10 @@ void ConnectionLogDialog::addEntry(const QString &e, DIRECTION dir) {
 
 	m_model.appendRow(items);
 
+}
+
+void ConnectionLogDialog::clear() {
+	m_model.clear();
 }
 
 void ConnectionLogDialog::writeSettings() {
