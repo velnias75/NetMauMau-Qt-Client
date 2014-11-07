@@ -23,16 +23,6 @@
 #include <QAbstractTextDocumentLayout>
 
 #include "messageitemdelegate.h"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 #include "cardtools.h"
 
 namespace {
@@ -45,13 +35,6 @@ const QString SUITS[4] = {
 };
 
 }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
 MessageItemDelegate::MessageItemDelegate(QObject *p, bool cardDetect) : QStyledItemDelegate(p),
 	m_cardDetect(cardDetect), m_doc(new QTextDocument()) {}
@@ -105,31 +88,10 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	QRect textRect = style->alignedRect(opt.direction, opt.displayAlignment, opt.decorationSize,
 										style->subElementRect(QStyle::SE_ItemViewItemText, &opt));
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 	opt.text = QString::null;
 	opt.state = QStyle::State_None;
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
->>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 	painter->save();
 	painter->translate(textRect.topLeft());
 	doc(option, index)->drawContents(painter);
