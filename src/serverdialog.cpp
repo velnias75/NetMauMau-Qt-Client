@@ -125,7 +125,7 @@ void ServerDialog::doubleClick() {
 			const QString srv(host.left(idx != -1 ? idx : host.length()));
 			uint port = (QString(idx != -1 ? host.mid(idx + 1) : "8899")).toUInt();
 
-			timeval tv = { 0, 500 };
+			timeval tv = { 0, 800 };
 
 			const Client::PLAYERLIST &pl((Client(0L, 0L, playerName->text().toUtf8().constData(),
 												 std::string(srv.toStdString()),
@@ -248,7 +248,7 @@ bool ServerDialog::isOnline(int row) const {
 
 		QCoreApplication::processEvents();
 
-		timeval tv = { 0, 500 };
+		timeval tv = { 0, 800 };
 
 		const Client::CAPABILITIES &caps((Client(0L, 0L, playerName->text().toUtf8().constData(),
 												 std::string(srv.toStdString()),
