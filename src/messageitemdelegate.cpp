@@ -23,11 +23,19 @@
 #include <QAbstractTextDocumentLayout>
 
 #include "messageitemdelegate.h"
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 #include "cardtools.h"
 
 namespace {
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 const QString SUITS[4] = {
 	QString::fromUtf8("\u2666"),
 	QString::fromUtf8("\u2665"),
@@ -38,6 +46,21 @@ const QString SUITS[4] = {
 }
 =======
 >>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
+=======
+=======
+>>>>>>> Stashed changes
+const QString SUITES[4] = {
+	QString::fromUtf8(NetMauMau::Common::getSuitSymbols()[0].c_str()),
+	QString::fromUtf8(NetMauMau::Common::getSuitSymbols()[1].c_str()),
+	QString::fromUtf8(NetMauMau::Common::getSuitSymbols()[2].c_str()),
+	QString::fromUtf8(NetMauMau::Common::getSuitSymbols()[3].c_str())
+};
+
+}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
 MessageItemDelegate::MessageItemDelegate(QObject *p, bool cardDetect) : QStyledItemDelegate(p),
 	m_cardDetect(cardDetect), m_doc(new QTextDocument()) {}
@@ -52,6 +75,8 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 	QStyleOptionViewItemV4 opt(option);
 	initStyleOption(&opt, index);
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 	if(m_cardDetect) {
 
@@ -79,6 +104,17 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 
 =======
 >>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
+=======
+=======
+>>>>>>> Stashed changes
+//	for(int i = 0; i < 4; ++i) {
+//		qDebug("%s", SUITES[i].constData());
+//	}
+
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 	m_doc->setHtml(opt.text);
 
 	return m_doc;
@@ -94,13 +130,25 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	QRect textRect = style->alignedRect(opt.direction, opt.displayAlignment, opt.decorationSize,
 										style->subElementRect(QStyle::SE_ItemViewItemText, &opt));
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 	opt.text = QString::null;
 	opt.state = QStyle::State_None;
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 >>>>>>> bdef33ca3786f807c13fd607ab646ab638616816
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 	painter->save();
 	painter->translate(textRect.topLeft());
 	doc(option, index)->drawContents(painter);
