@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_pickCardPrepended(false), m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
-	m_messageItemDelegate(new MessageItemDelegate(this)) {
+	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1) {
 
 	m_ui->setupUi(this);
 
@@ -270,9 +270,11 @@ void  MainWindow::clientOpenCard(const QByteArray &c, const QString &jackSuit) {
 void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 
 	if(m_lastPlayedCard) {
-		m_cards.push_back(m_lastPlayedCard);
-		m_ui->myCardsLayout->addWidget(m_lastPlayedCard, 0, Qt::AlignHCenter);
+		m_cards.insert(m_lastPlayedCardIdx, m_lastPlayedCard);
+		m_ui->myCardsLayout->insertWidget(m_lastPlayedCardIdx, m_lastPlayedCard, 0,
+										  Qt::AlignHCenter);
 		m_lastPlayedCard->setVisible(true);
+		m_lastPlayedCard = 0L;
 	}
 
 	QMessageBox::critical(this, "Card rejected",
@@ -395,7 +397,9 @@ void MainWindow::cardChosen(CardWidget *c) {
 	emit cardToPlay(c);
 
 	const int idx = m_cards.indexOf(c);
+
 	if(idx >= 0) {
+		m_lastPlayedCardIdx = idx;
 		m_lastPlayedCard = m_cards.takeAt(idx);
 		m_lastPlayedCard->setVisible(false);
 		m_ui->myCardsLayout->removeWidget(m_lastPlayedCard);

@@ -110,6 +110,7 @@ private:
 	QStyledItemDelegate *m_nameItemDelegate;
 	QStyledItemDelegate *m_countItemDelegate;
 	QStyledItemDelegate *m_messageItemDelegate;
+	int m_lastPlayedCardIdx;
 };
 
 #endif // MAINWINDOW_H
