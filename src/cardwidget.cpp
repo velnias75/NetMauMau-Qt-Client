@@ -85,6 +85,37 @@ void CardWidget::changeEvent(QEvent *e) {
 	if(e->type() == QEvent::EnabledChange) styleCard();
 }
 
+QString CardWidget::tooltipText() const {
+
+	QString ttt;
+
+	switch(getSuit()) {
+	case NetMauMau::Common::ICard::HEARTS:
+	ttt = "Hearts"; break;
+	case NetMauMau::Common::ICard::DIAMONDS:
+	ttt = "Diamonds"; break;
+	case NetMauMau::Common::ICard::CLUBS:
+	ttt = "Clubs"; break;
+	case NetMauMau::Common::ICard::SPADES:
+	ttt = "Spades"; break;
+	}
+
+	ttt.append(' ');
+
+	switch(getRank()) {
+	case NetMauMau::Common::ICard::SEVEN: ttt.append('7'); break;
+	case NetMauMau::Common::ICard::EIGHT: ttt.append('8'); break;
+	case NetMauMau::Common::ICard::NINE: ttt.append('9'); break;
+	case NetMauMau::Common::ICard::TEN: ttt.append("10"); break;
+	case NetMauMau::Common::ICard::JACK: ttt.append("Jack"); break;
+	case NetMauMau::Common::ICard::QUEEN: ttt.append("Queen"); break;
+	case NetMauMau::Common::ICard::KING: ttt.append("King"); break;
+	case NetMauMau::Common::ICard::ACE: ttt.append("Ace"); break;
+	}
+
+	return ttt;
+}
+
 void CardWidget::styleCard() {
 
 	const QByteArray &cardDesc(property("cardDescription").toByteArray());
@@ -95,11 +126,12 @@ void CardWidget::styleCard() {
 	if(NetMauMau::Common::parseCardDesc(cardDesc.constData(), &s, &r)) {
 		if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
 						   s == NetMauMau::Common::ICard::DIAMONDS)) {
-			setStyleSheet("color: red;");
+			setStyleSheet("CardWidget { color: red; }");
 		} else {
 			setStyleSheet(m_defaultStyleSheet);
 		}
 	}
 
 	setText(QString::fromUtf8(cardDesc.constData()));
+	setToolTip(tooltipText());
 }

@@ -89,6 +89,8 @@ private:
 						  const QString &msg = QString::null, bool append = false,
 						  bool disable = false);
 
+	QString reconnectToolTip() const;
+
 	void writeSettings();
 	void readSettings();
 

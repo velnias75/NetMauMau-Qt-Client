@@ -43,6 +43,7 @@ protected:
 
 private:
 	void styleCard();
+	QString tooltipText() const;
 
 private slots:
 	void clickedCard();

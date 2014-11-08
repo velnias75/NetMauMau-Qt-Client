@@ -184,7 +184,9 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientNextPlayer(const QString &)));
 
 		centralWidget()->setEnabled(true);
+
 		m_ui->actionServer->setEnabled(false);
+		m_ui->actionReconnect->setToolTip(reconnectToolTip());
 		m_connectionLogDlg->clear();
 
 		m_client->start(QThread::LowestPriority);
@@ -474,6 +476,21 @@ void MainWindow::destroyClient() {
 
 	centralWidget()->setEnabled(false);
 	m_ui->actionServer->setEnabled(true);
+}
+
+QString MainWindow::reconnectToolTip() const {
+	QString rtt("Reconnect to ");
+
+	const ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
+	const QString &as(sd->getAcceptedServer());
+
+	if(!as.isEmpty()) {
+		rtt.append(as);
+	} else {
+		rtt = m_ui->actionReconnect->toolTip();
+	}
+
+	return rtt;
 }
 
 void MainWindow::writeSettings() {
