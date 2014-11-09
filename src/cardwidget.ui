@@ -3,32 +3,15 @@
  <author>Heiko Schäfer &lt;heiko@rangun.de&gt;</author>
  <class>CardWidget</class>
  <widget class="QPushButton" name="CardWidget">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>70</width>
-    <height>28</height>
-   </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="font">
    <font>
     <pointsize>12</pointsize>
    </font>
   </property>
-  <property name="text">
-   <string/>
-  </property>
   <property name="iconSize">
    <size>
-    <width>44</width>
-    <height>60</height>
+    <width>70</width>
+    <height>95</height>
    </size>
   </property>
   <property name="flat">

@@ -67,7 +67,6 @@ private slots:
 	void clientTurn(std::size_t);
 	void clientStats(const Client::STATS &);
 	void clientGameOver();
-//	void clientInitialCard(const QByteArray);
 	void clientOpenCard(const QByteArray &, const QString &);
 	void clientCardRejected(const QString &, const QByteArray &);
 	void clientCardAccepted(const QByteArray &);
@@ -80,7 +79,7 @@ private slots:
 	void clientNextPlayer(const QString &);
 
 	void resizeColumns();
-	void setOpenCard(const QByteArray &d);
+	void setOpenCard(const QByteArray &);
 
 private:
 	void destroyClient();

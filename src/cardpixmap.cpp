@@ -122,7 +122,7 @@ CardPixmap::CardPixmap(const QSize &siz, NetMauMau::Common::ICard::SUIT s,
 
 	const QMap<CARDKEY, QString>::iterator f(CARDMAP.find(CARDKEY(s, r)));
 
-	fill(Qt::transparent);
+	fill(Qt::transparent); // siz = 44x60
 
 	if(f != CARDMAP.end()) {
 		QSvgRenderer renderer(f.value());

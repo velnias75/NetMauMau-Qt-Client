@@ -87,10 +87,14 @@ void CardWidget::changeEvent(QEvent *e) {
 }
 
 QString CardWidget::tooltipText() const {
+	return tooltipText(getSuit(), getRank());
+}
 
+QString CardWidget::tooltipText(NetMauMau::Common::ICard::SUIT s,
+							   NetMauMau::Common::ICard::RANK r) {
 	QString ttt;
 
-	switch(getSuit()) {
+	switch(s) {
 	case NetMauMau::Common::ICard::HEARTS:
 	ttt = "Hearts"; break;
 	case NetMauMau::Common::ICard::DIAMONDS:
@@ -103,7 +107,7 @@ QString CardWidget::tooltipText() const {
 
 	ttt.append(' ');
 
-	switch(getRank()) {
+	switch(r) {
 	case NetMauMau::Common::ICard::SEVEN: ttt.append('7'); break;
 	case NetMauMau::Common::ICard::EIGHT: ttt.append('8'); break;
 	case NetMauMau::Common::ICard::NINE: ttt.append('9'); break;

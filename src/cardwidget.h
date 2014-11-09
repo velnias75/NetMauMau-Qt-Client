@@ -38,6 +38,9 @@ public:
 	virtual std::size_t getPoints() const;
 	virtual std::string description(bool = false) const;
 
+	static QString tooltipText(NetMauMau::Common::ICard::SUIT,
+							   NetMauMau::Common::ICard::RANK);
+
 protected:
 	virtual void changeEvent(QEvent *e);
 

@@ -165,7 +165,7 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientStats(const Client::STATS &)));
 		QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(clientGameOver()));
 		QObject::connect(m_client, SIGNAL(cInitialCard(const QByteArray &)),
-						 this, SLOT(setOpenCard((const QByteArray &))));
+						 this, SLOT(setOpenCard(const QByteArray &)));
 		QObject::connect(m_client, SIGNAL(cOpenCard(const QByteArray &, const QString &)),
 						 this, SLOT(clientOpenCard(const QByteArray &, const QString &)));
 		QObject::connect(m_client, SIGNAL(cCardRejected(QString, const QByteArray &)),
@@ -259,10 +259,6 @@ void MainWindow::clientStats(const Client::STATS &s) {
 		updatePlayerStat(QString::fromUtf8(i->playerName.c_str()), i->cardCount);
 	}
 }
-
-//void MainWindow::clientInitialCard(const QByteArray c) {
-//	setOpenCard(c);
-//}
 
 void  MainWindow::clientOpenCard(const QByteArray &c, const QString &jackSuit) {
 	setOpenCard(c);
@@ -425,8 +421,10 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 
 	if(NetMauMau::Common::parseCardDesc(d.constData(), &s, &r)) {
 		m_ui->openCard->setPixmap(CardPixmap(m_ui->openCard->pixmap()->size(), s, r));
+		m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r));
 	} else {
 		m_ui->openCard->setPixmap(QPixmap(QString::fromUtf8(":/nmm_qt_client.png")));
+		m_ui->openCard->setToolTip(QString::null);
 	}
 }
 
