@@ -18,6 +18,7 @@
  */
 
 #include "cardwidget.h"
+#include "cardpixmap.h"
 #include "cardtools.h"
 
 CardWidget::CardWidget(QWidget *p, const QByteArray &cardDesc) : QPushButton(p),
@@ -124,14 +125,12 @@ void CardWidget::styleCard() {
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::ACE;
 
 	if(NetMauMau::Common::parseCardDesc(cardDesc.constData(), &s, &r)) {
-		if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
-						   s == NetMauMau::Common::ICard::DIAMONDS)) {
-			setStyleSheet("CardWidget { color: red; }");
-		} else {
-			setStyleSheet(m_defaultStyleSheet);
-		}
+		setIcon(CardPixmap(iconSize(), s, r));
+	} else {
+		QIcon ico;
+		ico.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
+		setIcon(ico);
 	}
 
-	setText(QString::fromUtf8(cardDesc.constData()));
 	setToolTip(tooltipText());
 }

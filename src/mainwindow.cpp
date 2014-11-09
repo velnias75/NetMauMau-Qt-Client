@@ -25,6 +25,8 @@
 #include "ui_mainwindow.h"
 #include "serverdialog.h"
 #include "cardtools.h"
+#include "cardwidget.h"
+#include "cardpixmap.h"
 #include "connectionlogdialog.h"
 #include "messageitemdelegate.h"
 
@@ -163,7 +165,7 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientStats(const Client::STATS &)));
 		QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(clientGameOver()));
 		QObject::connect(m_client, SIGNAL(cInitialCard(const QByteArray &)),
-						 this, SLOT(clientInitialCard(const QByteArray &)));
+						 this, SLOT(setOpenCard((const QByteArray &))));
 		QObject::connect(m_client, SIGNAL(cOpenCard(const QByteArray &, const QString &)),
 						 this, SLOT(clientOpenCard(const QByteArray &, const QString &)));
 		QObject::connect(m_client, SIGNAL(cCardRejected(QString, const QByteArray &)),
@@ -258,12 +260,12 @@ void MainWindow::clientStats(const Client::STATS &s) {
 	}
 }
 
-void MainWindow::clientInitialCard(const QByteArray c) {
-	m_ui->openCard->setProperty("cardDescription", c);
-}
+//void MainWindow::clientInitialCard(const QByteArray c) {
+//	setOpenCard(c);
+//}
 
 void  MainWindow::clientOpenCard(const QByteArray &c, const QString &jackSuit) {
-	m_ui->openCard->setProperty("cardDescription", c);
+	setOpenCard(c);
 	m_ui->jackSuit->setProperty("suitDescription", jackSuit.toUtf8());
 }
 
@@ -309,7 +311,7 @@ void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 
 void MainWindow::clientPlayedCard(const QString &player, const QByteArray &card) {
 	updatePlayerStat(player, -1, QString("plays %1").arg(QString::fromUtf8(card.constData())));
-	m_ui->openCard->setProperty("cardDescription", card);
+	setOpenCard(card);
 }
 
 void MainWindow::clientPlayerJoined(const QString &p) {
@@ -416,6 +418,18 @@ void MainWindow::statusRefreshed() {
 	statusBar()->clearMessage();
 }
 
+void MainWindow::setOpenCard(const QByteArray &d) {
+
+	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;
+	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::ACE;
+
+	if(NetMauMau::Common::parseCardDesc(d.constData(), &s, &r)) {
+		m_ui->openCard->setPixmap(CardPixmap(m_ui->openCard->pixmap()->size(), s, r));
+	} else {
+		m_ui->openCard->setPixmap(QPixmap(QString::fromUtf8(":/nmm_qt_client.png")));
+	}
+}
+
 void MainWindow::enableMyCards(bool b) {
 	m_ui->myCardsGroup->setEnabled(b);
 	m_ui->suspendButton->setEnabled(b);
@@ -472,7 +486,7 @@ void MainWindow::destroyClient() {
 	m_model.removeRows(0, m_model.rowCount());
 
 	m_ui->turnLabel->setText(QString::null);
-	m_ui->openCard->setProperty("cardDescription", QVariant());
+	setOpenCard(QByteArray());
 	m_ui->jackSuit->setProperty("suitDescription", QVariant());
 
 	resizeColumns();

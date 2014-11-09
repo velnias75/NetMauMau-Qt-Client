@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>52</width>
-    <height>25</height>
+    <width>70</width>
+    <height>28</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -24,6 +24,12 @@
   </property>
   <property name="text">
    <string/>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>44</width>
+    <height>60</height>
+   </size>
   </property>
   <property name="flat">
    <bool>true</bool>

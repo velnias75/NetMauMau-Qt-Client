@@ -1,0 +1,36 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file alias="hearts-7.svg">cards/Simple_h_7.svg</file>
+<file alias="hearts-8.svg">cards/Simple_h_8.svg</file>
+<file alias="hearts-9.svg">cards/Simple_h_9.svg</file>
+<file alias="hearts-10.svg">cards/Simple_h_10.svg</file>
+<file alias="hearts-jack.svg">cards/Simple_h_j.svg</file>
+<file alias="hearts-queen.svg">cards/Simple_h_q.svg</file>
+<file alias="hearts-king.svg">cards/Simple_h_k.svg</file>
+<file alias="hearts-ace.svg">cards/Simple_h_a.svg</file>
+<file alias="diamonds-7.svg">cards/Simple_d_7.svg</file>
+<file alias="diamonds-8.svg">cards/Simple_d_8.svg</file>
+<file alias="diamonds-9.svg">cards/Simple_d_9.svg</file>
+<file alias="diamonds-10.svg">cards/Simple_d_10.svg</file>
+<file alias="diamonds-jack.svg">cards/Simple_d_j.svg</file>
+<file alias="diamonds-queen.svg">cards/Simple_d_q.svg</file>
+<file alias="diamonds-king.svg">cards/Simple_d_k.svg</file>
+<file alias="diamonds-ace.svg">cards/Simple_d_a.svg</file>
+<file alias="clubs-7.svg">cards/Simple_c_7.svg</file>
+<file alias="clubs-8.svg">cards/Simple_c_8.svg</file>
+<file alias="clubs-9.svg">cards/Simple_c_9.svg</file>
+<file alias="clubs-10.svg">cards/Simple_c_10.svg</file>
+<file alias="clubs-jack.svg">cards/Simple_c_j.svg</file>
+<file alias="clubs-queen.svg">cards/Simple_c_q.svg</file>
+<file alias="clubs-king.svg">cards/Simple_c_k.svg</file>
+<file alias="clubs-ace.svg">cards/Simple_c_a.svg</file>
+<file alias="spades-7.svg">cards/Simple_s_7.svg</file>
+<file alias="spades-8.svg">cards/Simple_s_8.svg</file>
+<file alias="spades-9.svg">cards/Simple_s_9.svg</file>
+<file alias="spades-10.svg">cards/Simple_s_10.svg</file>
+<file alias="spades-jack.svg">cards/Simple_s_j.svg</file>
+<file alias="spades-queen.svg">cards/Simple_s_q.svg</file>
+<file alias="spades-king.svg">cards/Simple_s_k.svg</file>
+<file alias="spades-ace.svg">cards/Simple_s_a.svg</file>
+</qresource>
+</RCC>
