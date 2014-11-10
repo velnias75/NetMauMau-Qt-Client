@@ -293,11 +293,44 @@ void MainWindow::clientPlayerSuspends(const QString &p) {
 }
 
 void MainWindow::clientPlayerWins(const QString &p, std::size_t) {
+
 	if(p == QString::fromUtf8(m_client->getPlayerName().c_str())) {
-		QMessageBox::information(this, "Congratulations", "You have won!");
+
+		QMessageBox winner;
+
+		winner.setIconPixmap(QIcon::fromTheme("face-smile-big", QIcon(":/smile.png")).pixmap(48, 48));
+		winner.setWindowTitle("Congratulations");
+		winner.setText("You have won!");
+
+		winner.exec();
+
 	} else {
+
 		updatePlayerStat(p, -1, "wins", false, true);
 		statusBar()->showMessage(QString("%1 wins!").arg(p));
+
+		if(m_model.rowCount() <= 2) {
+
+			QMessageBox loser;
+
+			loser.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
+			loser.setWindowTitle("Sorry");
+			loser.setText("You have lost!");
+
+			loser.exec();
+
+		} else {
+
+			QMessageBox notwon;
+
+			notwon.setIconPixmap(QIcon::fromTheme("face-plain",
+												  QIcon(":/plain.png")).pixmap(48, 48));
+			notwon.setWindowTitle("Sorry");
+			notwon.setText(QString("<font color=\"blue\">%1</font> has won!").arg(p));
+
+			notwon.exec();
+
+		}
 	}
 }
 

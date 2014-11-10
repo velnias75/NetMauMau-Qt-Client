@@ -36,7 +36,7 @@ NetMauMau::Common::ICard::SUIT JackChooseDialog::getChosenSuit() const {
 		s = NetMauMau::Common::ICard::DIAMONDS;
 	}
 
-	heartsSuit->setChecked(true);
+//	heartsSuit->setChecked(true);
 
 	return s;
 }
