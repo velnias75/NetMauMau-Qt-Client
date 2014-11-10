@@ -436,7 +436,7 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 }
 
 void MainWindow::enableMyCards(bool b) {
-	m_ui->myCardsGroup->setEnabled(b);
+	m_ui->myCardsDock->setEnabled(b);
 }
 
 void MainWindow::updatePlayerStat(const QString &player, std::size_t count, const QString &mesg,

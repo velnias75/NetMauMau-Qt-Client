@@ -26,14 +26,17 @@ JackChooseDialog::JackChooseDialog(QWidget *p) : QDialog(p) {
 NetMauMau::Common::ICard::SUIT JackChooseDialog::getChosenSuit() const {
 
 	const QString &but(suitGroup->checkedButton()->objectName());
+	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;
 
 	if(but == "clubsSuit") {
-		return NetMauMau::Common::ICard::CLUBS;
+		s = NetMauMau::Common::ICard::CLUBS;
 	} else if(but == "spadesSuit") {
-		return NetMauMau::Common::ICard::SPADES;
+		s = NetMauMau::Common::ICard::SPADES;
 	} else if(but == "diamondsSuit") {
-		return NetMauMau::Common::ICard::DIAMONDS;
+		s = NetMauMau::Common::ICard::DIAMONDS;
 	}
 
-	return NetMauMau::Common::ICard::HEARTS;
+	heartsSuit->setChecked(true);
+
+	return s;
 }
