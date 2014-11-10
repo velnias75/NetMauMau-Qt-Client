@@ -158,6 +158,8 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientMessage(const QString &)));
 		QObject::connect(m_client, SIGNAL(cCardSet(const Client::CARDS &)),
 						 this, SLOT(clientCardSet(const Client::CARDS &)));
+		QObject::connect(m_client, SIGNAL(cEnableSuspend(bool)),
+						 m_ui->suspendButton, SLOT(setEnabled(bool)));
 		QObject::connect(m_client, SIGNAL(cTurn(std::size_t)), this, SLOT(clientTurn(std::size_t)));
 		QObject::connect(m_client, SIGNAL(cPlayerJoined(const QString &)),
 						 this, SLOT(clientPlayerJoined(const QString &)));
@@ -188,6 +190,7 @@ void MainWindow::serverAccept() {
 		centralWidget()->setEnabled(true);
 
 		m_ui->actionServer->setEnabled(false);
+		m_ui->suspendButton->setEnabled(true);
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
 		m_connectionLogDlg->clear();
 
@@ -316,16 +319,17 @@ void MainWindow::clientPlayerJoined(const QString &p) {
 
 	si.push_back(new QStandardItem(p));
 	si.push_back(new QStandardItem(QString::null));
-	si.push_back(new QStandardItem(QString::null));
+	si.push_back(new QStandardItem(QString("Player <span style=\"color:blue;\">%1</span> "\
+										   "joined the game").arg(p)));
 
 	m_stdForeground = si.back()->foreground();
 	m_stdBackground = si.back()->background();
 
 	m_model.appendRow(si);
 
-	const uint np = m_maxPlayerCount - m_model.rowCount();
+	const long np = static_cast<long>(m_maxPlayerCount) - m_model.rowCount();
 
-	if(np) {
+	if(np > 0L) {
 		statusBar()->showMessage(QString("Waiting for %1 more player%2...").arg(np).
 								 arg(np != 1 ? "s" : ""));
 	} else {
@@ -376,10 +380,13 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &) {
 }
 
 void MainWindow::clientChooseJackSuitRequest() {
+
 	m_jackChooseDialog.exec();
+
 	m_ui->jackSuit->setProperty("suitDescription",
 								QByteArray(NetMauMau::Common::suitToSymbol(
 											   m_jackChooseDialog.getChosenSuit(), false).c_str()));
+
 	emit chosenSuite(m_jackChooseDialog.getChosenSuit());
 }
 
@@ -430,7 +437,6 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 
 void MainWindow::enableMyCards(bool b) {
 	m_ui->myCardsGroup->setEnabled(b);
-	m_ui->suspendButton->setEnabled(b);
 }
 
 void MainWindow::updatePlayerStat(const QString &player, std::size_t count, const QString &mesg,
@@ -492,6 +498,7 @@ void MainWindow::destroyClient() {
 
 	centralWidget()->setEnabled(false);
 	m_ui->actionServer->setEnabled(true);
+	m_ui->suspendButton->setEnabled(false);
 }
 
 QString MainWindow::reconnectToolTip() const {
@@ -550,6 +557,7 @@ void MainWindow::readSettings() {
 
 	settings.beginGroup("ConnectionLog");
 	m_connectionLogDlg->setVisible(settings.value("visible", false).toBool());
+	m_ui->actionConnectionlog->setChecked(m_connectionLogDlg->isVisible());
 	settings.endGroup();
 
 }

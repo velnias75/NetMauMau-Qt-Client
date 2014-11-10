@@ -211,6 +211,11 @@ void Client::cardSet(const CARDS &cards) const {
 	emit cCardSet(cards);
 }
 
+void Client::enableSuspend(bool enable) const {
+	log(QString("enableSuspend(%1)").arg(enable ? "true" : "false"));
+	emit cEnableSuspend(enable);
+}
+
 void Client::initialCard(const NetMauMau::Common::ICard *card) const {
 	log(QString("initialCard(%1)").arg(QString::fromUtf8(card->description().c_str())));
 	emit cInitialCard(card->description().c_str());
