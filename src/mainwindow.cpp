@@ -294,15 +294,19 @@ void MainWindow::clientPlayerSuspends(const QString &p) {
 
 void MainWindow::clientPlayerWins(const QString &p, std::size_t) {
 
+	QMessageBox gameOver;
+
+	QIcon icon;
+	icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
+	gameOver.setWindowIcon(icon);
+
 	if(p == QString::fromUtf8(m_client->getPlayerName().c_str())) {
 
-		QMessageBox winner;
+		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big", QIcon(":/smile.png")).pixmap(48, 48));
+		gameOver.setWindowTitle("Congratulations");
+		gameOver.setText("You have won!");
 
-		winner.setIconPixmap(QIcon::fromTheme("face-smile-big", QIcon(":/smile.png")).pixmap(48, 48));
-		winner.setWindowTitle("Congratulations");
-		winner.setText("You have won!");
-
-		winner.exec();
+		gameOver.exec();
 
 	} else {
 
@@ -311,24 +315,20 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t) {
 
 		if(m_model.rowCount() <= 2) {
 
-			QMessageBox loser;
+			gameOver.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
+			gameOver.setWindowTitle("Sorry");
+			gameOver.setText("You have lost!");
 
-			loser.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
-			loser.setWindowTitle("Sorry");
-			loser.setText("You have lost!");
-
-			loser.exec();
+			gameOver.exec();
 
 		} else {
 
-			QMessageBox notwon;
-
-			notwon.setIconPixmap(QIcon::fromTheme("face-plain",
+			gameOver.setIconPixmap(QIcon::fromTheme("face-plain",
 												  QIcon(":/plain.png")).pixmap(48, 48));
-			notwon.setWindowTitle("Sorry");
-			notwon.setText(QString("<font color=\"blue\">%1</font> has won!").arg(p));
+			gameOver.setWindowTitle("Sorry");
+			gameOver.setText(QString("<font color=\"blue\">%1</font> has won!").arg(p));
 
-			notwon.exec();
+			gameOver.exec();
 
 		}
 	}
@@ -414,6 +414,7 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &) {
 
 void MainWindow::clientChooseJackSuitRequest() {
 
+	m_jackChooseDialog.setSuite(NetMauMau::Common::ICard::HEARTS);
 	m_jackChooseDialog.exec();
 
 	m_ui->jackSuit->setProperty("suitDescription",

@@ -28,6 +28,9 @@ class JackChooseDialog : public QDialog, private Ui::JackChooseDialog {
 	Q_OBJECT
 public:
 	explicit JackChooseDialog(QWidget *parent = 0);
+
+	void setSuite(NetMauMau::Common::ICard::SUIT s);
+
 	NetMauMau::Common::ICard::SUIT getChosenSuit() const;
 };
 
