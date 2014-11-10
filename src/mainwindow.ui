@@ -32,9 +32,6 @@
     <bool>false</bool>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
-    <property name="topMargin">
-     <number>0</number>
-    </property>
     <item>
      <widget class="QGroupBox" name="remoteGroup">
       <property name="minimumSize">
