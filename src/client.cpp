@@ -189,6 +189,11 @@ void Client::playerWins(const std::string &player, std::size_t t) const {
 	emit cplayerWins(QString::fromUtf8(player.c_str()), t);
 }
 
+void Client::playerLost(const std::string &player, std::size_t t) const {
+	log(QString("playerLost(%1, %2)").arg(QString::fromUtf8(player.c_str())).arg(t));
+	emit cplayerWins(QString::fromUtf8(player.c_str()), t);
+}
+
 void Client::playerPicksCard(const std::string &player,
 							 const NetMauMau::Common::ICard *card) const {
 	log(QString("playerPicksCard(%1, %2)").arg(player.c_str()).

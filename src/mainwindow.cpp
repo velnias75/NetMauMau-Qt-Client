@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_pickCardPrepended(false), m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
-	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1) {
+	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1), m_winner(false) {
 
 	m_ui->setupUi(this);
 
@@ -178,6 +178,8 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientPlayerSuspends(const QString &)));
 		QObject::connect(m_client, SIGNAL(cplayerWins(const QString &, std::size_t)),
 						 this, SLOT(clientPlayerWins(const QString &, std::size_t)));
+		QObject::connect(m_client, SIGNAL(cplayerLost(const QString &, std::size_t)),
+						 this, SLOT(clientPlayerLost(const QString &, std::size_t)));
 		QObject::connect(m_client, SIGNAL(cPlayerPicksCard(const QString &, std::size_t)),
 						 this, SLOT(clientPlayerPicksCard(const QString &, std::size_t)));
 		QObject::connect(m_client, SIGNAL(cJackSuit(NetMauMau::Common::ICard::SUIT)),
@@ -292,7 +294,14 @@ void MainWindow::clientPlayerSuspends(const QString &p) {
 	updatePlayerStat(p, -1, "suspends this turn");
 }
 
-void MainWindow::clientPlayerWins(const QString &p, std::size_t) {
+void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
+	updatePlayerStat(p, -1, QString("lost in turn %1").arg(t));
+}
+
+void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
+
+	updatePlayerStat(p, 0, QString("wins in turn %1").arg(t), true, true);
+	statusBar()->showMessage(QString("%1 wins!").arg(p));
 
 	QMessageBox gameOver;
 
@@ -300,9 +309,10 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t) {
 	icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
 	gameOver.setWindowIcon(icon);
 
-	if(p == QString::fromUtf8(m_client->getPlayerName().c_str())) {
+	if(!m_winner && p == QString::fromUtf8(m_client->getPlayerName().c_str())) {
 
-		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big", QIcon(":/smile.png")).pixmap(48, 48));
+		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
+												QIcon(":/smile.png")).pixmap(48, 48));
 		gameOver.setWindowTitle("Congratulations");
 		gameOver.setText("You have won!");
 
@@ -310,12 +320,10 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t) {
 
 	} else {
 
-		updatePlayerStat(p, -1, "wins", false, true);
-		statusBar()->showMessage(QString("%1 wins!").arg(p));
-
 		if(m_model.rowCount() <= 2) {
 
-			gameOver.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
+			gameOver.setIconPixmap(QIcon::fromTheme("face-sad",
+													QIcon(":/sad.png")).pixmap(48, 48));
 			gameOver.setWindowTitle("Sorry");
 			gameOver.setText("You have lost!");
 
@@ -324,7 +332,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t) {
 		} else {
 
 			gameOver.setIconPixmap(QIcon::fromTheme("face-plain",
-												  QIcon(":/plain.png")).pixmap(48, 48));
+													QIcon(":/plain.png")).pixmap(48, 48));
 			gameOver.setWindowTitle("Sorry");
 			gameOver.setText(QString("<font color=\"blue\">%1</font> has won!").arg(p));
 
@@ -332,6 +340,11 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t) {
 
 		}
 	}
+
+	if(m_model.rowCount() > 2) {
+		m_winner = !m_winner ? p == QString::fromUtf8(m_client->getPlayerName().c_str()) : true;
+	}
+
 }
 
 void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
