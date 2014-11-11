@@ -191,7 +191,7 @@ void Client::playerWins(const std::string &player, std::size_t t) const {
 
 void Client::playerLost(const std::string &player, std::size_t t) const {
 	log(QString("playerLost(%1, %2)").arg(QString::fromUtf8(player.c_str())).arg(t));
-	emit cplayerWins(QString::fromUtf8(player.c_str()), t);
+	emit cplayerLost(QString::fromUtf8(player.c_str()), t);
 }
 
 void Client::playerPicksCard(const std::string &player,

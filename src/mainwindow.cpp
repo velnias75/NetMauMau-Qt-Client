@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_pickCardPrepended(false), m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
-	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1), m_winner(false) {
+	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1), m_gameOver(false) {
 
 	m_ui->setupUi(this);
 
@@ -128,6 +128,8 @@ void MainWindow::serverAccept() {
 	const ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
 	const QString &as(sd->getAcceptedServer());
 	const int p = as.indexOf(':');
+
+	m_gameOver = false;
 
 	m_maxPlayerCount = sd->getMaxPlayerCount();
 	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
@@ -295,54 +297,65 @@ void MainWindow::clientPlayerSuspends(const QString &p) {
 }
 
 void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
-	updatePlayerStat(p, -1, QString("lost in turn %1").arg(t));
+
+	updatePlayerStat(p, -1, QString("<span style=\"color:blue;\">lost</span> in turn %1").arg(t),
+					 true, true);
+	statusBar()->showMessage(QString("%1 lost!").arg(p));
+
+	if(p == static_cast<ServerDialog *>(m_serverDlg)->getPlayerName()) {
+
+		m_gameOver = true;
+
+		QMessageBox lost;
+		QIcon icon;
+
+		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
+
+		lost.setWindowIcon(icon);
+		lost.setWindowTitle("Sorry");
+		lost.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
+		lost.setText("You have lost!");
+		lost.exec();
+	}
 }
 
 void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
-	updatePlayerStat(p, 0, QString("wins in turn %1").arg(t), true, true);
+	updatePlayerStat(p, 0, QString("<span style=\"color:blue;\">wins</span> in turn %1").arg(t),
+					 true, true);
 	statusBar()->showMessage(QString("%1 wins!").arg(p));
 
-	QMessageBox gameOver;
+	if(!m_gameOver) {
 
-	QIcon icon;
-	icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
-	gameOver.setWindowIcon(icon);
+		QMessageBox gameOver;
+		QIcon icon;
 
-	if(!m_winner && p == QString::fromUtf8(m_client->getPlayerName().c_str())) {
+		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
+		gameOver.setWindowIcon(icon);
 
-		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
-												QIcon(":/smile.png")).pixmap(48, 48));
-		gameOver.setWindowTitle("Congratulations");
-		gameOver.setText("You have won!");
+		if(static_cast<ServerDialog *>(m_serverDlg)->getPlayerName() == p) {
 
-		gameOver.exec();
+			m_gameOver = true;
 
-	} else {
-
-		if(m_model.rowCount() <= 2) {
-
-			gameOver.setIconPixmap(QIcon::fromTheme("face-sad",
-													QIcon(":/sad.png")).pixmap(48, 48));
-			gameOver.setWindowTitle("Sorry");
-			gameOver.setText("You have lost!");
+			gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
+													QIcon(":/smile.png")).pixmap(48, 48));
+			gameOver.setWindowTitle("Congratulations");
+			gameOver.setText("You have won!");
 
 			gameOver.exec();
 
-		} else {
+		} else if(m_model.rowCount() <= 2) {
 
+			gameOver.setWindowTitle("Sorry");
 			gameOver.setIconPixmap(QIcon::fromTheme("face-plain",
 													QIcon(":/plain.png")).pixmap(48, 48));
-			gameOver.setWindowTitle("Sorry");
 			gameOver.setText(QString("<font color=\"blue\">%1</font> has won!").arg(p));
-
 			gameOver.exec();
 
 		}
-	}
 
-	if(m_model.rowCount() > 2) {
-		m_winner = !m_winner ? p == QString::fromUtf8(m_client->getPlayerName().c_str()) : true;
+	} else {
+		clientPlayerLost(p, t);
 	}
 
 }

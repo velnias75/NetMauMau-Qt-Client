@@ -112,7 +112,7 @@ private:
 	QStyledItemDelegate *m_countItemDelegate;
 	QStyledItemDelegate *m_messageItemDelegate;
 	int m_lastPlayedCardIdx;
-	bool m_winner;
+	bool m_gameOver;
 };
 
 #endif // MAINWINDOW_H
