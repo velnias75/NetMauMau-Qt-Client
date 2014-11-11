@@ -37,7 +37,8 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_pickCardPrepended(false), m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
-	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1), m_gameOver(false) {
+	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
+	m_gameOver(false) {
 
 	m_ui->setupUi(this);
 
@@ -94,6 +95,10 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 
 	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
 					 this, SLOT(resizeColumns()));
+
+	const QString &as(static_cast<ServerDialog *>(m_serverDlg)->getAcceptedServer());
+	m_ui->actionReconnect->setDisabled(as.isEmpty());
+	m_ui->actionReconnect->setToolTip(reconnectToolTip());
 
 	readSettings();
 }
@@ -599,6 +604,16 @@ void MainWindow::writeSettings() {
 	settings.beginGroup("ConnectionLog");
 	settings.setValue("visible", m_connectionLogDlg->isVisible());
 	settings.endGroup();
+
+	const ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
+	const QString &as(sd->getAcceptedServer());
+
+	if(!as.isEmpty()) {
+		settings.beginGroup("Servers");
+		settings.setValue("lastServer", as);
+		settings.endGroup();
+	}
+
 }
 
 void MainWindow::readSettings() {

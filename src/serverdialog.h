@@ -64,6 +64,7 @@ signals:
 private:
 	QStandardItemModel m_model;
 	mutable bool m_forceRefresh;
+	QString m_lastServer;
 };
 
 #endif // SERVERDIALOG_H

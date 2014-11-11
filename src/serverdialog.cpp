@@ -31,7 +31,8 @@ const QRegExp hostRex("^(?=.{1,255}$)[0-9A-Za-z]" \
 					  "{0,61}[0-9A-Za-z])?)*\\.?$");
 }
 
-ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(false) {
+ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(false),
+	m_lastServer(QString::null) {
 
 	setupUi(this);
 
@@ -45,11 +46,19 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	QSettings settings;
 	settings.beginGroup("Servers");
 	QStringList servers = settings.value("list", QStringList()).toStringList();
+	m_lastServer = settings.value("lastServer", QVariant(QString::null)).toString();
 	settings.endGroup();
 
 	settings.beginGroup("Player");
 	playerName->setText(settings.value("name", "Qt Client").toString());
 	settings.endGroup();
+
+	availServerView->setModel(&m_model);
+
+	QObject::connect(availServerView->selectionModel(),
+					 SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+					 this, SLOT(enableRemoveAndOkButton(const QItemSelection &,
+														const QItemSelection &)));
 
 	for(int i = 0, j = 0; i < servers.size(); ++i) {
 		const QString &tHost(servers[i].trimmed());
@@ -68,8 +77,6 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	}
 
 	checkOnline();
-
-	availServerView->setModel(&m_model);
 
 	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
 					 this, SLOT(resize()));
@@ -96,10 +103,6 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 
 	QObject::connect(availServerView, SIGNAL(doubleClicked(const QModelIndex &)),
 					 this, SLOT(doubleClick()));
-	QObject::connect(availServerView->selectionModel(),
-					 SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-					 this, SLOT(enableRemoveAndOkButton(const QItemSelection &,
-														const QItemSelection &)));
 	QObject::connect(hostEdit, SIGNAL(textChanged(const QString &)),
 					 this, SLOT(enableAddButton(const QString &)));
 	QObject::connect(connectButton, SIGNAL(clicked()), this, SLOT(doubleClick()));
@@ -159,8 +162,14 @@ void ServerDialog::doubleClick() {
 }
 
 QString ServerDialog::getAcceptedServer() const {
-	return m_model.itemFromIndex(availServerView->selectionModel()->
-								 selection().indexes().first())->text();
+
+	const QModelIndexList &l(availServerView->selectionModel()->selection().indexes());
+
+	if(!l.isEmpty()) {
+		return m_model.itemFromIndex(l.first())->text();
+	} else {
+		return QString::null;
+	}
 }
 
 QString ServerDialog::getPlayerName() const {
@@ -214,6 +223,12 @@ void ServerDialog::checkOnline() const {
 		ai->setEnabled(false);
 		players->setEditable(false);
 		players->setEnabled(enabled);
+
+		if(enabled && server->text() == m_lastServer) {
+			availServerView->selectionModel()->
+					select(m_model.index(r, 0),
+						   QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
+		}
 	}
 
 	QApplication::restoreOverrideCursor();
