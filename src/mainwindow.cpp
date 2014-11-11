@@ -20,6 +20,7 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QSettings>
+#include <QTimer>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -221,7 +222,7 @@ void MainWindow::clientCardSet(const Client::CARDS &c) {
 
 	for(Client::CARDS::const_iterator i(c.begin()); i != c.end(); ++i) {
 		if(*i) {
-			m_cards.push_back(new CardWidget(m_ui->myCardsScrollArea, (*i)->description().c_str()));
+			m_cards.push_back(new CardWidget(m_ui->awidget, (*i)->description().c_str()));
 			m_ui->myCardsLayout->addWidget(m_cards.back(), 0, Qt::AlignHCenter);
 			QObject::connect(m_cards.back(), SIGNAL(chosen(CardWidget*)),
 							 this, SLOT(cardChosen(CardWidget*)));
@@ -232,6 +233,12 @@ void MainWindow::clientCardSet(const Client::CARDS &c) {
 	}
 
 	updatePlayerStat(QString::fromUtf8(m_client->getPlayerName().c_str()), m_cards.size());
+	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
+
+}
+
+void MainWindow::scrollToLastCard() {
+	if(!m_cards.isEmpty()) m_ui->myCardsScrollArea->ensureWidgetVisible(m_cards.last());
 }
 
 void MainWindow::clearMyCards(bool del) {
@@ -471,6 +478,7 @@ void MainWindow::cardChosen(CardWidget *c) {
 	}
 
 	updatePlayerStat(QString::fromUtf8(m_client->getPlayerName().c_str()), m_cards.size());
+	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
 }
 
 void MainWindow::statusRefreshing() {

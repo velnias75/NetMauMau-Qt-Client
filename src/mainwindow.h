@@ -52,6 +52,8 @@ signals:
 private slots:
 	void about();
 
+	void scrollToLastCard();
+
 	void serverAccept();
 	void statusRefreshing();
 	void statusRefreshed();

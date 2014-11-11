@@ -350,16 +350,21 @@
             <property name="widgetResizable">
              <bool>true</bool>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
             <widget class="QWidget" name="awidget">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>849</width>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
                <height>140</height>
-              </rect>
+              </size>
              </property>
-             <layout class="QHBoxLayout" name="myCardsLayout"/>
+             <layout class="QHBoxLayout" name="myCardsLayout">
+              <property name="sizeConstraint">
+               <enum>QLayout::SetMinAndMaxSize</enum>
+              </property>
+             </layout>
             </widget>
            </widget>
           </item>
