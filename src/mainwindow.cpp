@@ -220,7 +220,10 @@ void MainWindow::clientMessage(const QString &msg) {
 
 void MainWindow::clientError(const QString &err) {
 	destroyClient();
-	QMessageBox::critical(this, "Server Error", err);
+	if(QMessageBox::critical(this, "Server Error", err, QMessageBox::Retry|QMessageBox::Ok,
+						  QMessageBox::Retry) == QMessageBox::Retry) {
+		emit serverAccept();
+	}
 }
 
 void MainWindow::clientCardSet(const Client::CARDS &c) {
