@@ -57,6 +57,7 @@ private slots:
 	void serverAccept();
 	void statusRefreshing();
 	void statusRefreshed();
+	void destroyClient();
 
 	void suspend();
 	void cardChosen(CardWidget *);
@@ -68,7 +69,6 @@ private slots:
 	void clientCardSet(const Client::CARDS &);
 	void clientTurn(std::size_t);
 	void clientStats(const Client::STATS &);
-	void clientGameOver();
 	void clientOpenCard(const QByteArray &, const QString &);
 	void clientCardRejected(const QString &, const QByteArray &);
 	void clientCardAccepted(const QByteArray &);
@@ -81,11 +81,11 @@ private slots:
 	void clientJackSuit(NetMauMau::Common::ICard::SUIT);
 	void clientNextPlayer(const QString &);
 
+	void clearStats();
 	void resizeColumns();
 	void setOpenCard(const QByteArray &);
 
 private:
-	void destroyClient();
 	void clearMyCards(bool del);
 	void enableMyCards(bool b);
 	void updatePlayerStat(const QString &player, std::size_t count,

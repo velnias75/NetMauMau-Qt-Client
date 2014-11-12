@@ -137,10 +137,12 @@ void MainWindow::serverAccept() {
 
 	m_gameOver = false;
 
+	clearStats();
+
 	m_maxPlayerCount = sd->getMaxPlayerCount();
 	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
 						  std::string(as.left(p).toStdString()), p != -1 ? as.mid(p + 1).toUInt()
-																		 : 8899);
+																		 : Client::getDefaultPort());
 
 	QObject::connect(m_client, SIGNAL(offline(bool)),
 					 m_ui->actionReconnect, SLOT(setEnabled(bool)));
@@ -173,7 +175,7 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientPlayerJoined(const QString &)));
 		QObject::connect(m_client, SIGNAL(cStats(const Client::STATS &)),
 						 this, SLOT(clientStats(const Client::STATS &)));
-		QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(clientGameOver()));
+		QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(destroyClient()));
 		QObject::connect(m_client, SIGNAL(cInitialCard(const QByteArray &)),
 						 this, SLOT(setOpenCard(const QByteArray &)));
 		QObject::connect(m_client, SIGNAL(cOpenCard(const QByteArray &, const QString &)),
@@ -219,23 +221,26 @@ void MainWindow::clientMessage(const QString &msg) {
 }
 
 void MainWindow::clientError(const QString &err) {
+
 	destroyClient();
-	if(QMessageBox::critical(this, "Server Error", err, QMessageBox::Retry|QMessageBox::Ok,
-						  QMessageBox::Retry) == QMessageBox::Retry) {
-		emit serverAccept();
-	}
+
+	if(QMessageBox::critical(this, "Server Error", err, QMessageBox::Retry|QMessageBox::Cancel,
+							 QMessageBox::Retry) == QMessageBox::Retry) emit serverAccept();
 }
 
 void MainWindow::clientCardSet(const Client::CARDS &c) {
 
 	for(Client::CARDS::const_iterator i(c.begin()); i != c.end(); ++i) {
-		if(*i) {
-			m_cards.push_back(new CardWidget(m_ui->awidget, (*i)->description().c_str()));
+
+		const NetMauMau::Common::ICard *card = *i;
+
+		if(card) {
+			m_cards.push_back(new CardWidget(m_ui->awidget, card->description().c_str()));
 			m_ui->myCardsLayout->addWidget(m_cards.back(), 0, Qt::AlignHCenter);
 			QObject::connect(m_cards.back(), SIGNAL(chosen(CardWidget*)),
 							 this, SLOT(cardChosen(CardWidget*)));
 		} else {
-			qWarning("clientCardSet: at least one card was NULL");
+			qWarning("BUG: clientCardSet: at least one card was NULL");
 			break;
 		}
 	}
@@ -313,11 +318,12 @@ void MainWindow::clientPlayerSuspends(const QString &p) {
 
 void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
 
+	const bool me = static_cast<ServerDialog *>(m_serverDlg)->getPlayerName() == p;
+
 	updatePlayerStat(p, -1, QString("<span style=\"color:blue;\">lost</span> in turn %1").arg(t),
 					 true, true);
-	statusBar()->showMessage(QString("%1 lost!").arg(p));
 
-	if(p == static_cast<ServerDialog *>(m_serverDlg)->getPlayerName()) {
+	if(me) {
 
 		m_gameOver = true;
 
@@ -331,14 +337,21 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
 		lost.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
 		lost.setText("You have lost!");
 		lost.exec();
+
+		clearStats();
+	} else {
+		statusBar()->showMessage(QString("%1 lost!").arg(p));
 	}
 }
 
 void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
+	const bool me = static_cast<ServerDialog *>(m_serverDlg)->getPlayerName() == p;
+
 	updatePlayerStat(p, 0, QString("<span style=\"color:blue;\">wins</span> in turn %1").arg(t),
 					 true, true);
-	statusBar()->showMessage(QString("%1 wins!").arg(p));
+
+	if(!me) statusBar()->showMessage(QString("%1 wins!").arg(p));
 
 	if(!m_gameOver) {
 
@@ -348,7 +361,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
 		gameOver.setWindowIcon(icon);
 
-		if(static_cast<ServerDialog *>(m_serverDlg)->getPlayerName() == p) {
+		if(me) {
 
 			m_gameOver = true;
 
@@ -369,10 +382,9 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		}
 
-	} else {
-		clientPlayerLost(p, t);
-	}
+		clearStats();
 
+	}
 }
 
 void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
@@ -409,10 +421,6 @@ void MainWindow::clientPlayerJoined(const QString &p) {
 	} else {
 		statusBar()->clearMessage();
 	}
-}
-
-void MainWindow::clientGameOver() {
-	destroyClient();
 }
 
 void MainWindow::clientJackSuit(NetMauMau::Common::ICard::SUIT s) {
@@ -563,6 +571,16 @@ void MainWindow::destroyClient() {
 		m_client = 0L;
 	}
 
+	if(!m_gameOver) clearStats();
+	clearMyCards(true);
+
+	centralWidget()->setEnabled(false);
+	m_ui->actionServer->setEnabled(true);
+	m_ui->suspendButton->setEnabled(false);
+}
+
+void MainWindow::clearStats() {
+
 	m_model.removeRows(0, m_model.rowCount());
 
 	m_ui->turnLabel->setText(QString::null);
@@ -570,11 +588,6 @@ void MainWindow::destroyClient() {
 	m_ui->jackSuit->setProperty("suitDescription", QVariant());
 
 	resizeColumns();
-	clearMyCards(true);
-
-	centralWidget()->setEnabled(false);
-	m_ui->actionServer->setEnabled(true);
-	m_ui->suspendButton->setEnabled(false);
 }
 
 QString MainWindow::reconnectToolTip() const {

@@ -36,6 +36,8 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 
 	setupUi(this);
 
+	portSpin->setValue(Client::getDefaultPort());
+
 	QStringList labels;
 	labels << "Server" << "Server version" << "AI" << "Players";
 
@@ -126,7 +128,8 @@ void ServerDialog::doubleClick() {
 			int idx = host.indexOf(':');
 
 			const QString srv(host.left(idx != -1 ? idx : host.length()));
-			uint port = (QString(idx != -1 ? host.mid(idx + 1) : "8899")).toUInt();
+			uint port = (QString(idx != -1 ? host.mid(idx + 1) :
+											 QString::number(Client::getDefaultPort()))).toUInt();
 
 			timeval tv = { 0, 800 };
 
@@ -257,7 +260,8 @@ bool ServerDialog::isOnline(int row) const {
 	int idx = host.indexOf(':');
 
 	const QString srv(host.left(idx != -1 ? idx : host.length()));
-	uint port = (QString(idx != -1 ? host.mid(idx + 1) : "8899")).toUInt();
+	uint port = (QString(idx != -1 ? host.mid(idx + 1) :
+									 QString::number(Client::getDefaultPort()))).toUInt();
 
 	try {
 
