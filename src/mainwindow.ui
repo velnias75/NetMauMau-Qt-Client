@@ -354,6 +354,14 @@
              <set>Qt::AlignCenter</set>
             </property>
             <widget class="QWidget" name="awidget">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>849</width>
+               <height>140</height>
+              </rect>
+             </property>
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -387,6 +395,25 @@
           </spacer>
          </item>
          <item>
+          <widget class="QPushButton" name="takeCardsButton">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>Take cards first and choose</string>
+           </property>
+           <property name="text">
+            <string>&amp;Take</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="suspendButton">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -399,6 +426,9 @@
              <weight>50</weight>
              <bold>false</bold>
             </font>
+           </property>
+           <property name="toolTip">
+            <string>Suspend your turn and take one card</string>
            </property>
            <property name="text">
             <string>&amp;Suspend</string>
@@ -505,6 +535,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>myCardsScrollArea</tabstop>
+  <tabstop>takeCardsButton</tabstop>
   <tabstop>suspendButton</tabstop>
  </tabstops>
  <resources>

@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
-	m_gameOver(false) {
+	m_gameOver(false), m_cardsTaken(false) {
 
 	m_ui->setupUi(this);
 
@@ -88,6 +88,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	resizeColumns();
 
 	QObject::connect(m_ui->suspendButton, SIGNAL(clicked()), this, SLOT(suspend()));
+	QObject::connect(m_ui->takeCardsButton, SIGNAL(clicked()), this, SLOT(takeCards()));
 
 	QObject::connect(m_serverDlg, SIGNAL(accepted()), this, SLOT(serverAccept()));
 	QObject::connect(m_serverDlg, SIGNAL(refreshing()), this, SLOT(statusRefreshing()));
@@ -136,6 +137,7 @@ void MainWindow::serverAccept() {
 	const int p = as.indexOf(':');
 
 	m_gameOver = false;
+	m_cardsTaken = false;
 
 	clearStats();
 
@@ -203,6 +205,7 @@ void MainWindow::serverAccept() {
 
 		m_ui->actionServer->setEnabled(false);
 		m_ui->suspendButton->setEnabled(true);
+		m_ui->takeCardsButton->setEnabled(false);
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
 		m_connectionLogDlg->clear();
 
@@ -279,6 +282,7 @@ void MainWindow::clearMyCards(bool del) {
 
 void MainWindow::clientTurn(std::size_t t) {
 	m_ui->turnLabel->setText(QString("%1").arg(t));
+	m_cardsTaken = false;
 }
 
 void MainWindow::clientStats(const Client::STATS &s) {
@@ -478,7 +482,16 @@ void MainWindow::suspend() {
 	emit cardToPlay(0L);
 }
 
+void MainWindow::takeCards() {
+	enableMyCards(false);
+	emit cardToPlay(NetMauMau::Common::getIllegalCard());
+	m_ui->takeCardsButton->setEnabled(false);
+	m_cardsTaken = true;
+}
+
 void MainWindow::cardChosen(CardWidget *c) {
+
+	m_cardsTaken = true;
 
 	enableMyCards(false);
 
@@ -516,6 +529,10 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 	} else {
 		m_ui->openCard->setPixmap(QPixmap(QString::fromUtf8(":/nmm_qt_client.png")));
 		m_ui->openCard->setToolTip(QString::null);
+	}
+
+	if(r == NetMauMau::Common::ICard::SEVEN) {
+		m_ui->takeCardsButton->setDisabled(m_cardsTaken);
 	}
 }
 
@@ -576,6 +593,7 @@ void MainWindow::destroyClient() {
 
 	centralWidget()->setEnabled(false);
 	m_ui->actionServer->setEnabled(true);
+	m_ui->takeCardsButton->setEnabled(false);
 	m_ui->suspendButton->setEnabled(false);
 }
 

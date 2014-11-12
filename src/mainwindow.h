@@ -60,6 +60,7 @@ private slots:
 	void destroyClient();
 
 	void suspend();
+	void takeCards();
 	void cardChosen(CardWidget *);
 	void clientPlayCardRequest(const Client::CARDS &);
 	void clientChooseJackSuitRequest();
@@ -115,6 +116,7 @@ private:
 	QStyledItemDelegate *m_messageItemDelegate;
 	int m_lastPlayedCardIdx;
 	bool m_gameOver;
+	bool m_cardsTaken;
 };
 
 #endif // MAINWINDOW_H
