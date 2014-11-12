@@ -533,6 +533,8 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 
 	if(r == NetMauMau::Common::ICard::SEVEN) {
 		m_ui->takeCardsButton->setDisabled(m_cardsTaken);
+	} else {
+		m_ui->takeCardsButton->setDisabled(true);
 	}
 }
 
