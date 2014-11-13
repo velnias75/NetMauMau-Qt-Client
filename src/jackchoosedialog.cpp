@@ -28,7 +28,7 @@ void JackChooseDialog::setSuite(NetMauMau::Common::ICard::SUIT s) {
 	case NetMauMau::Common::ICard::HEARTS: heartsSuit->setChecked(true); break;
 	case NetMauMau::Common::ICard::DIAMONDS: diamondsSuit->setChecked(true); break;
 	case NetMauMau::Common::ICard::CLUBS: clubsSuit->setChecked(true); break;
-	case NetMauMau::Common::ICard::SPADES: spadesSuit->setChecked(true); break;
+	default: spadesSuit->setChecked(true); break;
 	}
 }
 

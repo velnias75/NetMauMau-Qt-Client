@@ -91,18 +91,20 @@ QString CardWidget::tooltipText() const {
 }
 
 QString CardWidget::tooltipText(NetMauMau::Common::ICard::SUIT s,
-							   NetMauMau::Common::ICard::RANK r) {
+								NetMauMau::Common::ICard::RANK r) {
 	QString ttt;
 
 	switch(s) {
 	case NetMauMau::Common::ICard::HEARTS:
-	ttt = "Hearts"; break;
+		ttt = "Hearts"; break;
 	case NetMauMau::Common::ICard::DIAMONDS:
-	ttt = "Diamonds"; break;
+		ttt = "Diamonds"; break;
 	case NetMauMau::Common::ICard::CLUBS:
-	ttt = "Clubs"; break;
+		ttt = "Clubs"; break;
 	case NetMauMau::Common::ICard::SPADES:
-	ttt = "Spades"; break;
+		ttt = "Spades"; break;
+	case NetMauMau::Common::ICard::SUIT_ILLEGAL:
+		ttt = "Illegal"; break;
 	}
 
 	ttt.append(' ');
@@ -116,6 +118,7 @@ QString CardWidget::tooltipText(NetMauMau::Common::ICard::SUIT s,
 	case NetMauMau::Common::ICard::QUEEN: ttt.append("Queen"); break;
 	case NetMauMau::Common::ICard::KING: ttt.append("King"); break;
 	case NetMauMau::Common::ICard::ACE: ttt.append("Ace"); break;
+	case NetMauMau::Common::ICard::RANK_ILLEGAL: ttt.append("card"); break;
 	}
 
 	return ttt;

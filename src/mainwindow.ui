@@ -382,6 +382,19 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
+          <widget class="QPushButton" name="sortCards">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>S&amp;ort</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="verticalSpacer_2">
            <property name="orientation">
             <enum>Qt::Vertical</enum>

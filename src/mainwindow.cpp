@@ -31,6 +31,15 @@
 #include "connectionlogdialog.h"
 #include "messageitemdelegate.h"
 
+namespace {
+
+bool cardLess(CardWidget *x, CardWidget *y) {
+	return x->getSuit() == y->getSuit() ? x->getPoints() < y->getPoints() :
+										  x->getSuit() < y->getSuit();
+}
+
+}
+
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
 	m_serverDlg(new ServerDialog(this)), m_model(), m_cards(), m_lastPlayedCard(0L),
 	m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(), m_maxPlayerCount(0),
@@ -87,6 +96,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 
 	resizeColumns();
 
+	QObject::connect(m_ui->sortCards, SIGNAL(clicked()), this, SLOT(sortMyCards()));
 	QObject::connect(m_ui->suspendButton, SIGNAL(clicked()), this, SLOT(suspend()));
 	QObject::connect(m_ui->takeCardsButton, SIGNAL(clicked()), this, SLOT(takeCards()));
 
@@ -122,6 +132,18 @@ MainWindow::~MainWindow() {
 void MainWindow::resizeColumns() {
 	m_ui->remotePlayersView->resizeColumnToContents(0);
 	m_ui->remotePlayersView->resizeColumnToContents(1);
+}
+
+void MainWindow::sortMyCards() {
+
+	clearMyCards(false, false);
+
+	qSort(m_cards.begin(), m_cards.end(), cardLess);
+
+	for(QList<CardWidget *>::ConstIterator i(m_cards.begin()); i != m_cards.end(); ++i) {
+		m_ui->myCardsLayout->addWidget(*i, 0, Qt::AlignHCenter);
+		(*i)->setVisible(true);
+	}
 }
 
 void MainWindow::closeEvent(QCloseEvent *e) {
@@ -250,14 +272,13 @@ void MainWindow::clientCardSet(const Client::CARDS &c) {
 
 	updatePlayerStat(QString::fromUtf8(m_client->getPlayerName().c_str()), m_cards.size());
 	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
-
 }
 
 void MainWindow::scrollToLastCard() {
 	if(!m_cards.isEmpty()) m_ui->myCardsScrollArea->ensureWidgetVisible(m_cards.last());
 }
 
-void MainWindow::clearMyCards(bool del) {
+void MainWindow::clearMyCards(bool del, bool dis) {
 
 	for(QList<CardWidget *>::ConstIterator i(m_cards.begin()); i != m_cards.end(); ++i) {
 
@@ -277,7 +298,7 @@ void MainWindow::clearMyCards(bool del) {
 		delete child;
 	}
 
-	enableMyCards(false);
+	if(dis) enableMyCards(false);
 }
 
 void MainWindow::clientTurn(std::size_t t) {
@@ -307,7 +328,8 @@ void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 	}
 
 	QMessageBox::critical(this, "Card rejected",
-						  QString("You cannot play card %1!").arg(QString::fromUtf8(c.constData())));
+						  QString("You cannot play card %1!")
+						  .arg(QString::fromUtf8(c.constData())));
 
 }
 
@@ -318,6 +340,7 @@ void MainWindow::clientCardAccepted(const QByteArray &) {
 
 void MainWindow::clientPlayerSuspends(const QString &p) {
 	updatePlayerStat(p, -1, "suspends this turn");
+	m_cardsTaken = true;
 }
 
 void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
@@ -539,6 +562,7 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 }
 
 void MainWindow::enableMyCards(bool b) {
+	m_ui->sortCards->setEnabled(b && m_ui->myCardsLayout->count() >= 2);
 	m_ui->myCardsDock->setEnabled(b);
 }
 

@@ -83,12 +83,13 @@ private slots:
 	void clientNextPlayer(const QString &);
 
 	void clearStats();
+	void sortMyCards();
 	void resizeColumns();
 	void setOpenCard(const QByteArray &);
 
 private:
-	void clearMyCards(bool del);
 	void enableMyCards(bool b);
+	void clearMyCards(bool del, bool dis = true);
 	void updatePlayerStat(const QString &player, std::size_t count,
 						  const QString &msg = QString::null, bool append = false,
 						  bool disable = false);
