@@ -202,10 +202,10 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>heartsSuit</tabstop>
-  <tabstop>diamondsSuit</tabstop>
   <tabstop>clubsSuit</tabstop>
   <tabstop>spadesSuit</tabstop>
+  <tabstop>heartsSuit</tabstop>
+  <tabstop>diamondsSuit</tabstop>
   <tabstop>okButton</tabstop>
  </tabstops>
  <resources/>

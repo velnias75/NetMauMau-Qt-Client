@@ -90,7 +90,7 @@ private slots:
 private:
 	bool isMe(const QString &player) const;
 
-	void enableMyCards(bool b);
+	void enableMyCards(bool b, const Client::CARDS &cards = Client::CARDS());
 	void clearMyCards(bool del, bool dis = true);
 	void updatePlayerStat(const QString &player, std::size_t count,
 						  const QString &msg = QString::null, bool append = false,
