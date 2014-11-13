@@ -88,6 +88,7 @@ private slots:
 	void setOpenCard(const QByteArray &);
 
 private:
+	bool isSorted() const;
 	void enableMyCards(bool b);
 	void clearMyCards(bool del, bool dis = true);
 	void updatePlayerStat(const QString &player, std::size_t count,

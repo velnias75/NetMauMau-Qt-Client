@@ -33,6 +33,10 @@
 
 namespace {
 
+bool cardEqual(CardWidget *x, CardWidget *y) {
+	return x->description() == y->description();
+}
+
 bool cardLess(CardWidget *x, CardWidget *y) {
 	return x->getSuit() == y->getSuit() ? x->getPoints() < y->getPoints() :
 										  x->getSuit() < y->getSuit();
@@ -134,6 +138,14 @@ void MainWindow::resizeColumns() {
 	m_ui->remotePlayersView->resizeColumnToContents(1);
 }
 
+bool MainWindow::isSorted() const {
+
+	QList<CardWidget *> cardsCopy(m_cards);
+	qSort(cardsCopy.begin(), cardsCopy.end(), cardLess);
+
+	return std::equal(cardsCopy.begin(), cardsCopy.end(), m_cards.begin(), cardEqual);
+}
+
 void MainWindow::sortMyCards() {
 
 	clearMyCards(false, false);
@@ -144,6 +156,8 @@ void MainWindow::sortMyCards() {
 		m_ui->myCardsLayout->addWidget(*i, 0, Qt::AlignHCenter);
 		(*i)->setVisible(true);
 	}
+
+	m_ui->sortCards->setDisabled(true);
 }
 
 void MainWindow::closeEvent(QCloseEvent *e) {
@@ -562,7 +576,7 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 }
 
 void MainWindow::enableMyCards(bool b) {
-	m_ui->sortCards->setEnabled(b && m_ui->myCardsLayout->count() >= 2);
+	m_ui->sortCards->setEnabled(b && !isSorted() && m_ui->myCardsLayout->count() >= 2);
 	m_ui->myCardsDock->setEnabled(b);
 }
 
