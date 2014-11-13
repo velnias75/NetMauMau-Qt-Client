@@ -32,6 +32,8 @@ public:
 	void setSuite(NetMauMau::Common::ICard::SUIT s);
 
 	NetMauMau::Common::ICard::SUIT getChosenSuit() const;
+
+	static QString suitToolTip(NetMauMau::Common::ICard::SUIT s);
 };
 
 #endif // JACHCHOOSEDIALOG_H

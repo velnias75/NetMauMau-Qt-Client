@@ -83,12 +83,13 @@ private slots:
 	void clientNextPlayer(const QString &);
 
 	void clearStats();
-	void sortMyCards();
 	void resizeColumns();
+	void sortMyCards(bool);
 	void setOpenCard(const QByteArray &);
 
 private:
-	bool isSorted() const;
+	bool isMe(const QString &player) const;
+
 	void enableMyCards(bool b);
 	void clearMyCards(bool del, bool dis = true);
 	void updatePlayerStat(const QString &player, std::size_t count,
@@ -119,6 +120,7 @@ private:
 	int m_lastPlayedCardIdx;
 	bool m_gameOver;
 	bool m_cardsTaken;
+	QStringList m_appendPlayerStat;
 };
 
 #endif // MAINWINDOW_H

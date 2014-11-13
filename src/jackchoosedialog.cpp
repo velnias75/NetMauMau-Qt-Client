@@ -21,6 +21,21 @@
 
 JackChooseDialog::JackChooseDialog(QWidget *p) : QDialog(p) {
 	setupUi(this);
+
+	heartsSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::HEARTS));
+	diamondsSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::DIAMONDS));
+	clubsSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::CLUBS));
+	spadesSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::SPADES));
+
+}
+
+QString JackChooseDialog::suitToolTip(NetMauMau::Common::ICard::SUIT s) {
+	switch(s) {
+	case NetMauMau::Common::ICard::HEARTS: return "Hearts";
+	case NetMauMau::Common::ICard::DIAMONDS: return "Diamonds";
+	case NetMauMau::Common::ICard::CLUBS: return "Clubs";
+	default: return "Spades";
+	}
 }
 
 void JackChooseDialog::setSuite(NetMauMau::Common::ICard::SUIT s) {

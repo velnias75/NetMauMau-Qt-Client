@@ -382,12 +382,15 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
-          <widget class="QPushButton" name="sortCards">
+          <widget class="QCheckBox" name="sortCards">
            <property name="font">
             <font>
              <weight>50</weight>
              <bold>false</bold>
             </font>
+           </property>
+           <property name="toolTip">
+            <string>Sort my cards</string>
            </property>
            <property name="text">
             <string>S&amp;ort</string>
@@ -548,6 +551,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>myCardsScrollArea</tabstop>
+  <tabstop>sortCards</tabstop>
   <tabstop>takeCardsButton</tabstop>
   <tabstop>suspendButton</tabstop>
  </tabstops>

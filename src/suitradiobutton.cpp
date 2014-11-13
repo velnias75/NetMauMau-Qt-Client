@@ -53,7 +53,7 @@ void SuitRadioButton::styleSuit() {
 
 	if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
 					   s == NetMauMau::Common::ICard::DIAMONDS)) {
-		setStyleSheet("color: red;");
+		setStyleSheet("SuitRadioButton { color: red; }");
 	} else {
 		setStyleSheet(QString::null);
 	}

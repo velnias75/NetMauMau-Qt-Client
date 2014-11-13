@@ -19,6 +19,7 @@
 
 #include "suitlabel.h"
 #include "cardtools.h"
+#include "jackchoosedialog.h"
 
 SuitLabel::SuitLabel(QWidget *p, const QByteArray &suitDesc) : QLabel(p) {
 
@@ -53,12 +54,13 @@ void SuitLabel::styleSuit() {
 
 	if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
 					   s == NetMauMau::Common::ICard::DIAMONDS)) {
-		setStyleSheet("color: red;");
+		setStyleSheet("SuitLabel { color: red; }");
 	} else {
 		setStyleSheet(QString::null);
 	}
 
 	setText(QString::fromUtf8(suitDesc.constData()));
+	setToolTip(suitDesc.isEmpty() ? QString::null : JackChooseDialog::suitToolTip(s));
 
 	QFont f = font();
 	f.setPointSize(12);

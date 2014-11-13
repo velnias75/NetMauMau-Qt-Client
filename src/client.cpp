@@ -250,11 +250,6 @@ void Client::jackSuit(NetMauMau::Common::ICard::SUIT suit) {
 }
 
 void Client::log(const QString &e, ConnectionLogDialog::DIRECTION dir) const {
-	qDebug("%s %s: %s", dir == ConnectionLogDialog::FROM_SERVER ||
-		   dir == ConnectionLogDialog::FROM_CLIENT ? "<<" : ">>",
-		   dir == ConnectionLogDialog::FROM_SERVER ||
-					  dir == ConnectionLogDialog::TO_SERVER ? "Server" : "Client",
-		   e.toUtf8().constData());
 	if(m_connectionLogDialog) m_connectionLogDialog->addEntry(e, dir);
 }
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>JackChooseDialog</class>
  <widget class="QDialog" name="JackChooseDialog">
@@ -39,65 +39,6 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="SuitRadioButton" name="heartsSuit">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="shortcut">
-           <string>Alt+1</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="suitDescription" stdset="0">
-           <cstring>♥</cstring>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">suitGroup</string>
-          </attribute>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="SuitRadioButton" name="diamondsSuit">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
-          <property name="shortcut">
-           <string>Alt+2</string>
-          </property>
-          <property name="suitDescription" stdset="0">
-           <cstring>♦</cstring>
-          </property>
-          <attribute name="buttonGroup">
-           <string notr="true">suitGroup</string>
-          </attribute>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="SuitRadioButton" name="clubsSuit">
@@ -114,6 +55,9 @@
           </property>
           <property name="shortcut">
            <string>Alt+3</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="suitDescription" stdset="0">
            <cstring>♣</cstring>
@@ -145,6 +89,65 @@
           </property>
           <property name="suitDescription" stdset="0">
            <cstring>♠</cstring>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">suitGroup</string>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="SuitRadioButton" name="heartsSuit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="shortcut">
+           <string>Alt+1</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="suitDescription" stdset="0">
+           <cstring>♥</cstring>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">suitGroup</string>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="SuitRadioButton" name="diamondsSuit">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="shortcut">
+           <string>Alt+2</string>
+          </property>
+          <property name="suitDescription" stdset="0">
+           <cstring>♦</cstring>
           </property>
           <attribute name="buttonGroup">
            <string notr="true">suitGroup</string>
