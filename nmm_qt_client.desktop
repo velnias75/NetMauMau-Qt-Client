@@ -1,8 +1,10 @@
 [Desktop Entry]
 Name=NetMauMau Qt Client
+GenericName=Client for NetMauMau
 Comment=A proof of concept client for NetMauMau
 Exec=nmm-qt-client
 Terminal=false
-Icon=nmm-qt-client
+Icon=nmm_qt_client
 Type=Application
 Version=1.0
+Categories=Qt;Game;CardGame;
