@@ -506,7 +506,8 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards) {
 
 void MainWindow::clientChooseJackSuitRequest() {
 
-	m_jackChooseDialog.setSuite(NetMauMau::Common::ICard::CLUBS);
+	m_jackChooseDialog.setSuite(m_lastPlayedCard ? m_lastPlayedCard->getSuit() :
+												   NetMauMau::Common::ICard::CLUBS);
 	m_jackChooseDialog.exec();
 
 	m_ui->jackSuit->setProperty("suitDescription",
