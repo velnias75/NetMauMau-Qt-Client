@@ -337,13 +337,13 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>availServerView</tabstop>
-  <tabstop>refreshButton</tabstop>
-  <tabstop>removeButton</tabstop>
   <tabstop>playerName</tabstop>
+  <tabstop>availServerView</tabstop>
   <tabstop>hostEdit</tabstop>
   <tabstop>portSpin</tabstop>
   <tabstop>addButton</tabstop>
+  <tabstop>refreshButton</tabstop>
+  <tabstop>removeButton</tabstop>
   <tabstop>cancelButton</tabstop>
   <tabstop>connectButton</tabstop>
  </tabstops>
