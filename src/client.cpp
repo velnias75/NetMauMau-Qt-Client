@@ -138,12 +138,12 @@ void Client::chosenSuite(NetMauMau::Common::ICard::SUIT s) {
 	emit choiceAvailable();
 }
 
-void Client::message(const std::string &msg) {
+void Client::message(const std::string &msg) const {
 	log(QString("message(%1)").arg(QString::fromUtf8(msg.c_str())));
 	emit cMessage(QString::fromUtf8(msg.c_str()));
 }
 
-void Client::error(const std::string &msg) {
+void Client::error(const std::string &msg) const {
 	log(QString("error(%1)").arg(QString::fromUtf8(msg.c_str())));
 	emit cError(QString::fromUtf8(msg.c_str()));
 }
@@ -232,6 +232,10 @@ void Client::openCard(const NetMauMau::Common::ICard *card, const std::string &j
 	emit cOpenCard(card->description().c_str(), QString::fromUtf8(js.c_str()));
 }
 
+void Client::talonShuffled() const {
+	log("talonShuffled()");
+}
+
 void Client::cardRejected(const std::string &player, const NetMauMau::Common::ICard *card) const {
 	log(QString("cardRejected(%1, %2)").arg(QString::fromUtf8(player.c_str()))
 		.arg(QString::fromUtf8(card->description().c_str())));
@@ -243,10 +247,15 @@ void Client::cardAccepted(const NetMauMau::Common::ICard *card) const {
 	emit cCardAccepted(card->description().c_str());
 }
 
-void Client::jackSuit(NetMauMau::Common::ICard::SUIT suit) {
+void Client::jackSuit(NetMauMau::Common::ICard::SUIT suit) const {
 	log(QString("jackSuit(%1)")
 		.arg(QString::fromUtf8(NetMauMau::Common::suitToSymbol(suit, false).c_str())));
 	emit cJackSuit(suit);
+}
+
+void Client::unknownServerMessage(std::string msg) const {
+	qWarning("Unknown server message: \"%s\"", msg.c_str());
+	log(QString("unknownServerMessage(%1)").arg(QString::fromUtf8(msg.c_str())));
 }
 
 void Client::log(const QString &e, ConnectionLogDialog::DIRECTION dir) const {

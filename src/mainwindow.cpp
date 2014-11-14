@@ -582,15 +582,22 @@ void MainWindow::enableMyCards(bool b, const Client::CARDS &cards) {
 
 	m_ui->myCardsDock->setEnabled(b);
 
+	const bool nothingPossible = cards.empty();
+
 	for(int j = 0; j < m_ui->myCardsLayout->count(); ++j) {
 
 		CardWidget *w = static_cast<CardWidget *>(m_ui->myCardsLayout->itemAt(j)->widget());
 
 		if(w) {
-			const Client::CARDS::const_iterator
-					&f(std::find_if(cards.begin(), cards.end(),
-									std::bind2nd(std::ptr_fun(NetMauMau::Common::cardEqual), w)));
-			w->setEnabled(f != cards.end());
+			if(!nothingPossible) {
+				const Client::CARDS::const_iterator
+						&f(std::find_if(cards.begin(), cards.end(),
+										std::bind2nd(std::ptr_fun(NetMauMau::Common::cardEqual),
+													 w)));
+				w->setEnabled(f != cards.end());
+			} else {
+				w->setEnabled(false);
+			}
 		}
 	}
 }

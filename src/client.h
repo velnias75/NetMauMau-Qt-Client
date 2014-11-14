@@ -34,13 +34,14 @@ class Client : public QThread, public NetMauMau::Client::AbstractClient {
 public:
 	Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 		   const std::string &server, uint16_t port);
-	~Client();
+
+	virtual ~Client();
 
 	virtual NetMauMau::Common::ICard *playCard(const CARDS &cards) const;
 	virtual NetMauMau::Common::ICard::SUIT getJackSuitChoice() const;
 
-	virtual void message(const std::string &msg);
-	virtual void error(const std::string &msg);
+	virtual void message(const std::string &msg) const;
+	virtual void error(const std::string &msg) const;
 	virtual void turn(std::size_t turn) const;
 	virtual void stats(const STATS &stats) const;
 	virtual void gameOver() const;
@@ -58,10 +59,13 @@ public:
 	virtual void enableSuspend(bool enable) const;
 	virtual void initialCard(const NetMauMau::Common::ICard *card) const;
 	virtual void openCard(const NetMauMau::Common::ICard *card, const std::string &jackSuit) const;
+	virtual void talonShuffled() const;
 	virtual void cardRejected(const std::string &player,
 							  const NetMauMau::Common::ICard *card) const;
 	virtual void cardAccepted(const NetMauMau::Common::ICard *card) const;
-	virtual void jackSuit(NetMauMau::Common::ICard::SUIT suit);
+	virtual void jackSuit(NetMauMau::Common::ICard::SUIT suit) const;
+
+	virtual void unknownServerMessage(std::string message) const;
 
 public slots:
 	void cardToPlay(NetMauMau::Common::ICard *);
