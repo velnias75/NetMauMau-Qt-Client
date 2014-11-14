@@ -4,6 +4,7 @@ nmm-qt-client*.tar.*
 Makefile
 nmm-qt-client.kdev4
 nmm-qt-client.pro.user
+release/
 src/release
 src/debug
 src/Makefile*
