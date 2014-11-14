@@ -69,4 +69,4 @@ RESOURCES += icons.qrc nuoveXT2.qrc cards.qrc
 
 RC_FILE += appicon.rc
 
-DISTFILES += COPYING
+DISTFILES += COPYING cards/* *.png *.ico
