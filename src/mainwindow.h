@@ -56,7 +56,6 @@ private slots:
 
 	void serverAccept();
 	void statusRefreshing();
-	void statusRefreshed();
 	void destroyClient();
 
 	void suspend();
@@ -121,6 +120,7 @@ private:
 	bool m_gameOver;
 	bool m_cardsTaken;
 	QStringList m_appendPlayerStat;
+	bool m_noCardPossible;
 };
 
 #endif // MAINWINDOW_H

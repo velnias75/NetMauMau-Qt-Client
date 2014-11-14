@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
-	m_gameOver(false), m_cardsTaken(false), m_appendPlayerStat() {
+	m_gameOver(false), m_cardsTaken(false), m_appendPlayerStat(), m_noCardPossible(false) {
 
 	m_ui->setupUi(this);
 
@@ -93,7 +93,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 
 	QObject::connect(m_serverDlg, SIGNAL(accepted()), this, SLOT(serverAccept()));
 	QObject::connect(m_serverDlg, SIGNAL(refreshing()), this, SLOT(statusRefreshing()));
-	QObject::connect(m_serverDlg, SIGNAL(refreshed()), this, SLOT(statusRefreshed()));
+	QObject::connect(m_serverDlg, SIGNAL(refreshed()), this->statusBar(), SLOT(clearMessage()));
 
 	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
 					 this, SLOT(resizeColumns()));
@@ -554,49 +554,59 @@ void MainWindow::statusRefreshing() {
 	statusBar()->showMessage("Refreshing server list...");
 }
 
-void MainWindow::statusRefreshed() {
-	statusBar()->clearMessage();
-}
-
 void MainWindow::setOpenCard(const QByteArray &d) {
 
 	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::ACE;
 
 	if(NetMauMau::Common::parseCardDesc(d.constData(), &s, &r)) {
+
 		m_ui->openCard->setPixmap(CardPixmap(m_ui->openCard->pixmap()->size(), s, r));
 		m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r));
+
+		if(r == NetMauMau::Common::ICard::SEVEN && !m_cardsTaken) {
+
+			const QList<CardWidget *>::const_iterator
+					&f(std::find_if(m_cards.begin(), m_cards.end(),
+									std::bind2nd(std::ptr_fun(NetMauMau::Common::isRank),
+												 NetMauMau::Common::ICard::SEVEN)));
+
+			m_ui->takeCardsButton->setStyleSheet(f != m_cards.end() ? QString::null :
+																	  QString("QPushButton { color:red; }"));
+
+			m_ui->takeCardsButton->setDisabled(false);
+
+		} else {
+			m_ui->takeCardsButton->setStyleSheet(QString::null);
+			m_ui->takeCardsButton->setDisabled(true);
+		}
+
 	} else {
 		m_ui->openCard->setPixmap(QPixmap(QString::fromUtf8(":/nmm_qt_client.png")));
 		m_ui->openCard->setToolTip(QString::null);
-	}
-
-	if(r == NetMauMau::Common::ICard::SEVEN) {
-		m_ui->takeCardsButton->setDisabled(m_cardsTaken);
-	} else {
-		m_ui->takeCardsButton->setDisabled(true);
 	}
 }
 
 void MainWindow::enableMyCards(bool b, const Client::CARDS &cards) {
 
 	m_ui->myCardsDock->setEnabled(b);
+	m_noCardPossible = cards.empty();
 
-	const bool nothingPossible = cards.empty();
+	if(b) {
+		for(int j = 0; j < m_ui->myCardsLayout->count(); ++j) {
 
-	for(int j = 0; j < m_ui->myCardsLayout->count(); ++j) {
+			CardWidget *w = static_cast<CardWidget *>(m_ui->myCardsLayout->itemAt(j)->widget());
 
-		CardWidget *w = static_cast<CardWidget *>(m_ui->myCardsLayout->itemAt(j)->widget());
-
-		if(w) {
-			if(!nothingPossible) {
-				const Client::CARDS::const_iterator
-						&f(std::find_if(cards.begin(), cards.end(),
-										std::bind2nd(std::ptr_fun(NetMauMau::Common::cardEqual),
-													 w)));
-				w->setEnabled(f != cards.end());
-			} else {
-				w->setEnabled(false);
+			if(w) {
+				if(!m_noCardPossible) {
+					const Client::CARDS::const_iterator
+							&f(std::find_if(cards.begin(), cards.end(),
+											std::bind2nd(std::ptr_fun(NetMauMau::Common::cardEqual),
+														 w)));
+					w->setEnabled(f != cards.end());
+				} else {
+					w->setEnabled(false);
+				}
 			}
 		}
 	}
