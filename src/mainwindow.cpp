@@ -31,46 +31,6 @@
 #include "connectionlogdialog.h"
 #include "messageitemdelegate.h"
 
-namespace {
-
-// Skat, Doppelkopf order
-// taken from http://i-p-c-s.org/faq/suit-ranking.php
-uint suitPos(NetMauMau::Common::ICard::SUIT s) {
-	switch(s) {
-	case NetMauMau::Common::ICard::CLUBS: return 0;
-	case NetMauMau::Common::ICard::SPADES: return 1;
-	case NetMauMau::Common::ICard::HEARTS: return 2;
-	case NetMauMau::Common::ICard::DIAMONDS: return 3;
-	default: return 4;
-	}
-}
-
-uint rankPos(NetMauMau::Common::ICard::RANK r) {
-
-	switch(r) {
-	case NetMauMau::Common::ICard::SEVEN: return 0;
-	case NetMauMau::Common::ICard::EIGHT: return 1;
-	case NetMauMau::Common::ICard::NINE: return 2;
-	case NetMauMau::Common::ICard::TEN: return 3;
-	case NetMauMau::Common::ICard::QUEEN: return 4;
-	case NetMauMau::Common::ICard::KING: return 5;
-	case NetMauMau::Common::ICard::ACE: return 6;
-	case NetMauMau::Common::ICard::JACK: return 7;
-	default: return 8;
-	}
-}
-
-bool cardEqual(const NetMauMau::Common::ICard *x, const NetMauMau::Common::ICard *y) {
-	return x->description() == y->description();
-}
-
-bool cardLess(const CardWidget *x, const CardWidget *y) {
-	return x->getSuit() == y->getSuit() ? rankPos(x->getRank()) < rankPos(y->getRank()) :
-										  suitPos(x->getSuit()) < suitPos(y->getSuit());
-}
-
-}
-
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
 	m_serverDlg(new ServerDialog(this)), m_model(), m_cards(), m_lastPlayedCard(0L),
 	m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(), m_maxPlayerCount(0),
@@ -173,7 +133,7 @@ void MainWindow::sortMyCards(bool b) {
 
 		QWidget *prevLast = m_cards.last();
 
-		qSort(m_cards.begin(), m_cards.end(), cardLess);
+		qSort(m_cards.begin(), m_cards.end(), NetMauMau::Common::cardLess);
 
 		for(QList<CardWidget *>::ConstIterator i(m_cards.begin()); i != m_cards.end(); ++i) {
 			m_ui->myCardsLayout->addWidget(*i, 0, Qt::AlignHCenter);
@@ -626,9 +586,9 @@ void MainWindow::enableMyCards(bool b, const Client::CARDS &cards) {
 		CardWidget *w = static_cast<CardWidget *>(m_ui->myCardsLayout->itemAt(j)->widget());
 
 		if(w) {
-			const Client::CARDS::const_iterator &f(std::find_if(cards.begin(), cards.end(),
-																std::bind2nd(std::ptr_fun(cardEqual),
-																			 w)));
+			const Client::CARDS::const_iterator
+					&f(std::find_if(cards.begin(), cards.end(),
+									std::bind2nd(std::ptr_fun(NetMauMau::Common::cardEqual), w)));
 			w->setEnabled(f != cards.end());
 		}
 	}
