@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=NetMauMau Qt Client
+Comment=A proof of concept client for NetMauMau
+Exec=nmm-qt-client
+Terminal=false
+Icon=nmm-qt-client
+Type=Application
+Version=1.0
