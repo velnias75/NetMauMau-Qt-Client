@@ -38,9 +38,9 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
-	m_gameOver(false), m_sevenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
-	m_cardsTaken(NetMauMau::Common::ICard::SUIT_ILLEGAL), m_appendPlayerStat(),
-	m_noCardPossible(false) {
+	m_gameOver(false), m_appendPlayerStat(), m_noCardPossible(false),
+	m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
+	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL) {
 
 	m_ui->setupUi(this);
 
@@ -159,10 +159,10 @@ void MainWindow::serverAccept() {
 	const int p = as.indexOf(':');
 
 	m_gameOver = false;
-	m_cardsTaken = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 
 	clearStats();
 
+	m_cTakeSuit = m_takenSuit = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 	m_maxPlayerCount = sd->getMaxPlayerCount();
 	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
 						  std::string(as.left(p).toStdString()),
@@ -500,7 +500,9 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards) {
 
 	statusBar()->showMessage(m_pickCardPrepended ? (statusBar()->currentMessage() + "; " + msg)
 												 : msg, 2000);
+
 	clientNextPlayer(QString::fromUtf8(m_client->getPlayerName().c_str()));
+
 	enableMyCards(true, cards);
 	m_pickCardPrepended = false;
 
@@ -526,18 +528,20 @@ void MainWindow::suspend() {
 
 void MainWindow::takeCards() {
 
-	enableMyCards(false);
+	m_takenSuit = m_cTakeSuit;
 
+	enableMyCards(false);
 	emit cardToPlay(NetMauMau::Common::getIllegalCard());
 
 	m_ui->takeCardsButton->setStyleSheet(QString::null);
 	m_ui->takeCardsButton->setEnabled(false);
-	m_cardsTaken = m_sevenSuit;
 }
 
 void MainWindow::cardChosen(CardWidget *c) {
 
 	enableMyCards(false);
+
+	if(c->getRank() == NetMauMau::Common::ICard::SEVEN) m_takenSuit = c->getSuit();
 
 	emit cardToPlay(c);
 
@@ -568,24 +572,20 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 		m_ui->openCard->setPixmap(CardPixmap(m_ui->openCard->pixmap()->size(), s, r));
 		m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r));
 
-		m_sevenSuit = r == NetMauMau::Common::ICard::SEVEN ?
-						  s : NetMauMau::Common::ICard::SUIT_ILLEGAL;
+		m_cTakeSuit = r == NetMauMau::Common::ICard::SEVEN ? s :
+															 NetMauMau::Common::ICard::SUIT_ILLEGAL;
 
-		if(r == NetMauMau::Common::ICard::SEVEN && m_cardsTaken != m_sevenSuit) {
+		if(r == NetMauMau::Common::ICard::SEVEN && m_cTakeSuit != m_takenSuit) {
 
-			const QList<CardWidget *>::const_iterator
-					&f(std::find_if(m_cards.begin(), m_cards.end(),
-									std::bind2nd(std::ptr_fun(NetMauMau::Common::isRank),
-												 NetMauMau::Common::ICard::SEVEN)));
-
-			m_ui->takeCardsButton->setStyleSheet(f != m_cards.end() ?
-														  QString::null :
-														  QString("QPushButton { color:red; }"));
+			m_ui->takeCardsButton->setStyleSheet(NetMauMau::Common::findRank
+												 (NetMauMau::Common::ICard::SEVEN,
+												  m_cards.begin(), m_cards.end()) ?
+													 QString::null :
+													 QString("QPushButton { color:red; }"));
 
 			m_ui->takeCardsButton->setDisabled(false);
 
 		} else {
-			m_cardsTaken = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 			m_ui->takeCardsButton->setStyleSheet(QString::null);
 			m_ui->takeCardsButton->setDisabled(true);
 		}

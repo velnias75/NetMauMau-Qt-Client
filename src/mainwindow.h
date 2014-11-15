@@ -118,10 +118,10 @@ private:
 	QStyledItemDelegate *m_messageItemDelegate;
 	int m_lastPlayedCardIdx;
 	bool m_gameOver;
-	NetMauMau::Common::ICard::SUIT m_sevenSuit;
-	NetMauMau::Common::ICard::SUIT m_cardsTaken;
 	QStringList m_appendPlayerStat;
 	bool m_noCardPossible;
+	NetMauMau::Common::ICard::SUIT m_cTakeSuit;
+	NetMauMau::Common::ICard::SUIT m_takenSuit;
 };
 
 #endif // MAINWINDOW_H
