@@ -56,7 +56,8 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 			int idx = opt.text.indexOf(SUITS[i]);
 
 			if(idx != -1) {
-				switch(NetMauMau::Common::symbolToSuit(opt.text.mid(idx, SUITS[i].length()).toUtf8()
+				switch(NetMauMau::Common::symbolToSuit(opt.text.mid(idx,
+																	SUITS[i].length()).toUtf8()
 													   .constData())) {
 				case NetMauMau::Common::ICard::HEARTS:
 				case NetMauMau::Common::ICard::DIAMONDS: {
@@ -73,7 +74,13 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 		}
 	}
 
+	QTextOption tOpt(opt.displayAlignment|Qt::AlignVCenter);
+	tOpt.setWrapMode(QTextOption::NoWrap);
+
 	m_doc->setHtml(opt.text);
+	m_doc->setDefaultTextOption(tOpt);
+	m_doc->setTextWidth(opt.rect.width());
+	m_doc->setPageSize(opt.rect.size());
 
 	return m_doc;
 }
@@ -85,22 +92,20 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	initStyleOption(&opt, index);
 
 	QStyle *style = opt.widget ? opt.widget->style() : qApp->style();
-	QRect textRect = style->alignedRect(opt.direction, opt.displayAlignment, opt.decorationSize,
-										style->subElementRect(QStyle::SE_ItemViewItemText, &opt));
 
 	opt.text = QString::null;
-	opt.state = QStyle::State_None;
+	opt.state &= ~QStyle::State_MouseOver;
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
 	painter->save();
-	painter->translate(textRect.topLeft());
-	doc(option, index)->drawContents(painter);
-	painter->translate(-textRect.topLeft());
+	painter->translate(opt.rect.left(), opt.rect.top());
+	doc(option, index)->drawContents(painter, QRect(0, 0, opt.rect.width(), opt.rect.height()));
 	painter->restore();
 }
 
 QSize MessageItemDelegate::sizeHint(const QStyleOptionViewItem &option,
 									const QModelIndex &index) const {
+
 	QTextDocument *document = doc(option, index);
-	return QSize(document->idealWidth(), document->size().height());
+	return QSize(document->idealWidth(), -1);
 }

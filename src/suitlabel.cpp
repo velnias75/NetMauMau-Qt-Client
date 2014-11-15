@@ -49,18 +49,24 @@ void SuitLabel::styleSuit() {
 
 	const QByteArray &suitDesc(property("suitDescription").toByteArray());
 
-	const NetMauMau::Common::ICard::SUIT s =
-			NetMauMau::Common::symbolToSuit(suitDesc.constData());
+	if(!suitDesc.isEmpty()) {
+		const NetMauMau::Common::ICard::SUIT s =
+				NetMauMau::Common::symbolToSuit(suitDesc.constData());
 
-	if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
-					   s == NetMauMau::Common::ICard::DIAMONDS)) {
-		setStyleSheet("SuitLabel { color: red; }");
+		if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
+						   s == NetMauMau::Common::ICard::DIAMONDS)) {
+			setStyleSheet("SuitLabel { color: red; }");
+		} else {
+			setStyleSheet(QString::null);
+		}
+
+		setText(QString::fromUtf8(suitDesc.constData()));
+		setToolTip(JackChooseDialog::suitToolTip(s));
+
 	} else {
-		setStyleSheet(QString::null);
+		setText(QString::null);
+		setToolTip(QString::null);
 	}
-
-	setText(QString::fromUtf8(suitDesc.constData()));
-	setToolTip(suitDesc.isEmpty() ? QString::null : JackChooseDialog::suitToolTip(s));
 
 	QFont f = font();
 	f.setPointSize(12);

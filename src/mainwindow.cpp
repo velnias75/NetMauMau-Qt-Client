@@ -163,8 +163,8 @@ void MainWindow::serverAccept() {
 
 	m_maxPlayerCount = sd->getMaxPlayerCount();
 	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
-						  std::string(as.left(p).toStdString()), p != -1 ? as.mid(p + 1).toUInt()
-																		 : Client::getDefaultPort());
+						  std::string(as.left(p).toStdString()),
+						  p != -1 ? as.mid(p + 1).toUInt() : Client::getDefaultPort());
 
 	QObject::connect(m_client, SIGNAL(offline(bool)),
 					 m_ui->actionReconnect, SLOT(setEnabled(bool)));
@@ -341,7 +341,6 @@ void MainWindow::clientCardAccepted(const QByteArray &) {
 
 void MainWindow::clientPlayerSuspends(const QString &p) {
 	updatePlayerStat(p, -1, "suspends this turn");
-	m_cardsTaken = true;
 }
 
 bool MainWindow::isMe(const QString &player) const {
@@ -420,6 +419,8 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 
 	const QString &pickStr(QString("picked up %1 card%2").arg(c).arg(c != 1 ? "s" : ""));
+
+	m_cardsTaken = true;
 
 	if(isMe(p)) {
 		statusBar()->showMessage(QString("You ") + pickStr);
@@ -571,8 +572,9 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 									std::bind2nd(std::ptr_fun(NetMauMau::Common::isRank),
 												 NetMauMau::Common::ICard::SEVEN)));
 
-			m_ui->takeCardsButton->setStyleSheet(f != m_cards.end() ? QString::null :
-																	  QString("QPushButton { color:red; }"));
+			m_ui->takeCardsButton->setStyleSheet(f != m_cards.end() ?
+														  QString::null :
+														  QString("QPushButton { color:red; }"));
 
 			m_ui->takeCardsButton->setDisabled(false);
 
@@ -593,6 +595,7 @@ void MainWindow::enableMyCards(bool b, const Client::CARDS &cards) {
 	m_noCardPossible = cards.empty();
 
 	if(b) {
+
 		for(int j = 0; j < m_ui->myCardsLayout->count(); ++j) {
 
 			CardWidget *w = static_cast<CardWidget *>(m_ui->myCardsLayout->itemAt(j)->widget());
@@ -609,6 +612,11 @@ void MainWindow::enableMyCards(bool b, const Client::CARDS &cards) {
 				}
 			}
 		}
+
+		m_ui->myCardsGroup->unsetCursor();
+
+	} else {
+		m_ui->myCardsGroup->setCursor(Qt::BusyCursor);
 	}
 }
 
@@ -626,7 +634,9 @@ void MainWindow::updatePlayerStat(const QString &player, std::size_t count, cons
 		cnt->setTextAlignment(Qt::AlignCenter);
 
 		if(count < 2) {
-			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>").arg(count));
+			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>")
+						 .arg(count == 0 ? "None" : "Mau"));
+			//			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>").arg(count));
 		} else if(count != static_cast<std::size_t>(-1)) {
 			cnt->setText(QString("%1").arg(count));
 		}
