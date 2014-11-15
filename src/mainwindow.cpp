@@ -38,7 +38,9 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
-	m_gameOver(false), m_cardsTaken(false), m_appendPlayerStat(), m_noCardPossible(false) {
+	m_gameOver(false), m_sevenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
+	m_cardsTaken(NetMauMau::Common::ICard::SUIT_ILLEGAL), m_appendPlayerStat(),
+	m_noCardPossible(false) {
 
 	m_ui->setupUi(this);
 
@@ -157,7 +159,7 @@ void MainWindow::serverAccept() {
 	const int p = as.indexOf(':');
 
 	m_gameOver = false;
-	m_cardsTaken = false;
+	m_cardsTaken = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 
 	clearStats();
 
@@ -225,6 +227,7 @@ void MainWindow::serverAccept() {
 
 		m_ui->actionServer->setEnabled(false);
 		m_ui->suspendButton->setEnabled(true);
+		m_ui->takeCardsButton->setStyleSheet(QString::null);
 		m_ui->takeCardsButton->setEnabled(false);
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
 		m_ui->remoteGroup->setTitle(m_ui->remoteGroup->title() + " on " + as);
@@ -304,7 +307,7 @@ void MainWindow::clearMyCards(bool del, bool dis) {
 
 void MainWindow::clientTurn(std::size_t t) {
 	m_ui->turnLabel->setText(QString("%1").arg(t));
-	m_cardsTaken = false;
+	//	m_cardsTaken = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 }
 
 void MainWindow::clientStats(const Client::STATS &s) {
@@ -371,7 +374,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
 		clearStats();
 
 	} else {
-		statusBar()->showMessage(QString("%1 lost!").arg(p));
+		statusBar()->showMessage(QString("%1 lost!").arg(p), 5000);
 	}
 }
 
@@ -380,7 +383,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 	updatePlayerStat(p, 0, QString("<span style=\"color:blue;\">wins</span> in turn %1").arg(t),
 					 true, true);
 
-	if(!isMe(p)) statusBar()->showMessage(QString("%1 wins!").arg(p));
+	if(!isMe(p)) statusBar()->showMessage(QString("%1 wins!").arg(p), 5000);
 
 	if(!m_gameOver) {
 
@@ -419,8 +422,6 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 
 	const QString &pickStr(QString("picked up %1 card%2").arg(c).arg(c != 1 ? "s" : ""));
-
-	m_cardsTaken = true;
 
 	if(isMe(p)) {
 		statusBar()->showMessage(QString("You ") + pickStr);
@@ -524,15 +525,17 @@ void MainWindow::suspend() {
 }
 
 void MainWindow::takeCards() {
+
 	enableMyCards(false);
+
 	emit cardToPlay(NetMauMau::Common::getIllegalCard());
+
+	m_ui->takeCardsButton->setStyleSheet(QString::null);
 	m_ui->takeCardsButton->setEnabled(false);
-	m_cardsTaken = true;
+	m_cardsTaken = m_sevenSuit;
 }
 
 void MainWindow::cardChosen(CardWidget *c) {
-
-	m_cardsTaken = true;
 
 	enableMyCards(false);
 
@@ -565,7 +568,10 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 		m_ui->openCard->setPixmap(CardPixmap(m_ui->openCard->pixmap()->size(), s, r));
 		m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r));
 
-		if(r == NetMauMau::Common::ICard::SEVEN && !m_cardsTaken) {
+		m_sevenSuit = r == NetMauMau::Common::ICard::SEVEN ?
+						  s : NetMauMau::Common::ICard::SUIT_ILLEGAL;
+
+		if(r == NetMauMau::Common::ICard::SEVEN && m_cardsTaken != m_sevenSuit) {
 
 			const QList<CardWidget *>::const_iterator
 					&f(std::find_if(m_cards.begin(), m_cards.end(),
@@ -579,6 +585,7 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 			m_ui->takeCardsButton->setDisabled(false);
 
 		} else {
+			m_cardsTaken = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 			m_ui->takeCardsButton->setStyleSheet(QString::null);
 			m_ui->takeCardsButton->setDisabled(true);
 		}
@@ -636,6 +643,12 @@ void MainWindow::updatePlayerStat(const QString &player, std::size_t count, cons
 		if(count < 2) {
 			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>")
 						 .arg(count == 0 ? "None" : "Mau"));
+
+			if(!isMe(player)) {
+				QApplication::beep();
+				if(count == 0) QApplication::beep();
+			}
+
 		} else if(count != static_cast<std::size_t>(-1)) {
 			cnt->setText(QString("%1").arg(count));
 		}
@@ -676,6 +689,7 @@ void MainWindow::destroyClient() {
 
 	m_ui->remoteGroup->setTitle("Players");
 	m_ui->actionServer->setEnabled(true);
+	m_ui->takeCardsButton->setStyleSheet(QString::null);
 	m_ui->takeCardsButton->setEnabled(false);
 	m_ui->suspendButton->setEnabled(false);
 }

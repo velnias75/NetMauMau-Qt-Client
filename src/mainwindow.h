@@ -118,7 +118,8 @@ private:
 	QStyledItemDelegate *m_messageItemDelegate;
 	int m_lastPlayedCardIdx;
 	bool m_gameOver;
-	bool m_cardsTaken;
+	NetMauMau::Common::ICard::SUIT m_sevenSuit;
+	NetMauMau::Common::ICard::SUIT m_cardsTaken;
 	QStringList m_appendPlayerStat;
 	bool m_noCardPossible;
 };
