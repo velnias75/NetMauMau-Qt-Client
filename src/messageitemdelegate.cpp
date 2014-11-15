@@ -80,7 +80,6 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 	m_doc->setHtml(opt.text);
 	m_doc->setDefaultTextOption(tOpt);
 	m_doc->setTextWidth(opt.rect.width());
-	m_doc->setPageSize(opt.rect.size());
 
 	return m_doc;
 }
@@ -98,8 +97,9 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
 	painter->save();
-	painter->translate(opt.rect.left(), opt.rect.top());
+	painter->translate(opt.rect.topLeft());
 	doc(option, index)->drawContents(painter, QRect(0, 0, opt.rect.width(), opt.rect.height()));
+	painter->translate(-opt.rect.topLeft());
 	painter->restore();
 }
 
@@ -107,5 +107,5 @@ QSize MessageItemDelegate::sizeHint(const QStyleOptionViewItem &option,
 									const QModelIndex &index) const {
 
 	QTextDocument *document = doc(option, index);
-	return QSize(document->idealWidth(), -1);
+	return QSize(document->idealWidth(), document->size().height());
 }

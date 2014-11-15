@@ -331,7 +331,6 @@ void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 	QMessageBox::critical(this, "Card rejected",
 						  QString("You cannot play card %1!")
 						  .arg(QString::fromUtf8(c.constData())));
-
 }
 
 void MainWindow::clientCardAccepted(const QByteArray &) {
@@ -340,7 +339,8 @@ void MainWindow::clientCardAccepted(const QByteArray &) {
 }
 
 void MainWindow::clientPlayerSuspends(const QString &p) {
-	updatePlayerStat(p, -1, "suspends this turn");
+	updatePlayerStat(p, -1, "suspended the turn");
+	if(m_model.rowCount() == 2) m_appendPlayerStat.push_back(p);
 }
 
 bool MainWindow::isMe(const QString &player) const {
@@ -636,7 +636,6 @@ void MainWindow::updatePlayerStat(const QString &player, std::size_t count, cons
 		if(count < 2) {
 			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>")
 						 .arg(count == 0 ? "None" : "Mau"));
-			//			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>").arg(count));
 		} else if(count != static_cast<std::size_t>(-1)) {
 			cnt->setText(QString("%1").arg(count));
 		}
