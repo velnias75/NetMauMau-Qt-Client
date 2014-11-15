@@ -616,7 +616,7 @@ void MainWindow::enableMyCards(bool b, const Client::CARDS &cards) {
 		m_ui->myCardsGroup->unsetCursor();
 
 	} else {
-		m_ui->myCardsGroup->setCursor(Qt::BusyCursor);
+		m_ui->myCardsGroup->setCursor(Qt::WaitCursor);
 	}
 }
 
