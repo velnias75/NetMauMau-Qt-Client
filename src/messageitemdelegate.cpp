@@ -17,6 +17,8 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cmath>
+
 #include <QPainter>
 #include <QApplication>
 #include <QTextDocument>
@@ -96,10 +98,13 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	opt.state &= ~QStyle::State_MouseOver;
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
+	QTextDocument *document = doc(option, index);
+	QPoint off(opt.rect.left(), opt.rect.top() + std::floor(float(document->size().height())/4.0f));
+
 	painter->save();
-	painter->translate(opt.rect.topLeft());
-	doc(option, index)->drawContents(painter, QRect(0, 0, opt.rect.width(), opt.rect.height()));
-	painter->translate(-opt.rect.topLeft());
+	painter->translate(off);
+	document->drawContents(painter, QRect(0, 0, opt.rect.width(), opt.rect.height()));
+	painter->translate(-off);
 	painter->restore();
 }
 
