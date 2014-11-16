@@ -44,7 +44,8 @@ SOURCES += main.cpp mainwindow.cpp \
     suitradiobutton.cpp \
     connectionlogdialog.cpp \
     messageitemdelegate.cpp \
-    cardpixmap.cpp
+    cardpixmap.cpp \
+    serverinfo.cpp
 
 HEADERS  += mainwindow.h \
     serverdialog.h \
@@ -55,7 +56,8 @@ HEADERS  += mainwindow.h \
     suitradiobutton.h \
     connectionlogdialog.h \
     messageitemdelegate.h \
-    cardpixmap.h
+    cardpixmap.h \
+    serverinfo.h
 
 FORMS    +=  serverdialog.ui \
     mainwindow.ui \

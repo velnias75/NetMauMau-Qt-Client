@@ -27,6 +27,7 @@
 #include "ui_serverdialog.h"
 
 class IconDelegate;
+class ServerInfo;
 
 class ServerDialog : public QDialog, public Ui::ServerDialog {
 	Q_OBJECT
@@ -40,15 +41,14 @@ public:
 	uint getMaxPlayerCount() const;
 
 private:
-	bool isOnline(int row) const;
-
 	void forceRefresh(bool b);
 	bool isForceRefresh() const _PURE;
 
 	void saveServers();
 
 private slots:
-	void checkOnline() const;
+	void checkOnline();
+	void updateOnline(bool enabled, int row);
 	void doubleClick();
 	void enableAddButton(const QString &str);
 	void enableRemoveAndOkButton(const QItemSelection &sel, const QItemSelection &desel);
@@ -58,10 +58,10 @@ private slots:
 
 signals:
 	void refresh();
-	void refreshing() const;
-	void refreshed() const;
+	void reconnectAvailable(const QString &);
 
 private:
+	QList<ServerInfo *> m_serverInfoThreads;
 	QStandardItemModel m_model;
 	mutable bool m_forceRefresh;
 	QString m_lastServer;

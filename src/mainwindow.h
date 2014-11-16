@@ -55,8 +55,8 @@ private slots:
 	void scrollToLastCard();
 
 	void serverAccept();
-	void statusRefreshing();
 	void destroyClient();
+	void reconnectAvailable(const QString &srv);
 
 	void suspend();
 	void takeCards();

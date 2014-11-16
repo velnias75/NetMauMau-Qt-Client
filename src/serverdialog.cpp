@@ -21,6 +21,7 @@
 #include <QSettings>
 
 #include "serverdialog.h"
+#include "serverinfo.h"
 #include "client.h"
 
 namespace {
@@ -72,6 +73,11 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 			m_model.item(j, 2)->setSizeHint(QSize());
 			m_model.setItem(j, 3, new QStandardItem(NA));
 			m_model.item(j, 3)->setTextAlignment(Qt::AlignCenter);
+
+			m_serverInfoThreads.push_back(new ServerInfo(&m_model, j));
+			QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool, int)),
+							 this, SLOT(updateOnline(bool, int)));
+
 			++j;
 		} else {
 			qWarning("\"%s\" is no valid host name", tHost.toUtf8().constData());
@@ -115,7 +121,16 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 
 }
 
-ServerDialog::~ServerDialog() {}
+ServerDialog::~ServerDialog() {
+
+	for(int r = 0; r < m_serverInfoThreads.count(); ++r) {
+		if(m_serverInfoThreads[r]->isRunning()) {
+			m_serverInfoThreads[r]->wait();
+		}
+
+		delete m_serverInfoThreads[r];
+	}
+}
 
 void ServerDialog::doubleClick() {
 
@@ -200,43 +215,37 @@ void ServerDialog::resize() {
 	}
 }
 
-void ServerDialog::checkOnline() const {
-
-	emit refreshing();
+void ServerDialog::checkOnline() {
 
 	m_forceRefresh = false;
 
-	QApplication::setOverrideCursor(Qt::WaitCursor);
-
-	for(int r = 0; r < m_model.rowCount(); ++r) {
-
-		QStandardItem *server = m_model.item(r, 0);
-		QStandardItem *version = m_model.item(r, 1);
-		QStandardItem *ai = m_model.item(r, 2);
-		QStandardItem *players = m_model.item(r, 3);
-
-		ai->setCheckable(true);
-
-		const bool enabled = isOnline(r);
-
-		server->setEnabled(enabled);
-		server->setEditable(false);
-		version->setEnabled(enabled);
-		version->setEditable(false);
-		ai->setEnabled(false);
-		players->setEditable(false);
-		players->setEnabled(enabled);
-
-		if(enabled && server->text() == m_lastServer) {
-			availServerView->selectionModel()->
-					select(m_model.index(r, 0),
-						   QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
-		}
+	for(int r = 0; r < m_serverInfoThreads.count(); ++r) {
+		m_serverInfoThreads[r]->start();
 	}
+}
 
-	QApplication::restoreOverrideCursor();
+void ServerDialog::updateOnline(bool enabled, int row) {
 
-	emit refreshed();
+	QStandardItem *server = m_model.item(row, 0);
+	QStandardItem *version = m_model.item(row, 1);
+	QStandardItem *ai = m_model.item(row, 2);
+	QStandardItem *players = m_model.item(row, 3);
+
+	ai->setCheckable(true);
+	server->setEnabled(enabled);
+	server->setEditable(false);
+	version->setEnabled(enabled);
+	version->setEditable(false);
+	ai->setEnabled(false);
+	players->setEditable(false);
+	players->setEnabled(enabled);
+
+	if(enabled && server->text() == m_lastServer) {
+		availServerView->selectionModel()->
+				select(m_model.index(row, 0),
+					   QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
+		emit reconnectAvailable(m_lastServer);
+	}
 }
 
 bool ServerDialog::isForceRefresh() const {
@@ -246,66 +255,6 @@ bool ServerDialog::isForceRefresh() const {
 void ServerDialog::forceRefresh(bool b) {
 	m_forceRefresh = b;
 	if(b) emit refresh();
-}
-
-bool ServerDialog::isOnline(int row) const {
-
-	QStandardItem *server = m_model.item(row, 0);
-	QStandardItem *version = m_model.item(row, 1);
-	QStandardItem *ai = m_model.item(row, 2);
-	QStandardItem *players = m_model.item(row, 3);
-
-	const QString host(server->text());
-
-	int idx = host.indexOf(':');
-
-	const QString srv(host.left(idx != -1 ? idx : host.length()));
-	uint port = (QString(idx != -1 ? host.mid(idx + 1) :
-									 QString::number(Client::getDefaultPort()))).toUInt();
-
-	try {
-
-		QCoreApplication::processEvents();
-
-		timeval tv = { 0, 800 };
-
-		const Client::CAPABILITIES &caps((Client(0L, 0L, playerName->text().toUtf8().constData(),
-												 std::string(srv.toStdString()),
-												 static_cast<uint16_t>(port))).capabilities(&tv));
-
-		qDebug("Server \"%s\" is online", host.toStdString().c_str());
-
-		ulong curPCnt = (QString(caps.find("CUR_PLAYERS")->second.c_str())).toULong();
-		ulong maxPCnt = (QString(caps.find("MAX_PLAYERS")->second.c_str())).toULong();
-
-		version->setText(caps.find("SERVER_VERSION")->second.c_str());
-
-		ai->setCheckState(caps.find("AI_OPPONENT")->second == "true" ? Qt::Checked : Qt::Unchecked);
-		ai->setToolTip(ai->checkState() == Qt::Checked ? QString("You'll play against AI \"%1\"").
-														 arg(QString::fromUtf8(caps.find("AI_NAME")
-																			   ->second.c_str()))
-													   : "The server has only human players");
-		players->setText(QString("%1/%2").arg(curPCnt).arg(maxPCnt));
-		players->setToolTip(QString("Waiting for %1 more players").arg(maxPCnt - curPCnt));
-
-		if(curPCnt >= maxPCnt) {
-			server->setToolTip("The server accepts no more players");
-			return false;
-		}
-
-	} catch(const NetMauMau::Common::Exception::SocketException &e) {
-		qDebug("Server \"%s\" is offline: %s", host.toStdString().c_str(), e.what());
-		ai->setCheckState(Qt::Unchecked);
-		ai->setToolTip("");
-		players->setText(NA);
-		players->setToolTip("");
-		version->setText(NA);
-		server->setToolTip(QString::fromUtf8(e.what()));
-		return false;
-	}
-
-	server->setToolTip("The server is ready and waiting");
-	return true;
 }
 
 void ServerDialog::addSever() {

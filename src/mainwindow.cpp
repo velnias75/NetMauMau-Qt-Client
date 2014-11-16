@@ -92,17 +92,11 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	QObject::connect(m_ui->sortCards, SIGNAL(toggled(bool)), this, SLOT(sortMyCards(bool)));
 	QObject::connect(m_ui->suspendButton, SIGNAL(clicked()), this, SLOT(suspend()));
 	QObject::connect(m_ui->takeCardsButton, SIGNAL(clicked()), this, SLOT(takeCards()));
-
 	QObject::connect(m_serverDlg, SIGNAL(accepted()), this, SLOT(serverAccept()));
-	QObject::connect(m_serverDlg, SIGNAL(refreshing()), this, SLOT(statusRefreshing()));
-	QObject::connect(m_serverDlg, SIGNAL(refreshed()), this->statusBar(), SLOT(clearMessage()));
-
 	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
 					 this, SLOT(resizeColumns()));
-
-	const QString &as(static_cast<ServerDialog *>(m_serverDlg)->getAcceptedServer());
-	m_ui->actionReconnect->setDisabled(as.isEmpty());
-	m_ui->actionReconnect->setToolTip(reconnectToolTip());
+	QObject::connect(m_serverDlg, SIGNAL(reconnectAvailable(const QString &)),
+					 this, SLOT(reconnectAvailable(const QString &)));
 
 	readSettings();
 }
@@ -120,6 +114,11 @@ MainWindow::~MainWindow() {
 	delete m_countItemDelegate;
 	delete m_messageItemDelegate;
 
+}
+
+void MainWindow::reconnectAvailable(const QString &srv) {
+	m_ui->actionReconnect->setDisabled(srv.isEmpty());
+	m_ui->actionReconnect->setToolTip(reconnectToolTip());
 }
 
 void MainWindow::resizeColumns() {
@@ -556,10 +555,6 @@ void MainWindow::cardChosen(CardWidget *c) {
 
 	updatePlayerStat(QString::fromUtf8(m_client->getPlayerName().c_str()), m_cards.size());
 	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
-}
-
-void MainWindow::statusRefreshing() {
-	statusBar()->showMessage("Refreshing server list...");
 }
 
 void MainWindow::setOpenCard(const QByteArray &d) {
