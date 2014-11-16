@@ -20,3 +20,8 @@ Requirements
 ------------
 
 It requires Qt in at least version 4.8.2
+
+Binary snapshots
+----------------
+
+http://rangun.de/netmaumau.html

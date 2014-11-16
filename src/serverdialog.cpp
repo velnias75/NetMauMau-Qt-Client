@@ -276,6 +276,10 @@ void ServerDialog::addSever() {
 
 	m_model.appendRow(row);
 
+	m_serverInfoThreads.push_back(new ServerInfo(&m_model, m_model.rowCount() - 1));
+	QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool, int)),
+					 this, SLOT(updateOnline(bool, int)));
+
 	saveServers();
 	checkOnline();
 	resize();
