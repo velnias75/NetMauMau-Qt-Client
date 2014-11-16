@@ -727,6 +727,7 @@ void MainWindow::writeSettings() {
 	settings.beginGroup("MainWindow");
 	settings.setValue("size", size());
 	settings.setValue("pos", pos());
+	settings.setValue("toolBar", m_ui->toolBar->isVisible());
 	settings.setValue("toolBar_pos", toolBarArea(m_ui->toolBar));
 	settings.setValue("cardsDock", dockWidgetArea(m_ui->cardsTurnDock));
 	settings.setValue("localPlayerDock", dockWidgetArea(m_ui->localPlayerDock));
@@ -755,6 +756,7 @@ void MainWindow::readSettings() {
 	settings.beginGroup("MainWindow");
 	resize(settings.value("size", size()).toSize());
 	move(settings.value("pos", pos()).toPoint());
+	m_ui->toolBar->setVisible(settings.value("toolBar", QVariant(true)).toBool());
 	m_ui->sortCards->setChecked(settings.value("sortCards", QVariant(true)).toBool());
 	addToolBar(static_cast<Qt::ToolBarArea>(settings.value("toolBar_pos",
 														   Qt::TopToolBarArea).toInt()),
