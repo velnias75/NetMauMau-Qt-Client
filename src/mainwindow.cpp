@@ -373,7 +373,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
 		clearStats();
 
 	} else {
-		statusBar()->showMessage(QString("%1 lost!").arg(p), 5000);
+		statusBar()->showMessage(QString("%1 lost!").arg(p), 10000);
 	}
 }
 
@@ -382,7 +382,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 	updatePlayerStat(p, 0, QString("<span style=\"color:blue;\">wins</span> in turn %1").arg(t),
 					 true, true);
 
-	if(!isMe(p)) statusBar()->showMessage(QString("%1 wins!").arg(p), 5000);
+	if(!isMe(p)) statusBar()->showMessage(QString("%1 wins!").arg(p), 10000);
 
 	if(!m_gameOver) {
 
@@ -636,8 +636,8 @@ void MainWindow::updatePlayerStat(const QString &player, std::size_t count, cons
 		cnt->setTextAlignment(Qt::AlignCenter);
 
 		if(count < 2) {
-			cnt->setText(QString("<span style=\"color:red;\"><b>%1</b></span>")
-						 .arg(count == 0 ? "None" : "Mau"));
+			cnt->setText(QString("<span style=\"color:red;\"><b>Mau%1</b></span>")
+						 .arg(count == 0 ? " Mau" : ""));
 
 			if(!isMe(player)) {
 				QApplication::beep();
@@ -647,6 +647,8 @@ void MainWindow::updatePlayerStat(const QString &player, std::size_t count, cons
 		} else if(count != static_cast<std::size_t>(-1)) {
 			cnt->setText(QString("%1").arg(count));
 		}
+
+		m_ui->remotePlayersView->resizeColumnToContents(1);
 
 		nam->setToolTip(player);
 

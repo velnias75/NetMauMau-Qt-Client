@@ -47,8 +47,10 @@ void ServerInfo::run() {
 
 	try {
 
+		timeval tv = { 30L, 0L };
+
 		const Client::CAPABILITIES &caps((Client(0L, 0L, "", std::string(srv.toStdString()),
-												 static_cast<uint16_t>(port))).capabilities());
+												 static_cast<uint16_t>(port))).capabilities(&tv));
 
 		qDebug("Server \"%s\" is online", host.toStdString().c_str());
 

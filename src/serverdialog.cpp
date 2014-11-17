@@ -125,7 +125,7 @@ ServerDialog::~ServerDialog() {
 
 	for(int r = 0; r < m_serverInfoThreads.count(); ++r) {
 		if(m_serverInfoThreads[r]->isRunning()) {
-			m_serverInfoThreads[r]->wait();
+			m_serverInfoThreads[r]->wait(31000UL);
 		}
 
 		delete m_serverInfoThreads[r];
