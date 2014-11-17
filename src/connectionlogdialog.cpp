@@ -18,18 +18,31 @@
  */
 
 #include <QCloseEvent>
+#include <QClipboard>
 #include <QSettings>
+#include <QMenu>
 
 #include "connectionlogdialog.h"
 
 ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : QDialog(p, Qt::Window),
 	m_entryFont("Monospace"), m_model(),
 	m_toIcon(QApplication::style()->standardIcon(QStyle::SP_ArrowRight)),
-	m_fromIcon(QApplication::style()->standardIcon(QStyle::SP_ArrowLeft)) {
+	m_fromIcon(QApplication::style()->standardIcon(QStyle::SP_ArrowLeft)),
+	m_ctxPopup(new QMenu(this)) {
 
 	setupUi(this);
 
 	setAttribute(Qt::WA_QuitOnClose, false);
+
+	m_ctxPopup->addAction(actionCopy);
+
+	actionCopy->setEnabled(false);
+//	if(actionCopy->icon().hasThemeIcon("edit-copy")) {
+//		actionCopy->setIcon(QApplication::style()->standardIcon(QStyle::SP_BrowserReload));
+//	}
+
+	addAction(actionCopy);
+	QObject::connect(actionCopy, SIGNAL(triggered()), this, SLOT(copyToClipboard()));
 
 	QIcon icon;
 	icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -44,7 +57,25 @@ ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : QDialog(p, Qt::Window),
 
 	logView->setModel(&m_model);
 
+	QObject::connect(logView, SIGNAL(customContextMenuRequested(const QPoint &)),
+					 this, SLOT(showContextMenu(const QPoint &)));
+
 	readSettings();
+}
+
+void ConnectionLogDialog::showContextMenu(const QPoint &p) {
+	m_ctxPopup->popup(logView->mapToGlobal(p));
+}
+
+void ConnectionLogDialog::copyToClipboard() {
+
+	QString txt;
+
+	for(int r = 0; r < m_model.rowCount(); ++r) {
+		txt.append(m_model.item(r, 2)->text()).append("\n");
+	}
+
+	qApp->clipboard()->setText(txt);
 }
 
 void ConnectionLogDialog::closeEvent(QCloseEvent *e) {
@@ -70,9 +101,11 @@ void ConnectionLogDialog::addEntry(const QString &e, DIRECTION dir) {
 
 	m_model.appendRow(items);
 
+	actionCopy->setEnabled(true);
 }
 
 void ConnectionLogDialog::clear() {
+	actionCopy->setEnabled(false);
 	m_model.clear();
 }
 

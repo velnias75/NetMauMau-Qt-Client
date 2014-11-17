@@ -24,6 +24,8 @@
 
 #include "ui_connectionlogdialog.h"
 
+class QMenu;
+
 class ConnectionLogDialog : public QDialog, private Ui::ConnectionLogDialog {
 	Q_OBJECT
 
@@ -40,6 +42,10 @@ public slots:
 protected:
 	virtual void closeEvent(QCloseEvent *e);
 
+private slots:
+	void showContextMenu(const QPoint &);
+	void copyToClipboard();
+
 private:
 	void writeSettings();
 	void readSettings();
@@ -49,6 +55,7 @@ private:
 	QStandardItemModel m_model;
 	QIcon m_toIcon;
 	QIcon m_fromIcon;
+	QMenu *m_ctxPopup;
 };
 
 #endif // CONNECTIONLOGDIALOG_H
