@@ -513,11 +513,12 @@ void MainWindow::clientChooseJackSuitRequest() {
 												   NetMauMau::Common::ICard::CLUBS);
 	m_jackChooseDialog.exec();
 
-	m_ui->jackSuit->setProperty("suitDescription",
-								QByteArray(NetMauMau::Common::suitToSymbol(
-											   m_jackChooseDialog.getChosenSuit(), false).c_str()));
+	const NetMauMau::Common::ICard::SUIT cs = m_jackChooseDialog.getChosenSuit();
 
-	emit chosenSuite(m_jackChooseDialog.getChosenSuit());
+	m_ui->jackSuit->setProperty("suitDescription",
+								QByteArray(NetMauMau::Common::suitToSymbol(cs, false).c_str()));
+
+	emit chosenSuite(cs);
 }
 
 void MainWindow::suspend() {

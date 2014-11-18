@@ -37,9 +37,9 @@ ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : QDialog(p, Qt::Window),
 	m_ctxPopup->addAction(actionCopy);
 
 	actionCopy->setEnabled(false);
-//	if(actionCopy->icon().hasThemeIcon("edit-copy")) {
-//		actionCopy->setIcon(QApplication::style()->standardIcon(QStyle::SP_BrowserReload));
-//	}
+	//	if(actionCopy->icon().hasThemeIcon("edit-copy")) {
+	//		actionCopy->setIcon(QApplication::style()->standardIcon(QStyle::SP_BrowserReload));
+	//	}
 
 	addAction(actionCopy);
 	QObject::connect(actionCopy, SIGNAL(triggered()), this, SLOT(copyToClipboard()));
@@ -72,6 +72,8 @@ void ConnectionLogDialog::copyToClipboard() {
 	QString txt;
 
 	for(int r = 0; r < m_model.rowCount(); ++r) {
+		txt.append(m_model.item(r, 0)->text()).append(" ");
+		txt.append(m_model.item(r, 1)->toolTip()).append(" ");
 		txt.append(m_model.item(r, 2)->text()).append("\n");
 	}
 
@@ -94,6 +96,8 @@ void ConnectionLogDialog::addEntry(const QString &e, DIRECTION dir) {
 	items << new QStandardItem();
 	items.back()->setData(dir == TO_SERVER || dir == TO_CLIENT ? m_fromIcon : m_toIcon,
 						  Qt::DecorationRole);
+	items.back()->setToolTip(dir == TO_SERVER || dir == TO_CLIENT ? QString::fromUtf8("\u2190") :
+																	QString::fromUtf8("\u2192"));
 	items.back()->setSelectable(false);
 	items << new QStandardItem(e);
 	items.back()->setFont(m_entryFont);
