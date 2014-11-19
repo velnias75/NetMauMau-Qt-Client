@@ -306,7 +306,6 @@ void MainWindow::clearMyCards(bool del, bool dis) {
 
 void MainWindow::clientTurn(std::size_t t) {
 	m_ui->turnLabel->setText(QString("%1").arg(t));
-	//	m_cardsTaken = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 }
 
 void MainWindow::clientStats(const Client::STATS &s) {
@@ -605,11 +604,7 @@ void MainWindow::enableMyCards(bool b, const Client::CARDS &cards) {
 
 			if(w) {
 				if(!m_noCardPossible) {
-					const Client::CARDS::const_iterator
-							&f(std::find_if(cards.begin(), cards.end(),
-											std::bind2nd(std::ptr_fun(NetMauMau::Common::cardEqual),
-														 w)));
-					w->setEnabled(f != cards.end());
+					w->setEnabled(NetMauMau::Common::findCard(w, cards.begin(), cards.end()) != 0L);
 				} else {
 					w->setEnabled(false);
 				}
