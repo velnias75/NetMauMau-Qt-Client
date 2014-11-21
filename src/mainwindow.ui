@@ -114,6 +114,8 @@
     <addaction name="actionServer"/>
     <addaction name="actionReconnect"/>
     <addaction name="separator"/>
+    <addaction name="actionLaunchServer"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
@@ -539,6 +541,17 @@
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="actionLaunchServer">
+   <property name="text">
+    <string>&amp;Launch local server...</string>
+   </property>
+   <property name="toolTip">
+    <string>Launch a local server</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
    </property>
   </action>
  </widget>

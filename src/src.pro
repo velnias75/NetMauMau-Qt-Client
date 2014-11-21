@@ -45,7 +45,8 @@ SOURCES += main.cpp mainwindow.cpp \
     connectionlogdialog.cpp \
     messageitemdelegate.cpp \
     cardpixmap.cpp \
-    serverinfo.cpp
+    serverinfo.cpp \
+    launchserverdialog.cpp
 
 HEADERS  += mainwindow.h \
     serverdialog.h \
@@ -57,7 +58,8 @@ HEADERS  += mainwindow.h \
     connectionlogdialog.h \
     messageitemdelegate.h \
     cardpixmap.h \
-    serverinfo.h
+    serverinfo.h \
+    launchserverdialog.h
 
 FORMS    +=  serverdialog.ui \
     mainwindow.ui \
@@ -65,7 +67,8 @@ FORMS    +=  serverdialog.ui \
     jackchoosedialog.ui \
     suitlabel.ui \
     suitradiobutton.ui \
-    connectionlogdialog.ui
+    connectionlogdialog.ui \
+    launchserverdialog.ui
 
 RESOURCES += icons.qrc nuoveXT2.qrc cards.qrc
 

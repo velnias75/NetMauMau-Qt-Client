@@ -56,6 +56,8 @@ private slots:
 
 	void serverAccept();
 	void destroyClient();
+	void forceRefreshServers();
+	void localServerLaunched();
 	void reconnectAvailable(const QString &srv);
 
 	void suspend();
@@ -104,6 +106,7 @@ private:
 	Client *m_client;
 	Ui::MainWindow *m_ui;
 	QDialog *m_serverDlg;
+	QDialog *m_launchDlg;
 	QStandardItemModel m_model;
 	QList<CardWidget *> m_cards;
 	CardWidget *m_lastPlayedCard;

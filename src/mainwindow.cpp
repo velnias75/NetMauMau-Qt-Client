@@ -28,13 +28,15 @@
 #include "cardtools.h"
 #include "cardwidget.h"
 #include "cardpixmap.h"
+#include "launchserverdialog.h"
 #include "connectionlogdialog.h"
 #include "messageitemdelegate.h"
 
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
-	m_serverDlg(new ServerDialog(this)), m_model(), m_cards(), m_lastPlayedCard(0L),
-	m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(), m_maxPlayerCount(0),
-	m_pickCardPrepended(false), m_connectionLogDlg(new ConnectionLogDialog(0L)),
+	m_serverDlg(new ServerDialog(this)), m_launchDlg(new LaunchServerDialog(this)), m_model(),
+	m_cards(), m_lastPlayedCard(0L), m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(),
+	m_maxPlayerCount(0), m_pickCardPrepended(false),
+	m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
@@ -69,6 +71,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	QObject::connect(m_ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 	QObject::connect(m_ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
 	QObject::connect(m_ui->actionServer, SIGNAL(triggered()), m_serverDlg, SLOT(show()));
+	QObject::connect(m_ui->actionLaunchServer, SIGNAL(triggered()), m_launchDlg, SLOT(show()));
 
 	QFont fnt("Monospace");
 	fnt.setStyleHint(QFont::TypeWriter);
@@ -97,6 +100,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 					 this, SLOT(resizeColumns()));
 	QObject::connect(m_serverDlg, SIGNAL(reconnectAvailable(const QString &)),
 					 this, SLOT(reconnectAvailable(const QString &)));
+	QObject::connect(m_launchDlg, SIGNAL(serverLaunched()), this, SLOT(localServerLaunched()));
 
 	readSettings();
 }
@@ -108,12 +112,21 @@ MainWindow::~MainWindow() {
 
 	delete m_ui;
 	delete m_serverDlg;
+	delete m_launchDlg;
 	delete m_lastPlayedCard;
 	delete m_connectionLogDlg;
 	delete m_nameItemDelegate;
 	delete m_countItemDelegate;
 	delete m_messageItemDelegate;
 
+}
+
+void MainWindow::forceRefreshServers() {
+	m_serverDlg->setProperty("forceRefresh", true);
+}
+
+void MainWindow::localServerLaunched() {
+	QTimer::singleShot(800, this, SLOT(forceRefreshServers()));
 }
 
 void MainWindow::reconnectAvailable(const QString &srv) {
@@ -238,7 +251,7 @@ void MainWindow::serverAccept() {
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 		clientError(QString("While connecting to <b>%1</b>: <i>%2</i>")
 					.arg(as).arg(QString::fromUtf8(e.what())));
-		m_serverDlg->setProperty("forceRefresh", true);
+		forceRefreshServers();
 		m_ui->actionReconnect->setEnabled(false);
 	}
 }
