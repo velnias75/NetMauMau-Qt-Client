@@ -112,6 +112,7 @@ void LaunchServerDialog::finished(int ec) {
 
 void LaunchServerDialog::launched() {
 	launchButton->setDisabled(true);
+	m_process.waitForStarted(800);
 	emit serverLaunched();
 }
 
@@ -119,6 +120,8 @@ void LaunchServerDialog::launch() {
 
 	qDebug("Launching %s...",
 		   QString(pathEdit->text()).append(" ").append(optionsEdit->text()).toUtf8().constData());
+
+#ifndef _WIN32
 
 	QStringList args;
 
@@ -136,7 +139,14 @@ void LaunchServerDialog::launch() {
 
 	if(ultimateCheck->isChecked()) args << "-u";
 
-	m_process.start(pathEdit->text(), args);
+	m_process.start(pathEdit->text(), args, QProcess::ReadOnly);
+
+#else
+
+	m_process.setNativeArguments(optionsEdit->text().toUtf8().constData());
+	m_process.start(pathEdit->text(), QProcess::ReadOnly);
+
+#endif
 }
 
 void LaunchServerDialog::error(QProcess::ProcessError) {

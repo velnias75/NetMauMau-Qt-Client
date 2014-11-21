@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>293</width>
-    <height>285</height>
+    <width>250</width>
+    <height>288</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -149,7 +149,7 @@ Don't close the client while a game is running, because it will disconnect the r
    <item>
     <widget class="QGroupBox" name="executableGroup">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -185,9 +185,6 @@ Don't close the client while a game is running, because it will disconnect the r
         </item>
         <item>
          <widget class="QPushButton" name="execChooseButton">
-          <property name="toolTip">
-           <string>Browse for a path to the server executable</string>
-          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -199,6 +196,9 @@ Don't close the client while a game is running, because it will disconnect the r
             <width>30</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>Browse for a path to the server executable</string>
           </property>
           <property name="text">
            <string>...</string>
@@ -273,15 +273,15 @@ Don't close the client while a game is running, because it will disconnect the r
   </layout>
  </widget>
  <tabstops>
+  <tabstop>playersSpin</tabstop>
+  <tabstop>ultimateCheck</tabstop>
+  <tabstop>aiNameEdit</tabstop>
+  <tabstop>portSpin</tabstop>
   <tabstop>pathEdit</tabstop>
   <tabstop>execChooseButton</tabstop>
   <tabstop>optionsEdit</tabstop>
   <tabstop>cancelButton</tabstop>
   <tabstop>launchButton</tabstop>
-  <tabstop>playersSpin</tabstop>
-  <tabstop>ultimateCheck</tabstop>
-  <tabstop>aiNameEdit</tabstop>
-  <tabstop>portSpin</tabstop>
  </tabstops>
  <resources>
   <include location="icons.qrc"/>
