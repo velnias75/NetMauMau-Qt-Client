@@ -26,14 +26,14 @@
 #include "client.h"
 #include "cardtools.h"
 
-LaunchServerDialog::LaunchServerDialog(QWidget *p) : QDialog(p), m_process() {
+LaunchServerDialog::LaunchServerDialog(QWidget *p) : QDialog(p), m_process(), m_errFail(false) {
 
 	setupUi(this);
 
 	QSettings settings;
 	settings.beginGroup("Launcher");
 	playersSpin->setValue(settings.value("playersSpin", 1).toInt());
-	ultimateCheck->setChecked(settings.value("ultimate", false).toBool());
+	ultimateCheck->setChecked(settings.value("ultimate", true).toBool());
 	aiNameEdit->setText(settings.value("aiName",
 									   QString::fromUtf8(Client::getDefaultAIName())).toString());
 	portSpin->setValue(settings.value("port", Client::getDefaultPort()).toInt());
@@ -66,6 +66,8 @@ LaunchServerDialog::~LaunchServerDialog() {
 	settings.setValue("port", portSpin->value());
 	settings.setValue("serverExe", pathEdit->text());
 	settings.endGroup();
+
+	QObject::disconnect(&m_process, 0, this, 0);
 
 	if(m_process.state() == QProcess::Running) {
 
@@ -101,9 +103,10 @@ void LaunchServerDialog::updateOptions() {
 }
 
 void LaunchServerDialog::finished(int ec) {
-	if(ec) QMessageBox::warning(this, "Warning", QString("Failed to start %1").
-								arg(QString(pathEdit->text()).append(" ")
-									.append(optionsEdit->text())));
+	if(ec && !m_errFail) QMessageBox::warning(this, "Warning", QString("Failed to start %1").
+											  arg(QString(pathEdit->text()).append(" ")
+												  .append(optionsEdit->text())));
+	m_errFail = false;
 	launchButton->setDisabled(false);
 }
 
@@ -137,6 +140,7 @@ void LaunchServerDialog::launch() {
 }
 
 void LaunchServerDialog::error(QProcess::ProcessError) {
+	m_errFail = true;
 	QMessageBox::critical(this, "Error", QString("Failed to start %1").
 						  arg(QString(pathEdit->text()).append(" ").append(optionsEdit->text())));
 }
@@ -149,8 +153,9 @@ void LaunchServerDialog::browse() {
 	const QString filter("*.exe");
 #endif
 
-	pathEdit->setText(QFileDialog::getOpenFileName(this, "Find NetMauMau server executable",
+	const QString exe(QFileDialog::getOpenFileName(this, "Find NetMauMau server executable",
 												   pathEdit->text().isEmpty() ?
 													   QDir::currentPath() : pathEdit->text(),
 												   filter));
+	if(!exe.isEmpty()) pathEdit->setText(exe);
 }

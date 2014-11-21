@@ -48,12 +48,12 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 
 	QSettings settings;
 	settings.beginGroup("Servers");
-	QStringList servers = settings.value("list", QStringList()).toStringList();
-	m_lastServer = settings.value("lastServer", QVariant(QString::null)).toString();
+	QStringList servers = settings.value("list", QStringList("localhost")).toStringList();
+	m_lastServer = settings.value("lastServer", QVariant("localhost")).toString();
 	settings.endGroup();
 
 	settings.beginGroup("Player");
-	playerName->setText(settings.value("name", "Qt Client").toString());
+	playerName->setText(settings.value("name", "Phoenix").toString());
 	settings.endGroup();
 
 	availServerView->setModel(&m_model);

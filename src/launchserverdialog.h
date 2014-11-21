@@ -44,6 +44,7 @@ private slots:
 
 private:
 	QProcess m_process;
+	bool m_errFail;
 };
 
 #endif // LAUNCHSERVERDIALOG_H

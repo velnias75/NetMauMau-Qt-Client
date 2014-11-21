@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>295</width>
-    <height>271</height>
+    <width>293</width>
+    <height>285</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Launch Server</string>
+   <string>Launch local server</string>
   </property>
   <property name="windowIcon">
    <iconset resource="icons.qrc">
@@ -54,6 +54,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of players.&lt;/p&gt;&lt;p&gt;If set to &lt;tt&gt;1&lt;/tt&gt; you'll play against the AI.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -77,6 +80,12 @@
       </item>
       <item row="1" column="1">
        <widget class="QCheckBox" name="ultimateCheck">
+        <property name="toolTip">
+         <string>If checked, the game is finished when the last player has won.
+
+If you have won before the game ended, you'll watch the game.
+Don't close the client while a game is running, because it will disconnect the remaining players.</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -94,6 +103,9 @@
       </item>
       <item row="2" column="1">
        <widget class="QLineEdit" name="aiNameEdit">
+        <property name="toolTip">
+         <string>The name of the AI player</string>
+        </property>
         <property name="maxLength">
          <number>255</number>
         </property>
@@ -116,6 +128,9 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>The port to run the server on</string>
         </property>
         <property name="minimum">
          <number>1025</number>
@@ -157,12 +172,34 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMaximumSize</enum>
+        </property>
         <item>
-         <widget class="QLineEdit" name="pathEdit"/>
+         <widget class="QLineEdit" name="pathEdit">
+          <property name="toolTip">
+           <string>Path to the server executable</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QPushButton" name="execChooseButton">
+          <property name="toolTip">
+           <string>Browse for a path to the server executable</string>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
            <string>...</string>
           </property>
@@ -185,6 +222,9 @@
       </item>
       <item row="1" column="1">
        <widget class="QLineEdit" name="optionsEdit">
+        <property name="toolTip">
+         <string>The options the server will be started with</string>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -217,6 +257,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="launchButton">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to launch the server.&lt;/p&gt;&lt;p&gt;The server will be available at &lt;tt&gt;localhost&lt;/tt&gt; and the given port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>&amp;Launch</string>
        </property>
