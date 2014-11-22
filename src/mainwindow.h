@@ -86,12 +86,13 @@ private slots:
 	void clearStats();
 	void resizeColumns();
 	void sortMyCards(bool);
+	void filterMyCards(bool);
 	void setOpenCard(const QByteArray &);
 
 private:
 	bool isMe(const QString &player) const;
 
-	void enableMyCards(bool b, const Client::CARDS &cards = Client::CARDS());
+	void enableMyCards(bool b);
 	void clearMyCards(bool del, bool dis = true);
 	void updatePlayerStat(const QString &player, std::size_t count,
 						  const QString &msg = QString::null, bool append = false,
@@ -125,6 +126,7 @@ private:
 	bool m_noCardPossible;
 	NetMauMau::Common::ICard::SUIT m_cTakeSuit;
 	NetMauMau::Common::ICard::SUIT m_takenSuit;
+	Client::CARDS m_possibleCards;
 };
 
 #endif // MAINWINDOW_H

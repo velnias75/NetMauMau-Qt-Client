@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
 	m_gameOver(false), m_appendPlayerStat(), m_noCardPossible(false),
 	m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
-	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL) {
+	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL), m_possibleCards() {
 
 	m_ui->setupUi(this);
 
@@ -93,6 +93,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	resizeColumns();
 
 	QObject::connect(m_ui->sortCards, SIGNAL(toggled(bool)), this, SLOT(sortMyCards(bool)));
+	QObject::connect(m_ui->filterCards, SIGNAL(toggled(bool)), this, SLOT(filterMyCards(bool)));
 	QObject::connect(m_ui->suspendButton, SIGNAL(clicked()), this, SLOT(suspend()));
 	QObject::connect(m_ui->takeCardsButton, SIGNAL(clicked()), this, SLOT(takeCards()));
 	QObject::connect(m_serverDlg, SIGNAL(accepted()), this, SLOT(serverAccept()));
@@ -156,6 +157,10 @@ void MainWindow::sortMyCards(bool b) {
 
 		m_ui->myCardsScrollArea->ensureWidgetVisible(prevLast);
 	}
+}
+
+void MainWindow::filterMyCards(bool) {
+	enableMyCards(m_ui->myCardsDock->isEnabled());
 }
 
 void MainWindow::closeEvent(QCloseEvent *e) {
@@ -514,7 +519,9 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards) {
 
 	clientNextPlayer(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
-	enableMyCards(true, cards);
+	m_possibleCards = cards;
+
+	enableMyCards(true);
 	m_pickCardPrepended = false;
 
 }
@@ -604,22 +611,30 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 	}
 }
 
-void MainWindow::enableMyCards(bool b, const Client::CARDS &cards) {
+void MainWindow::enableMyCards(bool b) {
 
 	m_ui->myCardsDock->setEnabled(b);
-	m_noCardPossible = cards.empty();
+	m_noCardPossible = m_possibleCards.empty();
 
 	if(b) {
+
 
 		for(int j = 0; j < m_ui->myCardsLayout->count(); ++j) {
 
 			CardWidget *w = static_cast<CardWidget *>(m_ui->myCardsLayout->itemAt(j)->widget());
 
 			if(w) {
-				if(!m_noCardPossible) {
-					w->setEnabled(NetMauMau::Common::findCard(w, cards.begin(), cards.end()) != 0L);
+				if(m_ui->filterCards->isChecked()) {
+
+					if(!m_noCardPossible) {
+						w->setEnabled(NetMauMau::Common::findCard(w, m_possibleCards.begin(),
+																  m_possibleCards.end()) != 0L);
+					} else {
+						w->setEnabled(false);
+					}
+
 				} else {
-					w->setEnabled(false);
+					w->setEnabled(true);
 				}
 			}
 		}
@@ -738,6 +753,7 @@ void MainWindow::writeSettings() {
 	settings.setValue("cardsDock", dockWidgetArea(m_ui->cardsTurnDock));
 	settings.setValue("localPlayerDock", dockWidgetArea(m_ui->localPlayerDock));
 	settings.setValue("sortCards", m_ui->sortCards->isChecked());
+	settings.setValue("filterCards", m_ui->filterCards->isChecked());
 	settings.endGroup();
 
 	settings.beginGroup("ConnectionLog");
@@ -762,8 +778,11 @@ void MainWindow::readSettings() {
 	settings.beginGroup("MainWindow");
 	resize(settings.value("size", size()).toSize());
 	move(settings.value("pos", pos()).toPoint());
+
 	m_ui->toolBar->setVisible(settings.value("toolBar", QVariant(true)).toBool());
 	m_ui->sortCards->setChecked(settings.value("sortCards", QVariant(true)).toBool());
+	m_ui->filterCards->setChecked(settings.value("filterCards", QVariant(false)).toBool());
+
 	addToolBar(static_cast<Qt::ToolBarArea>(settings.value("toolBar_pos",
 														   Qt::TopToolBarArea).toInt()),
 			   m_ui->toolBar);

@@ -340,6 +340,9 @@
               <height>140</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>My cards</string>
+            </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
             </property>
@@ -396,6 +399,22 @@
            </property>
            <property name="text">
             <string>S&amp;ort</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="filterCards">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>Disable cards which aren't possible to play</string>
+           </property>
+           <property name="text">
+            <string>F&amp;ilter</string>
            </property>
           </widget>
          </item>
@@ -565,6 +584,7 @@
  <tabstops>
   <tabstop>myCardsScrollArea</tabstop>
   <tabstop>sortCards</tabstop>
+  <tabstop>filterCards</tabstop>
   <tabstop>takeCardsButton</tabstop>
   <tabstop>suspendButton</tabstop>
  </tabstops>
