@@ -11,17 +11,35 @@ Building
 --------
 
 It depends on the NetMauMau sources, which can be found at
-https://github.com/velnias75/NetMauMau and need to be checked out at
-the same directory level.
+[https://github.com/velnias75/NetMauMau](https://github.com/velnias75/NetMauMau) 
+and need to be checked out at the same directory level.
 
-To build, invoke qmake && make all
+To build, invoke `qmake && make all`
 
 Requirements
 ------------
 
 It requires Qt in at least version 4.8.2
 
-Binary snapshots
-----------------
 
-http://rangun.de/netmaumau.html
+Binary releases
+===============
+
+Ubuntu
+------
+Binary packages are available for Precise, Trusty, Utopic and Vivid
+in my Launchpad PPA at [https://launchpad.net/~velnias/+archive/ubuntu/velnias](https://launchpad.net/~velnias/+archive/ubuntu/velnias)
+
+Add the repository to your system: 
+
+`sudo add-apt-repository ppa:velnias/velnias`
+
+Debian 7
+--------
+[http://download.opensuse.org/repositories/home:/velnias/Debian_7.0](http://download.opensuse.org/repositories/home:/velnias/Debian_7.0)
+
+
+Windows
+-------
+[https://sourceforge.net/projects/netmaumau/](https://sourceforge.net/projects/netmaumau/)
+
