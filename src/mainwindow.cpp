@@ -31,12 +31,13 @@
 #include "launchserverdialog.h"
 #include "connectionlogdialog.h"
 #include "messageitemdelegate.h"
+#include "localserveroutputview.h"
 
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
-	m_serverDlg(new ServerDialog(this)), m_launchDlg(new LaunchServerDialog(this)), m_model(),
-	m_cards(), m_lastPlayedCard(0L), m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(),
-	m_maxPlayerCount(0), m_pickCardPrepended(false),
-	m_connectionLogDlg(new ConnectionLogDialog(0L)),
+	m_serverDlg(new ServerDialog(this)), m_lsov(new LocalServerOutputView(0L)),
+	m_launchDlg(new LaunchServerDialog(m_lsov, this)), m_model(), m_cards(), m_lastPlayedCard(0L),
+	m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(), m_maxPlayerCount(0),
+	m_pickCardPrepended(false), m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
@@ -112,6 +113,7 @@ MainWindow::~MainWindow() {
 	destroyClient();
 
 	delete m_ui;
+	delete m_lsov;
 	delete m_serverDlg;
 	delete m_launchDlg;
 	delete m_lastPlayedCard;

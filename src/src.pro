@@ -46,7 +46,8 @@ SOURCES += main.cpp mainwindow.cpp \
     messageitemdelegate.cpp \
     cardpixmap.cpp \
     serverinfo.cpp \
-    launchserverdialog.cpp
+    launchserverdialog.cpp \
+    localserveroutputview.cpp
 
 HEADERS  += mainwindow.h \
     serverdialog.h \
@@ -59,7 +60,8 @@ HEADERS  += mainwindow.h \
     messageitemdelegate.h \
     cardpixmap.h \
     serverinfo.h \
-    launchserverdialog.h
+    launchserverdialog.h \
+    localserveroutputview.h
 
 FORMS    +=  serverdialog.ui \
     mainwindow.ui \
@@ -68,7 +70,8 @@ FORMS    +=  serverdialog.ui \
     suitlabel.ui \
     suitradiobutton.ui \
     connectionlogdialog.ui \
-    launchserverdialog.ui
+    launchserverdialog.ui \
+    localserveroutputview.ui
 
 RESOURCES += icons.qrc nuoveXT2.qrc cards.qrc
 

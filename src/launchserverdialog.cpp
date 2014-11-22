@@ -22,11 +22,13 @@
 #include <QSettings>
 
 #include "launchserverdialog.h"
+#include "localserveroutputview.h"
 
 #include "client.h"
 #include "cardtools.h"
 
-LaunchServerDialog::LaunchServerDialog(QWidget *p) : QDialog(p), m_process(), m_errFail(false) {
+LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) : QDialog(p),
+	m_process(), m_errFail(false), m_lsov(lsov) {
 
 	setupUi(this);
 
@@ -52,6 +54,9 @@ LaunchServerDialog::LaunchServerDialog(QWidget *p) : QDialog(p), m_process(), m_
 	QObject::connect(&m_process, SIGNAL(error(QProcess::ProcessError)),
 					 this, SLOT(error(QProcess::ProcessError)));
 	QObject::connect(&m_process, SIGNAL(finished(int)), this, SLOT(finished(int)));
+	QObject::connect(&m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateViewer()));
+
+	m_process.setProcessChannelMode(QProcess::MergedChannels);
 
 	updateOptions();
 }
@@ -108,10 +113,13 @@ void LaunchServerDialog::finished(int ec) {
 												  .append(optionsEdit->text())));
 	m_errFail = false;
 	launchButton->setDisabled(false);
+	m_lsov->close();
 }
 
 void LaunchServerDialog::launched() {
 	launchButton->setDisabled(true);
+	m_lsov->show();
+	m_lsov->lower();
 	m_process.waitForStarted(800);
 	emit serverLaunched();
 }
@@ -153,6 +161,7 @@ void LaunchServerDialog::error(QProcess::ProcessError) {
 	m_errFail = true;
 	QMessageBox::critical(this, "Error", QString("Failed to start %1").
 						  arg(QString(pathEdit->text()).append(" ").append(optionsEdit->text())));
+	m_lsov->close();
 }
 
 void LaunchServerDialog::browse() {
@@ -168,4 +177,8 @@ void LaunchServerDialog::browse() {
 													   QDir::currentPath() : pathEdit->text(),
 												   filter));
 	if(!exe.isEmpty()) pathEdit->setText(exe);
+}
+
+void LaunchServerDialog::updateViewer() {
+	m_lsov->updateOutput(m_process.readAllStandardOutput());
 }

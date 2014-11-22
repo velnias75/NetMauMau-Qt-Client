@@ -17,38 +17,29 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LAUNCHSERVERDIALOG_H
-#define LAUNCHSERVERDIALOG_H
+#include "localserveroutputview.h"
 
-#include <QProcess>
+LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_textFont("Monospace") {
 
-#include "ui_launchserverdialog.h"
+	setupUi(this);
 
-class LocalServerOutputView;
+	setAttribute(Qt::WA_QuitOnClose, false);
 
-class LaunchServerDialog : public QDialog, private Ui::LaunchServerDialog {
-	Q_OBJECT
+	setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint);
 
-public:
-	explicit LaunchServerDialog(LocalServerOutputView *lsov, QWidget *parent = 0);
-	virtual ~LaunchServerDialog();
+	m_textFont.setStyleHint(QFont::TypeWriter);
 
-signals:
-	void serverLaunched();
+	log->setFont(m_textFont);
+	log->clear();
+}
 
-private slots:
-	void updateOptions();
-	void finished(int);
-	void launched();
-	void launch();
-	void error(QProcess::ProcessError);
-	void browse();
-	void updateViewer();
+void LocalServerOutputView::updateOutput(const QByteArray &d) {
+	log->setPlainText(log->toPlainText().append(QString::fromUtf8(d)));
+	log->moveCursor(QTextCursor::End);
+	log->ensureCursorVisible();
+}
 
-private:
-	QProcess m_process;
-	bool m_errFail;
-	LocalServerOutputView *m_lsov;
-};
-
-#endif // LAUNCHSERVERDIALOG_H
+void LocalServerOutputView::closeEvent(QCloseEvent *evt) {
+	log->clear();
+	QWidget::closeEvent(evt);
+}

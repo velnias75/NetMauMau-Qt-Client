@@ -17,38 +17,24 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LAUNCHSERVERDIALOG_H
-#define LAUNCHSERVERDIALOG_H
+#ifndef LOCALSERVEROUTPUTVIEW_H
+#define LOCALSERVEROUTPUTVIEW_H
 
-#include <QProcess>
+#include "ui_localserveroutputview.h"
 
-#include "ui_launchserverdialog.h"
-
-class LocalServerOutputView;
-
-class LaunchServerDialog : public QDialog, private Ui::LaunchServerDialog {
+class LocalServerOutputView : public QWidget, private Ui::LocalServerOutputView {
 	Q_OBJECT
 
 public:
-	explicit LaunchServerDialog(LocalServerOutputView *lsov, QWidget *parent = 0);
-	virtual ~LaunchServerDialog();
+	explicit LocalServerOutputView(QWidget *parent = 0);
+	void updateOutput(const QByteArray &data);
 
-signals:
-	void serverLaunched();
-
-private slots:
-	void updateOptions();
-	void finished(int);
-	void launched();
-	void launch();
-	void error(QProcess::ProcessError);
-	void browse();
-	void updateViewer();
+protected:
+	virtual void closeEvent(QCloseEvent *);
 
 private:
-	QProcess m_process;
-	bool m_errFail;
-	LocalServerOutputView *m_lsov;
+	QFont m_textFont;
+
 };
 
-#endif // LAUNCHSERVERDIALOG_H
+#endif // LOCALSERVEROUTPUTVIEW_H
