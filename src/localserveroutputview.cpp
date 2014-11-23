@@ -50,7 +50,6 @@ void LocalServerOutputView::setTriggerAction(QAction *act) {
 }
 
 void LocalServerOutputView::closeEvent(QCloseEvent *evt) {
-	log->clear();
 	if(m_triggerAction) m_triggerAction->setChecked(false);
 	QWidget::closeEvent(evt);
 }
