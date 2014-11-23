@@ -52,12 +52,13 @@ void ServerInfo::run() {
 		const Client::CAPABILITIES &caps((Client(0L, 0L, "", std::string(srv.toStdString()),
 												 static_cast<uint16_t>(port))).capabilities(&tv));
 
-		qDebug("Server \"%s\" is online", host.toStdString().c_str());
+		qDebug("Server \"%s\" is online", host.toUtf8().constData());
 
-		ulong curPCnt = (QString(caps.find("CUR_PLAYERS")->second.c_str())).toULong();
-		ulong maxPCnt = (QString(caps.find("MAX_PLAYERS")->second.c_str())).toULong();
+		ulong curPCnt = (QString::fromStdString(caps.find("CUR_PLAYERS")->second)).toULong();
+		ulong maxPCnt = (QString::fromStdString(caps.find("MAX_PLAYERS")->second)).toULong();
 
-		version->setText(caps.find("SERVER_VERSION")->second.c_str());
+		const std::string &sVer(caps.find("SERVER_VERSION")->second);
+		version->setText(QString::fromStdString(sVer));
 
 		ai->setCheckState(caps.find("AI_OPPONENT")->second == "true" ? Qt::Checked : Qt::Unchecked);
 		ai->setToolTip(ai->checkState() == Qt::Checked ? QString("You'll play against AI \"%1\"").
@@ -66,6 +67,12 @@ void ServerInfo::run() {
 													   : "The server has only human players");
 		players->setText(QString("%1/%2").arg(curPCnt).arg(maxPCnt));
 		players->setToolTip(QString("Waiting for %1 more players").arg(maxPCnt - curPCnt));
+
+		if(Client::parseProtocolVersion(sVer) < Client::getClientProtocolVersion()) {
+			server->setToolTip("The server is too old for this client");
+			emit online(false, m_row);
+			return;
+		}
 
 		if(curPCnt >= maxPCnt) {
 			server->setToolTip("The server accepts no more players");

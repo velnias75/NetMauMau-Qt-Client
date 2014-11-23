@@ -364,7 +364,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>849</width>
+               <width>846</width>
                <height>140</height>
               </rect>
              </property>
@@ -388,19 +388,54 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
-          <widget class="QCheckBox" name="sortCards">
+          <widget class="QRadioButton" name="noSort">
            <property name="font">
             <font>
              <weight>50</weight>
              <bold>false</bold>
             </font>
            </property>
-           <property name="toolTip">
-            <string>Sort my cards</string>
+           <property name="text">
+            <string>No S&amp;ort</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="sortSuitRank">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
            </property>
            <property name="text">
-            <string>S&amp;ort</string>
+            <string>S&amp;uit/Rank</string>
            </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup</string>
+           </attribute>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="sortRankSuit">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>&amp;Rank/Suit</string>
+           </property>
+           <attribute name="buttonGroup">
+            <string notr="true">buttonGroup</string>
+           </attribute>
           </widget>
          </item>
          <item>
@@ -601,7 +636,9 @@
  </customwidgets>
  <tabstops>
   <tabstop>myCardsScrollArea</tabstop>
-  <tabstop>sortCards</tabstop>
+  <tabstop>noSort</tabstop>
+  <tabstop>sortSuitRank</tabstop>
+  <tabstop>sortRankSuit</tabstop>
   <tabstop>filterCards</tabstop>
   <tabstop>takeCardsButton</tabstop>
   <tabstop>suspendButton</tabstop>
@@ -627,4 +664,7 @@
    </hints>
   </connection>
  </connections>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
 </ui>

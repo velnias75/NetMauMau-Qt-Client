@@ -38,6 +38,8 @@ class LocalServerOutputView;
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 
+	typedef enum { NO_SORT, SUIT_RANK, RANK_SUIT } SORTMODE;
+
 public:
 	explicit MainWindow(QWidget *p = 0);
 	virtual ~MainWindow();
@@ -86,7 +88,10 @@ private slots:
 
 	void clearStats();
 	void resizeColumns();
-	void sortMyCards(bool);
+	void sortNoSort(bool);
+	void sortSuitRank(bool);
+	void sortRankSuit(bool);
+	void sortMyCards(SORTMODE mode);
 	void filterMyCards(bool);
 	void setOpenCard(const QByteArray &);
 

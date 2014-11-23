@@ -93,7 +93,10 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 
 	resizeColumns();
 
-	QObject::connect(m_ui->sortCards, SIGNAL(toggled(bool)), this, SLOT(sortMyCards(bool)));
+	QObject::connect(m_ui->noSort, SIGNAL(toggled(bool)), this, SLOT(sortNoSort(bool)));
+	QObject::connect(m_ui->sortSuitRank, SIGNAL(toggled(bool)), this, SLOT(sortSuitRank(bool)));
+	QObject::connect(m_ui->sortRankSuit, SIGNAL(toggled(bool)), this, SLOT(sortRankSuit(bool)));
+
 	QObject::connect(m_ui->filterCards, SIGNAL(toggled(bool)), this, SLOT(filterMyCards(bool)));
 	QObject::connect(m_ui->suspendButton, SIGNAL(clicked()), this, SLOT(suspend()));
 	QObject::connect(m_ui->takeCardsButton, SIGNAL(clicked()), this, SLOT(takeCards()));
@@ -157,15 +160,28 @@ void MainWindow::resizeColumns() {
 	m_ui->remotePlayersView->resizeColumnToContents(1);
 }
 
-void MainWindow::sortMyCards(bool b) {
+void MainWindow::sortNoSort(bool b) {
+	if(b) sortMyCards(NO_SORT);
+}
 
-	if(b && !m_cards.isEmpty()) {
+void MainWindow::sortSuitRank(bool b) {
+	if(b) sortMyCards(SUIT_RANK);
+}
+
+void MainWindow::sortRankSuit(bool b) {
+	if(b) sortMyCards(RANK_SUIT);
+}
+
+void MainWindow::sortMyCards(SORTMODE mode) {
+
+	if(mode != NO_SORT && !m_cards.isEmpty()) {
 
 		clearMyCards(false, false);
 
 		QWidget *prevLast = m_cards.last();
 
-		qSort(m_cards.begin(), m_cards.end(), NetMauMau::Common::cardLess);
+		qSort(m_cards.begin(), m_cards.end(), mode == SUIT_RANK ? NetMauMau::Common::cardLess :
+																  NetMauMau::Common::cardGreater);
 
 		for(QList<CardWidget *>::ConstIterator i(m_cards.begin()); i != m_cards.end(); ++i) {
 			m_ui->myCardsLayout->addWidget(*i, 0, Qt::AlignHCenter);
@@ -307,7 +323,10 @@ void MainWindow::clientCardSet(const Client::CARDS &c) {
 		}
 	}
 
-	sortMyCards(m_ui->sortCards->isChecked());
+	sortMyCards(m_ui->noSort->isChecked() ? NO_SORT :
+											(m_ui->sortSuitRank->isChecked() ?
+												 SUIT_RANK : RANK_SUIT));
+
 	updatePlayerStat(QString::fromUtf8(m_client->getPlayerName().c_str()), m_cards.size());
 	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
 }
@@ -769,7 +788,15 @@ void MainWindow::writeSettings() {
 	settings.setValue("toolBar_pos", toolBarArea(m_ui->toolBar));
 	settings.setValue("cardsDock", dockWidgetArea(m_ui->cardsTurnDock));
 	settings.setValue("localPlayerDock", dockWidgetArea(m_ui->localPlayerDock));
-	settings.setValue("sortCards", m_ui->sortCards->isChecked());
+
+	if(m_ui->sortSuitRank->isChecked()) {
+		settings.setValue("sortMode", static_cast<uint>(SUIT_RANK));
+	} else if(m_ui->sortRankSuit->isChecked()) {
+		settings.setValue("sortMode", static_cast<uint>(RANK_SUIT));
+	} else {
+		settings.setValue("sortMode", static_cast<uint>(NO_SORT));
+	}
+
 	settings.setValue("filterCards", m_ui->filterCards->isChecked());
 	settings.endGroup();
 
@@ -803,7 +830,15 @@ void MainWindow::readSettings() {
 	move(settings.value("pos", pos()).toPoint());
 
 	m_ui->toolBar->setVisible(settings.value("toolBar", QVariant(true)).toBool());
-	m_ui->sortCards->setChecked(settings.value("sortCards", QVariant(true)).toBool());
+//	m_ui->sortSuitRank->setChecked(settings.value("sortCards", QVariant(true)).toBool());
+
+	switch(static_cast<SORTMODE>(settings.value("sortMode",
+												QVariant(static_cast<uint>(SUIT_RANK))).toUInt())) {
+	case SUIT_RANK: m_ui->sortSuitRank->setChecked(true); break;
+	case RANK_SUIT: m_ui->sortRankSuit->setChecked(true); break;
+	default: m_ui->noSort->setChecked(true); break;
+	}
+
 	m_ui->filterCards->setChecked(settings.value("filterCards", QVariant(false)).toBool());
 
 	addToolBar(static_cast<Qt::ToolBarArea>(settings.value("toolBar_pos",
