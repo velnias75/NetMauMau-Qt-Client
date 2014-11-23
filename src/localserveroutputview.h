@@ -27,13 +27,17 @@ class LocalServerOutputView : public QWidget, private Ui::LocalServerOutputView 
 
 public:
 	explicit LocalServerOutputView(QWidget *parent = 0);
+
 	void updateOutput(const QByteArray &data);
+	void setTriggerAction(QAction *act);
 
 protected:
 	virtual void closeEvent(QCloseEvent *);
 
 private:
+	QString m_text;
 	QFont m_textFont;
+	QAction *m_triggerAction;
 
 };
 

@@ -58,7 +58,7 @@ private slots:
 	void serverAccept();
 	void destroyClient();
 	void forceRefreshServers();
-	void localServerLaunched();
+	void localServerLaunched(bool);
 	void reconnectAvailable(const QString &srv);
 
 	void suspend();

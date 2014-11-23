@@ -34,7 +34,7 @@
 #include "localserveroutputview.h"
 
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
-	m_serverDlg(new ServerDialog(this)), m_lsov(new LocalServerOutputView(0L)),
+	m_serverDlg(new ServerDialog(this)), m_lsov(new LocalServerOutputView()),
 	m_launchDlg(new LaunchServerDialog(m_lsov, this)), m_model(), m_cards(), m_lastPlayedCard(0L),
 	m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(), m_maxPlayerCount(0),
 	m_pickCardPrepended(false), m_connectionLogDlg(new ConnectionLogDialog(0L)),
@@ -102,9 +102,15 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 					 this, SLOT(resizeColumns()));
 	QObject::connect(m_serverDlg, SIGNAL(reconnectAvailable(const QString &)),
 					 this, SLOT(reconnectAvailable(const QString &)));
-	QObject::connect(m_launchDlg, SIGNAL(serverLaunched()), this, SLOT(localServerLaunched()));
+	QObject::connect(m_launchDlg, SIGNAL(serverLaunched(bool)),
+					 this, SLOT(localServerLaunched(bool)));
 
 	readSettings();
+
+	QObject::connect(m_ui->actionNetMauMauServerOutput, SIGNAL(toggled(bool)),
+					 m_lsov, SLOT(setShown(bool)));
+
+	m_lsov->setTriggerAction(m_ui->actionNetMauMauServerOutput);
 }
 
 MainWindow::~MainWindow() {
@@ -128,7 +134,16 @@ void MainWindow::forceRefreshServers() {
 	m_serverDlg->setProperty("forceRefresh", true);
 }
 
-void MainWindow::localServerLaunched() {
+void MainWindow::localServerLaunched(bool b) {
+	m_ui->actionNetMauMauServerOutput->setEnabled(b);
+
+	if(m_ui->actionNetMauMauServerOutput->isChecked()) {
+		m_lsov->show();
+		m_lsov->lower();
+	} else if(m_lsov->isVisible()) {
+		m_lsov->close();
+	}
+
 	QTimer::singleShot(800, this, SLOT(forceRefreshServers()));
 }
 
@@ -771,6 +786,12 @@ void MainWindow::writeSettings() {
 		settings.endGroup();
 	}
 
+	settings.beginGroup("ServerOutput");
+	settings.setValue("visible", m_ui->actionNetMauMauServerOutput->isChecked());
+	settings.setValue("size", m_lsov->size());
+	settings.setValue("pos", m_lsov->pos());
+	settings.endGroup();
+
 }
 
 void MainWindow::readSettings() {
@@ -803,6 +824,12 @@ void MainWindow::readSettings() {
 	settings.beginGroup("ConnectionLog");
 	m_connectionLogDlg->setVisible(settings.value("visible", false).toBool());
 	m_ui->actionConnectionlog->setChecked(m_connectionLogDlg->isVisible());
+	settings.endGroup();
+
+	settings.beginGroup("ServerOutput");
+	m_ui->actionNetMauMauServerOutput->setChecked(settings.value("visible", false).toBool());
+	m_lsov->resize(settings.value("size", m_lsov->size()).toSize());
+	m_lsov->move(settings.value("pos", m_lsov->pos()).toPoint());
 	settings.endGroup();
 
 }

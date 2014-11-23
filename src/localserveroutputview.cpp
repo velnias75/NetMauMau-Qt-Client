@@ -19,13 +19,12 @@
 
 #include "localserveroutputview.h"
 
-LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_textFont("Monospace") {
+LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_text(QString::null),
+	m_textFont("Monospace"), m_triggerAction(0L) {
 
 	setupUi(this);
 
 	setAttribute(Qt::WA_QuitOnClose, false);
-
-	setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint);
 
 	m_textFont.setStyleHint(QFont::TypeWriter);
 
@@ -34,12 +33,20 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_textFon
 }
 
 void LocalServerOutputView::updateOutput(const QByteArray &d) {
-	log->setPlainText(log->toPlainText().append(QString::fromUtf8(d)));
-	log->moveCursor(QTextCursor::End);
-	log->ensureCursorVisible();
+	if(!d.trimmed().isEmpty()) {
+		m_text += QString::fromUtf8(d);
+		log->setPlainText(m_text);
+		log->moveCursor(QTextCursor::End);
+		log->ensureCursorVisible();
+	}
+}
+
+void LocalServerOutputView::setTriggerAction(QAction *act) {
+	m_triggerAction = act;
 }
 
 void LocalServerOutputView::closeEvent(QCloseEvent *evt) {
 	log->clear();
+	if(m_triggerAction) m_triggerAction->setChecked(false);
 	QWidget::closeEvent(evt);
 }

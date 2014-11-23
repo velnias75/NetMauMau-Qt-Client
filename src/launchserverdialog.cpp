@@ -113,15 +113,13 @@ void LaunchServerDialog::finished(int ec) {
 												  .append(optionsEdit->text())));
 	m_errFail = false;
 	launchButton->setDisabled(false);
-	m_lsov->close();
+	emit serverLaunched(false);
 }
 
 void LaunchServerDialog::launched() {
 	launchButton->setDisabled(true);
-	m_lsov->show();
-	m_lsov->lower();
 	m_process.waitForStarted(800);
-	emit serverLaunched();
+	emit serverLaunched(true);
 }
 
 void LaunchServerDialog::launch() {
@@ -161,7 +159,7 @@ void LaunchServerDialog::error(QProcess::ProcessError) {
 	m_errFail = true;
 	QMessageBox::critical(this, "Error", QString("Failed to start %1").
 						  arg(QString(pathEdit->text()).append(" ").append(optionsEdit->text())));
-	m_lsov->close();
+	emit serverLaunched(false);
 }
 
 void LaunchServerDialog::browse() {

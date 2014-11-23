@@ -34,7 +34,7 @@ public:
 	virtual ~LaunchServerDialog();
 
 signals:
-	void serverLaunched();
+	void serverLaunched(bool);
 
 private slots:
 	void updateOptions();
