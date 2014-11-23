@@ -28,6 +28,10 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_text(QS
 
 	m_textFont.setStyleHint(QFont::TypeWriter);
 
+#if _WIN32
+	log->viewport()->unsetCursor();
+#endif
+
 	log->setFont(m_textFont);
 	log->clear();
 }

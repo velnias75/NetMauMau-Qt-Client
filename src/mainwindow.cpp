@@ -827,7 +827,7 @@ void MainWindow::readSettings() {
 	settings.endGroup();
 
 	settings.beginGroup("ServerOutput");
-	m_ui->actionNetMauMauServerOutput->setChecked(settings.value("visible", false).toBool());
+	m_ui->actionNetMauMauServerOutput->setChecked(settings.value("visible", true).toBool());
 	m_lsov->resize(settings.value("size", m_lsov->size()).toSize());
 	m_lsov->move(settings.value("pos", m_lsov->pos()).toPoint());
 	settings.endGroup();
