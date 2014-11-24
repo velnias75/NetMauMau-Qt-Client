@@ -21,6 +21,8 @@
 #include <QSettings>
 
 #include "serverdialog.h"
+
+#include "deleteserversdialog.h"
 #include "serverinfo.h"
 #include "client.h"
 
@@ -33,7 +35,7 @@ const QRegExp hostRex("^(?=.{1,255}$)[0-9A-Za-z]" \
 }
 
 ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(false),
-	m_lastServer(QString::null) {
+	m_lastServer(QString::null), m_deleteServersDlg(new DeleteServersDialog(&m_model, this)) {
 
 	setupUi(this);
 
@@ -62,6 +64,7 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 					 SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
 					 this, SLOT(enableRemoveAndOkButton(const QItemSelection &,
 														const QItemSelection &)));
+
 
 	for(int i = 0, j = 0; i < servers.size(); ++i) {
 		const QString &tHost(servers[i].trimmed());
@@ -102,6 +105,10 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 		removeButton->setIcon(QIcon(":/list-remove.png"));
 	}
 
+	if(!deleteServers->icon().hasThemeIcon("user-trash")) {
+		deleteServers->setIcon(QApplication::style()->standardIcon(QStyle::SP_TrashIcon));
+	}
+
 	if(!addButton->icon().hasThemeIcon("list-add")) {
 		addButton->setIcon(QIcon(":/list-add.png"));
 	}
@@ -118,6 +125,9 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeSelected()));
 	QObject::connect(addButton, SIGNAL(clicked()), this, SLOT(addSever()));
 	QObject::connect(this, SIGNAL(refresh()), this, SLOT(checkOnline()));
+	QObject::connect(deleteServers, SIGNAL(clicked()), m_deleteServersDlg, SLOT(show()));
+	QObject::connect(m_deleteServersDlg, SIGNAL(deleteRows(const QList<int> &)),
+					 this, SLOT(deleteRows(const QList<int> &)));
 
 }
 
@@ -130,6 +140,8 @@ ServerDialog::~ServerDialog() {
 
 		delete m_serverInfoThreads[r];
 	}
+
+	delete m_deleteServersDlg;
 }
 
 void ServerDialog::doubleClick() {
@@ -213,6 +225,8 @@ void ServerDialog::resize() {
 	for(int i = 0; i < 3; ++i) {
 		availServerView->resizeColumnToContents(i);
 	}
+
+	deleteServers->setEnabled(m_model.rowCount());
 }
 
 void ServerDialog::checkOnline() {
@@ -287,14 +301,20 @@ void ServerDialog::addSever() {
 }
 
 void ServerDialog::removeSelected() {
+	QList<int> r;
+	r << (availServerView->selectionModel()->selection().indexes().first().row());
+	deleteRows(r);
+}
 
-	QModelIndex selServer(availServerView->selectionModel()->selection().indexes().first());
-	const QList<QStandardItem *> cols(m_model.takeRow(selServer.row()));
+void ServerDialog::deleteRows(const QList<int> &rows) {
 
-	for(int i = 0; i < cols.size(); ++i) delete cols[i];
+	for(int r = rows.size() - 1; r >= 0; --r) {
+		const QList<QStandardItem *> cols(m_model.takeRow(rows[r]));
+		for(int i = 0; i < cols.size(); ++i) delete cols[i];
+	}
 
+	resize();
 	saveServers();
-
 }
 
 void ServerDialog::saveServers() {

@@ -26,6 +26,7 @@
 #include "linkercontrol.h"
 #include "ui_serverdialog.h"
 
+class DeleteServersDialog;
 class IconDelegate;
 class ServerInfo;
 
@@ -34,7 +35,7 @@ class ServerDialog : public QDialog, public Ui::ServerDialog {
 	Q_PROPERTY(bool forceRefresh READ isForceRefresh WRITE forceRefresh NOTIFY refresh)
 public:
 	explicit ServerDialog(QWidget *parent = 0);
-	~ServerDialog();
+	virtual ~ServerDialog();
 
 	QString getAcceptedServer() const;
 	QString getPlayerName() const;
@@ -52,6 +53,7 @@ private slots:
 	void doubleClick();
 	void enableAddButton(const QString &str);
 	void enableRemoveAndOkButton(const QItemSelection &sel, const QItemSelection &desel);
+	void deleteRows(const QList<int> &);
 	void removeSelected();
 	void addSever();
 	void resize();
@@ -65,6 +67,7 @@ private:
 	QStandardItemModel m_model;
 	mutable bool m_forceRefresh;
 	QString m_lastServer;
+	DeleteServersDialog *m_deleteServersDlg;
 };
 
 #endif // SERVERDIALOG_H
