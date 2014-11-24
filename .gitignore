@@ -11,3 +11,4 @@ src/Makefile*
 src/nmm-qt-client*
 src/ui_*.h
 src/object_script.nmm-qt-client*
+src/*.qm

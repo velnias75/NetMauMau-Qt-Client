@@ -27,7 +27,7 @@
 #include "client.h"
 
 namespace {
-const char *NA = "n/a";
+const char *NA = QT_TRANSLATE_NOOP("ServerDialog", "n/a");
 const QRegExp hostRex("^(?=.{1,255}$)[0-9A-Za-z]" \
 					  "(?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?" \
 					  "(?:\\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|-)" \
@@ -42,7 +42,7 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	portSpin->setValue(Client::getDefaultPort());
 
 	QStringList labels;
-	labels << "Server" << "Server version" << "AI" << "Players";
+	labels << tr("Server") << tr("Server version") << tr("AI") << tr("Players");
 
 	hostEdit->setValidator(new QRegExpValidator(hostRex));
 
@@ -70,11 +70,11 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 		const QString &tHost(servers[i].trimmed());
 		if(!tHost.simplified().isEmpty() && hostRex.exactMatch(tHost.left(tHost.indexOf(':')))) {
 			m_model.setItem(j, 0, new QStandardItem(tHost));
-			m_model.setItem(j, 1, new QStandardItem(NA));
+			m_model.setItem(j, 1, new QStandardItem(tr(NA)));
 			m_model.item(j, 1)->setTextAlignment(Qt::AlignCenter);
 			m_model.setItem(j, 2, new QStandardItem());
 			m_model.item(j, 2)->setSizeHint(QSize());
-			m_model.setItem(j, 3, new QStandardItem(NA));
+			m_model.setItem(j, 3, new QStandardItem(tr(NA)));
 			m_model.item(j, 3)->setTextAlignment(Qt::AlignCenter);
 
 			m_serverInfoThreads.push_back(new ServerInfo(&m_model, j));
@@ -167,8 +167,8 @@ void ServerDialog::doubleClick() {
 			if(std::find(pl.begin(), pl.end(),
 						 playerName->text().toUtf8().constData()) != pl.end()) {
 
-				QMessageBox::warning(this, "Connect",
-									 QString("%1 is already in use!").arg(playerName->text()));
+				QMessageBox::warning(this, tr("Connect"),
+									 QString(tr("%1 is already in use!")).arg(playerName->text()));
 
 				playerName->selectAll();
 				playerName->setFocus();
@@ -187,7 +187,7 @@ void ServerDialog::doubleClick() {
 		hide();
 
 	} else {
-		QMessageBox::warning(this, "Connect", "Please fill in player name");
+		QMessageBox::warning(this, tr("Connect"), tr("Please fill in player name"));
 	}
 }
 
@@ -255,8 +255,7 @@ void ServerDialog::updateOnline(bool enabled, int row) {
 	players->setEnabled(enabled);
 
 	if(enabled && server->text() == m_lastServer) {
-		availServerView->selectionModel()->
-				select(m_model.index(row, 0),
+		availServerView->selectionModel()->select(m_model.index(row, 0),
 					   QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
 		emit reconnectAvailable(m_lastServer);
 	}

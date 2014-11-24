@@ -31,10 +31,10 @@ JackChooseDialog::JackChooseDialog(QWidget *p) : QDialog(p) {
 
 QString JackChooseDialog::suitToolTip(NetMauMau::Common::ICard::SUIT s) {
 	switch(s) {
-	case NetMauMau::Common::ICard::HEARTS: return "Hearts";
-	case NetMauMau::Common::ICard::DIAMONDS: return "Diamonds";
-	case NetMauMau::Common::ICard::CLUBS: return "Clubs";
-	default: return "Spades";
+	case NetMauMau::Common::ICard::HEARTS: return tr("Hearts");
+	case NetMauMau::Common::ICard::DIAMONDS: return tr("Diamonds");
+	case NetMauMau::Common::ICard::CLUBS: return tr("Clubs");
+	default: return tr("Spades");
 	}
 }
 

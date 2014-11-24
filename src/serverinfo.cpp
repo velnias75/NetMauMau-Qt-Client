@@ -24,7 +24,7 @@
 #include "client.h"
 
 namespace {
-const char *NA = "n/a";
+const char *NA = QT_TRANSLATE_NOOP("ServerInfo", "n/a");
 }
 
 ServerInfo::ServerInfo(const QStandardItemModel *model, int row, QObject *p) : QThread(p),
@@ -61,21 +61,21 @@ void ServerInfo::run() {
 		version->setText(QString::fromStdString(sVer));
 
 		ai->setCheckState(caps.find("AI_OPPONENT")->second == "true" ? Qt::Checked : Qt::Unchecked);
-		ai->setToolTip(ai->checkState() == Qt::Checked ? QString("You'll play against AI \"%1\"").
-														 arg(QString::fromUtf8(caps.find("AI_NAME")
-																			   ->second.c_str()))
-													   : "The server has only human players");
+		ai->setToolTip(ai->checkState() == Qt::Checked ?
+						   QString(tr("You'll play against AI \"%1\"")).
+						   arg(QString::fromUtf8(caps.find("AI_NAME")->second.c_str()))
+						 : tr("The server has only human players"));
 		players->setText(QString("%1/%2").arg(curPCnt).arg(maxPCnt));
-		players->setToolTip(QString("Waiting for %1 more players").arg(maxPCnt - curPCnt));
+		players->setToolTip(QString(tr("Waiting for %1 more players")).arg(maxPCnt - curPCnt));
 
 		if(Client::parseProtocolVersion(sVer) < Client::getClientProtocolVersion()) {
-			server->setToolTip("The server is too old for this client");
+			server->setToolTip(tr("The server is too old for this client"));
 			emit online(false, m_row);
 			return;
 		}
 
 		if(curPCnt >= maxPCnt) {
-			server->setToolTip("The server accepts no more players");
+			server->setToolTip(tr("The server accepts no more players"));
 			emit online(false, m_row);
 			return;
 		}
@@ -85,16 +85,16 @@ void ServerInfo::run() {
 		qDebug("Server \"%s\" is offline: %s", host.toStdString().c_str(), e.what());
 		ai->setCheckState(Qt::Unchecked);
 		ai->setToolTip("");
-		players->setText(NA);
+		players->setText(tr(NA));
 		players->setToolTip("");
-		version->setText(NA);
+		version->setText(tr(NA));
 		server->setToolTip(QString::fromUtf8(e.what()));
 
 		emit online(false, m_row);
 		return;
 	}
 
-	server->setToolTip("The server is ready and waiting");
+	server->setToolTip(tr("The server is ready and waiting"));
 
 	emit online(true, m_row);
 }

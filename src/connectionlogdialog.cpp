@@ -37,9 +37,6 @@ ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : QDialog(p, Qt::Window),
 	m_ctxPopup->addAction(actionCopy);
 
 	actionCopy->setEnabled(false);
-	//	if(actionCopy->icon().hasThemeIcon("edit-copy")) {
-	//		actionCopy->setIcon(QApplication::style()->standardIcon(QStyle::SP_BrowserReload));
-	//	}
 
 	addAction(actionCopy);
 	QObject::connect(actionCopy, SIGNAL(triggered()), this, SLOT(copyToClipboard()));

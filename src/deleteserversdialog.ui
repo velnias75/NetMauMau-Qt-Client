@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>266</width>
+    <width>320</width>
     <height>250</height>
    </rect>
   </property>
@@ -22,10 +22,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Select servers to &amp;delete:</string>
-       </property>
-       <property name="buddy">
-        <cstring>serversList</cstring>
+        <string>Select servers to delete:</string>
        </property>
       </widget>
      </item>

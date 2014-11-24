@@ -108,7 +108,8 @@ void LaunchServerDialog::updateOptions() {
 }
 
 void LaunchServerDialog::finished(int ec) {
-	if(ec && !m_errFail) QMessageBox::warning(this, "Warning", QString("Failed to start %1").
+	if(ec && !m_errFail) QMessageBox::warning(this, tr("Warning"),
+											  QString(tr("Failed to start %1")).
 											  arg(QString(pathEdit->text()).append(" ")
 												  .append(optionsEdit->text())));
 	m_errFail = false;
@@ -157,7 +158,7 @@ void LaunchServerDialog::launch() {
 
 void LaunchServerDialog::error(QProcess::ProcessError) {
 	m_errFail = true;
-	QMessageBox::critical(this, "Error", QString("Failed to start %1").
+	QMessageBox::critical(this, "Error", QString(tr("Failed to start %1")).
 						  arg(QString(pathEdit->text()).append(" ").append(optionsEdit->text())));
 	emit serverLaunched(false);
 }
@@ -170,7 +171,7 @@ void LaunchServerDialog::browse() {
 	const QString filter("*.exe");
 #endif
 
-	const QString exe(QFileDialog::getOpenFileName(this, "Find NetMauMau server executable",
+	const QString exe(QFileDialog::getOpenFileName(this, tr("Find NetMauMau server executable"),
 												   pathEdit->text().isEmpty() ?
 													   QDir::currentPath() : pathEdit->text(),
 												   filter));

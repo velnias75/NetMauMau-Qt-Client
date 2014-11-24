@@ -19,7 +19,9 @@
 
 #include <QMessageBox>
 
+#include <QLibraryInfo>
 #include <QApplication>
+#include <QTranslator>
 #include <QSettings>
 
 #include "mainwindow.h"
@@ -36,6 +38,21 @@ int main(int argc, char *argv[]) {
 #endif
 
 	QApplication a(argc, argv);
+
+	QTranslator qtTranslator;
+	qtTranslator.load("qt_" + QLocale::system().name(),
+					  QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+	a.installTranslator(&qtTranslator);
+
+#if defined(NDEBUG) && !defined(_WIN32)
+	QString locDir("/usr/share/nmm-qt-client");
+#else
+	QString locDir;
+#endif
+
+	QTranslator myappTranslator;
+	myappTranslator.load("nmm_qt_client_" + QLocale::system().name(), locDir);
+	a.installTranslator(&myappTranslator);
 
 	MainWindow w;
 	w.show();
