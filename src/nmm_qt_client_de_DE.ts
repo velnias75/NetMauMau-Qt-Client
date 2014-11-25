@@ -118,7 +118,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.ui" line="186"/>
+        <location filename="jackchoosedialog.ui" line="180"/>
         <source>&amp;Ok</source>
         <translation></translation>
     </message>
@@ -146,32 +146,32 @@
 <context>
     <name>LaunchServerDialog</name>
     <message>
-        <location filename="launchserverdialog.ui" line="14"/>
+        <location filename="launchserverdialog.ui" line="6"/>
         <source>Launch local server</source>
         <translation>Lokalen Server starten </translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="33"/>
+        <location filename="launchserverdialog.ui" line="25"/>
         <source>Options</source>
         <translation>Optionen</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="42"/>
+        <location filename="launchserverdialog.ui" line="34"/>
         <source>&amp;Players:</source>
         <translation>&amp;Spieler:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="58"/>
+        <location filename="launchserverdialog.ui" line="50"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of players.&lt;/p&gt;&lt;p&gt;If set to &lt;tt&gt;1&lt;/tt&gt; you&apos;ll play against the AI.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Anzahl der Spieler.&lt;/p&gt;&lt;p&gt;Wenn auf &lt;tt&gt;1&lt;/tt&gt; gesetzt, wird gegen den Computer gespielt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="74"/>
+        <location filename="launchserverdialog.ui" line="66"/>
         <source>&amp;Ultimate:</source>
         <translation>&amp;Ultimativ:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="84"/>
+        <location filename="launchserverdialog.ui" line="76"/>
         <source>If checked, the game is finished when the last player has won.
 
 If you have won before the game ended, you&apos;ll watch the game.
@@ -182,88 +182,93 @@ Wenn Du vor dem Spielende gewonnen hast, dann wirst Du das Spiel beobachten.
 Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spieler getrennt. </translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="97"/>
+        <location filename="launchserverdialog.ui" line="89"/>
         <source>&amp;AI name:</source>
         <translation>&amp;KI-Name:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="107"/>
+        <location filename="launchserverdialog.ui" line="99"/>
         <source>The name of the AI player</source>
         <translation>Der Name des KI-Spielers</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="117"/>
+        <location filename="launchserverdialog.ui" line="109"/>
         <source>P&amp;ort:</source>
         <translation>P&amp;ort:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="133"/>
+        <location filename="launchserverdialog.ui" line="125"/>
         <source>The port to run the server on</source>
         <translation>Der Port auf dem der Server laufen soll</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="158"/>
+        <location filename="launchserverdialog.ui" line="150"/>
         <source>Executable</source>
         <translation>Ausführbare Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="167"/>
+        <location filename="launchserverdialog.ui" line="159"/>
         <source>Pat&amp;h:</source>
         <translation>&amp;Pfad:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="182"/>
+        <location filename="launchserverdialog.ui" line="174"/>
         <source>Path to the server executable</source>
         <translation>Pfad zu der auführbaren Datei des Servers</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="201"/>
+        <location filename="launchserverdialog.ui" line="193"/>
         <source>Browse for a path to the server executable</source>
         <translation>Suche nach einen Pfad zu der ausführbaren Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="204"/>
+        <location filename="launchserverdialog.ui" line="196"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="216"/>
+        <location filename="launchserverdialog.ui" line="208"/>
         <source>Op&amp;tions:</source>
         <translation>&amp;Optionen:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="226"/>
+        <location filename="launchserverdialog.ui" line="218"/>
         <source>The options the server will be started with</source>
         <translation>Die Optionen mit denen der Server gestartet wird</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="254"/>
+        <location filename="launchserverdialog.ui" line="228"/>
+        <source>On &amp;startup:</source>
+        <translation>&amp;Beim Start:</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="263"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbruch</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="261"/>
+        <location filename="launchserverdialog.ui" line="270"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to launch the server.&lt;/p&gt;&lt;p&gt;The server will be available at &lt;tt&gt;localhost&lt;/tt&gt; and the given port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Versucht den Server zu starten.&lt;/p&gt;&lt;p&gt;Der Server wird unter &lt;tt&gt;localhost&lt;/tt&gt; und dem angegeben Port verfügbar sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="264"/>
+        <location filename="launchserverdialog.ui" line="273"/>
         <source>&amp;Launch</source>
         <translation>&amp;Starten</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="111"/>
+        <location filename="launchserverdialog.cpp" line="115"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="112"/>
-        <location filename="launchserverdialog.cpp" line="161"/>
+        <location filename="launchserverdialog.cpp" line="116"/>
+        <location filename="launchserverdialog.cpp" line="165"/>
         <source>Failed to start %1</source>
         <translation>Starten von %1 gescheitert</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="174"/>
+        <location filename="launchserverdialog.cpp" line="178"/>
         <source>Find NetMauMau server executable</source>
         <translation>Finde die ausführbare Datei von NetMauMau</translation>
     </message>

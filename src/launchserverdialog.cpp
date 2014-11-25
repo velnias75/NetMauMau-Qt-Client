@@ -34,6 +34,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 
 	QSettings settings;
 	settings.beginGroup("Launcher");
+	launchStartup->setChecked(settings.value("onStartup", false).toBool());
 	playersSpin->setValue(settings.value("playersSpin", 1).toInt());
 	ultimateCheck->setChecked(settings.value("ultimate", true).toBool());
 	aiNameEdit->setText(settings.value("aiName",
@@ -59,12 +60,15 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	m_process.setProcessChannelMode(QProcess::MergedChannels);
 
 	updateOptions();
+
+	if(launchStartup->isChecked()) launch();
 }
 
 LaunchServerDialog::~LaunchServerDialog() {
 
 	QSettings settings;
 	settings.beginGroup("Launcher");
+	settings.setValue("onStartup", launchStartup->isChecked());
 	settings.setValue("playersSpin", playersSpin->value());
 	settings.setValue("ultimate", ultimateCheck->isChecked());
 	settings.setValue("aiName", aiNameEdit->text());
