@@ -475,7 +475,8 @@ void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 	const QString &pickStr(QString(tr("picked up %n card(s)", "", c)));
 
 	if(isMe(p)) {
-		statusBar()->showMessage(QString(tr("You ")) + pickStr);
+		statusBar()->showMessage(QString(tr("You %1").arg(tr("picked up %n card(s)", "playerPick",
+															 c))));
 		m_pickCardPrepended = true;
 	}
 
@@ -502,7 +503,7 @@ void MainWindow::clientPlayerJoined(const QString &p) {
 	si.push_back(new QStandardItem(p));
 	si.push_back(new QStandardItem(QString::null));
 	si.push_back(new QStandardItem(QString(tr("Player <span style=\"color:blue;\">%1</span> "\
-										   "joined the game")).arg(p)));
+											  "joined the game")).arg(p)));
 
 	m_stdForeground = si.back()->foreground();
 	m_stdBackground = si.back()->background();
