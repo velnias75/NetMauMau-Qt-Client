@@ -17,6 +17,8 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QResizeEvent>
+
 #include "cardwidget.h"
 #include "cardpixmap.h"
 #include "cardtools.h"
@@ -86,6 +88,11 @@ void CardWidget::changeEvent(QEvent *e) {
 	if(e->type() == QEvent::EnabledChange) styleCard();
 }
 
+void CardWidget::resizeEvent(QResizeEvent *e) {
+	styleCard();
+	e->accept();
+}
+
 QString CardWidget::tooltipText() const {
 	return tooltipText(getSuit(), getRank());
 }
@@ -131,6 +138,10 @@ void CardWidget::styleCard() {
 	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::ACE;
 
+	QSize siz(iconSize());
+	siz.scale(size() * 0.9f, Qt::KeepAspectRatio);
+	setIconSize(siz.expandedTo(minimumSize()));
+
 	if(NetMauMau::Common::parseCardDesc(cardDesc.constData(), &s, &r)) {
 		setIcon(CardPixmap(iconSize(), s, r));
 	} else {
@@ -140,4 +151,5 @@ void CardWidget::styleCard() {
 	}
 
 	setToolTip(tooltipText());
+	updateGeometry();
 }

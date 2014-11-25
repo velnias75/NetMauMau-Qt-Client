@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>DeleteServersDialog</class>
  <widget class="QDialog" name="DeleteServersDialog">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>320</width>
-    <height>250</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Delete servers</string>
   </property>

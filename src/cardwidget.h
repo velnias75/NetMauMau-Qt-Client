@@ -43,6 +43,7 @@ public:
 
 protected:
 	virtual void changeEvent(QEvent *e);
+	virtual void resizeEvent(QResizeEvent *e);
 
 private:
 	void styleCard();

@@ -45,6 +45,11 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
 	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL), m_possibleCards() {
 
+	setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+	setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+	setCorner(Qt::BottomLeftCorner, Qt::BottomDockWidgetArea);
+	setCorner(Qt::BottomRightCorner, Qt::BottomDockWidgetArea);
+
 	m_ui->setupUi(this);
 
 	if(!m_ui->actionReconnect->icon().hasThemeIcon("go-previous")) {
@@ -652,7 +657,6 @@ void MainWindow::enableMyCards(bool b) {
 	m_noCardPossible = m_possibleCards.empty();
 
 	if(b) {
-
 
 		for(int j = 0; j < m_ui->myCardsLayout->count(); ++j) {
 

@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>ConnectionLogDialog</class>
  <widget class="QDialog" name="ConnectionLogDialog">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>450</width>
-    <height>456</height>
-   </rect>
-  </property>
   <property name="windowTitle">
    <string>Connection Log</string>
   </property>
@@ -75,7 +67,9 @@
   </layout>
   <action name="actionCopy">
    <property name="icon">
-    <iconset theme="edit-copy"/>
+    <iconset theme="edit-copy">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Copy</string>
