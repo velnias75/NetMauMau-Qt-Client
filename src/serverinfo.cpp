@@ -65,8 +65,8 @@ void ServerInfo::run() {
 						   QString(tr("You'll play against AI \"%1\"")).
 						   arg(QString::fromUtf8(caps.find("AI_NAME")->second.c_str()))
 						 : tr("The server has only human players"));
-		players->setText(QString("%1/%2").arg(curPCnt).arg(maxPCnt));
-		players->setToolTip(QString(tr("Waiting for %1 more players")).arg(maxPCnt - curPCnt));
+		players->setText(QString(tr("%1/%2")).arg(curPCnt).arg(maxPCnt));
+		players->setToolTip(QString(tr("Waiting for %n more player(s)", "", (maxPCnt - curPCnt))));
 
 		if(Client::parseProtocolVersion(sVer) < Client::getClientProtocolVersion()) {
 			server->setToolTip(tr("The server is too old for this client"));

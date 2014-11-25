@@ -280,7 +280,7 @@ void MainWindow::serverAccept() {
 		m_ui->takeCardsButton->setStyleSheet(QString::null);
 		m_ui->takeCardsButton->setEnabled(false);
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
-		m_ui->remoteGroup->setTitle(m_ui->remoteGroup->title() + tr(" on ") + as);
+		m_ui->remoteGroup->setTitle(QString(tr("%1 on %2")).arg(m_ui->remoteGroup->title()).arg(as));
 
 		m_connectionLogDlg->clear();
 
@@ -472,7 +472,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 
-	const QString &pickStr(QString(tr("picked up %1 card%2")).arg(c).arg(c != 1 ? tr("s") : ""));
+	const QString &pickStr(QString(tr("picked up %n card(s)", "", c)));
 
 	if(isMe(p)) {
 		statusBar()->showMessage(QString(tr("You ")) + pickStr);
@@ -512,8 +512,7 @@ void MainWindow::clientPlayerJoined(const QString &p) {
 	const long np = static_cast<long>(m_maxPlayerCount) - m_model.rowCount();
 
 	if(np > 0L) {
-		statusBar()->showMessage(QString(tr("Waiting for %1 more player%2...")).arg(np).
-								 arg(np != 1 ? tr("s") : ""));
+		statusBar()->showMessage(QString(tr("Waiting for %n more player(s)...", "", np)));
 	} else {
 		statusBar()->clearMessage();
 	}

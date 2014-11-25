@@ -2,13 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="de_DE">
 <context>
-    <name></name>
-    <message>
-        <source>n/a</source>
-        <translation type="obsolete">k.A.</translation>
-    </message>
-</context>
-<context>
     <name>CardWidget</name>
     <message>
         <location filename="cardwidget.cpp" line="99"/>
@@ -76,7 +69,7 @@
     <message>
         <location filename="connectionlogdialog.ui" line="84"/>
         <source>Ctrl+C</source>
-        <translation type="unfinished">Ctrl+C</translation>
+        <translation>Ctrl+C</translation>
     </message>
 </context>
 <context>
@@ -107,27 +100,27 @@
     <message>
         <location filename="jackchoosedialog.ui" line="57"/>
         <source>Alt+3</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="jackchoosedialog.ui" line="88"/>
         <source>Alt+4</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="jackchoosedialog.ui" line="116"/>
         <source>Alt+1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="jackchoosedialog.ui" line="147"/>
         <source>Alt+2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="jackchoosedialog.ui" line="186"/>
         <source>&amp;Ok</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="jackchoosedialog.cpp" line="34"/>
@@ -201,7 +194,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="launchserverdialog.ui" line="117"/>
         <source>P&amp;ort:</source>
-        <translation type="unfinished">P&amp;ort:</translation>
+        <translation>P&amp;ort:</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="133"/>
@@ -216,7 +209,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="launchserverdialog.ui" line="167"/>
         <source>Pat&amp;h:</source>
-        <translation>&amp;Pfad</translation>
+        <translation>&amp;Pfad:</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="182"/>
@@ -231,7 +224,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="launchserverdialog.ui" line="204"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="216"/>
@@ -292,7 +285,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="44"/>
-        <location filename="mainwindow.cpp" line="746"/>
+        <location filename="mainwindow.cpp" line="745"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
@@ -338,7 +331,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="297"/>
-        <location filename="mainwindow.cpp" line="854"/>
+        <location filename="mainwindow.cpp" line="853"/>
         <source>Local player</source>
         <translation>Lokaler Spieler</translation>
     </message>
@@ -406,7 +399,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.ui" line="525"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished">Ctrl+S</translation>
+        <translation>Ctrl+S</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="535"/>
@@ -416,7 +409,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.ui" line="538"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished">Ctrl+Q</translation>
+        <translation>Ctrl+Q</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="546"/>
@@ -446,7 +439,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.ui" line="578"/>
         <source>Ctrl+R</source>
-        <translation type="unfinished">Ctrl+R</translation>
+        <translation>Ctrl+R</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="586"/>
@@ -456,7 +449,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.ui" line="589"/>
         <source>Ctrl+L</source>
-        <translation type="unfinished">Ctrl+L</translation>
+        <translation>Ctrl+L</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="597"/>
@@ -471,7 +464,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.ui" line="603"/>
         <source>Ctrl+X</source>
-        <translation type="unfinished">Ctrl+X</translation>
+        <translation>Ctrl+X</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="614"/>
@@ -481,7 +474,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.ui" line="617"/>
         <source>Ctrl+O</source>
-        <translation type="unfinished">Ctrl+O</translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="82"/>
@@ -500,8 +493,9 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.cpp" line="283"/>
-        <source> on </source>
-        <translation> auf </translation>
+        <source>%1 on %2</source>
+        <oldsource> on </oldsource>
+        <translation>%1 auf %2</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="290"/>
@@ -573,16 +567,14 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <source>&lt;font color=&quot;blue&quot;&gt;%1&lt;/font&gt; has won!</source>
         <translation>&lt;font color=&quot;blue&quot;&gt;%1&lt;/font&gt; hat gewonnen!</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="mainwindow.cpp" line="475"/>
-        <source>picked up %1 card%2</source>
-        <translation>hat %1 Karte%2 gezogen</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="475"/>
-        <location filename="mainwindow.cpp" line="516"/>
-        <source>s</source>
-        <translation>n</translation>
+        <source>picked up %n card(s)</source>
+        <oldsource>picked up %1 card%2</oldsource>
+        <translation>
+            <numerusform>hat %n Karte gezogen</numerusform>
+            <numerusform>hat %n Karten gezogen</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="478"/>
@@ -599,27 +591,24 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <source>Player &lt;span style=&quot;color:blue;&quot;&gt;%1&lt;/span&gt; joined the game</source>
         <translation>Spieler &lt;span style=&quot;color:blue;&quot;&gt;%1&lt;/span&gt; ist dem Spiel beigetreten</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="mainwindow.cpp" line="515"/>
-        <source>Waiting for %1 more player%2...</source>
-        <translation>Warte auf %1 weitere Spieler...</translation>
+        <source>Waiting for %n more player(s)...</source>
+        <oldsource>Waiting for %1 more player%2...</oldsource>
+        <translation>
+            <numerusform>Warte auf %n weiteren Spieler...</numerusform>
+            <numerusform>Warte auf %n weitere Spieler...</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="550"/>
+        <location filename="mainwindow.cpp" line="549"/>
         <source>Play your card...</source>
         <translation>Lege Deine Karte...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="765"/>
+        <location filename="mainwindow.cpp" line="764"/>
         <source>Reconnect to </source>
         <translation>Verbinde wieder zu </translation>
-    </message>
-</context>
-<context>
-    <name>NA</name>
-    <message>
-        <source>n/a</source>
-        <translation type="obsolete">k.A.</translation>
     </message>
 </context>
 <context>
@@ -692,7 +681,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="serverdialog.cpp" line="30"/>
         <source>n/a</source>
-        <translation>k.A.</translation>
+        <translation>n.V.</translation>
     </message>
     <message>
         <location filename="serverdialog.cpp" line="45"/>
@@ -736,7 +725,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="serverinfo.cpp" line="27"/>
         <source>n/a</source>
-        <translation>k.A.</translation>
+        <translation>n.V.</translation>
     </message>
     <message>
         <location filename="serverinfo.cpp" line="65"/>
@@ -749,9 +738,18 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>Auf dem Server befinden sich nur menschliche Spieler</translation>
     </message>
     <message>
+        <location filename="serverinfo.cpp" line="68"/>
+        <source>%1/%2</source>
+        <translation>%1/%2</translation>
+    </message>
+    <message numerus="yes">
         <location filename="serverinfo.cpp" line="69"/>
-        <source>Waiting for %1 more players</source>
-        <translation>Warte auf %1 weitere Spieler</translation>
+        <source>Waiting for %n more player(s)</source>
+        <oldsource>Waiting for %1 more players</oldsource>
+        <translation>
+            <numerusform>Warte auf %n weiteren Spieler</numerusform>
+            <numerusform>Warte auf %n weitere Spieler</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="serverinfo.cpp" line="72"/>
