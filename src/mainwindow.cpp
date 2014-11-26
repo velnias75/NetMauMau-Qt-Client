@@ -43,7 +43,8 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
 	m_gameOver(false), m_appendPlayerStat(), m_noCardPossible(false),
 	m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
-	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL), m_possibleCards() {
+	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL), m_possibleCards(), m_playerCardCounts(),
+	m_ocPm() {
 
 	m_ui->setupUi(this);
 
@@ -259,6 +260,7 @@ void MainWindow::serverAccept() {
 						 this, SLOT(setOpenCard(const QByteArray &)));
 		QObject::connect(m_client, SIGNAL(cOpenCard(const QByteArray &, const QString &)),
 						 this, SLOT(clientOpenCard(const QByteArray &, const QString &)));
+		QObject::connect(m_client, SIGNAL(ctalonShuffled()), this, SLOT(clientTalonShuffled()));
 		QObject::connect(m_client, SIGNAL(cCardRejected(QString, const QByteArray &)),
 						 this, SLOT(clientCardRejected(QString, const QByteArray &)));
 		QObject::connect(m_client, SIGNAL(cCardAccepted(const QByteArray &)),
@@ -328,11 +330,11 @@ void MainWindow::clientCardSet(const Client::CARDS &c) {
 		}
 	}
 
-	sortMyCards(m_ui->noSort->isChecked() ? NO_SORT :
-											(m_ui->sortSuitRank->isChecked() ?
-												 SUIT_RANK : RANK_SUIT));
+	sortMyCards(m_ui->noSort->isChecked() ? NO_SORT : (m_ui->sortSuitRank->isChecked() ?
+														   SUIT_RANK : RANK_SUIT));
 
-	updatePlayerStat(QString::fromUtf8(m_client->getPlayerName().c_str()), m_cards.size());
+	updatePlayerStat(QString::fromUtf8(m_client->getPlayerName().c_str()));
+
 	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
 }
 
@@ -369,13 +371,33 @@ void MainWindow::clientTurn(std::size_t t) {
 
 void MainWindow::clientStats(const Client::STATS &s) {
 	for(Client::STATS::const_iterator i(s.begin()); i != s.end(); ++i) {
-		updatePlayerStat(QString::fromUtf8(i->playerName.c_str()), i->cardCount);
+		const QString &pName(QString::fromUtf8(i->playerName.c_str()));
+		if(!isMe(pName)) m_playerCardCounts.insert(pName, i->cardCount);
+		updatePlayerStat(pName);
 	}
 }
 
 void  MainWindow::clientOpenCard(const QByteArray &c, const QString &jackSuit) {
 	setOpenCard(c);
 	m_ui->jackSuit->setProperty("suitDescription", jackSuit.toUtf8());
+}
+
+void MainWindow::clientTalonShuffled() {
+
+	m_ocPm = *m_ui->openCard->pixmap();
+
+	setOpenCard("");
+	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
+	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
+	setOpenCard("");
+	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
+	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
+	setOpenCard("");
+	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
+}
+
+void MainWindow::resetOCPixmap() {
+	m_ui->openCard->setPixmap(m_ocPm);
 }
 
 void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
@@ -398,7 +420,7 @@ void MainWindow::clientCardAccepted(const QByteArray &) {
 }
 
 void MainWindow::clientPlayerSuspends(const QString &p) {
-	updatePlayerStat(p, -1, tr("suspended the turn"));
+	updatePlayerStat(p, tr("suspended the turn"));
 	if(m_model.rowCount() == 2) m_appendPlayerStat.push_back(p);
 }
 
@@ -408,8 +430,8 @@ bool MainWindow::isMe(const QString &player) const {
 
 void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
 
-	updatePlayerStat(p, -1, QString(tr("<span style=\"color:blue;\">lost</span> in turn %1"))
-					 .arg(t), true, true);
+	updatePlayerStat(p, QString(tr("<span style=\"color:blue;\">lost</span> in turn %1")).arg(t),
+					 true, true);
 
 	if(isMe(p)) {
 
@@ -422,6 +444,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
 
 		lost.setWindowIcon(icon);
 		lost.setWindowTitle(tr("Sorry"));
+		lost.setWindowModality(Qt::ApplicationModal);
 		lost.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
 		lost.setText(tr("You have lost!"));
 
@@ -436,7 +459,9 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
 
 void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
-	updatePlayerStat(p, 0, QString(tr("<span style=\"color:blue;\">wins</span> in turn %1")).arg(t),
+	m_playerCardCounts[p] = 0;
+
+	updatePlayerStat(p, QString(tr("<span style=\"color:blue;\">wins</span> in turn %1")).arg(t),
 					 true, true);
 
 	if(!isMe(p)) statusBar()->showMessage(QString(tr("%1 wins!")).arg(p), 10000);
@@ -447,6 +472,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 		QIcon icon;
 
 		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
+		gameOver.setWindowModality(Qt::ApplicationModal);
 		gameOver.setWindowIcon(icon);
 
 		if(isMe(p)) {
@@ -460,6 +486,8 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 			gameOver.exec();
 
+			clearStats();
+
 		} else if(m_model.rowCount() <= 2) {
 
 			gameOver.setWindowTitle("Sorry");
@@ -468,7 +496,6 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 			gameOver.setText(QString(tr("<font color=\"blue\">%1</font> has won!")).arg(p));
 
 			gameOver.exec();
-
 		}
 
 	} else {
@@ -484,9 +511,12 @@ void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 		statusBar()->showMessage(QString(tr("You %1").arg(tr("picked up %n card(s)",
 															 "playerPick", c))));
 		m_pickCardPrepended = true;
-	}
 
-	updatePlayerStat(p, -1, pickStr);
+	} /*else {
+		m_playerCardCounts[p] += c;
+	}*/
+
+	updatePlayerStat(p, pickStr);
 	m_appendPlayerStat.push_back(p);
 }
 
@@ -496,7 +526,9 @@ void MainWindow::clientPlayedCard(const QString &player, const QByteArray &card)
 
 	if(append) m_appendPlayerStat.removeAll(player);
 
-	updatePlayerStat(player, -1, QString(tr("plays %1")).arg(QString::fromUtf8(card.constData())),
+	//	if(!isMe(player)) --m_playerCardCounts[player];
+
+	updatePlayerStat(player, QString(tr("plays %1")).arg(QString::fromUtf8(card.constData())),
 					 append);
 
 	setOpenCard(card);
@@ -507,7 +539,8 @@ void MainWindow::clientPlayerJoined(const QString &p) {
 	QList<QStandardItem *> si;
 
 	si.push_back(new QStandardItem(p));
-	si.push_back(new QStandardItem(QString::null));
+	si.push_back(new QStandardItem("5"));
+	si.back()->setTextAlignment(Qt::AlignCenter);
 	si.push_back(new QStandardItem(QString(tr("Player <span style=\"color:blue;\">%1</span> "\
 											  "joined the game")).arg(p)));
 
@@ -614,7 +647,7 @@ void MainWindow::cardChosen(CardWidget *c) {
 		m_ui->myCardsLayout->removeWidget(m_lastPlayedCard);
 	}
 
-	updatePlayerStat(QString::fromUtf8(m_client->getPlayerName().c_str()), m_cards.size());
+	updatePlayerStat(QString::fromUtf8(m_client->getPlayerName().c_str()));
 	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
 }
 
@@ -686,8 +719,8 @@ void MainWindow::enableMyCards(bool b) {
 	}
 }
 
-void MainWindow::updatePlayerStat(const QString &player, std::size_t count, const QString &mesg,
-								  bool append, bool disable) {
+void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bool append,
+								  bool disable) {
 
 	const QList<QStandardItem *> &ml(m_model.findItems(player));
 
@@ -699,17 +732,25 @@ void MainWindow::updatePlayerStat(const QString &player, std::size_t count, cons
 
 		cnt->setTextAlignment(Qt::AlignCenter);
 
-		if(count < 2) {
-			cnt->setText(QString("<span style=\"color:red;\"><b>Mau%1</b></span>")
-						 .arg(count == 0 ? " Mau" : ""));
+		if(isMe(player) || m_playerCardCounts.contains(player)) {
 
-			if(!isMe(player)) {
-				QApplication::beep();
-				if(count == 0) QApplication::beep();
+			const std::size_t count = isMe(player) ? m_cards.count() : m_playerCardCounts[player];
+
+			if(count < 2) {
+				cnt->setText(QString("<span style=\"color:red;\"><b>Mau%1</b></span>")
+							 .arg(count == 0 ? " Mau" : ""));
+
+				if(!isMe(player)) {
+					QApplication::beep();
+					if(count == 0) QApplication::beep();
+				}
+
+				cnt->setToolTip(tr("%n card(s)", "", count));
+
+			} else {
+				cnt->setText(QString::number(count));
+				cnt->setToolTip(tr("%n card(s)", "", count));
 			}
-
-		} else if(count != static_cast<std::size_t>(-1)) {
-			cnt->setText(QString("%1").arg(count));
 		}
 
 		m_ui->remotePlayersView->resizeColumnToContents(1);
@@ -756,6 +797,8 @@ void MainWindow::destroyClient() {
 }
 
 void MainWindow::clearStats() {
+
+	m_playerCardCounts.clear();
 
 	m_model.removeRows(0, m_model.rowCount());
 

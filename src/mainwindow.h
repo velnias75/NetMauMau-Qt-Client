@@ -75,6 +75,7 @@ private slots:
 	void clientTurn(std::size_t);
 	void clientStats(const Client::STATS &);
 	void clientOpenCard(const QByteArray &, const QString &);
+	void clientTalonShuffled();
 	void clientCardRejected(const QString &, const QByteArray &);
 	void clientCardAccepted(const QByteArray &);
 	void clientPlayerJoined(const QString &);
@@ -94,15 +95,15 @@ private slots:
 	void sortMyCards(SORTMODE mode);
 	void filterMyCards(bool);
 	void setOpenCard(const QByteArray &);
+	void resetOCPixmap();
 
 private:
 	bool isMe(const QString &player) const;
 
 	void enableMyCards(bool b);
 	void clearMyCards(bool del, bool dis = true);
-	void updatePlayerStat(const QString &player, std::size_t count,
-						  const QString &msg = QString::null, bool append = false,
-						  bool disable = false);
+	void updatePlayerStat(const QString &player, const QString &msg = QString::null,
+						  bool append = false, bool disable = false);
 
 	QString reconnectToolTip() const;
 
@@ -134,6 +135,8 @@ private:
 	NetMauMau::Common::ICard::SUIT m_cTakeSuit;
 	NetMauMau::Common::ICard::SUIT m_takenSuit;
 	Client::CARDS m_possibleCards;
+	QMap<QString, std::size_t> m_playerCardCounts;
+	QPixmap m_ocPm;
 };
 
 #endif // MAINWINDOW_H

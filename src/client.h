@@ -95,6 +95,7 @@ signals:
 	void cEnableSuspend(bool) const;
 	void cInitialCard(const QByteArray &) const;
 	void cOpenCard(const QByteArray &, const QString &) const;
+	void ctalonShuffled() const;
 	void cCardRejected(const QString &, const QByteArray &) const;
 	void cCardAccepted(const QByteArray &) const;
 	void cJackSuit(NetMauMau::Common::ICard::SUIT) const;

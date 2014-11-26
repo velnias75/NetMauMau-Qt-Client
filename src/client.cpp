@@ -234,6 +234,7 @@ void Client::openCard(const NetMauMau::Common::ICard *card, const std::string &j
 
 void Client::talonShuffled() const {
 	log("talonShuffled()");
+	emit ctalonShuffled();
 }
 
 void Client::cardRejected(const std::string &player, const NetMauMau::Common::ICard *card) const {
