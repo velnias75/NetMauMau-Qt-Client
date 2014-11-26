@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>535</height>
+    <height>546</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -108,14 +108,6 @@
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1000</width>
-     <height>21</height>
-    </rect>
-   </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>&amp;File</string>
@@ -281,7 +273,7 @@
    <property name="minimumSize">
     <size>
      <width>1000</width>
-     <height>212</height>
+     <height>227</height>
     </size>
    </property>
    <property name="font">
@@ -315,7 +307,7 @@
     <property name="minimumSize">
      <size>
       <width>1000</width>
-      <height>190</height>
+      <height>200</height>
      </size>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
