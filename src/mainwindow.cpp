@@ -471,6 +471,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		}
 
+	} else {
 		clearStats();
 	}
 }
@@ -480,8 +481,8 @@ void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 	const QString &pickStr(QString(tr("picked up %n card(s)", "", c)));
 
 	if(isMe(p)) {
-		statusBar()->showMessage(QString(tr("You %1").arg(tr("picked up %n card(s)", "playerPick",
-															 c))));
+		statusBar()->showMessage(QString(tr("You %1").arg(tr("picked up %n card(s)",
+															 "playerPick", c))));
 		m_pickCardPrepended = true;
 	}
 
