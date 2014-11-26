@@ -289,195 +289,195 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>NetMauMau Klient</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="50"/>
+        <location filename="mainwindow.ui" line="53"/>
         <location filename="mainwindow.cpp" line="750"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="118"/>
+        <location filename="mainwindow.ui" line="121"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="129"/>
+        <location filename="mainwindow.ui" line="132"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="136"/>
+        <location filename="mainwindow.ui" line="139"/>
         <source>&amp;View</source>
         <translation>&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="148"/>
+        <location filename="mainwindow.ui" line="151"/>
         <source>Toolbar</source>
         <translation>Werkzeugleiste</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="181"/>
+        <location filename="mainwindow.ui" line="184"/>
         <source>Talon</source>
         <translation>Stapel</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="196"/>
+        <location filename="mainwindow.ui" line="199"/>
         <source>Turn</source>
         <translation>Zug</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="220"/>
+        <location filename="mainwindow.ui" line="223"/>
         <source>Open card</source>
         <translation>Aufg. Karte</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="248"/>
+        <location filename="mainwindow.ui" line="251"/>
         <source>Jack</source>
         <translation>Farbe</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="291"/>
-        <location filename="mainwindow.cpp" line="858"/>
+        <location filename="mainwindow.ui" line="300"/>
+        <location filename="mainwindow.cpp" line="845"/>
         <source>Local player</source>
         <translation>Lokaler Spieler</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="315"/>
-        <location filename="mainwindow.ui" line="321"/>
+        <location filename="mainwindow.ui" line="336"/>
+        <location filename="mainwindow.ui" line="342"/>
         <source>My cards</source>
         <translation>Meine Karten</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="378"/>
+        <location filename="mainwindow.ui" line="385"/>
         <source>No s&amp;ort</source>
         <translation>Keine &amp;Sortierung</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="394"/>
+        <location filename="mainwindow.ui" line="401"/>
         <source>S&amp;uit/Rank</source>
         <translation>&amp;Farbe/Wert</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="413"/>
+        <location filename="mainwindow.ui" line="420"/>
         <source>&amp;Rank/Suit</source>
         <translation>&amp;Wert/Farbe</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="429"/>
+        <location filename="mainwindow.ui" line="436"/>
         <source>Disable cards which aren&apos;t possible to play</source>
         <translation>Graue Karten aus, die nicht spielbar sind</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="432"/>
+        <location filename="mainwindow.ui" line="439"/>
         <source>F&amp;ilter</source>
         <translation>&amp;Filtere aus</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="461"/>
+        <location filename="mainwindow.ui" line="468"/>
         <source>Take cards first and choose</source>
         <translation>Ziehe zuerst eine Karte und lege dann</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="464"/>
+        <location filename="mainwindow.ui" line="471"/>
         <source>&amp;Take</source>
         <translation>&amp;Ziehe</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="477"/>
+        <location filename="mainwindow.ui" line="484"/>
         <source>Suspend your turn and take one card</source>
         <translation>Setze diesen Zug aus und ziehe eine Karte</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="480"/>
+        <location filename="mainwindow.ui" line="487"/>
         <source>&amp;Suspend</source>
         <translation>A&amp;ussetzen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="498"/>
+        <location filename="mainwindow.ui" line="505"/>
         <source>&amp;Servers...</source>
         <translation>&amp;Server...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="501"/>
+        <location filename="mainwindow.ui" line="508"/>
         <source>Show available servers</source>
         <translation>Zeige verfügbare Server</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="504"/>
+        <location filename="mainwindow.ui" line="511"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="514"/>
+        <location filename="mainwindow.ui" line="521"/>
         <source>E&amp;xit</source>
         <translation>B&amp;eenden</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="517"/>
+        <location filename="mainwindow.ui" line="524"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="525"/>
+        <location filename="mainwindow.ui" line="532"/>
         <source>About &amp;Qt</source>
         <translation>Über &amp;Qt</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="528"/>
+        <location filename="mainwindow.ui" line="535"/>
         <source>Show the Qt library&apos;s About box</source>
         <translation>Zeige den Über-Dialog von Qt</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="538"/>
+        <location filename="mainwindow.ui" line="545"/>
         <source>&amp;About %1</source>
         <translation>Ü&amp;ber %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="551"/>
+        <location filename="mainwindow.ui" line="558"/>
         <source>Re&amp;connect</source>
         <translation>&amp;Wiederverbinden</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="554"/>
+        <location filename="mainwindow.ui" line="561"/>
         <source>Reconnect to last server</source>
         <translation>Verbinde zum zuletzt genutzen Server</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="557"/>
+        <location filename="mainwindow.ui" line="564"/>
         <source>Ctrl+R</source>
         <translation>Ctrl+R</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="565"/>
+        <location filename="mainwindow.ui" line="572"/>
         <source>Connection &amp;log...</source>
         <translation>&amp;Verbindungslog...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="568"/>
+        <location filename="mainwindow.ui" line="575"/>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="576"/>
+        <location filename="mainwindow.ui" line="583"/>
         <source>&amp;Launch local server...</source>
         <translation>&amp;Lokalen Server starten... </translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="579"/>
+        <location filename="mainwindow.ui" line="586"/>
         <source>Launch a local server</source>
         <translation>Lokalen Server starten </translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="582"/>
+        <location filename="mainwindow.ui" line="589"/>
         <source>Ctrl+X</source>
         <translation>Ctrl+X</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="593"/>
+        <location filename="mainwindow.ui" line="600"/>
         <source>&amp;NetMauMau server output...</source>
         <translation>&amp;NetMauMau Serverausgabe...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="596"/>
+        <location filename="mainwindow.ui" line="603"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
@@ -718,18 +718,18 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="170"/>
-        <location filename="serverdialog.cpp" line="190"/>
+        <location filename="serverdialog.cpp" line="174"/>
+        <location filename="serverdialog.cpp" line="194"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="171"/>
+        <location filename="serverdialog.cpp" line="175"/>
         <source>%1 is already in use!</source>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="190"/>
+        <location filename="serverdialog.cpp" line="194"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>

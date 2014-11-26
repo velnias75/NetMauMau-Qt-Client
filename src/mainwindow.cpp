@@ -45,12 +45,12 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
 	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL), m_possibleCards() {
 
-	setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
-	setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+	m_ui->setupUi(this);
+
+	setCorner(Qt::TopLeftCorner, Qt::TopDockWidgetArea);
+	setCorner(Qt::TopRightCorner, Qt::TopDockWidgetArea);
 	setCorner(Qt::BottomLeftCorner, Qt::BottomDockWidgetArea);
 	setCorner(Qt::BottomRightCorner, Qt::BottomDockWidgetArea);
-
-	m_ui->setupUi(this);
 
 	if(!m_ui->actionReconnect->icon().hasThemeIcon("go-previous")) {
 		m_ui->actionReconnect->setIcon(QIcon(":/go-previous.png"));
@@ -785,12 +785,9 @@ void MainWindow::writeSettings() {
 	QSettings settings;
 
 	settings.beginGroup("MainWindow");
-	settings.setValue("size", size());
-	settings.setValue("pos", pos());
-	settings.setValue("toolBar", m_ui->toolBar->isVisible());
-	settings.setValue("toolBar_pos", toolBarArea(m_ui->toolBar));
-	settings.setValue("cardsDock", dockWidgetArea(m_ui->cardsTurnDock));
-	settings.setValue("localPlayerDock", dockWidgetArea(m_ui->localPlayerDock));
+
+	settings.setValue("geometry", saveGeometry());
+	settings.setValue("windowState", saveState());
 
 	if(m_ui->sortSuitRank->isChecked()) {
 		settings.setValue("sortMode", static_cast<uint>(SUIT_RANK));
@@ -829,10 +826,9 @@ void MainWindow::readSettings() {
 	QSettings settings;
 
 	settings.beginGroup("MainWindow");
-	resize(settings.value("size", size()).toSize());
-	move(settings.value("pos", pos()).toPoint());
 
-	m_ui->toolBar->setVisible(settings.value("toolBar", QVariant(true)).toBool());
+	restoreGeometry(settings.value("geometry").toByteArray());
+	restoreState(settings.value("windowState").toByteArray());
 
 	switch(static_cast<SORTMODE>(settings.value("sortMode",
 												QVariant(static_cast<uint>(SUIT_RANK))).toUInt())) {
@@ -843,15 +839,6 @@ void MainWindow::readSettings() {
 
 	m_ui->filterCards->setChecked(settings.value("filterCards", QVariant(false)).toBool());
 
-	addToolBar(static_cast<Qt::ToolBarArea>(settings.value("toolBar_pos",
-														   Qt::TopToolBarArea).toInt()),
-			   m_ui->toolBar);
-	addDockWidget(static_cast<Qt::DockWidgetArea>(settings.value("cardsDock",
-																 Qt::LeftDockWidgetArea).toInt()),
-				  m_ui->cardsTurnDock);
-	addDockWidget(static_cast<Qt::DockWidgetArea>(settings.value("localPlayerDock",
-																 Qt::BottomDockWidgetArea).toInt()),
-				  m_ui->localPlayerDock);
 	settings.endGroup();
 
 	settings.beginGroup("Player");

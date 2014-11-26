@@ -89,7 +89,7 @@ void CardWidget::changeEvent(QEvent *e) {
 }
 
 void CardWidget::resizeEvent(QResizeEvent *e) {
-	styleCard();
+	if(e->oldSize() != e->size()) styleCard();
 	e->accept();
 }
 
@@ -138,7 +138,7 @@ void CardWidget::styleCard() {
 	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::ACE;
 
-	QSize siz(iconSize());
+	QSize siz(QSize(140, 190));
 	siz.scale(size() * 0.9f, Qt::KeepAspectRatio);
 	setIconSize(siz.expandedTo(minimumSize()));
 

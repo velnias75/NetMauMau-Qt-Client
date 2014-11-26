@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>550</height>
+    <height>535</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,7 +37,10 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
     <item>
      <widget class="QGroupBox" name="remoteGroup">
       <property name="minimumSize">
@@ -269,10 +272,16 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="localPlayerDock">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="minimumSize">
     <size>
-     <width>186</width>
-     <height>190</height>
+     <width>1000</width>
+     <height>212</height>
     </size>
    </property>
    <property name="font">
@@ -297,9 +306,21 @@
     <property name="enabled">
      <bool>false</bool>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>1000</width>
+      <height>190</height>
+     </size>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="sizeConstraint">
-      <enum>QLayout::SetNoConstraint</enum>
+      <enum>QLayout::SetMinimumSize</enum>
      </property>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -336,26 +357,12 @@
              <set>Qt::AlignCenter</set>
             </property>
             <widget class="QWidget" name="awidget">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>886</width>
-               <height>140</height>
-              </rect>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>140</height>
-              </size>
-             </property>
              <layout class="QHBoxLayout" name="myCardsLayout">
-              <property name="spacing">
-               <number>5</number>
-              </property>
               <property name="sizeConstraint">
                <enum>QLayout::SetMinAndMaxSize</enum>
+              </property>
+              <property name="margin">
+               <number>4</number>
               </property>
              </layout>
             </widget>

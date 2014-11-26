@@ -70,12 +70,16 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 		const QString &tHost(servers[i].trimmed());
 		if(!tHost.simplified().isEmpty() && hostRex.exactMatch(tHost.left(tHost.indexOf(':')))) {
 			m_model.setItem(j, 0, new QStandardItem(tHost));
+			m_model.item(j, 0)->setEnabled(false);
 			m_model.setItem(j, 1, new QStandardItem(tr(NA)));
 			m_model.item(j, 1)->setTextAlignment(Qt::AlignCenter);
+			m_model.item(j, 1)->setEnabled(false);
 			m_model.setItem(j, 2, new QStandardItem());
 			m_model.item(j, 2)->setSizeHint(QSize());
+			m_model.item(j, 2)->setEnabled(false);
 			m_model.setItem(j, 3, new QStandardItem(tr(NA)));
 			m_model.item(j, 3)->setTextAlignment(Qt::AlignCenter);
+			m_model.item(j, 3)->setEnabled(false);
 
 			m_serverInfoThreads.push_back(new ServerInfo(&m_model, j));
 			QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool, int)),
