@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>ConnectionLogDialog</class>
  <widget class="QDialog" name="ConnectionLogDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>256</width>
+    <height>192</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Connection Log</string>
   </property>
@@ -75,7 +83,7 @@
     <string>&amp;Copy</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+C</string>
+    <string notr="true">Ctrl+C</string>
    </property>
   </action>
  </widget>

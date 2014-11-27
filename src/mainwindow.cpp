@@ -41,10 +41,11 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
-	m_gameOver(false), m_appendPlayerStat(), m_noCardPossible(false),
+	m_appendPlayerStat(), m_noCardPossible(false),
 	m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
-	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL), m_possibleCards(), m_playerCardCounts(),
-	m_ocPm() {
+	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
+	m_possibleCards(), m_playerCardCounts(), m_ocPm(), m_lostWonConfirmed(false),
+	m_clientDestroyRequested(false), m_countWonDisplayed(0) {
 
 	m_ui->setupUi(this);
 
@@ -125,7 +126,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 MainWindow::~MainWindow() {
 
 	clearMyCards(true);
-	destroyClient();
+	destroyClient(true);
 
 	delete m_ui;
 	delete m_lsov;
@@ -214,8 +215,6 @@ void MainWindow::serverAccept() {
 	const QString &as(sd->getAcceptedServer());
 	const int p = as.indexOf(':');
 
-	m_gameOver = false;
-
 	clearStats();
 
 	m_cTakeSuit = m_takenSuit = NetMauMau::Common::ICard::SUIT_ILLEGAL;
@@ -256,6 +255,7 @@ void MainWindow::serverAccept() {
 		QObject::connect(m_client, SIGNAL(cStats(const Client::STATS &)),
 						 this, SLOT(clientStats(const Client::STATS &)));
 		QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(destroyClient()));
+		QObject::connect(this, SIGNAL(confirmLostWon()), this, SLOT(lostWinConfirmed()));
 		QObject::connect(m_client, SIGNAL(cInitialCard(const QByteArray &)),
 						 this, SLOT(setOpenCard(const QByteArray &)));
 		QObject::connect(m_client, SIGNAL(cOpenCard(const QByteArray &, const QString &)),
@@ -307,7 +307,7 @@ void MainWindow::clientMessage(const QString &msg) {
 
 void MainWindow::clientError(const QString &err) {
 
-	destroyClient();
+	destroyClient(true);
 
 	if(QMessageBox::critical(this, tr("Server Error"), err, QMessageBox::Retry|QMessageBox::Cancel,
 							 QMessageBox::Retry) == QMessageBox::Retry) emit serverAccept();
@@ -435,8 +435,6 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
 
 	if(isMe(p)) {
 
-		m_gameOver = true;
-
 		QMessageBox lost;
 		QIcon icon;
 
@@ -450,7 +448,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
 
 		lost.exec();
 
-		clearStats();
+		emit confirmLostWon();
 
 	} else {
 		statusBar()->showMessage(QString(tr("%1 lost!")).arg(p), 10000);
@@ -466,40 +464,36 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 	if(!isMe(p)) statusBar()->showMessage(QString(tr("%1 wins!")).arg(p), 10000);
 
-	if(!m_gameOver) {
+	QMessageBox gameOver;
+	QIcon icon;
 
-		QMessageBox gameOver;
-		QIcon icon;
+	icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
+	gameOver.setWindowModality(Qt::ApplicationModal);
+	gameOver.setWindowIcon(icon);
 
-		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
-		gameOver.setWindowModality(Qt::ApplicationModal);
-		gameOver.setWindowIcon(icon);
+	if(isMe(p)) {
 
-		if(isMe(p)) {
+		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
+												QIcon(":/smile.png")).pixmap(48, 48));
+		gameOver.setWindowTitle(tr("Congratulations"));
+		gameOver.setText(tr("You have won!"));
 
-			m_gameOver = true;
+		gameOver.exec();
 
-			gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
-													QIcon(":/smile.png")).pixmap(48, 48));
-			gameOver.setWindowTitle(tr("Congratulations"));
-			gameOver.setText(tr("You have won!"));
+		emit confirmLostWon();
 
-			gameOver.exec();
+	} else if(m_model.rowCount() > 2 && (m_countWonDisplayed < m_model.rowCount() - 2)) {
 
-			clearStats();
+		gameOver.setWindowTitle(tr("Sorry"));
+		gameOver.setIconPixmap(QIcon::fromTheme("face-plain",
+												QIcon(":/plain.png")).pixmap(48, 48));
+		gameOver.setText(QString(tr("<font color=\"blue\">%1</font> has won!")).arg(p));
 
-		} else if(m_model.rowCount() <= 2) {
+		gameOver.exec();
 
-			gameOver.setWindowTitle("Sorry");
-			gameOver.setIconPixmap(QIcon::fromTheme("face-plain",
-													QIcon(":/plain.png")).pixmap(48, 48));
-			gameOver.setText(QString(tr("<font color=\"blue\">%1</font> has won!")).arg(p));
+		++m_countWonDisplayed;
 
-			gameOver.exec();
-		}
-
-	} else {
-		clearStats();
+		emit confirmLostWon();
 	}
 }
 
@@ -512,9 +506,7 @@ void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 															 "playerPick", c))));
 		m_pickCardPrepended = true;
 
-	} /*else {
-		m_playerCardCounts[p] += c;
-	}*/
+	}
 
 	updatePlayerStat(p, pickStr);
 	m_appendPlayerStat.push_back(p);
@@ -767,33 +759,46 @@ void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bo
 	}
 }
 
-void MainWindow::destroyClient() {
+void MainWindow::lostWinConfirmed() {
+	m_lostWonConfirmed = false;
+	if(m_clientDestroyRequested) destroyClient(true);
+}
 
-	if(m_client) {
+void MainWindow::destroyClient(bool force) {
 
-		emit disconnectNow();
+	if(force || m_lostWonConfirmed) {
 
-		if(!m_client->wait(1000)) {
-			qWarning("Client thread didn't stopped within 1 second. Forcing termination...");
-			m_client->terminate();
-		} else {
-			m_client->QThread::disconnect();
+		if(m_client) {
+
+			emit disconnectNow();
+
+			if(!m_client->wait(1000)) {
+				qWarning("Client thread didn't stopped within 1 second. Forcing termination...");
+				m_client->terminate();
+			} else {
+				m_client->QThread::disconnect();
+			}
+
+			delete m_client;
+			m_client = 0L;
 		}
 
-		delete m_client;
-		m_client = 0L;
+		clearStats();
+		clearMyCards(true);
+		centralWidget()->setEnabled(false);
+
+		m_ui->remoteGroup->setTitle(tr("Players"));
+		m_ui->actionServer->setEnabled(true);
+		m_ui->takeCardsButton->setStyleSheet(QString::null);
+		m_ui->takeCardsButton->setEnabled(false);
+		m_ui->suspendButton->setEnabled(false);
+
+		m_countWonDisplayed = 0;
+		m_clientDestroyRequested = false;
+
+	} else {
+		m_clientDestroyRequested = true;
 	}
-
-	if(!m_gameOver) clearStats();
-
-	clearMyCards(true);
-	centralWidget()->setEnabled(false);
-
-	m_ui->remoteGroup->setTitle(tr("Players"));
-	m_ui->actionServer->setEnabled(true);
-	m_ui->takeCardsButton->setStyleSheet(QString::null);
-	m_ui->takeCardsButton->setEnabled(false);
-	m_ui->suspendButton->setEnabled(false);
 }
 
 void MainWindow::clearStats() {

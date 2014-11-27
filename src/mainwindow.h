@@ -49,6 +49,7 @@ protected:
 
 signals:
 	void disconnectNow();
+	void confirmLostWon();
 	void cardToPlay(NetMauMau::Common::ICard *);
 	void chosenSuite(NetMauMau::Common::ICard::SUIT);
 
@@ -58,7 +59,8 @@ private slots:
 	void scrollToLastCard();
 
 	void serverAccept();
-	void destroyClient();
+	void lostWinConfirmed();
+	void destroyClient(bool force = false);
 	void forceRefreshServers();
 	void localServerLaunched(bool);
 	void reconnectAvailable(const QString &srv);
@@ -129,7 +131,6 @@ private:
 	QStyledItemDelegate *m_countItemDelegate;
 	QStyledItemDelegate *m_messageItemDelegate;
 	int m_lastPlayedCardIdx;
-	bool m_gameOver;
 	QStringList m_appendPlayerStat;
 	bool m_noCardPossible;
 	NetMauMau::Common::ICard::SUIT m_cTakeSuit;
@@ -137,6 +138,9 @@ private:
 	Client::CARDS m_possibleCards;
 	QMap<QString, std::size_t> m_playerCardCounts;
 	QPixmap m_ocPm;
+	bool m_lostWonConfirmed;
+	bool m_clientDestroyRequested;
+	int m_countWonDisplayed;
 };
 
 #endif // MAINWINDOW_H

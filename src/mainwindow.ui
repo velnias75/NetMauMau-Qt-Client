@@ -108,6 +108,14 @@
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1000</width>
+     <height>21</height>
+    </rect>
+   </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>&amp;File</string>
@@ -349,6 +357,14 @@
              <set>Qt::AlignCenter</set>
             </property>
             <widget class="QWidget" name="awidget">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>886</width>
+               <height>158</height>
+              </rect>
+             </property>
              <layout class="QHBoxLayout" name="myCardsLayout">
               <property name="sizeConstraint">
                <enum>QLayout::SetMinAndMaxSize</enum>
@@ -500,7 +516,7 @@
     <string>Show available servers</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+S</string>
+    <string notr="true">Ctrl+S</string>
    </property>
   </action>
   <action name="actionExit">
@@ -513,7 +529,7 @@
     <string>E&amp;xit</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Q</string>
+    <string notr="true">Ctrl+Q</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
@@ -553,7 +569,7 @@
     <string>Reconnect to last server</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+R</string>
+    <string notr="true">Ctrl+R</string>
    </property>
   </action>
   <action name="actionConnectionlog">
@@ -564,7 +580,7 @@
     <string>Connection &amp;log...</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+L</string>
+    <string notr="true">Ctrl+L</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
@@ -578,7 +594,7 @@
     <string>Launch a local server</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+X</string>
+    <string notr="true">Ctrl+X</string>
    </property>
   </action>
   <action name="actionNetMauMauServerOutput">
@@ -592,7 +608,7 @@
     <string>&amp;NetMauMau server output...</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+O</string>
+    <string notr="true">Ctrl+O</string>
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
