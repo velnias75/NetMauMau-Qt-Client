@@ -50,7 +50,7 @@ public:
 	virtual void playerSuspends(const std::string &player) const;
 	virtual void playedCard(const std::string &player, const NetMauMau::Common::ICard *card) const;
 	virtual void playerWins(const std::string &player, std::size_t turn) const;
-	virtual void playerLost(const std::string &player, std::size_t turn) const;
+	virtual void playerLost(const std::string &player, std::size_t turn, std::size_t points) const;
 	virtual void playerPicksCard(const std::string &player,
 								 const NetMauMau::Common::ICard *card) const;
 	virtual void playerPicksCard(const std::string &player, std::size_t count) const;
@@ -87,7 +87,7 @@ signals:
 	void cPlayerSuspends(const QString &) const;
 	void cPlayedCard(const QString &, const QByteArray &) const;
 	void cplayerWins(const QString &, std::size_t) const;
-	void cplayerLost(const QString &, std::size_t) const;
+	void cplayerLost(const QString &, std::size_t, std::size_t) const;
 	void cPlayerPicksCard(const QString &, std::size_t) const;
 
 	void cNextPlayer(const QString &player) const;

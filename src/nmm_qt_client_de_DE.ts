@@ -473,10 +473,14 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <source>suspended the turn</source>
         <translation>hat den Zug ausgesetzt</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="mainwindow.cpp" line="433"/>
-        <source>&lt;span style=&quot;color:blue;&quot;&gt;lost&lt;/span&gt; in turn %1</source>
-        <translation>&lt;span style=&quot;color:blue;&quot;&gt;verliert&lt;/span&gt; in Zug %1</translation>
+        <source>&lt;span style=&quot;color:blue;&quot;&gt;lost&lt;/span&gt; in turn %1; with %n point(s) at hand</source>
+        <oldsource>&lt;span style=&quot;color:blue;&quot;&gt;lost&lt;/span&gt; in turn %1 and with %n point(s) in hand</oldsource>
+        <translation>
+            <numerusform>&lt;span style=&quot;color:blue;&quot;&gt;verliert&lt;/span&gt; in Zug %1; mit %n Punkt auf der Hand</numerusform>
+            <numerusform>&lt;span style=&quot;color:blue;&quot;&gt;verliert&lt;/span&gt; in Zug %1; mit %n Punkten auf der Hand</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="444"/>
@@ -486,8 +490,12 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.cpp" line="447"/>
-        <source>You have lost!</source>
-        <translation>Du hast verloren!</translation>
+        <source>You have lost!
+Your points: %1</source>
+        <oldsource>You have lost
+Your points: %1!</oldsource>
+        <translation>Du hast verloren!
+Deine Punkte: %1</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="454"/>

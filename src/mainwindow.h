@@ -83,7 +83,7 @@ private slots:
 	void clientPlayerJoined(const QString &);
 	void clientPlayerSuspends(const QString &);
 	void clientPlayerWins(const QString &, std::size_t);
-	void clientPlayerLost(const QString &, std::size_t);
+	void clientPlayerLost(const QString &, std::size_t, std::size_t);
 	void clientPlayerPicksCard(const QString &, std::size_t);
 	void clientPlayedCard(const QString &, const QByteArray &);
 	void clientJackSuit(NetMauMau::Common::ICard::SUIT);

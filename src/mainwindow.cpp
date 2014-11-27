@@ -269,8 +269,8 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientPlayerSuspends(const QString &)));
 		QObject::connect(m_client, SIGNAL(cplayerWins(const QString &, std::size_t)),
 						 this, SLOT(clientPlayerWins(const QString &, std::size_t)));
-		QObject::connect(m_client, SIGNAL(cplayerLost(const QString &, std::size_t)),
-						 this, SLOT(clientPlayerLost(const QString &, std::size_t)));
+		QObject::connect(m_client, SIGNAL(cplayerLost(const QString &, std::size_t, std::size_t)),
+						 this, SLOT(clientPlayerLost(const QString &, std::size_t, std::size_t)));
 		QObject::connect(m_client, SIGNAL(cPlayerPicksCard(const QString &, std::size_t)),
 						 this, SLOT(clientPlayerPicksCard(const QString &, std::size_t)));
 		QObject::connect(m_client, SIGNAL(cJackSuit(NetMauMau::Common::ICard::SUIT)),
@@ -428,10 +428,10 @@ bool MainWindow::isMe(const QString &player) const {
 	return static_cast<ServerDialog *>(m_serverDlg)->getPlayerName() == player;
 }
 
-void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
+void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t pt) {
 
-	updatePlayerStat(p, QString(tr("<span style=\"color:blue;\">lost</span> in turn %1")).arg(t),
-					 true, true);
+	updatePlayerStat(p, QString(tr("<span style=\"color:blue;\">lost</span> in turn %1; " \
+								   "with %n point(s) at hand", "", pt)).arg(t), true, true);
 
 	if(isMe(p)) {
 
@@ -444,7 +444,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t) {
 		lost.setWindowTitle(tr("Sorry"));
 		lost.setWindowModality(Qt::ApplicationModal);
 		lost.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
-		lost.setText(tr("You have lost!"));
+		lost.setText(tr("You have lost!\nYour points: %1").arg(pt));
 
 		lost.exec();
 
@@ -913,7 +913,7 @@ void MainWindow::about() {
 	uint16_t min = static_cast<uint16_t>(Client::getClientProtocolVersion());
 
 	QMessageBox::about(this, QCoreApplication::applicationName(),
-					   QString::fromUtf8("%1 %2\nProtocol version: %3.%4\nCopyright " \
+					   QString::fromUtf8("%1 %2\nClient library version: %3.%4\nCopyright " \
 										 "\u00a9 2014 by Heiko Sch\u00e4fer")
 					   .arg(QCoreApplication::applicationName())
 					   .arg(QCoreApplication::applicationVersion()).arg(maj).arg(min));
