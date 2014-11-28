@@ -60,6 +60,8 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	setCorner(Qt::BottomLeftCorner, Qt::BottomDockWidgetArea);
 	setCorner(Qt::BottomRightCorner, Qt::BottomDockWidgetArea);
 
+	setAttribute(Qt::WA_AlwaysShowToolTips, true);
+
 	if(!m_ui->actionReconnect->icon().hasThemeIcon("go-previous")) {
 		m_ui->actionReconnect->setIcon(QIcon(":/go-previous.png"));
 	}
@@ -448,6 +450,11 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
 
+		Qt::WindowFlags f = lost.windowFlags();
+		f &= ~Qt::WindowContextHelpButtonHint;
+		f &= ~Qt::WindowSystemMenuHint;
+		lost.setWindowFlags(f);
+
 		lost.setWindowIcon(icon);
 		lost.setWindowTitle(tr("Sorry"));
 		lost.setWindowModality(Qt::ApplicationModal);
@@ -478,6 +485,11 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 	icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
 	gameOver.setWindowModality(Qt::ApplicationModal);
 	gameOver.setWindowIcon(icon);
+
+	Qt::WindowFlags f = gameOver.windowFlags();
+	f &= ~Qt::WindowContextHelpButtonHint;
+	f &= ~Qt::WindowSystemMenuHint;
+	gameOver.setWindowFlags(f);
 
 	if(isMe(p)) {
 

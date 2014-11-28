@@ -24,6 +24,11 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_text(QS
 
 	setupUi(this);
 
+	Qt::WindowFlags f = windowFlags();
+	f &= ~Qt::WindowContextHelpButtonHint;
+	f &= ~Qt::WindowSystemMenuHint;
+	setWindowFlags(f);
+
 	setAttribute(Qt::WA_QuitOnClose, false);
 
 	m_textFont.setStyleHint(QFont::TypeWriter);

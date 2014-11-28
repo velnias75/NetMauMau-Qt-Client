@@ -27,6 +27,11 @@ DeleteServersDialog::DeleteServersDialog(const QStandardItemModel *model, QWidge
 
 	setupUi(this);
 
+	Qt::WindowFlags f = windowFlags();
+	f &= ~Qt::WindowContextHelpButtonHint;
+	f &= ~Qt::WindowSystemMenuHint;
+	setWindowFlags(f);
+
 	serversList->setModel(&m_model);
 
 	QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(deleteServers()));

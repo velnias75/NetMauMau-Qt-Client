@@ -32,6 +32,11 @@ ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : QDialog(p, Qt::Window),
 
 	setupUi(this);
 
+	Qt::WindowFlags f = windowFlags();
+	f &= ~Qt::WindowContextHelpButtonHint;
+	f &= ~Qt::WindowSystemMenuHint;
+	setWindowFlags(f);
+
 	setAttribute(Qt::WA_QuitOnClose, false);
 
 	m_ctxPopup->addAction(actionCopy);
@@ -56,6 +61,8 @@ ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : QDialog(p, Qt::Window),
 
 	QObject::connect(logView, SIGNAL(customContextMenuRequested(const QPoint &)),
 					 this, SLOT(showContextMenu(const QPoint &)));
+
+	logView->setAttribute(Qt::WA_Hover, false);
 
 	readSettings();
 }

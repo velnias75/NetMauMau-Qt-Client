@@ -20,7 +20,13 @@
 #include "jackchoosedialog.h"
 
 JackChooseDialog::JackChooseDialog(QWidget *p) : QDialog(p) {
+
 	setupUi(this);
+
+	Qt::WindowFlags f = windowFlags();
+	f &= ~Qt::WindowContextHelpButtonHint;
+	f &= ~Qt::WindowSystemMenuHint;
+	setWindowFlags(f);
 
 	heartsSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::HEARTS));
 	diamondsSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::DIAMONDS));

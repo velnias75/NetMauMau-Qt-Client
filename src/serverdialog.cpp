@@ -37,6 +37,11 @@ const QRegExp hostRex("^(?=.{1,255}$)[0-9A-Za-z]" \
 ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(false),
 	m_lastServer(QString::null), m_deleteServersDlg(new DeleteServersDialog(&m_model, this)) {
 
+	Qt::WindowFlags f = windowFlags();
+	f &= ~Qt::WindowContextHelpButtonHint;
+	f &= ~Qt::WindowSystemMenuHint;
+	setWindowFlags(f);
+
 	setupUi(this);
 
 	portSpin->setValue(Client::getDefaultPort());

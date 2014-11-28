@@ -32,6 +32,11 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 
 	setupUi(this);
 
+	Qt::WindowFlags f = windowFlags();
+	f &= ~Qt::WindowContextHelpButtonHint;
+	f &= ~Qt::WindowSystemMenuHint;
+	setWindowFlags(f);
+
 	QSettings settings;
 	settings.beginGroup("Launcher");
 	launchStartup->setChecked(settings.value("onStartup", false).toBool());
