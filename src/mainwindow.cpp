@@ -45,7 +45,13 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
 	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
 	m_possibleCards(), m_playerCardCounts(), m_ocPm(), m_lostWonConfirmed(false),
-	m_clientDestroyRequested(false), m_countWonDisplayed(0) {
+	m_clientDestroyRequested(false), m_countWonDisplayed(0),
+	m_aboutTxt(QString::fromUtf8("%1 %2\n%3: %4.%5\nCopyright \u00a9 2014 by Heiko Sch\u00e4fer")
+			   .arg(QCoreApplication::applicationName())
+			   .arg(QCoreApplication::applicationVersion())
+			   .arg(tr("Client library version"))
+			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16))
+			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))) {
 
 	m_ui->setupUi(this);
 
@@ -115,6 +121,8 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	QObject::connect(m_launchDlg, SIGNAL(serverLaunched(bool)),
 					 this, SLOT(localServerLaunched(bool)));
 
+	setOpenCard(QByteArray());
+
 	readSettings();
 
 	QObject::connect(m_ui->actionNetMauMauServerOutput, SIGNAL(toggled(bool)),
@@ -157,12 +165,12 @@ void MainWindow::localServerLaunched(bool b) {
 	QTimer::singleShot(800, this, SLOT(forceRefreshServers()));
 }
 
-void MainWindow::reconnectAvailable(const QString &srv) {
+void MainWindow::reconnectAvailable(const QString &srv) const {
 	m_ui->actionReconnect->setDisabled(srv.isEmpty());
 	m_ui->actionReconnect->setToolTip(reconnectToolTip());
 }
 
-void MainWindow::resizeColumns() {
+void MainWindow::resizeColumns() const {
 	m_ui->remotePlayersView->resizeColumnToContents(0);
 	m_ui->remotePlayersView->resizeColumnToContents(1);
 }
@@ -301,7 +309,7 @@ void MainWindow::serverAccept() {
 	}
 }
 
-void MainWindow::clientMessage(const QString &msg) {
+void MainWindow::clientMessage(const QString &msg) const {
 	statusBar()->showMessage(msg);
 }
 
@@ -338,7 +346,7 @@ void MainWindow::clientCardSet(const Client::CARDS &c) {
 	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
 }
 
-void MainWindow::scrollToLastCard() {
+void MainWindow::scrollToLastCard() const {
 	if(!m_cards.isEmpty()) m_ui->myCardsScrollArea->ensureWidgetVisible(m_cards.last());
 }
 
@@ -365,7 +373,7 @@ void MainWindow::clearMyCards(bool del, bool dis) {
 	if(dis) enableMyCards(false);
 }
 
-void MainWindow::clientTurn(std::size_t t) {
+void MainWindow::clientTurn(std::size_t t) const {
 	m_ui->turnLabel->setText(QString("%1").arg(t));
 }
 
@@ -396,7 +404,7 @@ void MainWindow::clientTalonShuffled() {
 	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
 }
 
-void MainWindow::resetOCPixmap() {
+void MainWindow::resetOCPixmap() const {
 	m_ui->openCard->setPixmap(m_ocPm);
 }
 
@@ -428,7 +436,7 @@ bool MainWindow::isMe(const QString &player) const {
 	return static_cast<ServerDialog *>(m_serverDlg)->getPlayerName() == player;
 }
 
-void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t pt) {
+void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t pt) const {
 
 	updatePlayerStat(p, QString(tr("<span style=\"color:blue;\">lost</span> in turn %1; " \
 								   "with %n point(s) at hand", "", pt)).arg(t), true, true);
@@ -550,12 +558,12 @@ void MainWindow::clientPlayerJoined(const QString &p) {
 	}
 }
 
-void MainWindow::clientJackSuit(NetMauMau::Common::ICard::SUIT s) {
+void MainWindow::clientJackSuit(NetMauMau::Common::ICard::SUIT s) const {
 	m_ui->jackSuit->setProperty("suitDescription",
 								QByteArray(NetMauMau::Common::suitToSymbol(s, false).c_str()));
 }
 
-void MainWindow::clientNextPlayer(const QString &player) {
+void MainWindow::clientNextPlayer(const QString &player) const {
 
 	for(int r = 0; r < m_model.rowCount(); ++r) {
 		for(int c = 0; c < m_model.columnCount(); ++c) {
@@ -673,7 +681,7 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 
 	} else {
 		m_ui->openCard->setPixmap(QPixmap(QString::fromUtf8(":/nmm_qt_client.png")));
-		m_ui->openCard->setToolTip(QString::null);
+		m_ui->openCard->setToolTip(m_aboutTxt);
 	}
 }
 
@@ -712,7 +720,7 @@ void MainWindow::enableMyCards(bool b) {
 }
 
 void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bool append,
-								  bool disable) {
+								  bool disable) const {
 
 	const QList<QStandardItem *> &ml(m_model.findItems(player));
 
@@ -829,7 +837,7 @@ QString MainWindow::reconnectToolTip() const {
 	return rtt;
 }
 
-void MainWindow::writeSettings() {
+void MainWindow::writeSettings() const {
 
 	QSettings settings;
 
@@ -908,15 +916,7 @@ void MainWindow::readSettings() {
 }
 
 void MainWindow::about() {
-
-	uint16_t maj = static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16);
-	uint16_t min = static_cast<uint16_t>(Client::getClientProtocolVersion());
-
-	QMessageBox::about(this, QCoreApplication::applicationName(),
-					   QString::fromUtf8("%1 %2\nClient library version: %3.%4\nCopyright " \
-										 "\u00a9 2014 by Heiko Sch\u00e4fer")
-					   .arg(QCoreApplication::applicationName())
-					   .arg(QCoreApplication::applicationVersion()).arg(maj).arg(min));
+	QMessageBox::about(this, QCoreApplication::applicationName(), m_aboutTxt);
 }
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;

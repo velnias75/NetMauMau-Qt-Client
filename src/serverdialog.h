@@ -55,7 +55,7 @@ private slots:
 	void enableRemoveAndOkButton(const QItemSelection &sel, const QItemSelection &desel);
 	void deleteRows(const QList<int> &);
 	void removeSelected();
-	void addSever();
+	void addServer();
 	void resize();
 
 signals:
@@ -67,7 +67,7 @@ private:
 	QStandardItemModel m_model;
 	mutable bool m_forceRefresh;
 	QString m_lastServer;
-	DeleteServersDialog *m_deleteServersDlg;
+	const DeleteServersDialog *m_deleteServersDlg;
 };
 
 #endif // SERVERDIALOG_H

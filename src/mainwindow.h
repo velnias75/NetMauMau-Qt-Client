@@ -48,22 +48,22 @@ protected:
 	virtual void closeEvent(QCloseEvent *e);
 
 signals:
-	void disconnectNow();
-	void confirmLostWon();
-	void cardToPlay(NetMauMau::Common::ICard *);
-	void chosenSuite(NetMauMau::Common::ICard::SUIT);
+	void disconnectNow() const;
+	void confirmLostWon() const;
+	void cardToPlay(NetMauMau::Common::ICard *) const;
+	void chosenSuite(NetMauMau::Common::ICard::SUIT) const;
 
 private slots:
 	void about();
 
-	void scrollToLastCard();
+	void scrollToLastCard() const;
 
 	void serverAccept();
 	void lostWinConfirmed();
 	void destroyClient(bool force = false);
 	void forceRefreshServers();
 	void localServerLaunched(bool);
-	void reconnectAvailable(const QString &srv);
+	void reconnectAvailable(const QString &) const;
 
 	void suspend();
 	void takeCards();
@@ -72,9 +72,9 @@ private slots:
 	void clientChooseJackSuitRequest();
 
 	void clientError(const QString &);
-	void clientMessage(const QString &);
+	void clientMessage(const QString &) const;
 	void clientCardSet(const Client::CARDS &);
-	void clientTurn(std::size_t);
+	void clientTurn(std::size_t) const;
 	void clientStats(const Client::STATS &);
 	void clientOpenCard(const QByteArray &, const QString &);
 	void clientTalonShuffled();
@@ -83,21 +83,21 @@ private slots:
 	void clientPlayerJoined(const QString &);
 	void clientPlayerSuspends(const QString &);
 	void clientPlayerWins(const QString &, std::size_t);
-	void clientPlayerLost(const QString &, std::size_t, std::size_t);
+	void clientPlayerLost(const QString &, std::size_t, std::size_t) const;
 	void clientPlayerPicksCard(const QString &, std::size_t);
 	void clientPlayedCard(const QString &, const QByteArray &);
-	void clientJackSuit(NetMauMau::Common::ICard::SUIT);
-	void clientNextPlayer(const QString &);
+	void clientJackSuit(NetMauMau::Common::ICard::SUIT) const;
+	void clientNextPlayer(const QString &) const;
 
 	void clearStats();
-	void resizeColumns();
+	void resizeColumns() const;
 	void sortNoSort(bool);
 	void sortSuitRank(bool);
 	void sortRankSuit(bool);
-	void sortMyCards(SORTMODE mode);
+	void sortMyCards(SORTMODE);
 	void filterMyCards(bool);
 	void setOpenCard(const QByteArray &);
-	void resetOCPixmap();
+	void resetOCPixmap() const;
 
 private:
 	bool isMe(const QString &player) const;
@@ -105,11 +105,11 @@ private:
 	void enableMyCards(bool b);
 	void clearMyCards(bool del, bool dis = true);
 	void updatePlayerStat(const QString &player, const QString &msg = QString::null,
-						  bool append = false, bool disable = false);
+						  bool append = false, bool disable = false) const;
 
 	QString reconnectToolTip() const;
 
-	void writeSettings();
+	void writeSettings() const;
 	void readSettings();
 
 private:
@@ -141,6 +141,7 @@ private:
 	bool m_lostWonConfirmed;
 	bool m_clientDestroyRequested;
 	int m_countWonDisplayed;
+	const QString m_aboutTxt;
 };
 
 #endif // MAINWINDOW_H

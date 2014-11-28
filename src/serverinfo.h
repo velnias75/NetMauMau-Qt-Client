@@ -37,7 +37,7 @@ signals:
 
 private:
 	const QStandardItemModel *m_model;
-	int m_row;
+	const int m_row;
 };
 
 #endif // SERVERINFO_H

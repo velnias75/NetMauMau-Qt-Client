@@ -53,8 +53,8 @@ private:
 private:
 	QFont m_entryFont;
 	QStandardItemModel m_model;
-	QIcon m_toIcon;
-	QIcon m_fromIcon;
+	const QIcon m_toIcon;
+	const QIcon m_fromIcon;
 	QMenu *m_ctxPopup;
 };
 

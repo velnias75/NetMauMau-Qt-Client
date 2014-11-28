@@ -68,12 +68,12 @@ public:
 	virtual void unknownServerMessage(std::string message) const;
 
 public slots:
-	void cardToPlay(NetMauMau::Common::ICard *);
+	void cardToPlay(NetMauMau::Common::ICard *) const;
 	void chosenSuite(NetMauMau::Common::ICard::SUIT);
 	void disconnectNow();
 
 signals:
-	void choiceAvailable();
+	void choiceAvailable() const;
 
 	void cPlayCard(const Client::CARDS &) const;
 	void cGetJackSuitChoice() const;
@@ -100,7 +100,7 @@ signals:
 	void cCardAccepted(const QByteArray &) const;
 	void cJackSuit(NetMauMau::Common::ICard::SUIT) const;
 
-	void offline(bool);
+	void offline(bool) const;
 
 protected:
 	virtual void run();

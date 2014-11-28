@@ -28,7 +28,8 @@
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port) : QThread(),
 	NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server, port), m_mainWindow(w),
-	m_disconnectNow(false), m_cardToPlay(0L), m_online(false), m_connectionLogDialog(cld) {
+	m_disconnectNow(false), m_cardToPlay(0L), m_chosenSuit(NetMauMau::Common::ICard::HEARTS),
+	m_online(false), m_connectionLogDialog(cld) {
 
 	qRegisterMetaType<CARDS>("Client::CARDS");
 	qRegisterMetaType<STATS>("Client::STATS");
@@ -118,7 +119,7 @@ NetMauMau::Common::ICard::SUIT Client::getJackSuitChoice() const {
 	return m_chosenSuit;
 }
 
-void Client::cardToPlay(NetMauMau::Common::ICard *ctp) {
+void Client::cardToPlay(NetMauMau::Common::ICard *ctp) const {
 
 	log(QString("cardToPlay(%1)").arg(QString::fromUtf8(ctp ? ctp->description().c_str()
 																	: "SUSPEND")),

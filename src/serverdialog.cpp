@@ -127,7 +127,7 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	QObject::connect(connectButton, SIGNAL(clicked()), this, SLOT(doubleClick()));
 	QObject::connect(refreshButton, SIGNAL(clicked()), this, SLOT(checkOnline()));
 	QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeSelected()));
-	QObject::connect(addButton, SIGNAL(clicked()), this, SLOT(addSever()));
+	QObject::connect(addButton, SIGNAL(clicked()), this, SLOT(addServer()));
 	QObject::connect(this, SIGNAL(refresh()), this, SLOT(checkOnline()));
 	QObject::connect(deleteServers, SIGNAL(clicked()), m_deleteServersDlg, SLOT(show()));
 	QObject::connect(m_deleteServersDlg, SIGNAL(deleteRows(const QList<int> &)),
@@ -274,7 +274,7 @@ void ServerDialog::forceRefresh(bool b) {
 	if(b) emit refresh();
 }
 
-void ServerDialog::addSever() {
+void ServerDialog::addServer() {
 
 	QList<QStandardItem *> row;
 
