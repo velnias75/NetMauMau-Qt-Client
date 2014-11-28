@@ -98,20 +98,21 @@ QString CardWidget::tooltipText() const {
 }
 
 QString CardWidget::tooltipText(NetMauMau::Common::ICard::SUIT s,
-								NetMauMau::Common::ICard::RANK r) {
-	QString ttt;
+								NetMauMau::Common::ICard::RANK r, bool points) {
+
+	QString ttt(points ? QString("<html><body>") : QString::null);
 
 	switch(s) {
 	case NetMauMau::Common::ICard::HEARTS:
-		ttt = tr("Hearts"); break;
+	ttt = tr("Hearts"); break;
 	case NetMauMau::Common::ICard::DIAMONDS:
-		ttt = tr("Diamonds"); break;
+	ttt = tr("Diamonds"); break;
 	case NetMauMau::Common::ICard::CLUBS:
-		ttt = tr("Clubs"); break;
+	ttt = tr("Clubs"); break;
 	case NetMauMau::Common::ICard::SPADES:
-		ttt = tr("Spades"); break;
+	ttt = tr("Spades"); break;
 	case NetMauMau::Common::ICard::SUIT_ILLEGAL:
-		ttt = tr("Illegal"); break;
+	ttt = tr("Illegal"); break;
 	}
 
 	ttt.append(' ');
@@ -126,6 +127,12 @@ QString CardWidget::tooltipText(NetMauMau::Common::ICard::SUIT s,
 	case NetMauMau::Common::ICard::KING: ttt.append(tr("King")); break;
 	case NetMauMau::Common::ICard::ACE: ttt.append(tr("Ace")); break;
 	case NetMauMau::Common::ICard::RANK_ILLEGAL: ttt.append(tr("card")); break;
+	}
+
+	if(points) {
+		ttt.append("<br><small><tt>").append(tr("%n point(s)", "",
+												NetMauMau::Common::getCardPoints(r)))
+				.append("</tt></small></body></html>");
 	}
 
 	return ttt;

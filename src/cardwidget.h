@@ -39,7 +39,7 @@ public:
 	virtual std::string description(bool = false) const;
 
 	static QString tooltipText(NetMauMau::Common::ICard::SUIT,
-							   NetMauMau::Common::ICard::RANK);
+							   NetMauMau::Common::ICard::RANK, bool points = true);
 
 protected:
 	virtual void changeEvent(QEvent *e);

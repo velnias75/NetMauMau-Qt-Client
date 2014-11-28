@@ -651,7 +651,7 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 	if(NetMauMau::Common::parseCardDesc(d.constData(), &s, &r)) {
 
 		m_ui->openCard->setPixmap(CardPixmap(m_ui->openCard->pixmap()->size(), s, r));
-		m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r));
+		m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r, false));
 
 		m_cTakeSuit = r == NetMauMau::Common::ICard::SEVEN ? s :
 															 NetMauMau::Common::ICard::SUIT_ILLEGAL;
