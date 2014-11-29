@@ -450,16 +450,16 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
 
-		Qt::WindowFlags f = lost.windowFlags();
-		f &= ~Qt::WindowContextHelpButtonHint;
-		f &= ~Qt::WindowSystemMenuHint;
-		lost.setWindowFlags(f);
-
 		lost.setWindowIcon(icon);
 		lost.setWindowTitle(tr("Sorry"));
 		lost.setWindowModality(Qt::ApplicationModal);
 		lost.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
 		lost.setText(tr("You have lost!\nYour points: %1").arg(pt));
+
+		Qt::WindowFlags f = lost.windowFlags();
+		f &= ~Qt::WindowContextHelpButtonHint;
+		f &= ~Qt::WindowSystemMenuHint;
+		lost.setWindowFlags(f);
 
 		lost.exec();
 
