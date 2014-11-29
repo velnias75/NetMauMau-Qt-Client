@@ -19,6 +19,8 @@
 
 #include <QStandardItemModel>
 
+#include <capabilitiesexception.h>
+
 #include "serverinfo.h"
 
 #include "client.h"
@@ -38,6 +40,8 @@ void ServerInfo::run() {
 	QStandardItem *players = m_model->item(m_row, 3);
 
 	const QString host(server->text());
+
+	version->setToolTip(QString::null);
 
 	int idx = host.indexOf(':');
 
@@ -62,11 +66,11 @@ void ServerInfo::run() {
 
 		ai->setCheckState(caps.find("AI_OPPONENT")->second == "true" ? Qt::Checked : Qt::Unchecked);
 		ai->setToolTip(ai->checkState() == Qt::Checked ?
-						   QString(tr("You'll play against AI \"%1\"")).
-						   arg(QString::fromUtf8(caps.find("AI_NAME")->second.c_str()))
+						   tr("You'll play against AI \"%1\"")
+						   .arg(QString::fromUtf8(caps.find("AI_NAME")->second.c_str()))
 						 : tr("The server has only human players"));
-		players->setText(QString(tr("%1/%2")).arg(curPCnt).arg(maxPCnt));
-		players->setToolTip(QString(tr("Waiting for %n more player(s)", "", (maxPCnt - curPCnt))));
+		players->setText(tr("%1/%2").arg(curPCnt).arg(maxPCnt));
+		players->setToolTip(tr("Waiting for %n more player(s)", "", (maxPCnt - curPCnt)));
 
 		if(Client::parseProtocolVersion(sVer) < Client::getClientProtocolVersion()) {
 			const QString tooOld(tr("The server is too old for this client"));
@@ -82,15 +86,16 @@ void ServerInfo::run() {
 			return;
 		}
 
+	} catch(const NetMauMau::Client::Exception::CapabilitiesException &e) {
+
+		setError(ai, players, version, server, host, tr("Couldn't get capabilities from server"));
+
+		emit online(false, m_row);
+		return;
+
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 
-		qDebug("Server \"%s\" is offline: %s", host.toStdString().c_str(), e.what());
-		ai->setCheckState(Qt::Unchecked);
-		ai->setToolTip("");
-		players->setText(tr(NA));
-		players->setToolTip("");
-		version->setText(tr(NA));
-		server->setToolTip(QString::fromUtf8(e.what()));
+		setError(ai, players, version, server, host, QString::fromUtf8(e.what()));
 
 		emit online(false, m_row);
 		return;
@@ -99,4 +104,17 @@ void ServerInfo::run() {
 	server->setToolTip(tr("The server is ready and waiting"));
 
 	emit online(true, m_row);
+}
+
+void ServerInfo::setError(QStandardItem *ai, QStandardItem *players, QStandardItem *version,
+						  QStandardItem *server, const QString &host, const QString &err) {
+
+	qDebug("Server \"%s\" is offline: %s", host.toStdString().c_str(), err.toStdString().c_str());
+
+	ai->setCheckState(Qt::Unchecked);
+	ai->setToolTip("");
+	players->setText(tr(NA));
+	players->setToolTip("");
+	version->setText(tr(NA));
+	server->setToolTip(err);
 }

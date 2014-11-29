@@ -22,6 +22,7 @@
 
 #include <QThread>
 
+class QStandardItem;
 class QStandardItemModel;
 
 class ServerInfo : public QThread {
@@ -34,6 +35,10 @@ protected:
 
 signals:
 	void online(bool, int);
+
+private:
+	void setError(QStandardItem *ai, QStandardItem *players, QStandardItem *version,
+				  QStandardItem *server, const QString &host, const QString &err);
 
 private:
 	const QStandardItemModel *m_model;

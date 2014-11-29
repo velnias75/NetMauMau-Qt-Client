@@ -47,7 +47,7 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	portSpin->setValue(Client::getDefaultPort());
 
 	QStringList labels;
-	labels << tr("Server") << tr("Server version") << tr("AI") << tr("Players");
+	labels << tr("Server") << tr("Version") << tr("AI") << tr("Players");
 
 	hostEdit->setValidator(new QRegExpValidator(hostRex));
 
@@ -176,8 +176,8 @@ void ServerDialog::doubleClick() {
 			if(std::find(pl.begin(), pl.end(),
 						 playerName->text().toUtf8().constData()) != pl.end()) {
 
-				QMessageBox::warning(this, tr("Connect"),
-									 QString(tr("%1 is already in use!")).arg(playerName->text()));
+				QMessageBox::warning(this, tr("Connect"), tr("%1 is already in use!")
+									 .arg(playerName->text()));
 
 				playerName->selectAll();
 				playerName->setFocus();
@@ -265,7 +265,7 @@ void ServerDialog::updateOnline(bool enabled, int row) {
 
 	if(enabled && server->text() == m_lastServer) {
 		availServerView->selectionModel()->select(m_model.index(row, 0),
-					   QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
+												  QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
 		emit reconnectAvailable(m_lastServer);
 	}
 }

@@ -20,10 +20,17 @@
 #include <QMetaType>
 #include <QEventLoop>
 
+#include <cardtools.h>
+#include <timeoutexception.h>
+#include <shutdownexception.h>
+#include <protocolerrorexception.h>
+#include <versionmismatchexception.h>
+#include <nonetmaumauserverexception.h>
+#include <connectionrejectedexception.h>
+
 #include "client.h"
 
 #include "mainwindow.h"
-#include "cardtools.h"
 
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port) : QThread(),
@@ -57,9 +64,27 @@ bool Client::isOnline() const {
 void Client::run() {
 
 	try {
+
 		m_online = true;
 		emit offline(false);
 		play();
+
+	} catch(const NetMauMau::Client::Exception::TimeoutException &e) {
+		emit cError(tr("A timeout occured while connection to the server"));
+	} catch(const NetMauMau::Client::Exception::ProtocolErrorException &e) {
+		emit cError(tr("An protocol error occured while connection to the server"));
+	} catch(const NetMauMau::Client::Exception::ConnectionRejectedException &e) {
+		emit cError(tr("The server rejected the connection"));
+	} catch(const NetMauMau::Client::Exception::NoNetMauMauServerException &e) {
+		emit cError(tr("The remote host appears to be no NetMauMau server"));
+	} catch(const NetMauMau::Client::Exception::ShutdownException &e) {
+		emit cError(tr("The server is in the progress of a ashutdown"));
+	} catch(const NetMauMau::Client::Exception::VersionMismatchException &e) {
+		emit cError(tr("Client (version %1.%2) not supported.\nServer wants at least version %3.%4")
+					.arg(static_cast<uint16_t>(e.getClientVersion() >> 16))
+					.arg(static_cast<uint16_t>(e.getClientVersion()))
+					.arg(static_cast<uint16_t>(e.getServerVersion() >> 16))
+					.arg(static_cast<uint16_t>(e.getServerVersion())));
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 		emit cError(QString::fromUtf8(e.what()));
 	}
@@ -122,7 +147,7 @@ NetMauMau::Common::ICard::SUIT Client::getJackSuitChoice() const {
 void Client::cardToPlay(NetMauMau::Common::ICard *ctp) const {
 
 	log(QString("cardToPlay(%1)").arg(QString::fromUtf8(ctp ? ctp->description().c_str()
-																	: "SUSPEND")),
+															: "SUSPEND")),
 		ConnectionLogDialog::FROM_CLIENT);
 
 	m_cardToPlay = ctp;

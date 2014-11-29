@@ -22,10 +22,13 @@
 #include <QSettings>
 #include <QTimer>
 
+#include <cardtools.h>
+#include <playerlistexception.h>
+#include <versionmismatchexception.h>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "serverdialog.h"
-#include "cardtools.h"
 #include "cardwidget.h"
 #include "cardpixmap.h"
 #include "launchserverdialog.h"
@@ -297,14 +300,18 @@ void MainWindow::serverAccept() {
 		m_ui->takeCardsButton->setStyleSheet(QString::null);
 		m_ui->takeCardsButton->setEnabled(false);
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
-		m_ui->remoteGroup->setTitle(QString(tr("%1 on %2")).arg(m_ui->remoteGroup->title()).arg(as));
+		m_ui->remoteGroup->setTitle(tr("%1 on %2").arg(m_ui->remoteGroup->title()).arg(as));
 
 		m_connectionLogDlg->clear();
 
 		m_client->start(QThread::LowestPriority);
 
+	} catch(const NetMauMau::Client::Exception::PlayerlistException &e) {
+		clientError(tr("Couldn't get player list from server"));
+		forceRefreshServers();
+		m_ui->actionReconnect->setEnabled(false);
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
-		clientError(QString(tr("While connecting to <b>%1</b>: <i>%2</i>"))
+		clientError(tr("While connecting to <b>%1</b>: <i>%2</i>")
 					.arg(as).arg(QString::fromUtf8(e.what())));
 		forceRefreshServers();
 		m_ui->actionReconnect->setEnabled(false);
@@ -420,7 +427,7 @@ void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 		m_lastPlayedCard = 0L;
 	}
 
-	QMessageBox::critical(this, tr("Card rejected"), QString(tr("You cannot play card %1!"))
+	QMessageBox::critical(this, tr("Card rejected"), tr("You cannot play card %1!")
 						  .arg(QString::fromUtf8(c.constData())));
 }
 
@@ -440,8 +447,8 @@ bool MainWindow::isMe(const QString &player) const {
 
 void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t pt) const {
 
-	updatePlayerStat(p, QString(tr("<span style=\"color:blue;\">lost</span> in turn %1; " \
-								   "with %n point(s) at hand", "", pt)).arg(t), true, true);
+	updatePlayerStat(p, tr("<span style=\"color:blue;\">lost</span> in turn %1; " \
+						   "with %n point(s) at hand", "", pt).arg(t), true, true);
 
 	if(isMe(p)) {
 
@@ -466,7 +473,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 		emit confirmLostWon();
 
 	} else {
-		statusBar()->showMessage(QString(tr("%1 lost!")).arg(p), 10000);
+		statusBar()->showMessage(tr("%1 lost!").arg(p), 10000);
 	}
 }
 
@@ -474,10 +481,10 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 	m_playerCardCounts[p] = 0;
 
-	updatePlayerStat(p, QString(tr("<span style=\"color:blue;\">wins</span> in turn %1")).arg(t),
+	updatePlayerStat(p, tr("<span style=\"color:blue;\">wins</span> in turn %1").arg(t),
 					 true, true);
 
-	if(!isMe(p)) statusBar()->showMessage(QString(tr("%1 wins!")).arg(p), 10000);
+	if(!isMe(p)) statusBar()->showMessage(tr("%1 wins!").arg(p), 10000);
 
 	QMessageBox gameOver;
 	QIcon icon;
@@ -507,7 +514,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 		gameOver.setWindowTitle(tr("Sorry"));
 		gameOver.setIconPixmap(QIcon::fromTheme("face-plain",
 												QIcon(":/plain.png")).pixmap(48, 48));
-		gameOver.setText(QString(tr("<font color=\"blue\">%1</font> has won!")).arg(p));
+		gameOver.setText(tr("<font color=\"blue\">%1</font> has won!").arg(p));
 
 		gameOver.exec();
 
@@ -519,11 +526,10 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 
-	const QString &pickStr(QString(tr("picked up %n card(s)", "", c)));
+	const QString &pickStr(tr("picked up %n card(s)", "", c));
 
 	if(isMe(p)) {
-		statusBar()->showMessage(QString(tr("You %1").arg(tr("picked up %n card(s)",
-															 "playerPick", c))));
+		statusBar()->showMessage(tr("You %1").arg(tr("picked up %n card(s)", "playerPick", c)));
 		m_pickCardPrepended = true;
 
 	}
@@ -538,10 +544,7 @@ void MainWindow::clientPlayedCard(const QString &player, const QByteArray &card)
 
 	if(append) m_appendPlayerStat.removeAll(player);
 
-	//	if(!isMe(player)) --m_playerCardCounts[player];
-
-	updatePlayerStat(player, QString(tr("plays %1")).arg(QString::fromUtf8(card.constData())),
-					 append);
+	updatePlayerStat(player, tr("plays %1").arg(QString::fromUtf8(card.constData())), append);
 
 	setOpenCard(card);
 }
@@ -553,8 +556,8 @@ void MainWindow::clientPlayerJoined(const QString &p) {
 	si.push_back(new QStandardItem(p));
 	si.push_back(new QStandardItem("5"));
 	si.back()->setTextAlignment(Qt::AlignCenter);
-	si.push_back(new QStandardItem(QString(tr("Player <span style=\"color:blue;\">%1</span> "\
-											  "joined the game")).arg(p)));
+	si.push_back(new QStandardItem(tr("Player <span style=\"color:blue;\">%1</span> "\
+									  "joined the game").arg(p)));
 
 	m_stdForeground = si.back()->foreground();
 	m_stdBackground = si.back()->background();
@@ -564,7 +567,7 @@ void MainWindow::clientPlayerJoined(const QString &p) {
 	const long np = static_cast<long>(m_maxPlayerCount) - m_model.rowCount();
 
 	if(np > 0L) {
-		statusBar()->showMessage(QString(tr("Waiting for %n more player(s)...", "", np)));
+		statusBar()->showMessage(tr("Waiting for %n more player(s)...", "", np));
 	} else {
 		statusBar()->clearMessage();
 	}
