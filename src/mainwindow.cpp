@@ -38,9 +38,10 @@
 
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
 	m_serverDlg(new ServerDialog(this)), m_lsov(new LocalServerOutputView()),
-	m_launchDlg(new LaunchServerDialog(m_lsov, this)), m_model(), m_cards(), m_lastPlayedCard(0L),
-	m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(), m_maxPlayerCount(0),
-	m_pickCardPrepended(false), m_connectionLogDlg(new ConnectionLogDialog(0L)),
+	m_launchDlg(new LaunchServerDialog(m_lsov, this)), m_model(0, 4), m_cards(),
+	m_lastPlayedCard(0L), m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(),
+	m_maxPlayerCount(0), m_pickCardPrepended(false),
+	m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
@@ -54,7 +55,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 			   .arg(QCoreApplication::applicationVersion())
 			   .arg(tr("Client library version"))
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16))
-			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))) {
+			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))), m_turn(1) {
 
 	m_ui->setupUi(this);
 
@@ -99,11 +100,12 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 
 	m_model.setHorizontalHeaderItem(0, new QStandardItem(tr("Name")));
 	m_model.setHorizontalHeaderItem(1, new QStandardItem(tr("Cards")));
-	m_model.setHorizontalHeaderItem(2, new QStandardItem(tr("Message")));
+	m_model.setHorizontalHeaderItem(2, new QStandardItem(tr("Turn")));
+	m_model.setHorizontalHeaderItem(3, new QStandardItem(tr("Message")));
 
 	m_ui->remotePlayersView->setItemDelegateForColumn(0, m_nameItemDelegate);
 	m_ui->remotePlayersView->setItemDelegateForColumn(1, m_countItemDelegate);
-	m_ui->remotePlayersView->setItemDelegateForColumn(2, m_messageItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(3, m_messageItemDelegate);
 
 	m_ui->remotePlayersView->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 	m_ui->remotePlayersView->horizontalHeader()->setClickable(false);
@@ -196,8 +198,9 @@ void MainWindow::reconnectAvailable(const QString &srv) const {
 }
 
 void MainWindow::resizeColumns() const {
-	m_ui->remotePlayersView->resizeColumnToContents(0);
-	m_ui->remotePlayersView->resizeColumnToContents(1);
+	for(int c = 0; c < m_model.columnCount() -1; ++c) {
+		m_ui->remotePlayersView->resizeColumnToContents(c);
+	}
 }
 
 void MainWindow::sortNoSort(bool b) {
@@ -402,8 +405,9 @@ void MainWindow::clearMyCards(bool del, bool dis) {
 	if(dis) enableMyCards(false);
 }
 
-void MainWindow::clientTurn(std::size_t t) const {
+void MainWindow::clientTurn(std::size_t t) {
 	m_ui->turnLabel->setText(QString("%1").arg(t));
+	m_turn = t;
 }
 
 void MainWindow::clientStats(const Client::STATS &s) {
@@ -576,13 +580,19 @@ void MainWindow::clientPlayerJoined(const QString &p) {
 	si.push_back(new QStandardItem(p));
 	si.push_back(new QStandardItem("5"));
 	si.back()->setTextAlignment(Qt::AlignCenter);
+	si.push_back(new QStandardItem("1"));
+	si.back()->setTextAlignment(Qt::AlignCenter);
 	si.push_back(new QStandardItem(tr("Player <span style=\"color:blue;\">%1</span> "\
 									  "joined the game").arg(p)));
 
 	m_stdForeground = si.back()->foreground();
 	m_stdBackground = si.back()->background();
 
-	m_model.appendRow(si);
+//	if(isMe(p)) {
+//		m_model.insertRow(0, si);
+//	} else {
+		m_model.appendRow(si);
+//	}
 
 	const long np = static_cast<long>(m_maxPlayerCount) - m_model.rowCount();
 
@@ -763,9 +773,13 @@ void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bo
 
 		QStandardItem *nam = m_model.item(m_model.indexFromItem(ml.front()).row(), 0);
 		QStandardItem *cnt = m_model.item(m_model.indexFromItem(ml.front()).row(), 1);
-		QStandardItem *msg = m_model.item(m_model.indexFromItem(ml.front()).row(), 2);
+		QStandardItem *trn = m_model.item(m_model.indexFromItem(ml.front()).row(), 2);
+		QStandardItem *msg = m_model.item(m_model.indexFromItem(ml.front()).row(), 3);
 
 		cnt->setTextAlignment(Qt::AlignCenter);
+		trn->setTextAlignment(Qt::AlignCenter);
+
+		trn->setText(QString::number(m_turn));
 
 		if(isMe(player) || m_playerCardCounts.contains(player)) {
 
@@ -797,6 +811,7 @@ void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bo
 		if(disable) {
 			nam->setEnabled(false);
 			cnt->setEnabled(false);
+			trn->setEnabled(false);
 			msg->setEnabled(false);
 		}
 	}
@@ -853,6 +868,8 @@ void MainWindow::clearStats() {
 	m_ui->turnLabel->setText(QString::null);
 	setOpenCard(QByteArray());
 	m_ui->jackSuit->setProperty("suitDescription", QVariant());
+
+	m_turn = 1;
 
 	resizeColumns();
 }

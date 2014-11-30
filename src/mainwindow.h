@@ -74,7 +74,7 @@ private slots:
 	void clientError(const QString &);
 	void clientMessage(const QString &) const;
 	void clientCardSet(const Client::CARDS &);
-	void clientTurn(std::size_t) const;
+	void clientTurn(std::size_t);
 	void clientStats(const Client::STATS &);
 	void clientOpenCard(const QByteArray &, const QString &);
 	void clientTalonShuffled();
@@ -142,6 +142,7 @@ private:
 	bool m_clientDestroyRequested;
 	int m_countWonDisplayed;
 	const QString m_aboutTxt;
+	std::size_t m_turn;
 };
 
 #endif // MAINWINDOW_H

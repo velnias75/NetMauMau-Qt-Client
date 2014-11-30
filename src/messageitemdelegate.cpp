@@ -100,7 +100,8 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
 	QTextDocument *document = doc(option, index);
-	QPoint off(opt.rect.left(), opt.rect.top() + std::floor(float(document->size().height())/4.0f));
+	QPoint off(opt.rect.left(), (opt.rect.top() - 1) +
+			   std::floor(float(document->size().height())/4.0f));
 
 	painter->save();
 	painter->translate(off);
