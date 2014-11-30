@@ -29,6 +29,7 @@ class CardWidget : public QPushButton, public NetMauMau::Common::ICard, private 
 
 public:
 	explicit CardWidget(QWidget *parent = 0, const QByteArray &cardDesc = "");
+	virtual ~CardWidget();
 
 	virtual bool event(QEvent *e);
 

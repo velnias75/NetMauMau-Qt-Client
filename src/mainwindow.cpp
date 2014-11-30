@@ -141,6 +141,26 @@ MainWindow::~MainWindow() {
 	clearMyCards(true);
 	destroyClient(true);
 
+	m_ui->actionConnectionlog->disconnect();
+	m_connectionLogDlg->disconnect();
+	m_ui->actionReconnect->disconnect();
+	m_ui->actionAboutQt->disconnect();
+	m_ui->actionAbout->disconnect();
+	m_ui->actionServer->disconnect();
+	m_ui->actionLaunchServer->disconnect();
+	m_ui->noSort->disconnect();
+	m_ui->sortSuitRank->disconnect();
+	m_ui->sortRankSuit->disconnect();
+	m_ui->filterCards->disconnect();
+	m_ui->suspendButton->disconnect();
+	m_ui->takeCardsButton->disconnect();
+	m_serverDlg->disconnect();
+	m_model.disconnect();
+	m_launchDlg->disconnect();
+	m_ui->actionNetMauMauServerOutput->disconnect();
+
+	disconnect();
+
 	delete m_ui;
 	delete m_lsov;
 	delete m_serverDlg;

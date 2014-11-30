@@ -35,7 +35,8 @@ const QRegExp hostRex("^(?=.{1,255}$)[0-9A-Za-z]" \
 }
 
 ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(false),
-	m_lastServer(QString::null), m_deleteServersDlg(new DeleteServersDialog(&m_model, this)) {
+	m_lastServer(QString::null), m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
+	m_hostRexValidator(new QRegExpValidator(hostRex)) {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -49,7 +50,7 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	QStringList labels;
 	labels << tr("Server") << tr("Version") << tr("AI") << tr("Players");
 
-	hostEdit->setValidator(new QRegExpValidator(hostRex));
+	hostEdit->setValidator(m_hostRexValidator);
 
 	m_model.setHorizontalHeaderLabels(labels);
 
@@ -143,14 +144,27 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 ServerDialog::~ServerDialog() {
 
 	for(int r = 0; r < m_serverInfoThreads.count(); ++r) {
+
 		if(m_serverInfoThreads[r]->isRunning()) {
 			m_serverInfoThreads[r]->wait(31000UL);
 		}
 
+		m_serverInfoThreads[r]->disconnect();
 		delete m_serverInfoThreads[r];
 	}
 
+	availServerView->disconnect();
+	hostEdit->disconnect();
+	connectButton->disconnect();
+	refreshButton->disconnect();
+	removeButton->disconnect();
+	addButton->disconnect();
+	deleteServers->disconnect();
+
 	delete m_deleteServersDlg;
+	delete m_hostRexValidator;
+
+	disconnect();
 }
 
 void ServerDialog::doubleClick() {

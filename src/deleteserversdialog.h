@@ -29,6 +29,7 @@ class DeleteServersDialog : public QDialog, private Ui::DeleteServersDialog {
 
 public:
 	explicit DeleteServersDialog(const QStandardItemModel *model, QWidget *parent = 0);
+	virtual ~DeleteServersDialog();
 
 signals:
 	void deleteRows(const QList<int> &);

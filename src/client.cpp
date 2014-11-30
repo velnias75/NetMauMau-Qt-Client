@@ -55,6 +55,8 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 Client::~Client() {
 	emit offline(true);
 	if(m_mainWindow) m_mainWindow->disconnect();
+
+	QThread::disconnect();
 }
 
 bool Client::isOnline() const {

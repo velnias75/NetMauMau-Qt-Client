@@ -33,6 +33,7 @@ public:
 	typedef enum { FROM_CLIENT, TO_CLIENT, FROM_SERVER, TO_SERVER } DIRECTION;
 
 	explicit ConnectionLogDialog(QWidget *parent = 0);
+	virtual ~ConnectionLogDialog();
 
 	void clear();
 

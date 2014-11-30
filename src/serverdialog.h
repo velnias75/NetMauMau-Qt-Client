@@ -68,6 +68,7 @@ private:
 	mutable bool m_forceRefresh;
 	QString m_lastServer;
 	const DeleteServersDialog *m_deleteServersDlg;
+	const QRegExpValidator *m_hostRexValidator;
 };
 
 #endif // SERVERDIALOG_H

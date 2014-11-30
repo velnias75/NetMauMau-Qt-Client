@@ -32,6 +32,10 @@ const char *NA = QT_TRANSLATE_NOOP("ServerInfo", "n/a");
 ServerInfo::ServerInfo(const QStandardItemModel *model, int row, QObject *p) : QThread(p),
 	m_model(model), m_row(row) {}
 
+ServerInfo::~ServerInfo() {
+	disconnect();
+}
+
 void ServerInfo::run() {
 
 	QStandardItem *server = m_model->item(m_row, 0);

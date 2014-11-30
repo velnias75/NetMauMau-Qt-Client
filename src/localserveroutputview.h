@@ -27,6 +27,7 @@ class LocalServerOutputView : public QWidget, private Ui::LocalServerOutputView 
 
 public:
 	explicit LocalServerOutputView(QWidget *parent = 0);
+	virtual ~LocalServerOutputView();
 
 	void updateOutput(const QByteArray &data);
 	void setTriggerAction(QAction *act);

@@ -35,6 +35,10 @@ JackChooseDialog::JackChooseDialog(QWidget *p) : QDialog(p) {
 
 }
 
+JackChooseDialog::~JackChooseDialog() {
+	disconnect();
+}
+
 QString JackChooseDialog::suitToolTip(NetMauMau::Common::ICard::SUIT s) {
 	switch(s) {
 	case NetMauMau::Common::ICard::HEARTS: return tr("Hearts");

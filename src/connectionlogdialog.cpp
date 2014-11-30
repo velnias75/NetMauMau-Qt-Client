@@ -67,6 +67,14 @@ ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : QDialog(p, Qt::Window),
 	readSettings();
 }
 
+ConnectionLogDialog::~ConnectionLogDialog() {
+	logView->disconnect();
+	m_model.disconnect();
+	actionCopy->disconnect();
+
+	disconnect();
+}
+
 void ConnectionLogDialog::showContextMenu(const QPoint &p) {
 	m_ctxPopup->popup(logView->mapToGlobal(p));
 }

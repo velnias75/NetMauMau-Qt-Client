@@ -42,6 +42,13 @@ DeleteServersDialog::DeleteServersDialog(const QStandardItemModel *model, QWidge
 					 this, SLOT(selectionChanged(const QItemSelection &, const QItemSelection &)));
 }
 
+DeleteServersDialog::~DeleteServersDialog() {
+	buttonBox->disconnect();
+	serversList->selectionModel()->disconnect();
+
+	disconnect();
+}
+
 void DeleteServersDialog::showEvent(QShowEvent *evt) {
 
 	m_model.clear();

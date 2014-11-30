@@ -93,6 +93,15 @@ LaunchServerDialog::~LaunchServerDialog() {
 
 		m_process.waitForFinished();
 	}
+
+	execChooseButton->disconnect();
+	playersSpin->disconnect();
+	ultimateCheck->disconnect();
+	aiNameEdit->disconnect();
+	portSpin->disconnect();
+	launchButton->disconnect();
+
+	disconnect();
 }
 
 void LaunchServerDialog::updateOptions() {

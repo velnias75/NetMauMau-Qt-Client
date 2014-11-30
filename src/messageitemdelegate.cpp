@@ -43,6 +43,7 @@ MessageItemDelegate::MessageItemDelegate(QObject *p, bool cardDetect) : QStyledI
 
 MessageItemDelegate::~MessageItemDelegate() {
 	delete m_doc;
+	disconnect();
 }
 
 QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,

@@ -41,6 +41,10 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_text(QS
 	log->clear();
 }
 
+LocalServerOutputView::~LocalServerOutputView() {
+	disconnect();
+}
+
 void LocalServerOutputView::updateOutput(const QByteArray &d) {
 	if(!d.trimmed().isEmpty()) {
 		m_text += QString::fromUtf8(d);
