@@ -143,14 +143,16 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 
 ServerDialog::~ServerDialog() {
 
-	for(int r = 0; r < m_serverInfoThreads.count(); ++r) {
+	for(QList<ServerInfo *>::Iterator r(m_serverInfoThreads.begin());
+		r != m_serverInfoThreads.end(); ++r) {
 
-		if(m_serverInfoThreads[r]->isRunning()) {
-			m_serverInfoThreads[r]->wait(31000UL);
-		}
+		ServerInfo *si = *r;
 
-		m_serverInfoThreads[r]->disconnect();
-		delete m_serverInfoThreads[r];
+		if(si->isRunning()) si->wait(31000UL);
+
+		si->disconnect();
+		delete si;
+
 	}
 
 	availServerView->disconnect();
@@ -332,7 +334,9 @@ void ServerDialog::deleteRows(const QList<int> &rows) {
 
 	for(int r = rows.size() - 1; r >= 0; --r) {
 		const QList<QStandardItem *> cols(m_model.takeRow(rows[r]));
-		for(int i = 0; i < cols.size(); ++i) delete cols[i];
+		for(QList<QStandardItem *>::ConstIterator i(cols.begin()); i != cols.end(); ++i) {
+			delete *i;
+		}
 	}
 
 	resize();
