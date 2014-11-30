@@ -25,6 +25,18 @@
 
 namespace {
 
+typedef struct _nameSize {
+	_nameSize(const QString &n, const QSize &s = QSize()) : name(n), size(s), pm(0L) {}
+
+	~_nameSize() {
+		delete pm;
+	}
+
+	QString name;
+	QSize size;
+	QPixmap *pm;
+} NAMESIZE;
+
 typedef struct _cardKey {
 
 	_cardKey(NetMauMau::Common::ICard::SUIT s, NetMauMau::Common::ICard::RANK r) : suit(s),
@@ -36,97 +48,108 @@ typedef struct _cardKey {
 
 	NetMauMau::Common::ICard::SUIT suit;
 	NetMauMau::Common::ICard::RANK rank;
+
 } CARDKEY;
 
-QMap<CARDKEY, QString> createCardMap() {
+QMap<CARDKEY, NAMESIZE> createCardMap() {
 
-	QMap<CARDKEY, QString> cm;
+	QMap<CARDKEY, NAMESIZE> cm;
 
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::HEARTS,
-					  NetMauMau::Common::ICard::SEVEN), ":/hearts-7.svg");
+					  NetMauMau::Common::ICard::SEVEN), NAMESIZE(":/hearts-7.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::HEARTS,
-					  NetMauMau::Common::ICard::EIGHT), ":/hearts-8.svg");
+					  NetMauMau::Common::ICard::EIGHT), NAMESIZE(":/hearts-8.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::HEARTS,
-					  NetMauMau::Common::ICard::NINE), ":/hearts-9.svg");
+					  NetMauMau::Common::ICard::NINE), NAMESIZE(":/hearts-9.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::HEARTS,
-					  NetMauMau::Common::ICard::TEN), ":/hearts-10.svg");
+					  NetMauMau::Common::ICard::TEN), NAMESIZE(":/hearts-10.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::HEARTS,
-					  NetMauMau::Common::ICard::JACK), ":/hearts-jack.svg");
+					  NetMauMau::Common::ICard::JACK), NAMESIZE(":/hearts-jack.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::HEARTS,
-					  NetMauMau::Common::ICard::QUEEN), ":/hearts-queen.svg");
+					  NetMauMau::Common::ICard::QUEEN), NAMESIZE(":/hearts-queen.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::HEARTS,
-					  NetMauMau::Common::ICard::KING), ":/hearts-king.svg");
+					  NetMauMau::Common::ICard::KING), NAMESIZE(":/hearts-king.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::HEARTS,
-					  NetMauMau::Common::ICard::ACE), ":/hearts-ace.svg");
+					  NetMauMau::Common::ICard::ACE), NAMESIZE(":/hearts-ace.svg"));
 
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::DIAMONDS,
-					  NetMauMau::Common::ICard::SEVEN), ":/diamonds-7.svg");
+					  NetMauMau::Common::ICard::SEVEN), NAMESIZE(":/diamonds-7.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::DIAMONDS,
-					  NetMauMau::Common::ICard::EIGHT), ":/diamonds-8.svg");
+					  NetMauMau::Common::ICard::EIGHT), NAMESIZE(":/diamonds-8.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::DIAMONDS,
-					  NetMauMau::Common::ICard::NINE), ":/diamonds-9.svg");
+					  NetMauMau::Common::ICard::NINE), NAMESIZE(":/diamonds-9.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::DIAMONDS,
-					  NetMauMau::Common::ICard::TEN), ":/diamonds-10.svg");
+					  NetMauMau::Common::ICard::TEN), NAMESIZE(":/diamonds-10.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::DIAMONDS,
-					  NetMauMau::Common::ICard::JACK), ":/diamonds-jack.svg");
+					  NetMauMau::Common::ICard::JACK), NAMESIZE(":/diamonds-jack.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::DIAMONDS,
-					  NetMauMau::Common::ICard::QUEEN), ":/diamonds-queen.svg");
+					  NetMauMau::Common::ICard::QUEEN), NAMESIZE(":/diamonds-queen.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::DIAMONDS,
-					  NetMauMau::Common::ICard::KING), ":/diamonds-king.svg");
+					  NetMauMau::Common::ICard::KING), NAMESIZE(":/diamonds-king.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::DIAMONDS,
-					  NetMauMau::Common::ICard::ACE), ":/diamonds-ace.svg");
+					  NetMauMau::Common::ICard::ACE), NAMESIZE(":/diamonds-ace.svg"));
 
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::CLUBS,
-					  NetMauMau::Common::ICard::SEVEN), ":/clubs-7.svg");
+					  NetMauMau::Common::ICard::SEVEN), NAMESIZE(":/clubs-7.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::CLUBS,
-					  NetMauMau::Common::ICard::EIGHT), ":/clubs-8.svg");
+					  NetMauMau::Common::ICard::EIGHT), NAMESIZE(":/clubs-8.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::CLUBS,
-					  NetMauMau::Common::ICard::NINE), ":/clubs-9.svg");
+					  NetMauMau::Common::ICard::NINE), NAMESIZE(":/clubs-9.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::CLUBS,
-					  NetMauMau::Common::ICard::TEN), ":/clubs-10.svg");
+					  NetMauMau::Common::ICard::TEN), NAMESIZE(":/clubs-10.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::CLUBS,
-					  NetMauMau::Common::ICard::JACK), ":/clubs-jack.svg");
+					  NetMauMau::Common::ICard::JACK), NAMESIZE(":/clubs-jack.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::CLUBS,
-					  NetMauMau::Common::ICard::QUEEN), ":/clubs-queen.svg");
+					  NetMauMau::Common::ICard::QUEEN), NAMESIZE(":/clubs-queen.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::CLUBS,
-					  NetMauMau::Common::ICard::KING), ":/clubs-king.svg");
+					  NetMauMau::Common::ICard::KING), NAMESIZE(":/clubs-king.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::CLUBS,
-					  NetMauMau::Common::ICard::ACE), ":/clubs-ace.svg");
+					  NetMauMau::Common::ICard::ACE), NAMESIZE(":/clubs-ace.svg"));
 
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::SPADES,
-					  NetMauMau::Common::ICard::SEVEN), ":/spades-7.svg");
+					  NetMauMau::Common::ICard::SEVEN), NAMESIZE(":/spades-7.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::SPADES,
-					  NetMauMau::Common::ICard::EIGHT), ":/spades-8.svg");
+					  NetMauMau::Common::ICard::EIGHT), NAMESIZE(":/spades-8.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::SPADES,
-					  NetMauMau::Common::ICard::NINE), ":/spades-9.svg");
+					  NetMauMau::Common::ICard::NINE), NAMESIZE(":/spades-9.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::SPADES,
-					  NetMauMau::Common::ICard::TEN), ":/spades-10.svg");
+					  NetMauMau::Common::ICard::TEN), NAMESIZE(":/spades-10.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::SPADES,
-					  NetMauMau::Common::ICard::JACK), ":/spades-jack.svg");
+					  NetMauMau::Common::ICard::JACK), NAMESIZE(":/spades-jack.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::SPADES,
-					  NetMauMau::Common::ICard::QUEEN), ":/spades-queen.svg");
+					  NetMauMau::Common::ICard::QUEEN), NAMESIZE(":/spades-queen.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::SPADES,
-					  NetMauMau::Common::ICard::KING), ":/spades-king.svg");
+					  NetMauMau::Common::ICard::KING), NAMESIZE(":/spades-king.svg"));
 	cm.insert(CARDKEY(NetMauMau::Common::ICard::SPADES,
-					  NetMauMau::Common::ICard::ACE), ":/spades-ace.svg");
+					  NetMauMau::Common::ICard::ACE), NAMESIZE(":/spades-ace.svg"));
 
 	return cm;
 }
 
-const QMap<CARDKEY, QString> CARDMAP(createCardMap());
+const QMap<CARDKEY, NAMESIZE> CARDMAP(createCardMap());
 
 }
 
 CardPixmap::CardPixmap(const QSize &siz, NetMauMau::Common::ICard::SUIT s,
 					   NetMauMau::Common::ICard::RANK r) : QPixmap(siz) {
 
-	const QMap<CARDKEY, QString>::iterator f(CARDMAP.find(CARDKEY(s, r)));
+	const QMap<CARDKEY, NAMESIZE>::iterator f(CARDMAP.find(CARDKEY(s, r)));
 
-	fill(Qt::transparent);
+	if(!f.value().size.isValid() || f.value().size != size()) {
 
-	if(f != CARDMAP.end()) {
-		QSvgRenderer renderer(f.value());
-		QPainter painter(this);
-		renderer.render(&painter);
+		fill(Qt::transparent);
+
+		if(f != CARDMAP.end()) {
+
+			QSvgRenderer renderer(f.value().name);
+			QPainter painter(this);
+			renderer.render(&painter);
+
+			f.value().size = size();
+			f.value().pm = new QPixmap(copy());
+		}
+
+	} else {
+		QPixmap::operator=(*f.value().pm);
 	}
 }
