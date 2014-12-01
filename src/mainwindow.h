@@ -129,6 +129,7 @@ private:
 	ConnectionLogDialog *m_connectionLogDlg;
 	QStyledItemDelegate *m_nameItemDelegate;
 	QStyledItemDelegate *m_countItemDelegate;
+	QStyledItemDelegate *m_turnItemDelegate;
 	QStyledItemDelegate *m_messageItemDelegate;
 	int m_lastPlayedCardIdx;
 	QStringList m_appendPlayerStat;

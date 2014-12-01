@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
+	m_turnItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
 	m_appendPlayerStat(), m_noCardPossible(false),
 	m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
@@ -105,6 +106,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 
 	m_ui->remotePlayersView->setItemDelegateForColumn(0, m_nameItemDelegate);
 	m_ui->remotePlayersView->setItemDelegateForColumn(1, m_countItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(2, m_turnItemDelegate);
 	m_ui->remotePlayersView->setItemDelegateForColumn(3, m_messageItemDelegate);
 
 	m_ui->remotePlayersView->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
