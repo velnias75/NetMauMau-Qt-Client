@@ -66,7 +66,7 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 				case NetMauMau::Common::ICard::DIAMONDS: {
 						const QString &card(opt.text.mid(idx, SUITS[i].length() + 2 +
 														 (opt.text[idx + 2].isDigit() &&
-														  opt.text[idx + 3].isDigit() ? 1 : 0 )));
+														 opt.text[idx + 3].isDigit() ? 1 : 0 )));
 						opt.text.replace(card,
 										 QString("<span style=\"color:red;\">%1</span>").arg(card));
 					} break;
@@ -93,15 +93,16 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	QStyleOptionViewItemV4 opt(option);
 	initStyleOption(&opt, index);
 
-	QStyle *style = opt.widget ? opt.widget->style() : qApp->style();
+	const QStyle *style = opt.widget ? opt.widget->style() : qApp->style();
 
 	opt.text = QString::null;
 	opt.state &= ~QStyle::State_MouseOver;
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
 	QTextDocument *document = doc(option, index);
-	QPoint off(opt.rect.left(), opt.rect.top() + std::ceil(qreal(opt.rect.height())/qreal(2.0f) -
-														   document->size().height()/qreal(2.0f)));
+	const QPoint off(opt.rect.left(), opt.rect.top() +
+					 std::ceil(qreal(opt.rect.height())/qreal(2.0f) -
+							   document->size().height()/qreal(2.0f)));
 
 	painter->save();
 	painter->translate(off);
@@ -113,6 +114,6 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 QSize MessageItemDelegate::sizeHint(const QStyleOptionViewItem &option,
 									const QModelIndex &index) const {
 
-	QTextDocument *document = doc(option, index);
+	const QTextDocument *document = doc(option, index);
 	return QSize(document->idealWidth(), document->size().height());
 }

@@ -700,8 +700,8 @@ void MainWindow::cardChosen(CardWidget *c) {
 
 void MainWindow::setOpenCard(const QByteArray &d) {
 
-	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;
-	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::ACE;
+	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::SUIT_ILLEGAL;
+	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::RANK_ILLEGAL;
 
 	if(NetMauMau::Common::parseCardDesc(d.constData(), &s, &r)) {
 

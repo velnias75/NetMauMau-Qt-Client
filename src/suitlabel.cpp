@@ -50,18 +50,26 @@ void SuitLabel::styleSuit() {
 	const QByteArray &suitDesc(property("suitDescription").toByteArray());
 
 	if(!suitDesc.isEmpty()) {
+
 		const NetMauMau::Common::ICard::SUIT s =
 				NetMauMau::Common::symbolToSuit(suitDesc.constData());
 
-		if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
-						   s == NetMauMau::Common::ICard::DIAMONDS)) {
-			setStyleSheet("SuitLabel { color: red; }");
-		} else {
-			setStyleSheet(QString::null);
-		}
+		if(s != NetMauMau::Common::ICard::SUIT_ILLEGAL) {
 
-		setText(QString::fromUtf8(suitDesc.constData()));
-		setToolTip(JackChooseDialog::suitToolTip(s));
+			if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
+							   s == NetMauMau::Common::ICard::DIAMONDS)) {
+				setStyleSheet("SuitLabel { color: red; }");
+			} else {
+				setStyleSheet(QString::null);
+			}
+
+			setText(QString::fromUtf8(suitDesc.constData()));
+			setToolTip(JackChooseDialog::suitToolTip(s));
+
+		} else {
+			setText(QString::null);
+			setToolTip(QString::null);
+		}
 
 	} else {
 		setText(QString::null);
