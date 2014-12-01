@@ -25,6 +25,13 @@ It requires Qt in at least version 4.8.2
 Binary releases
 ===============
 
+Gentoo
+------
+NetMauMau is available on Gentoo via the overlay **games-overlay** which can be added by `layman`
+The GitHub repository of **games-overlay** is here: [https://github.com/hasufell/games-overlay](https://github.com/hasufell/games-overlay)
+
+Install NetMauMau with `emerge games-board/netmaumau`
+
 Ubuntu
 ------
 Binary packages are available for Precise, Trusty, Utopic and Vivid
