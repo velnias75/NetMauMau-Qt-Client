@@ -147,7 +147,7 @@ CardPixmap::CardPixmap(const QSize &siz, NetMauMau::Common::ICard::SUIT s,
 
 			f.value().size = size();
 			delete f.value().pm;
-			f.value().pm = new QPixmap(*this)/*new QPixmap(copy())*/;
+			f.value().pm = new QPixmap(*this);
 		}
 
 	} else {

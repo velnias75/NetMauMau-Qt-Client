@@ -171,7 +171,7 @@ ServerDialog::~ServerDialog() {
 
 void ServerDialog::doubleClick() {
 
-	if(playerName->text().length() > 0) {
+	if(!playerName->text().isEmpty()) {
 
 		try {
 
@@ -185,12 +185,11 @@ void ServerDialog::doubleClick() {
 
 			timeval tv = { 0, 800 };
 
-			const Client::PLAYERLIST &pl((Client(0L, 0L, playerName->text().toUtf8().constData(),
-												 std::string(srv.toStdString()),
+			const char *pn = playerName->text().toUtf8().constData();
+			const Client::PLAYERLIST &pl((Client(0L, 0L, pn, std::string(srv.toStdString()),
 												 static_cast<uint16_t>(port))).playerList(&tv));
 
-			if(std::find(pl.begin(), pl.end(),
-						 playerName->text().toUtf8().constData()) != pl.end()) {
+			if(qBinaryFind(pl.begin(), pl.end(), pn) != pl.end()) {
 
 				QMessageBox::warning(this, tr("Connect"), tr("%1 is already in use!")
 									 .arg(playerName->text()));
@@ -243,7 +242,7 @@ void ServerDialog::enableRemoveAndOkButton(const QItemSelection &, const QItemSe
 }
 
 void ServerDialog::enableAddButton(const QString &str) {
-	addButton->setEnabled(str.length() > 0);
+	addButton->setDisabled(str.isEmpty());
 }
 
 void ServerDialog::resize() {

@@ -24,6 +24,8 @@
 #include <QTextDocument>
 #include <QAbstractTextDocumentLayout>
 
+#include <qmath.h>
+
 #include "messageitemdelegate.h"
 #include "cardtools.h"
 
@@ -100,8 +102,7 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
 	QTextDocument *document = doc(option, index);
-	const QPoint off(opt.rect.left(), opt.rect.top() +
-					 std::ceil(qreal(opt.rect.height())/qreal(2.0f) -
+	const QPoint off(opt.rect.left(), opt.rect.top() + qCeil(qreal(opt.rect.height())/qreal(2.0f) -
 							   document->size().height()/qreal(2.0f)));
 
 	painter->save();
