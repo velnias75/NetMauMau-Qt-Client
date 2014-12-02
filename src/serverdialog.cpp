@@ -246,7 +246,8 @@ void ServerDialog::enableAddButton(const QString &str) {
 }
 
 void ServerDialog::resize() {
-	for(int i = 0; i < 3; ++i) {
+
+	for(int i = 0; i < m_model.columnCount() - 1; ++i) {
 		availServerView->resizeColumnToContents(i);
 	}
 

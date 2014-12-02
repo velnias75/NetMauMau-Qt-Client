@@ -590,11 +590,11 @@ void MainWindow::clientPlayerJoined(const QString &p) {
 	m_stdForeground = si.back()->foreground();
 	m_stdBackground = si.back()->background();
 
-//	if(isMe(p)) {
-//		m_model.insertRow(0, si);
-//	} else {
-		m_model.appendRow(si);
-//	}
+	//	if(isMe(p)) {
+	//		m_model.insertRow(0, si);
+	//	} else {
+	m_model.appendRow(si);
+	//	}
 
 	const long np = static_cast<long>(m_maxPlayerCount) - m_model.rowCount();
 
@@ -834,31 +834,38 @@ void MainWindow::destroyClient(bool force) {
 
 			if(!m_client->wait(1000)) {
 				qWarning("Client thread didn't stopped within 1 second. Forcing termination...");
+				QObject::connect(m_client, SIGNAL(terminated()), this, SLOT(clientDestroyed()));
 				m_client->terminate();
 			} else {
-				m_client->QThread::disconnect();
+				clientDestroyed();
 			}
-
-			delete m_client;
-			m_client = 0L;
 		}
-
-		clearStats();
-		clearMyCards(true);
-		centralWidget()->setEnabled(false);
-
-		m_ui->remoteGroup->setTitle(tr("Players"));
-		m_ui->actionServer->setEnabled(true);
-		m_ui->takeCardsButton->setStyleSheet(QString::null);
-		m_ui->takeCardsButton->setEnabled(false);
-		m_ui->suspendButton->setEnabled(false);
-
-		m_countWonDisplayed = 0;
-		m_clientDestroyRequested = false;
 
 	} else {
 		m_clientDestroyRequested = true;
 	}
+}
+
+void MainWindow::clientDestroyed() {
+
+	m_clientDestroyRequested = false;
+
+	m_client->QThread::disconnect();
+
+	delete m_client;
+	m_client = 0L;
+
+	clearStats();
+	clearMyCards(true);
+	centralWidget()->setEnabled(false);
+
+	m_ui->remoteGroup->setTitle(tr("Players"));
+	m_ui->actionServer->setEnabled(true);
+	m_ui->takeCardsButton->setStyleSheet(QString::null);
+	m_ui->takeCardsButton->setEnabled(false);
+	m_ui->suspendButton->setEnabled(false);
+
+	m_countWonDisplayed = 0;
 }
 
 void MainWindow::clearStats() {

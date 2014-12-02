@@ -61,6 +61,7 @@ private slots:
 	void serverAccept();
 	void lostWinConfirmed();
 	void destroyClient(bool force = false);
+	void clientDestroyed();
 	void forceRefreshServers();
 	void localServerLaunched(bool);
 	void reconnectAvailable(const QString &) const;
