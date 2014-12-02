@@ -478,6 +478,8 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 	if(isMe(p)) {
 
+		m_ui->takeCardsButton->setStyleSheet(QString::null);
+
 		QMessageBox lost;
 		QIcon icon;
 
