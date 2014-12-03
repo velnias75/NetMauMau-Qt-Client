@@ -59,6 +59,7 @@ private slots:
 	void scrollToLastCard() const;
 
 	void serverAccept();
+	void serverDisconnect();
 	void lostWinConfirmed();
 	void destroyClient(bool force = false);
 	void clientDestroyed();

@@ -75,6 +75,10 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 		m_ui->actionServer->setIcon(QIcon(":/network-server.png"));
 	}
 
+	if(!m_ui->actionDisconnect->icon().hasThemeIcon("network-disconnect")) {
+		m_ui->actionDisconnect->setIcon(QIcon(":/connect_no.png"));
+	}
+
 	if(!m_ui->actionExit->icon().hasThemeIcon("application-exit")) {
 		m_ui->actionExit->setIcon(QIcon(":/application-exit.png"));
 	}
@@ -89,6 +93,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	QObject::connect(m_connectionLogDlg, SIGNAL(rejected()),
 					 m_ui->actionConnectionlog, SLOT(toggle()));
 	QObject::connect(m_ui->actionReconnect, SIGNAL(triggered()), this, SLOT(serverAccept()));
+	QObject::connect(m_ui->actionDisconnect, SIGNAL(triggered()), this, SLOT(serverDisconnect()));
 	QObject::connect(m_ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 	QObject::connect(m_ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
 	QObject::connect(m_ui->actionServer, SIGNAL(triggered()), m_serverDlg, SLOT(show()));
@@ -148,6 +153,7 @@ MainWindow::~MainWindow() {
 	m_ui->actionConnectionlog->disconnect();
 	m_connectionLogDlg->disconnect();
 	m_ui->actionReconnect->disconnect();
+	m_ui->actionDisconnect->disconnect();
 	m_ui->actionAboutQt->disconnect();
 	m_ui->actionAbout->disconnect();
 	m_ui->actionServer->disconnect();
@@ -263,6 +269,8 @@ void MainWindow::serverAccept() {
 
 	QObject::connect(m_client, SIGNAL(offline(bool)),
 					 m_ui->actionReconnect, SLOT(setEnabled(bool)));
+	QObject::connect(m_client, SIGNAL(offline(bool)),
+					 m_ui->actionDisconnect, SLOT(setDisabled(bool)));
 
 	m_ui->localPlayerDock->setWindowTitle(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
@@ -824,6 +832,10 @@ void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bo
 void MainWindow::lostWinConfirmed() {
 	m_lostWonConfirmed = false;
 	if(m_clientDestroyRequested) destroyClient(true);
+}
+
+void MainWindow::serverDisconnect() {
+	destroyClient(true);
 }
 
 void MainWindow::destroyClient(bool force) {

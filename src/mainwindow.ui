@@ -122,6 +122,7 @@
     </property>
     <addaction name="actionServer"/>
     <addaction name="actionReconnect"/>
+    <addaction name="actionDisconnect"/>
     <addaction name="separator"/>
     <addaction name="actionLaunchServer"/>
     <addaction name="separator"/>
@@ -164,6 +165,7 @@
    </attribute>
    <addaction name="actionServer"/>
    <addaction name="actionReconnect"/>
+   <addaction name="actionDisconnect"/>
    <addaction name="separator"/>
    <addaction name="actionExit"/>
   </widget>
@@ -612,6 +614,23 @@
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="actionDisconnect">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="network-disconnect"/>
+   </property>
+   <property name="text">
+    <string>&amp;Disconnect</string>
+   </property>
+   <property name="toolTip">
+    <string>Disconnect from server</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+D</string>
    </property>
   </action>
  </widget>
