@@ -58,6 +58,9 @@ private slots:
 
 	void scrollToLastCard() const;
 
+	void receivingPlayerImage(const QString &) const;
+	void receivedPlayerImage(const QString &) const;
+
 	void serverAccept();
 	void serverDisconnect();
 	void lostWinConfirmed();

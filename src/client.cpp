@@ -195,7 +195,7 @@ void Client::playerJoined(const std::string &player, const unsigned char *b,
 						  std::size_t l) const {
 	log(QString("playerJoined(%1, %2, %3)").arg(QString::fromUtf8(player.c_str()))
 		.arg(l ? "PNG DATA" : "NO PNG DATA").arg(QString::number(l)));
-	emit cPlayerJoined(QString::fromUtf8(player.c_str()), QImage::fromData(b, l));
+	emit cPlayerJoined(QString::fromUtf8(player.c_str()), l ? QImage::fromData(b, l) : QImage());
 }
 
 void Client::playerRejected(const std::string &player) const {
@@ -287,6 +287,16 @@ void Client::jackSuit(NetMauMau::Common::ICard::SUIT suit) const {
 void Client::unknownServerMessage(std::string msg) const {
 	qWarning("Unknown server message: \"%s\"", msg.c_str());
 	log(QString("unknownServerMessage(%1)").arg(QString::fromUtf8(msg.c_str())));
+}
+
+void Client::beginReceivePlayerPicture(const std::string &player) const throw() {
+	qDebug("beginReceivePlayerPicture(%s)", player.c_str());
+	emit receivingPlayerImage(QString::fromUtf8(player.c_str()));
+}
+
+void Client::endReceivePlayerPicture(const std::string &player) const throw() {
+	qDebug("endReceivePlayerPicture(%s)", player.c_str());
+	emit receivedPlayerImage(QString::fromUtf8(player.c_str()));
 }
 
 void Client::log(const QString &e, ConnectionLogDialog::DIRECTION dir) const {

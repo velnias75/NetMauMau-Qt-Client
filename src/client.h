@@ -37,6 +37,10 @@ public:
 
 	virtual ~Client();
 
+protected:
+	virtual void beginReceivePlayerPicture(const std::string &player) const throw();
+	virtual void endReceivePlayerPicture(const std::string &player) const throw();
+
 	virtual NetMauMau::Common::ICard *playCard(const CARDS &cards) const;
 	virtual NetMauMau::Common::ICard::SUIT getJackSuitChoice() const;
 
@@ -102,6 +106,9 @@ signals:
 	void cJackSuit(NetMauMau::Common::ICard::SUIT) const;
 
 	void offline(bool) const;
+
+	void receivingPlayerImage(const QString &) const;
+	void receivedPlayerImage(const QString &) const;
 
 protected:
 	virtual void run();

@@ -27,10 +27,10 @@
 #include <versionmismatchexception.h>
 
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "serverdialog.h"
 #include "cardwidget.h"
 #include "cardpixmap.h"
+#include "serverdialog.h"
+#include "ui_mainwindow.h"
 #include "launchserverdialog.h"
 #include "connectionlogdialog.h"
 #include "messageitemdelegate.h"
@@ -254,7 +254,17 @@ void MainWindow::closeEvent(QCloseEvent *e) {
 	e->accept();
 }
 
+void MainWindow::receivingPlayerImage(const QString &p) const {
+	statusBar()->showMessage(tr("Receiving player image for \"%1\"...").arg(p));
+}
+
+void MainWindow::receivedPlayerImage(const QString &) const {
+	statusBar()->clearMessage();
+}
+
 void MainWindow::serverAccept() {
+
+	m_ui->actionReconnect->setDisabled(true);
 
 	const ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
 	const QString &as(sd->getAcceptedServer());
@@ -274,15 +284,19 @@ void MainWindow::serverAccept() {
 	QObject::connect(m_client, SIGNAL(offline(bool)),
 					 m_ui->actionDisconnect, SLOT(setDisabled(bool)));
 
+	QObject::connect(m_client, SIGNAL(receivingPlayerImage(const QString &)),
+					 this, SLOT(receivingPlayerImage(const QString &)));
+	QObject::connect(m_client, SIGNAL(receivedPlayerImage(const QString &)),
+					 this, SLOT(receivedPlayerImage(const QString &)));
+
 	m_ui->localPlayerDock->setWindowTitle(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
 	try {
 
-		statusBar()->showMessage(tr("Retrieving player list..."));
 		const Client::PLAYERINFOS &pl(m_client->playerList(true));
-		statusBar()->clearMessage();
 
 		for(Client::PLAYERINFOS::const_iterator i(pl.begin()); i != pl.end(); ++i) {
+			qApp->processEvents();
 			clientPlayerJoined(QString::fromUtf8(i->name.c_str()), i->pngDataLen ?
 								   QImage::fromData(i->pngData, i->pngDataLen) : QImage());
 			delete [] i->pngData;
@@ -599,7 +613,15 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 
 	QList<QStandardItem *> si;
 
-	si.push_back(new QStandardItem(QIcon(QPixmap::fromImage(img)), QString::null));
+	si.push_back(new QStandardItem());
+
+	if(!img.isNull()) {
+		si.back()->setData(QPixmap::fromImage(img.scaledToHeight(m_ui->remotePlayersView->
+															  verticalHeader()->
+															  minimumSectionSize() - 2)),
+						Qt::DecorationRole);
+	}
+
 	si.push_back(new QStandardItem(p));
 	si.push_back(new QStandardItem("5"));
 	si.back()->setTextAlignment(Qt::AlignCenter);

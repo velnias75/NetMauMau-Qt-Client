@@ -100,6 +100,15 @@
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
          </attribute>
+         <attribute name="verticalHeaderDefaultSectionSize">
+          <number>36</number>
+         </attribute>
+         <attribute name="verticalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderMinimumSectionSize">
+          <number>36</number>
+         </attribute>
         </widget>
        </item>
       </layout>
@@ -621,7 +630,9 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="network-disconnect"/>
+    <iconset theme="network-disconnect">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Disconnect</string>
