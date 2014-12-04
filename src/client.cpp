@@ -191,9 +191,11 @@ void Client::gameOver() const {
 	emit cGameOver();
 }
 
-void Client::playerJoined(const std::string &player) const {
-	log(QString("playerJoined(%1)").arg(QString::fromUtf8(player.c_str())));
-	emit cPlayerJoined(QString::fromUtf8(player.c_str()));
+void Client::playerJoined(const std::string &player, const unsigned char *b,
+						  std::size_t l) const {
+	log(QString("playerJoined(%1, %2, %3)").arg(QString::fromUtf8(player.c_str()))
+		.arg(l ? "PNG DATA" : "NO PNG DATA").arg(QString::number(l)));
+	emit cPlayerJoined(QString::fromUtf8(player.c_str()), QImage::fromData(b, l));
 }
 
 void Client::playerRejected(const std::string &player) const {

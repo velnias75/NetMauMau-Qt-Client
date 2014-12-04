@@ -27,16 +27,21 @@
 #include "client.h"
 
 namespace {
+
 const char *NA = QT_TRANSLATE_NOOP("ServerDialog", "n/a");
 const QRegExp hostRex("^(?=.{1,255}$)[0-9A-Za-z]" \
 					  "(?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?" \
 					  "(?:\\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|-)" \
 					  "{0,61}[0-9A-Za-z])?)*\\.?$");
+
+const QRegExp nameRex("[^\\+]+.*");
+
 }
 
 ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(false),
 	m_lastServer(QString::null), m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
-	m_hostRexValidator(new QRegExpValidator(hostRex)) {
+	m_hostRexValidator(new QRegExpValidator(hostRex)),
+	m_nameRexValidator(new QRegExpValidator(nameRex)) {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -51,6 +56,7 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	labels << tr("Server") << tr("Version") << tr("AI") << tr("Players");
 
 	hostEdit->setValidator(m_hostRexValidator);
+	playerName->setValidator(m_nameRexValidator);
 
 	m_model.setHorizontalHeaderLabels(labels);
 
@@ -71,7 +77,6 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 					 this, SLOT(enableRemoveAndOkButton(const QItemSelection &,
 														const QItemSelection &)));
 
-
 	for(int i = 0, j = 0; i < servers.size(); ++i) {
 		const QString &tHost(servers[i].trimmed());
 		if(!tHost.simplified().isEmpty() && hostRex.exactMatch(tHost.left(tHost.indexOf(':')))) {
@@ -90,7 +95,6 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 			m_serverInfoThreads.push_back(new ServerInfo(&m_model, j));
 			QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool, int)),
 							 this, SLOT(updateOnline(bool, int)));
-
 			++j;
 		} else {
 			qWarning("\"%s\" is no valid host name", tHost.toUtf8().constData());
@@ -165,6 +169,7 @@ ServerDialog::~ServerDialog() {
 
 	delete m_deleteServersDlg;
 	delete m_hostRexValidator;
+	delete m_nameRexValidator;
 
 	disconnect();
 }
@@ -185,11 +190,12 @@ void ServerDialog::doubleClick() {
 
 			timeval tv = { 0, 800 };
 
-			const char *pn = playerName->text().toUtf8().constData();
-			const Client::PLAYERLIST &pl((Client(0L, 0L, pn, std::string(srv.toStdString()),
+			QByteArray pn = playerName->text().toUtf8();
+			const Client::PLAYERLIST &pl((Client(0L, 0L, pn.constData(),
+												 std::string(srv.toStdString()),
 												 static_cast<uint16_t>(port))).playerList(&tv));
 
-			if(qBinaryFind(pl.begin(), pl.end(), pn) != pl.end()) {
+			if(qBinaryFind(pl.begin(), pl.end(), pn.constData()) != pl.end()) {
 
 				QMessageBox::warning(this, tr("Connect"), tr("%1 is already in use!")
 									 .arg(playerName->text()));

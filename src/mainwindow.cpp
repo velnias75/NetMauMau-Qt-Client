@@ -38,7 +38,7 @@
 
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
 	m_serverDlg(new ServerDialog(this)), m_lsov(new LocalServerOutputView()),
-	m_launchDlg(new LaunchServerDialog(m_lsov, this)), m_model(0, 4), m_cards(),
+	m_launchDlg(new LaunchServerDialog(m_lsov, this)), m_model(0, 5), m_cards(),
 	m_lastPlayedCard(0L), m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(),
 	m_maxPlayerCount(0), m_pickCardPrepended(false),
 	m_connectionLogDlg(new ConnectionLogDialog(0L)),
@@ -104,15 +104,16 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	fnt.setPointSize(11);
 	m_ui->turnLabel->setFont(fnt);
 
-	m_model.setHorizontalHeaderItem(0, new QStandardItem(tr("Name")));
-	m_model.setHorizontalHeaderItem(1, new QStandardItem(tr("Cards")));
-	m_model.setHorizontalHeaderItem(2, new QStandardItem(tr("Turn")));
-	m_model.setHorizontalHeaderItem(3, new QStandardItem(tr("Message")));
+	m_model.setHorizontalHeaderItem(0, new QStandardItem());
+	m_model.setHorizontalHeaderItem(1, new QStandardItem(tr("Name")));
+	m_model.setHorizontalHeaderItem(2, new QStandardItem(tr("Cards")));
+	m_model.setHorizontalHeaderItem(3, new QStandardItem(tr("Turn")));
+	m_model.setHorizontalHeaderItem(4, new QStandardItem(tr("Message")));
 
-	m_ui->remotePlayersView->setItemDelegateForColumn(0, m_nameItemDelegate);
-	m_ui->remotePlayersView->setItemDelegateForColumn(1, m_countItemDelegate);
-	m_ui->remotePlayersView->setItemDelegateForColumn(2, m_turnItemDelegate);
-	m_ui->remotePlayersView->setItemDelegateForColumn(3, m_messageItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(1, m_nameItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(2, m_countItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(3, m_turnItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(4, m_messageItemDelegate);
 
 	m_ui->remotePlayersView->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 	m_ui->remotePlayersView->horizontalHeader()->setClickable(false);
@@ -263,6 +264,7 @@ void MainWindow::serverAccept() {
 
 	m_cTakeSuit = m_takenSuit = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 	m_maxPlayerCount = sd->getMaxPlayerCount();
+
 	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
 						  std::string(as.left(p).toStdString()),
 						  p != -1 ? as.mid(p + 1).toUInt() : Client::getDefaultPort());
@@ -276,10 +278,14 @@ void MainWindow::serverAccept() {
 
 	try {
 
-		const Client::PLAYERLIST &pl(m_client->playerList());
+		statusBar()->showMessage(tr("Retrieving player list..."));
+		const Client::PLAYERINFOS &pl(m_client->playerList(true));
+		statusBar()->clearMessage();
 
-		for(Client::PLAYERLIST::const_iterator i(pl.begin()); i != pl.end(); ++i) {
-			clientPlayerJoined(QString::fromUtf8((*i).c_str()));
+		for(Client::PLAYERINFOS::const_iterator i(pl.begin()); i != pl.end(); ++i) {
+			clientPlayerJoined(QString::fromUtf8(i->name.c_str()), i->pngDataLen ?
+								   QImage::fromData(i->pngData, i->pngDataLen) : QImage());
+			delete [] i->pngData;
 		}
 
 		QObject::connect(m_client, SIGNAL(cPlayCard(const Client::CARDS &)),
@@ -296,8 +302,8 @@ void MainWindow::serverAccept() {
 		QObject::connect(m_client, SIGNAL(cEnableSuspend(bool)),
 						 m_ui->suspendButton, SLOT(setEnabled(bool)));
 		QObject::connect(m_client, SIGNAL(cTurn(std::size_t)), this, SLOT(clientTurn(std::size_t)));
-		QObject::connect(m_client, SIGNAL(cPlayerJoined(const QString &)),
-						 this, SLOT(clientPlayerJoined(const QString &)));
+		QObject::connect(m_client, SIGNAL(cPlayerJoined(const QString &, const QImage &)),
+						 this, SLOT(clientPlayerJoined(const QString &, const QImage &)));
 		QObject::connect(m_client, SIGNAL(cStats(const Client::STATS &)),
 						 this, SLOT(clientStats(const Client::STATS &)));
 		QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(destroyClient()));
@@ -339,7 +345,7 @@ void MainWindow::serverAccept() {
 
 		m_client->start(QThread::LowestPriority);
 
-	} catch(const NetMauMau::Client::Exception::PlayerlistException &e) {
+	} catch(const NetMauMau::Client::Exception::PlayerlistException &) {
 		clientError(tr("Couldn't get player list from server"));
 		forceRefreshServers();
 		m_ui->actionReconnect->setEnabled(false);
@@ -479,6 +485,10 @@ bool MainWindow::isMe(const QString &player) const {
 	return static_cast<ServerDialog *>(m_serverDlg)->getPlayerName() == player;
 }
 
+QList<QStandardItem *> MainWindow::rowForPlayer(const QString &p) const {
+	return m_model.findItems(p, Qt::MatchExactly, 1);
+}
+
 void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t pt) const {
 
 	updatePlayerStat(p, tr("<span style=\"color:blue;\">lost</span> in turn %1; " \
@@ -585,10 +595,11 @@ void MainWindow::clientPlayedCard(const QString &player, const QByteArray &card)
 	setOpenCard(card);
 }
 
-void MainWindow::clientPlayerJoined(const QString &p) {
+void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 
 	QList<QStandardItem *> si;
 
+	si.push_back(new QStandardItem(QIcon(QPixmap::fromImage(img)), QString::null));
 	si.push_back(new QStandardItem(p));
 	si.push_back(new QStandardItem("5"));
 	si.back()->setTextAlignment(Qt::AlignCenter);
@@ -630,7 +641,7 @@ void MainWindow::clientNextPlayer(const QString &player) const {
 		}
 	}
 
-	const QList<QStandardItem *> &ml(m_model.findItems(player));
+	const QList<QStandardItem *> &ml(rowForPlayer(player));
 
 	if(!ml.empty()) {
 		for(int c = 0; c < m_model.columnCount(); ++c) {
@@ -779,14 +790,14 @@ void MainWindow::enableMyCards(bool b) {
 void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bool append,
 								  bool disable) const {
 
-	const QList<QStandardItem *> &ml(m_model.findItems(player));
+	const QList<QStandardItem *> &ml(rowForPlayer(player));
 
 	if(!ml.empty()) {
 
-		QStandardItem *nam = m_model.item(m_model.indexFromItem(ml.front()).row(), 0);
-		QStandardItem *cnt = m_model.item(m_model.indexFromItem(ml.front()).row(), 1);
-		QStandardItem *trn = m_model.item(m_model.indexFromItem(ml.front()).row(), 2);
-		QStandardItem *msg = m_model.item(m_model.indexFromItem(ml.front()).row(), 3);
+		QStandardItem *nam = m_model.item(m_model.indexFromItem(ml.front()).row(), 1);
+		QStandardItem *cnt = m_model.item(m_model.indexFromItem(ml.front()).row(), 2);
+		QStandardItem *trn = m_model.item(m_model.indexFromItem(ml.front()).row(), 3);
+		QStandardItem *msg = m_model.item(m_model.indexFromItem(ml.front()).row(), 4);
 
 		cnt->setTextAlignment(Qt::AlignCenter);
 		trn->setTextAlignment(Qt::AlignCenter);

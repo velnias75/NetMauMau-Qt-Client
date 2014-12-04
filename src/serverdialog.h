@@ -69,6 +69,7 @@ private:
 	QString m_lastServer;
 	const DeleteServersDialog *m_deleteServersDlg;
 	const QRegExpValidator *m_hostRexValidator;
+	const QRegExpValidator *m_nameRexValidator;
 };
 
 #endif // SERVERDIALOG_H

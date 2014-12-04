@@ -45,7 +45,8 @@ public:
 	virtual void turn(std::size_t turn) const;
 	virtual void stats(const STATS &stats) const;
 	virtual void gameOver() const;
-	virtual void playerJoined(const std::string &player) const;
+	virtual void playerJoined(const std::string &player, const unsigned char *pngData,
+							  std::size_t pngDataLen) const;
 	virtual void playerRejected(const std::string &player) const;
 	virtual void playerSuspends(const std::string &player) const;
 	virtual void playedCard(const std::string &player, const NetMauMau::Common::ICard *card) const;
@@ -83,7 +84,7 @@ signals:
 	void cTurn(std::size_t) const;
 	void cStats(const Client::STATS &stats) const;
 	void cGameOver() const;
-	void cPlayerJoined(const QString&) const;
+	void cPlayerJoined(const QString&, const QImage &) const;
 	void cPlayerSuspends(const QString &) const;
 	void cPlayedCard(const QString &, const QByteArray &) const;
 	void cplayerWins(const QString &, std::size_t) const;

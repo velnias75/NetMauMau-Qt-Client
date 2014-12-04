@@ -82,7 +82,7 @@ private slots:
 	void clientTalonShuffled();
 	void clientCardRejected(const QString &, const QByteArray &);
 	void clientCardAccepted(const QByteArray &);
-	void clientPlayerJoined(const QString &);
+	void clientPlayerJoined(const QString &, const QImage &);
 	void clientPlayerSuspends(const QString &);
 	void clientPlayerWins(const QString &, std::size_t);
 	void clientPlayerLost(const QString &, std::size_t, std::size_t) const;
@@ -103,6 +103,8 @@ private slots:
 
 private:
 	bool isMe(const QString &player) const;
+
+	QList<QStandardItem *> rowForPlayer(const QString &p) const;
 
 	void enableMyCards(bool b);
 	void clearMyCards(bool del, bool dis = true);
