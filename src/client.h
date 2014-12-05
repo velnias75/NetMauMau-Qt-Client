@@ -35,11 +35,16 @@ public:
 	Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 		   const std::string &server, uint16_t port);
 
+	Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
+		   const std::string &server, uint16_t port, const QByteArray &buf);
+
 	virtual ~Client();
 
 protected:
 	virtual void beginReceivePlayerPicture(const std::string &player) const throw();
 	virtual void endReceivePlayerPicture(const std::string &player) const throw();
+	virtual void uploadSucceded(const std::string &player) const throw();
+	virtual void uploadFailed(const std::string &player) const throw();
 
 	virtual NetMauMau::Common::ICard *playCard(const CARDS &cards) const;
 	virtual NetMauMau::Common::ICard::SUIT getJackSuitChoice() const;
@@ -107,6 +112,8 @@ signals:
 
 	void offline(bool) const;
 
+	void sendingPlayerImageSucceeded(const QString &) const;
+	void sendingPlayerImageFailed(const QString &) const;
 	void receivingPlayerImage(const QString &) const;
 	void receivedPlayerImage(const QString &) const;
 
@@ -114,6 +121,7 @@ protected:
 	virtual void run();
 
 private:
+	void init() const;
 	bool isOnline() const _PURE;
 	void log(const QString &,
 			 ConnectionLogDialog::DIRECTION dir = ConnectionLogDialog::FROM_SERVER) const;

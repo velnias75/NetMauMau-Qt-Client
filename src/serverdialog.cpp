@@ -188,12 +188,12 @@ void ServerDialog::doubleClick() {
 			uint port = (QString(idx != -1 ? host.mid(idx + 1) :
 											 QString::number(Client::getDefaultPort()))).toUInt();
 
-			timeval tv = { 0, 800 };
+//			timeval tv = { 0, 800 };
 
 			QByteArray pn = playerName->text().toUtf8();
 			const Client::PLAYERLIST &pl((Client(0L, 0L, pn.constData(),
 												 std::string(srv.toStdString()),
-												 static_cast<uint16_t>(port))).playerList(&tv));
+												 static_cast<uint16_t>(port))).playerList());
 
 			if(qBinaryFind(pl.begin(), pl.end(), pn.constData()) != pl.end()) {
 

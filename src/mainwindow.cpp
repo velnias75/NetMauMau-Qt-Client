@@ -207,7 +207,7 @@ void MainWindow::reconnectAvailable(const QString &srv) const {
 }
 
 void MainWindow::resizeColumns() const {
-	for(int c = 0; c < m_model.columnCount() -1; ++c) {
+	for(int c = 0; c < m_model.columnCount() - 1; ++c) {
 		m_ui->remotePlayersView->resizeColumnToContents(c);
 	}
 }
@@ -262,6 +262,10 @@ void MainWindow::receivedPlayerImage(const QString &) const {
 	statusBar()->clearMessage();
 }
 
+void MainWindow::sendingPlayerImageFailed(const QString &) const {
+	// TODO: show some broken image and tooltip
+}
+
 void MainWindow::serverAccept() {
 
 	m_ui->actionReconnect->setDisabled(true);
@@ -275,9 +279,19 @@ void MainWindow::serverAccept() {
 	m_cTakeSuit = m_takenSuit = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 	m_maxPlayerCount = sd->getMaxPlayerCount();
 
+#if 0
+	QByteArray buf;
+	QFile f("/home/heiko/pictures/GIMPWork/cathy-hgl.png");
+//	QFile f("/home/heiko/pictures/GIMPWork/desi-coin-hgl.png");
+	if(f.open(QIODevice::ReadOnly)) {
+		 buf = f.readAll();
+		 f.close();
+	}
+#endif
+
 	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
 						  std::string(as.left(p).toStdString()),
-						  p != -1 ? as.mid(p + 1).toUInt() : Client::getDefaultPort());
+						  p != -1 ? as.mid(p + 1).toUInt() : Client::getDefaultPort()/*, buf*/);
 
 	QObject::connect(m_client, SIGNAL(offline(bool)),
 					 m_ui->actionReconnect, SLOT(setEnabled(bool)));
@@ -288,6 +302,9 @@ void MainWindow::serverAccept() {
 					 this, SLOT(receivingPlayerImage(const QString &)));
 	QObject::connect(m_client, SIGNAL(receivedPlayerImage(const QString &)),
 					 this, SLOT(receivedPlayerImage(const QString &)));
+
+	QObject::connect(m_client, SIGNAL(sendingPlayerImageFailed(const QString &)),
+					 this, SLOT(sendingPlayerImageFailed(const QString &)));
 
 	m_ui->localPlayerDock->setWindowTitle(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
@@ -847,7 +864,7 @@ void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bo
 			}
 		}
 
-		m_ui->remotePlayersView->resizeColumnToContents(1);
+		m_ui->remotePlayersView->resizeColumnToContents(2);
 
 		nam->setToolTip(player);
 
@@ -883,6 +900,7 @@ void MainWindow::destroyClient(bool force) {
 				qWarning("Client thread didn't stopped within 1 second. Forcing termination...");
 				QObject::connect(m_client, SIGNAL(terminated()), this, SLOT(clientDestroyed()));
 				m_client->terminate();
+				m_ui->actionDisconnect->setDisabled(true);
 			} else {
 				clientDestroyed();
 			}

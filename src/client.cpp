@@ -37,6 +37,27 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 	NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server, port), m_mainWindow(w),
 	m_disconnectNow(false), m_cardToPlay(0L), m_chosenSuit(NetMauMau::Common::ICard::HEARTS),
 	m_online(false), m_connectionLogDialog(cld) {
+	init();
+}
+
+Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
+			   const std::string &server, uint16_t port, const QByteArray &buf) : QThread(),
+	NetMauMau::Client::AbstractClient(player.toUtf8().constData(),
+									  reinterpret_cast<const unsigned char *>(buf.constData()),
+									  buf.size(), server, port), m_mainWindow(w),
+	m_disconnectNow(false), m_cardToPlay(0L), m_chosenSuit(NetMauMau::Common::ICard::HEARTS),
+	m_online(false), m_connectionLogDialog(cld) {
+	init();
+}
+
+Client::~Client() {
+	emit offline(true);
+	if(m_mainWindow) m_mainWindow->disconnect();
+
+	QThread::disconnect();
+}
+
+void Client::init() const {
 
 	qRegisterMetaType<CARDS>("Client::CARDS");
 	qRegisterMetaType<STATS>("Client::STATS");
@@ -50,13 +71,6 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 		QObject::connect(m_mainWindow, SIGNAL(chosenSuite(NetMauMau::Common::ICard::SUIT)),
 						 this, SLOT(chosenSuite(NetMauMau::Common::ICard::SUIT)));
 	}
-}
-
-Client::~Client() {
-	emit offline(true);
-	if(m_mainWindow) m_mainWindow->disconnect();
-
-	QThread::disconnect();
 }
 
 bool Client::isOnline() const {
@@ -195,7 +209,8 @@ void Client::playerJoined(const std::string &player, const unsigned char *b,
 						  std::size_t l) const {
 	log(QString("playerJoined(%1, %2, %3)").arg(QString::fromUtf8(player.c_str()))
 		.arg(l ? "PNG DATA" : "NO PNG DATA").arg(QString::number(l)));
-	emit cPlayerJoined(QString::fromUtf8(player.c_str()), l ? QImage::fromData(b, l) : QImage());
+	emit cPlayerJoined(QString::fromUtf8(player.c_str()), l ? QImage::fromData(b, l) :
+															  QImage());
 }
 
 void Client::playerRejected(const std::string &player) const {
@@ -297,6 +312,16 @@ void Client::beginReceivePlayerPicture(const std::string &player) const throw() 
 void Client::endReceivePlayerPicture(const std::string &player) const throw() {
 	qDebug("endReceivePlayerPicture(%s)", player.c_str());
 	emit receivedPlayerImage(QString::fromUtf8(player.c_str()));
+}
+
+void Client::uploadSucceded(const std::string &p) const throw() {
+	qDebug("Sending player image succeeded");
+	emit sendingPlayerImageSucceeded(QString::fromUtf8(p.c_str()));
+}
+
+void Client::uploadFailed(const std::string &p) const throw() {
+	qDebug("Sending player image failed");
+	emit sendingPlayerImageFailed(QString::fromUtf8(p.c_str()));
 }
 
 void Client::log(const QString &e, ConnectionLogDialog::DIRECTION dir) const {

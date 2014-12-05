@@ -58,6 +58,7 @@ private slots:
 
 	void scrollToLastCard() const;
 
+	void sendingPlayerImageFailed(const QString &) const;
 	void receivingPlayerImage(const QString &) const;
 	void receivedPlayerImage(const QString &) const;
 
