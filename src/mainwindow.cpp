@@ -279,19 +279,10 @@ void MainWindow::serverAccept() {
 	m_cTakeSuit = m_takenSuit = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 	m_maxPlayerCount = sd->getMaxPlayerCount();
 
-#if 0
-	QByteArray buf;
-	QFile f("/home/heiko/pictures/GIMPWork/cathy-hgl.png");
-//	QFile f("/home/heiko/pictures/GIMPWork/desi-coin-hgl.png");
-	if(f.open(QIODevice::ReadOnly)) {
-		 buf = f.readAll();
-		 f.close();
-	}
-#endif
-
 	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
 						  std::string(as.left(p).toStdString()),
-						  p != -1 ? as.mid(p + 1).toUInt() : Client::getDefaultPort()/*, buf*/);
+						  p != -1 ? as.mid(p + 1).toUInt() : Client::getDefaultPort(),
+						  static_cast<ServerDialog *>(m_serverDlg)->getPlayerImage());
 
 	QObject::connect(m_client, SIGNAL(offline(bool)),
 					 m_ui->actionReconnect, SLOT(setEnabled(bool)));

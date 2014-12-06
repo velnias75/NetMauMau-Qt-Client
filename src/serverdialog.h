@@ -40,10 +40,12 @@ public:
 	QString getAcceptedServer() const;
 	QString getPlayerName() const;
 	uint getMaxPlayerCount() const;
+	const QByteArray &getPlayerImage() const;
 
 private:
 	void forceRefresh(bool b);
 	bool isForceRefresh() const _PURE;
+	void setPlayerImagePath(const QString &path, bool warn = false);
 
 	void saveServers();
 
@@ -57,6 +59,7 @@ private slots:
 	void removeSelected();
 	void addServer();
 	void resize();
+	void choosePlayerImage();
 
 signals:
 	void refresh();
@@ -70,6 +73,7 @@ private:
 	const DeleteServersDialog *m_deleteServersDlg;
 	const QRegExpValidator *m_hostRexValidator;
 	const QRegExpValidator *m_nameRexValidator;
+	QByteArray m_playerImage;
 };
 
 #endif // SERVERDIALOG_H

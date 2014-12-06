@@ -17,6 +17,7 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>
 
@@ -41,7 +42,7 @@ const QRegExp nameRex("[^\\+]+.*");
 ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(false),
 	m_lastServer(QString::null), m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
 	m_hostRexValidator(new QRegExpValidator(hostRex)),
-	m_nameRexValidator(new QRegExpValidator(nameRex)) {
+	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage() {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -68,6 +69,7 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 
 	settings.beginGroup("Player");
 	playerName->setText(settings.value("name", "Phoenix").toString());
+	setPlayerImagePath(settings.value("playerImage").toString());
 	settings.endGroup();
 
 	availServerView->setModel(&m_model);
@@ -138,6 +140,7 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	QObject::connect(refreshButton, SIGNAL(clicked()), this, SLOT(checkOnline()));
 	QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeSelected()));
 	QObject::connect(addButton, SIGNAL(clicked()), this, SLOT(addServer()));
+	QObject::connect(imageChooseButton, SIGNAL(clicked()), this, SLOT(choosePlayerImage()));
 	QObject::connect(this, SIGNAL(refresh()), this, SLOT(checkOnline()));
 	QObject::connect(deleteServers, SIGNAL(clicked()), m_deleteServersDlg, SLOT(show()));
 	QObject::connect(m_deleteServersDlg, SIGNAL(deleteRows(const QList<int> &)),
@@ -172,6 +175,12 @@ ServerDialog::~ServerDialog() {
 	delete m_nameRexValidator;
 
 	disconnect();
+}
+
+void ServerDialog::choosePlayerImage() {
+	setPlayerImagePath(QFileDialog::getOpenFileName(this, tr("Choose a player image"),
+													playerImagePath->text(),
+													tr("PNG-Images (*.png)")), true);
 }
 
 void ServerDialog::doubleClick() {
@@ -211,6 +220,7 @@ void ServerDialog::doubleClick() {
 		QSettings settings;
 		settings.beginGroup("Player");
 		settings.setValue("name", playerName->text());
+		settings.setValue("playerImage", playerImagePath->text());
 		settings.endGroup();
 
 		accept();
@@ -240,6 +250,56 @@ uint ServerDialog::getMaxPlayerCount() const {
 	const QString &countTxt(m_model.itemFromIndex(availServerView->selectionModel()->
 												  selection().indexes()[2])->text());
 	return countTxt.mid(countTxt.indexOf('/') + 1).toUInt();
+}
+
+const QByteArray &ServerDialog::getPlayerImage() const {
+	return m_playerImage;
+}
+
+void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
+
+	if(!f.isNull()) {
+
+		QFile img(f);
+
+		if(img.open(QIODevice::ReadOnly)) {
+
+			QApplication::setOverrideCursor(Qt::WaitCursor);
+
+			qApp->processEvents();
+
+			m_playerImage = img.readAll();
+
+			qApp->processEvents();
+
+			const bool ok =
+					Client::isPlayerImageUploadable(reinterpret_cast<const unsigned char *>
+													(m_playerImage.constData()),
+													m_playerImage.size());
+
+			qApp->processEvents();
+
+			QApplication::restoreOverrideCursor();
+
+			if(ok) {
+				playerImagePath->setText(f);
+			} else {
+
+				m_playerImage.clear();
+
+				if(warn) {
+					QMessageBox::warning(this, tr("Player image"),
+										 tr("The chosen image won't be accepted by the server.\n" \
+											"It is too large."));
+				}
+			}
+
+			img.close();
+
+		} else {
+			QMessageBox::critical(this, tr("Player image"), tr("Cannot open %1").arg(f));
+		}
+	}
 }
 
 void ServerDialog::enableRemoveAndOkButton(const QItemSelection &, const QItemSelection &) {
@@ -287,7 +347,8 @@ void ServerDialog::updateOnline(bool enabled, int row) {
 
 	if(enabled && server->text() == m_lastServer) {
 		availServerView->selectionModel()->select(m_model.index(row, 0),
-												  QItemSelectionModel::ClearAndSelect|QItemSelectionModel::Rows);
+												  QItemSelectionModel::ClearAndSelect|
+												  QItemSelectionModel::Rows);
 		emit reconnectAvailable(m_lastServer);
 	}
 }
