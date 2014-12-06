@@ -625,9 +625,9 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 
 	if(!img.isNull()) {
 		si.back()->setData(QPixmap::fromImage(img.scaledToHeight(m_ui->remotePlayersView->
-															  verticalHeader()->
-															  minimumSectionSize() - 2)),
-						Qt::DecorationRole);
+																 verticalHeader()->
+																 minimumSectionSize() - 2)),
+						   Qt::DecorationRole);
 	}
 
 	si.push_back(new QStandardItem(p));

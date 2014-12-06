@@ -121,6 +121,10 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 		removeButton->setIcon(QIcon(":/list-remove.png"));
 	}
 
+	if(!picRemoveButton->icon().hasThemeIcon("list-remove")) {
+		picRemoveButton->setIcon(QIcon(":/list-remove.png"));
+	}
+
 	if(!deleteServers->icon().hasThemeIcon("user-trash")) {
 		deleteServers->setIcon(QApplication::style()->standardIcon(QStyle::SP_TrashIcon));
 	}
@@ -141,11 +145,15 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeSelected()));
 	QObject::connect(addButton, SIGNAL(clicked()), this, SLOT(addServer()));
 	QObject::connect(imageChooseButton, SIGNAL(clicked()), this, SLOT(choosePlayerImage()));
+	QObject::connect(picRemoveButton, SIGNAL(clicked()), this, SLOT(clearPlayerImage()));
 	QObject::connect(this, SIGNAL(refresh()), this, SLOT(checkOnline()));
 	QObject::connect(deleteServers, SIGNAL(clicked()), m_deleteServersDlg, SLOT(show()));
 	QObject::connect(m_deleteServersDlg, SIGNAL(deleteRows(const QList<int> &)),
 					 this, SLOT(deleteRows(const QList<int> &)));
+	QObject::connect(playerImagePath, SIGNAL(textChanged(const QString &)),
+					 this, SLOT(enableClearButton(const QString &)));
 
+	enableClearButton(playerImagePath->text());
 }
 
 ServerDialog::~ServerDialog() {
@@ -183,6 +191,14 @@ void ServerDialog::choosePlayerImage() {
 													tr("PNG-Images (*.png)")), true);
 }
 
+void ServerDialog::clearPlayerImage() {
+	m_playerImage.clear();
+}
+
+void ServerDialog::enableClearButton(const QString &s) {
+	picRemoveButton->setDisabled(s.isEmpty());
+}
+
 void ServerDialog::doubleClick() {
 
 	if(!playerName->text().isEmpty()) {
@@ -197,7 +213,7 @@ void ServerDialog::doubleClick() {
 			uint port = (QString(idx != -1 ? host.mid(idx + 1) :
 											 QString::number(Client::getDefaultPort()))).toUInt();
 
-//			timeval tv = { 0, 800 };
+			//			timeval tv = { 0, 800 };
 
 			QByteArray pn = playerName->text().toUtf8();
 			const Client::PLAYERLIST &pl((Client(0L, 0L, pn.constData(),
@@ -258,9 +274,13 @@ const QByteArray &ServerDialog::getPlayerImage() const {
 
 void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
 
-	if(!f.isNull()) {
+	QByteArray prevImgData;
+
+	if(!f.isEmpty()) {
 
 		QFile img(f);
+
+		prevImgData = m_playerImage;
 
 		if(img.open(QIODevice::ReadOnly)) {
 
@@ -270,12 +290,13 @@ void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
 
 			m_playerImage = img.readAll();
 
+			if(m_playerImage.isEmpty()) m_playerImage = prevImgData;
+
 			qApp->processEvents();
 
-			const bool ok =
-					Client::isPlayerImageUploadable(reinterpret_cast<const unsigned char *>
-													(m_playerImage.constData()),
-													m_playerImage.size());
+			const bool ok = Client::isPlayerImageUploadable(reinterpret_cast<const unsigned char *>
+															(m_playerImage.constData()),
+															m_playerImage.size());
 
 			qApp->processEvents();
 
@@ -284,13 +305,19 @@ void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
 			if(ok) {
 				playerImagePath->setText(f);
 			} else {
-
-				m_playerImage.clear();
-
 				if(warn) {
-					QMessageBox::warning(this, tr("Player image"),
-										 tr("The chosen image won't be accepted by the server.\n" \
-											"It is too large."));
+					if(QMessageBox::warning(this, tr("Player image"),
+											tr("The chosen image won't be accepted by the server.\n" \
+											   "It is too large."),
+											QMessageBox::Ignore|QMessageBox::Ok) ==
+							QMessageBox::Ignore) {
+
+						playerImagePath->setText(f);
+					} else {
+						m_playerImage = prevImgData;
+					}
+				} else {
+					playerImagePath->setText(f);
 				}
 			}
 

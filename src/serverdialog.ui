@@ -256,10 +256,10 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="minimumSize">
+            <property name="maximumSize">
              <size>
               <width>30</width>
-              <height>0</height>
+              <height>16777215</height>
              </size>
             </property>
             <property name="text">
@@ -267,6 +267,23 @@
             </property>
             <property name="autoDefault">
              <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="picRemoveButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="icon">
+             <iconset resource="nuoveXT2.qrc">
+              <normaloff>:/list-remove.png</normaloff>:/list-remove.png</iconset>
             </property>
            </widget>
           </item>
@@ -429,7 +446,9 @@
   <tabstop>connectButton</tabstop>
   <tabstop>availServerView</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="nuoveXT2.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>cancelButton</sender>
@@ -460,6 +479,22 @@
     <hint type="destinationlabel">
      <x>299</x>
      <y>224</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>picRemoveButton</sender>
+   <signal>clicked()</signal>
+   <receiver>playerImagePath</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>273</x>
+     <y>394</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>156</x>
+     <y>394</y>
     </hint>
    </hints>
   </connection>

@@ -60,6 +60,8 @@ private slots:
 	void addServer();
 	void resize();
 	void choosePlayerImage();
+	void clearPlayerImage();
+	void enableClearButton(const QString &);
 
 signals:
 	void refresh();

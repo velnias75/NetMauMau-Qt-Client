@@ -698,32 +698,32 @@ Deine Punkte: %1</translation>
         <translation>Spieler&amp;bild:</translation>
     </message>
     <message>
-        <location filename="serverdialog.ui" line="287"/>
+        <location filename="serverdialog.ui" line="304"/>
         <source>Add server</source>
         <translation>Füge Server hinzu</translation>
     </message>
     <message>
-        <location filename="serverdialog.ui" line="293"/>
+        <location filename="serverdialog.ui" line="310"/>
         <source>&amp;Server:</source>
         <translation>&amp;Server:</translation>
     </message>
     <message>
-        <location filename="serverdialog.ui" line="367"/>
+        <location filename="serverdialog.ui" line="384"/>
         <source>&amp;Port:</source>
         <translation>&amp;Port:</translation>
     </message>
     <message>
-        <location filename="serverdialog.ui" line="350"/>
+        <location filename="serverdialog.ui" line="367"/>
         <source>Add server to list</source>
         <translation>Füge Server zur Liste hinzu</translation>
     </message>
     <message>
-        <location filename="serverdialog.ui" line="397"/>
+        <location filename="serverdialog.ui" line="414"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbruch</translation>
     </message>
     <message>
-        <location filename="serverdialog.ui" line="407"/>
+        <location filename="serverdialog.ui" line="424"/>
         <source>C&amp;onnect</source>
         <translation>&amp;Verbinde</translation>
     </message>
@@ -753,46 +753,46 @@ Deine Punkte: %1</translation>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="181"/>
+        <location filename="serverdialog.cpp" line="189"/>
         <source>Choose a player image</source>
         <translation>Wähle ein Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="183"/>
+        <location filename="serverdialog.cpp" line="191"/>
         <source>PNG-Images (*.png)</source>
         <translation>PNG-Bilder (*.png)</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="209"/>
-        <location filename="serverdialog.cpp" line="230"/>
+        <location filename="serverdialog.cpp" line="225"/>
+        <location filename="serverdialog.cpp" line="246"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="209"/>
+        <location filename="serverdialog.cpp" line="225"/>
         <source>%1 is already in use!</source>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="230"/>
+        <location filename="serverdialog.cpp" line="246"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="277"/>
-        <location filename="serverdialog.cpp" line="286"/>
+        <location filename="serverdialog.cpp" line="309"/>
+        <location filename="serverdialog.cpp" line="327"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="278"/>
+        <location filename="serverdialog.cpp" line="310"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is too large.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist zu groß.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="286"/>
+        <location filename="serverdialog.cpp" line="327"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>
