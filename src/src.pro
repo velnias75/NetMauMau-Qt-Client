@@ -7,6 +7,8 @@ VERSION = 0.5
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
 
+QMAKE_RESOURCE_FLAGS += -compress 9
+
 CONFIG(debug, debug|release) {
 	 TARGET = nmm-qt-client-debug
 	 DEFINES += _GLIBCXX_VISIBILITY=0 _GLIBCXX_CONCEPT_CHECKS
