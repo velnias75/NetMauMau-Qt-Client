@@ -40,7 +40,7 @@ public:
 	QString getAcceptedServer() const;
 	QString getPlayerName() const;
 	uint getMaxPlayerCount() const;
-	const QByteArray &getPlayerImage() const;
+	const QByteArray &getPlayerImage() const _CONST;
 
 private:
 	void forceRefresh(bool b);
