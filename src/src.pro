@@ -50,7 +50,8 @@ SOURCES += main.cpp mainwindow.cpp \
 	serverinfo.cpp \
 	launchserverdialog.cpp \
 	localserveroutputview.cpp \
-	deleteserversdialog.cpp
+	deleteserversdialog.cpp \
+    playerimagedelegate.cpp
 
 HEADERS  += mainwindow.h \
 	serverdialog.h \
@@ -65,7 +66,8 @@ HEADERS  += mainwindow.h \
 	serverinfo.h \
 	launchserverdialog.h \
 	localserveroutputview.h \
-	deleteserversdialog.h
+	deleteserversdialog.h \
+    playerimagedelegate.h
 
 FORMS    +=  serverdialog.ui \
 	mainwindow.ui \

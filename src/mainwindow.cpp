@@ -34,6 +34,7 @@
 #include "launchserverdialog.h"
 #include "connectionlogdialog.h"
 #include "messageitemdelegate.h"
+#include "playerimagedelegate.h"
 #include "localserveroutputview.h"
 
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
@@ -42,6 +43,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_lastPlayedCard(0L), m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(),
 	m_maxPlayerCount(0), m_pickCardPrepended(false),
 	m_connectionLogDlg(new ConnectionLogDialog(0L)),
+	m_playerImageDelegate(new PlayerImageDelegate(this)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
 	m_turnItemDelegate(new MessageItemDelegate(this, false)),
@@ -110,6 +112,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_model.setHorizontalHeaderItem(3, new QStandardItem(tr("Turn")));
 	m_model.setHorizontalHeaderItem(4, new QStandardItem(tr("Message")));
 
+	m_ui->remotePlayersView->setItemDelegateForColumn(0, m_playerImageDelegate);
 	m_ui->remotePlayersView->setItemDelegateForColumn(1, m_nameItemDelegate);
 	m_ui->remotePlayersView->setItemDelegateForColumn(2, m_countItemDelegate);
 	m_ui->remotePlayersView->setItemDelegateForColumn(3, m_turnItemDelegate);
@@ -178,8 +181,10 @@ MainWindow::~MainWindow() {
 	delete m_launchDlg;
 	delete m_lastPlayedCard;
 	delete m_connectionLogDlg;
+	delete m_playerImageDelegate;
 	delete m_nameItemDelegate;
 	delete m_countItemDelegate;
+	delete m_turnItemDelegate;
 	delete m_messageItemDelegate;
 
 }
@@ -621,13 +626,13 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 
 	QList<QStandardItem *> si;
 
-	si.push_back(new QStandardItem());
+	si.push_back(new QStandardItem(QString::null));
 
 	if(!img.isNull()) {
 		si.back()->setData(QPixmap::fromImage(img.scaledToHeight(m_ui->remotePlayersView->
 																 verticalHeader()->
 																 minimumSectionSize() - 2)),
-						   Qt::DecorationRole);
+						   Qt::DisplayRole);
 	}
 
 	si.push_back(new QStandardItem(p));
