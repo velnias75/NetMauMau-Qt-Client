@@ -127,7 +127,6 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	QObject::connect(m_ui->noSort, SIGNAL(toggled(bool)), this, SLOT(sortNoSort(bool)));
 	QObject::connect(m_ui->sortSuitRank, SIGNAL(toggled(bool)), this, SLOT(sortSuitRank(bool)));
 	QObject::connect(m_ui->sortRankSuit, SIGNAL(toggled(bool)), this, SLOT(sortRankSuit(bool)));
-
 	QObject::connect(m_ui->filterCards, SIGNAL(toggled(bool)), this, SLOT(filterMyCards(bool)));
 	QObject::connect(m_ui->suspendButton, SIGNAL(clicked()), this, SLOT(suspend()));
 	QObject::connect(m_ui->takeCardsButton, SIGNAL(clicked()), this, SLOT(takeCards()));
@@ -146,6 +145,8 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	QObject::connect(m_ui->actionNetMauMauServerOutput, SIGNAL(toggled(bool)),
 					 m_lsov, SLOT(setShown(bool)));
 
+	static_cast<LaunchServerDialog *>(m_launchDlg)->
+			setTriggerAction(m_ui->actionNetMauMauServerOutput);
 	m_lsov->setTriggerAction(m_ui->actionNetMauMauServerOutput);
 }
 
@@ -194,11 +195,11 @@ void MainWindow::forceRefreshServers() {
 }
 
 void MainWindow::localServerLaunched(bool b) {
+
 	m_ui->actionNetMauMauServerOutput->setEnabled(b);
 
 	if(m_ui->actionNetMauMauServerOutput->isChecked()) {
 		m_lsov->show();
-		m_lsov->lower();
 	} else if(m_lsov->isVisible()) {
 		m_lsov->close();
 	}

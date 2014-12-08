@@ -28,7 +28,7 @@
 #include "cardtools.h"
 
 LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) : QDialog(p),
-	m_process(), m_errFail(false), m_lsov(lsov) {
+	LaunchDialogBase(), m_process(), m_errFail(false), m_lsov(lsov) {
 
 	setupUi(this);
 
@@ -39,7 +39,10 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 
 	QSettings settings;
 	settings.beginGroup("Launcher");
+#ifndef _WIN32
+	// see https://github.com/velnias75/NetMauMau-Qt-Client/issues/7
 	launchStartup->setChecked(settings.value("onStartup", false).toBool());
+#endif
 	playersSpin->setValue(settings.value("playersSpin", 1).toInt());
 	ultimateCheck->setChecked(settings.value("ultimate", true).toBool());
 	aiNameEdit->setText(settings.value("aiName",
@@ -66,14 +69,22 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 
 	updateOptions();
 
-	if(launchStartup->isChecked()) launch();
+#ifndef _WIN32
+	if(launchStartup->isChecked()) launch(false);
+#else
+	// see https://github.com/velnias75/NetMauMau-Qt-Client/issues/7
+	launchStartup->setDisabled(true);
+#endif
 }
 
 LaunchServerDialog::~LaunchServerDialog() {
 
 	QSettings settings;
 	settings.beginGroup("Launcher");
+#ifndef _WIN32
+	// see https://github.com/velnias75/NetMauMau-Qt-Client/issues/7
 	settings.setValue("onStartup", launchStartup->isChecked());
+#endif
 	settings.setValue("playersSpin", playersSpin->value());
 	settings.setValue("ultimate", ultimateCheck->isChecked());
 	settings.setValue("aiName", aiNameEdit->text());
@@ -135,15 +146,36 @@ void LaunchServerDialog::finished(int ec) {
 }
 
 void LaunchServerDialog::launched() {
+	qDebug("nmm-server launched");
 	launchButton->setDisabled(true);
-	m_process.waitForStarted(800);
-	emit serverLaunched(true);
 }
 
-void LaunchServerDialog::launch() {
+void LaunchServerDialog::stateChanged(QProcess::ProcessState ps) {
+	switch (ps) {
+	case QProcess::Starting:
+	qDebug("nmm-server starting");
+	case QProcess::NotRunning:
+		break;
+	default:
+	qDebug("nmm-server running");
+	m_process.waitForStarted(800);
+	emit serverLaunched(true);
+		break;
+	}
+}
+
+void LaunchServerDialog::launch(bool normal) {
 
 	qDebug("Launching %s...",
 		   QString(pathEdit->text()).append(" ").append(optionsEdit->text()).toUtf8().constData());
+
+	if(normal) {
+		m_lsov->setWindowState(m_lsov->windowState() &~ Qt::WindowMinimized);
+		if(triggerAction()) triggerAction()->setChecked(true);
+	}
+
+	QObject::connect(&m_process, SIGNAL(stateChanged(QProcess::ProcessState)),
+					 this, SLOT(stateChanged(QProcess::ProcessState)));
 
 #ifndef _WIN32
 

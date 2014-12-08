@@ -20,7 +20,7 @@
 #include "localserveroutputview.h"
 
 LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_text(QString::null),
-	m_textFont("Monospace"), m_triggerAction(0L) {
+	m_textFont("Monospace") {
 
 	setupUi(this);
 
@@ -28,6 +28,8 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_text(QS
 	f &= ~Qt::WindowContextHelpButtonHint;
 	f &= ~Qt::WindowSystemMenuHint;
 	setWindowFlags(f);
+
+	setWindowState(Qt::WindowMinimized);
 
 	setAttribute(Qt::WA_QuitOnClose, false);
 
@@ -54,11 +56,7 @@ void LocalServerOutputView::updateOutput(const QByteArray &d) {
 	}
 }
 
-void LocalServerOutputView::setTriggerAction(QAction *act) {
-	m_triggerAction = act;
-}
-
 void LocalServerOutputView::closeEvent(QCloseEvent *evt) {
-	if(m_triggerAction) m_triggerAction->setChecked(false);
+	if(triggerAction()) triggerAction()->setChecked(false);
 	QWidget::closeEvent(evt);
 }

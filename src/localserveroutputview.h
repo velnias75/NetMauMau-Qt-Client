@@ -20,17 +20,17 @@
 #ifndef LOCALSERVEROUTPUTVIEW_H
 #define LOCALSERVEROUTPUTVIEW_H
 
+#include "launchdialogbase.h"
 #include "ui_localserveroutputview.h"
 
-class LocalServerOutputView : public QWidget, private Ui::LocalServerOutputView {
+class LocalServerOutputView : public QWidget, public LaunchDialogBase,
+		private Ui::LocalServerOutputView {
 	Q_OBJECT
-
 public:
 	explicit LocalServerOutputView(QWidget *parent = 0);
 	virtual ~LocalServerOutputView();
 
 	void updateOutput(const QByteArray &data);
-	void setTriggerAction(QAction *act);
 
 protected:
 	virtual void closeEvent(QCloseEvent *);
@@ -38,8 +38,6 @@ protected:
 private:
 	QString m_text;
 	QFont m_textFont;
-	QAction *m_triggerAction;
-
 };
 
 #endif // LOCALSERVEROUTPUTVIEW_H

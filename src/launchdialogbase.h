@@ -17,40 +17,24 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LAUNCHSERVERDIALOG_H
-#define LAUNCHSERVERDIALOG_H
+#ifndef LAUNCHDIALOGBASE_H
+#define LAUNCHDIALOGBASE_H
 
-#include <QProcess>
+#include <QDialog>
 
-#include "launchdialogbase.h"
-#include "ui_launchserverdialog.h"
-
-class LocalServerOutputView;
-
-class LaunchServerDialog : public QDialog, public LaunchDialogBase,
-		private Ui::LaunchServerDialog {
-	Q_OBJECT
+class LaunchDialogBase {
 public:
-	explicit LaunchServerDialog(LocalServerOutputView *lsov, QWidget *parent = 0);
-	virtual ~LaunchServerDialog();
+	virtual ~LaunchDialogBase();
 
-signals:
-	void serverLaunched(bool);
+	void setTriggerAction(QAction *act);
 
-private slots:
-	void updateOptions();
-	void finished(int);
-	void launched();
-	void launch(bool normal = true);
-	void error(QProcess::ProcessError);
-	void browse();
-	void updateViewer();
-	void stateChanged(QProcess::ProcessState);
+protected:
+	LaunchDialogBase();
+
+	QAction *triggerAction() const;
 
 private:
-	QProcess m_process;
-	bool m_errFail;
-	LocalServerOutputView *m_lsov;
+	QAction *m_triggerAction;
 };
 
-#endif // LAUNCHSERVERDIALOG_H
+#endif // LAUNCHDIALOGBASE_H
