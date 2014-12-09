@@ -35,7 +35,6 @@
 #include "connectionlogdialog.h"
 #include "messageitemdelegate.h"
 #include "playerimagedelegate.h"
-#include "waitplayerimageframe.h"
 #include "localserveroutputview.h"
 
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
