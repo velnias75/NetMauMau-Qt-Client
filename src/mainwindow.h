@@ -20,6 +20,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QTime>
+#include <QTimer>
+#include <QLabel>
 #include <QMainWindow>
 #include <QProgressDialog>
 #include <QStandardItemModel>
@@ -56,7 +59,7 @@ signals:
 
 private slots:
 	void about();
-
+	void timeout();
 	void scrollToLastCard() const;
 
 	void sendingPlayerImageFailed(const QString &) const;
@@ -157,6 +160,9 @@ private:
 	std::size_t m_turn;
 	QProgressDialog *m_receivingPlayerImageProgress;
 	QString m_curReceiving;
+	QLabel m_timeLabel;
+	QTime m_playTime;
+	QTimer m_playTimer;
 };
 
 #endif // MAINWINDOW_H

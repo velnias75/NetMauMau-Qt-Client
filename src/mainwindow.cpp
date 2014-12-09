@@ -116,6 +116,12 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	fnt.setPointSize(11);
 	m_ui->turnLabel->setFont(fnt);
 
+	fnt.setPointSize(9);
+	m_timeLabel.setFont(fnt);
+	m_timeLabel.setAlignment(Qt::AlignRight);
+
+	statusBar()->addPermanentWidget(&m_timeLabel);
+
 	m_model.setHorizontalHeaderItem(0, new QStandardItem());
 	m_model.setHorizontalHeaderItem(1, new QStandardItem(tr("Name")));
 	m_model.setHorizontalHeaderItem(2, new QStandardItem(tr("Cards")));
@@ -349,6 +355,8 @@ void MainWindow::serverAccept() {
 			delete [] i->pngData;
 		}
 
+		QObject::connect(&m_playTimer, SIGNAL(timeout()), this, SLOT(timeout()));
+
 		QObject::connect(m_client, SIGNAL(cPlayCard(const Client::CARDS &)),
 						 this, SLOT(clientPlayCardRequest(const Client::CARDS &)));
 		QObject::connect(m_client, SIGNAL(cGetJackSuitChoice()),
@@ -402,6 +410,10 @@ void MainWindow::serverAccept() {
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
 		m_ui->remoteGroup->setTitle(tr("%1 on %2").arg(m_ui->remoteGroup->title()).arg(as));
 
+		m_playTime.setHMS(0, 0, 0);
+		m_timeLabel.setText(m_playTime.toString("HH:mm:ss"));
+		m_timeLabel.show();
+
 		m_connectionLogDlg->clear();
 
 		m_client->start(QThread::LowestPriority);
@@ -416,6 +428,11 @@ void MainWindow::serverAccept() {
 		forceRefreshServers();
 		m_ui->actionReconnect->setEnabled(false);
 	}
+}
+
+void MainWindow::timeout() {
+	m_playTime = m_playTime.addSecs(1);
+	m_timeLabel.setText(m_playTime.toString("HH:mm:ss"));
 }
 
 void MainWindow::clientMessage(const QString &msg) const {
@@ -572,7 +589,8 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 		lost.setWindowTitle(tr("Sorry"));
 		lost.setWindowModality(Qt::ApplicationModal);
 		lost.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
-		lost.setText(tr("You have lost!\nYour points: %1").arg(pt));
+		lost.setText(tr("You have lost!\nYour points: %1\n\nPlaying time: %2").arg(pt).
+					 arg(m_playTime.toString("HH:mm:ss")));
 
 		Qt::WindowFlags f = lost.windowFlags();
 		f &= ~Qt::WindowContextHelpButtonHint;
@@ -614,7 +632,8 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
 												QIcon(":/smile.png")).pixmap(48, 48));
 		gameOver.setWindowTitle(tr("Congratulations"));
-		gameOver.setText(tr("You have won!"));
+		gameOver.setText(tr("You have won!\nPlaying time: %1").
+						 arg(m_playTime.toString("HH:mm:ss")));
 
 		gameOver.exec();
 
@@ -798,6 +817,8 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 		m_receivingPlayerImageProgress->hide();
 	}
 
+	if(!m_playTimer.isActive()) m_playTimer.start(1000);
+
 	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::RANK_ILLEGAL;
 
@@ -967,6 +988,9 @@ void MainWindow::clientDestroyed() {
 	m_ui->takeCardsButton->setStyleSheet(QString::null);
 	m_ui->takeCardsButton->setEnabled(false);
 	m_ui->suspendButton->setEnabled(false);
+
+	m_playTimer.stop();
+	m_timeLabel.hide();
 
 	m_countWonDisplayed = 0;
 }
