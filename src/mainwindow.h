@@ -21,6 +21,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QProgressDialog>
 #include <QStandardItemModel>
 #include <QAbstractItemDelegate>
 
@@ -59,8 +60,9 @@ private slots:
 	void scrollToLastCard() const;
 
 	void sendingPlayerImageFailed(const QString &) const;
-	void receivingPlayerImage(const QString &) const;
-	void receivedPlayerImage(const QString &) const;
+	void receivingPlayerImage(const QString &);
+	void receivedPlayerImage(const QString &);
+	void showReceiveProgress() const;
 
 	void serverAccept();
 	void serverDisconnect();
@@ -153,6 +155,8 @@ private:
 	int m_countWonDisplayed;
 	const QString m_aboutTxt;
 	std::size_t m_turn;
+	QProgressDialog *m_receivingPlayerImageProgress;
+	QString m_curReceiving;
 };
 
 #endif // MAINWINDOW_H

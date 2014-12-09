@@ -35,6 +35,7 @@
 #include "connectionlogdialog.h"
 #include "messageitemdelegate.h"
 #include "playerimagedelegate.h"
+#include "waitplayerimageframe.h"
 #include "localserveroutputview.h"
 
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
@@ -58,9 +59,19 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 			   .arg(QCoreApplication::applicationVersion())
 			   .arg(tr("Client library version"))
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16))
-			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))), m_turn(1) {
+			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))), m_turn(1),
+	m_receivingPlayerImageProgress(new QProgressDialog(this, Qt::Dialog|Qt::CustomizeWindowHint|
+													   Qt::WindowTitleHint)), m_curReceiving() {
 
 	m_ui->setupUi(this);
+
+	m_receivingPlayerImageProgress->setWindowModality(Qt::ApplicationModal);
+	m_receivingPlayerImageProgress->setWindowTitle(tr("Receiving player image..."));
+	m_receivingPlayerImageProgress->setWindowFlags(m_receivingPlayerImageProgress->windowFlags()
+												   & ~(Qt::WindowMinMaxButtonsHint));
+	m_receivingPlayerImageProgress->setCancelButton(0L);
+	m_receivingPlayerImageProgress->setMinimum(0);
+	m_receivingPlayerImageProgress->setMaximum(0);
 
 	setCorner(Qt::TopLeftCorner, Qt::TopDockWidgetArea);
 	setCorner(Qt::TopRightCorner, Qt::TopDockWidgetArea);
@@ -187,7 +198,7 @@ MainWindow::~MainWindow() {
 	delete m_countItemDelegate;
 	delete m_turnItemDelegate;
 	delete m_messageItemDelegate;
-
+	delete m_receivingPlayerImageProgress;
 }
 
 void MainWindow::forceRefreshServers() {
@@ -260,12 +271,35 @@ void MainWindow::closeEvent(QCloseEvent *e) {
 	e->accept();
 }
 
-void MainWindow::receivingPlayerImage(const QString &p) const {
+void MainWindow::receivingPlayerImage(const QString &p) {
+
+	setDisabled(true);
+
+	m_curReceiving = p;
+	QTimer::singleShot(1000, this, SLOT(showReceiveProgress()));
+
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 	statusBar()->showMessage(tr("Receiving player image for \"%1\"...").arg(p));
 }
 
-void MainWindow::receivedPlayerImage(const QString &) const {
+void MainWindow::receivedPlayerImage(const QString &) {
+
+	m_curReceiving = QString::null;
+
+	QApplication::restoreOverrideCursor();
+	setEnabled(true);
 	statusBar()->clearMessage();
+}
+
+void MainWindow::showReceiveProgress() const {
+	if(!m_curReceiving.isEmpty()) {
+		m_receivingPlayerImageProgress->setLabelText(tr("Receiving player image for \"%1\"...").
+													 arg(m_curReceiving));
+		m_receivingPlayerImageProgress->setEnabled(true);
+		if(!m_receivingPlayerImageProgress->isVisible()) {
+			m_receivingPlayerImageProgress->show();
+		}
+	}
 }
 
 void MainWindow::sendingPlayerImageFailed(const QString &) const {
@@ -392,6 +426,10 @@ void MainWindow::clientMessage(const QString &msg) const {
 void MainWindow::clientError(const QString &err) {
 
 	destroyClient(true);
+
+	m_receivingPlayerImageProgress->hide();
+	QApplication::restoreOverrideCursor();
+	setEnabled(true);
 
 	if(QMessageBox::critical(this, tr("Server Error"), err, QMessageBox::Retry|QMessageBox::Cancel,
 							 QMessageBox::Retry) == QMessageBox::Retry) emit serverAccept();
@@ -756,6 +794,10 @@ void MainWindow::cardChosen(CardWidget *c) {
 }
 
 void MainWindow::setOpenCard(const QByteArray &d) {
+
+	if(m_receivingPlayerImageProgress->isVisible()) {
+		m_receivingPlayerImageProgress->hide();
+	}
 
 	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::RANK_ILLEGAL;
