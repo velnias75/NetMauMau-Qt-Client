@@ -27,7 +27,6 @@
 #include "ui_serverdialog.h"
 
 class DeleteServersDialog;
-class IconDelegate;
 class ServerInfo;
 
 class ServerDialog : public QDialog, public Ui::ServerDialog {

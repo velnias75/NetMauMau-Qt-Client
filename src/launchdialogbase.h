@@ -22,6 +22,8 @@
 
 #include <QDialog>
 
+#include "linkercontrol.h"
+
 class LaunchDialogBase {
 public:
 	virtual ~LaunchDialogBase();
@@ -31,7 +33,7 @@ public:
 protected:
 	LaunchDialogBase();
 
-	QAction *triggerAction() const;
+	QAction *triggerAction() const _PURE;
 
 private:
 	QAction *m_triggerAction;
