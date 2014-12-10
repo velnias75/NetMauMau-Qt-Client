@@ -283,7 +283,6 @@ void MainWindow::receivingPlayerImage(const QString &p) {
 	m_curReceiving = p;
 	QTimer::singleShot(1000, this, SLOT(showReceiveProgress()));
 
-	QApplication::setOverrideCursor(Qt::WaitCursor);
 	statusBar()->showMessage(tr("Receiving player image for \"%1\"...").arg(p));
 }
 
@@ -291,7 +290,6 @@ void MainWindow::receivedPlayerImage(const QString &) {
 
 	m_curReceiving = QString::null;
 
-	QApplication::restoreOverrideCursor();
 	setEnabled(true);
 	statusBar()->clearMessage();
 }
@@ -300,10 +298,21 @@ void MainWindow::showReceiveProgress() const {
 	if(!m_curReceiving.isEmpty()) {
 		m_receivingPlayerImageProgress->setLabelText(tr("Receiving player image for \"%1\"...").
 													 arg(m_curReceiving));
+
 		m_receivingPlayerImageProgress->setEnabled(true);
+
 		if(!m_receivingPlayerImageProgress->isVisible()) {
 			m_receivingPlayerImageProgress->show();
+			QApplication::setOverrideCursor(Qt::WaitCursor);
 		}
+	}
+}
+
+void MainWindow::hideReceiveProgress() const {
+
+	if(m_receivingPlayerImageProgress->isVisible()) {
+		m_receivingPlayerImageProgress->hide();
+		QApplication::restoreOverrideCursor();
 	}
 }
 
@@ -443,8 +452,8 @@ void MainWindow::clientError(const QString &err) {
 
 	destroyClient(true);
 
-	m_receivingPlayerImageProgress->hide();
-	QApplication::restoreOverrideCursor();
+	hideReceiveProgress();
+
 	setEnabled(true);
 
 	if(QMessageBox::critical(this, tr("Server Error"), err, QMessageBox::Retry|QMessageBox::Cancel,
@@ -690,7 +699,10 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 																 verticalHeader()->
 																 minimumSectionSize() - 2)),
 						   Qt::DisplayRole);
+
 	}
+
+	QTimer::singleShot(500, this, SLOT(hideReceiveProgress()));
 
 	si.push_back(new QStandardItem(p));
 	si.push_back(new QStandardItem("5"));
@@ -813,9 +825,7 @@ void MainWindow::cardChosen(CardWidget *c) {
 
 void MainWindow::setOpenCard(const QByteArray &d) {
 
-	if(m_receivingPlayerImageProgress->isVisible()) {
-		m_receivingPlayerImageProgress->hide();
-	}
+	hideReceiveProgress();
 
 	if(!m_playTimer.isActive()) m_playTimer.start(1000);
 

@@ -66,6 +66,7 @@ private slots:
 	void receivingPlayerImage(const QString &);
 	void receivedPlayerImage(const QString &);
 	void showReceiveProgress() const;
+	void hideReceiveProgress() const;
 
 	void serverAccept();
 	void serverDisconnect();
