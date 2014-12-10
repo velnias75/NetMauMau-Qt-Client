@@ -36,6 +36,7 @@
 #include "messageitemdelegate.h"
 #include "playerimagedelegate.h"
 #include "localserveroutputview.h"
+#include "playerimageprogressdialog.h"
 
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
 	m_serverDlg(new ServerDialog(this)), m_lsov(new LocalServerOutputView()),
@@ -59,18 +60,9 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 			   .arg(tr("Client library version"))
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16))
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))), m_turn(1),
-	m_receivingPlayerImageProgress(new QProgressDialog(this, Qt::Dialog|Qt::CustomizeWindowHint|
-													   Qt::WindowTitleHint)), m_curReceiving() {
+	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)), m_curReceiving() {
 
 	m_ui->setupUi(this);
-
-	m_receivingPlayerImageProgress->setWindowModality(Qt::ApplicationModal);
-	m_receivingPlayerImageProgress->setWindowTitle(tr("Receiving player image..."));
-	m_receivingPlayerImageProgress->setWindowFlags(m_receivingPlayerImageProgress->windowFlags()
-												   & ~(Qt::WindowMinMaxButtonsHint));
-	m_receivingPlayerImageProgress->setCancelButton(0L);
-	m_receivingPlayerImageProgress->setMinimum(0);
-	m_receivingPlayerImageProgress->setMaximum(0);
 
 	setCorner(Qt::TopLeftCorner, Qt::TopDockWidgetArea);
 	setCorner(Qt::TopRightCorner, Qt::TopDockWidgetArea);
@@ -299,11 +291,8 @@ void MainWindow::showReceiveProgress() const {
 		m_receivingPlayerImageProgress->setLabelText(tr("Receiving player image for \"%1\"...").
 													 arg(m_curReceiving));
 
-		m_receivingPlayerImageProgress->setEnabled(true);
-
 		if(!m_receivingPlayerImageProgress->isVisible()) {
 			m_receivingPlayerImageProgress->show();
-			QApplication::setOverrideCursor(Qt::WaitCursor);
 		}
 	}
 }
@@ -312,7 +301,6 @@ void MainWindow::hideReceiveProgress() const {
 
 	if(m_receivingPlayerImageProgress->isVisible()) {
 		m_receivingPlayerImageProgress->hide();
-		QApplication::restoreOverrideCursor();
 	}
 }
 
