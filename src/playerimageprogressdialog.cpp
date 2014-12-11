@@ -36,6 +36,14 @@ PlayerImageProgressDialog::~PlayerImageProgressDialog() {
 	QApplication::restoreOverrideCursor();
 }
 
+void PlayerImageProgressDialog::show(const QString &player) {
+
+	if(!player.isEmpty()) {
+		setLabelText(tr("Receiving player image for \"%1\"...").arg(player));
+		if(!isVisible()) QProgressDialog::show();
+	}
+}
+
 void PlayerImageProgressDialog::showEvent(QShowEvent *evt) {
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	setEnabled(true);

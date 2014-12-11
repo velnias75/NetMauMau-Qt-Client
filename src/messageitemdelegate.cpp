@@ -103,7 +103,7 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
 	QTextDocument *document = doc(option, index);
 	const QPoint off(opt.rect.left(), opt.rect.top() + qCeil(qreal(opt.rect.height())/qreal(2.0f) -
-							   document->size().height()/qreal(2.0f)));
+															 document->size().height()/qreal(2.0f)));
 
 	painter->save();
 	painter->translate(off);

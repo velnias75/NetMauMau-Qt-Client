@@ -99,7 +99,11 @@ void ServerInfo::run() {
 
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 
+#ifndef _WIN32
 		setError(ai, players, version, server, host, QString::fromUtf8(e.what()));
+#else
+		setError(ai, players, version, server, host, QString::fromLocal8Bit(e.what()));
+#endif
 
 		emit online(false, m_row);
 		return;

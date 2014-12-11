@@ -28,6 +28,8 @@ public:
 	PlayerImageProgressDialog(QWidget *parent);
 	virtual ~PlayerImageProgressDialog();
 
+	void show(const QString &player);
+
 protected:
 	virtual void showEvent(QShowEvent *evt);
 	virtual void hideEvent(QHideEvent *evt);

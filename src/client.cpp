@@ -51,9 +51,8 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 }
 
 Client::~Client() {
-	emit offline(true);
-	if(m_mainWindow) m_mainWindow->disconnect();
 
+	emit offline(true);
 	QThread::disconnect();
 }
 
@@ -84,6 +83,7 @@ void Client::run() {
 		m_online = true;
 		emit offline(false);
 		play();
+		emit offline(true);
 
 	} catch(const NetMauMau::Client::Exception::TimeoutException &e) {
 		emit cError(tr("A timeout occured while connection to the server"));
@@ -94,7 +94,7 @@ void Client::run() {
 	} catch(const NetMauMau::Client::Exception::NoNetMauMauServerException &e) {
 		emit cError(tr("The remote host appears to be no NetMauMau server"));
 	} catch(const NetMauMau::Client::Exception::ShutdownException &e) {
-		emit cError(tr("The server is in the progress of a ashutdown"));
+		emit cError(tr("The server is in the progress of a shutdown"));
 	} catch(const NetMauMau::Client::Exception::VersionMismatchException &e) {
 		emit cError(tr("Client (version %1.%2) not supported.\nServer wants at least version %3.%4")
 					.arg(static_cast<uint16_t>(e.getClientVersion() >> 16))
@@ -102,11 +102,14 @@ void Client::run() {
 					.arg(static_cast<uint16_t>(e.getServerVersion() >> 16))
 					.arg(static_cast<uint16_t>(e.getServerVersion())));
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
+#ifndef _WIN32
 		emit cError(QString::fromUtf8(e.what()));
+#else
+		emit cError(QString::fromLocal8Bit(e.what()));
+#endif
 	}
 
 	m_online = false;
-	emit offline(true);
 }
 
 void Client::disconnectNow() {

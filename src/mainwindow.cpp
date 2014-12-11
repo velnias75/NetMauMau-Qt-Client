@@ -198,8 +198,8 @@ MainWindow::~MainWindow() {
 	delete m_receivingPlayerImageProgress;
 }
 
-void MainWindow::forceRefreshServers() {
-	m_serverDlg->setProperty("forceRefresh", true);
+void MainWindow::forceRefreshServers(bool b) {
+	if(!b) m_serverDlg->setProperty("forceRefresh", true);
 }
 
 void MainWindow::localServerLaunched(bool b) {
@@ -287,21 +287,7 @@ void MainWindow::receivedPlayerImage(const QString &) {
 }
 
 void MainWindow::showReceiveProgress() const {
-	if(!m_curReceiving.isEmpty()) {
-		m_receivingPlayerImageProgress->setLabelText(tr("Receiving player image for \"%1\"...").
-													 arg(m_curReceiving));
-
-		if(!m_receivingPlayerImageProgress->isVisible()) {
-			m_receivingPlayerImageProgress->show();
-		}
-	}
-}
-
-void MainWindow::hideReceiveProgress() const {
-
-	if(m_receivingPlayerImageProgress->isVisible()) {
-		m_receivingPlayerImageProgress->hide();
-	}
+	static_cast<PlayerImageProgressDialog *>(m_receivingPlayerImageProgress)->show(m_curReceiving);
 }
 
 void MainWindow::sendingPlayerImageFailed(const QString &) const {
@@ -326,10 +312,10 @@ void MainWindow::serverAccept() {
 						  p != -1 ? as.mid(p + 1).toUInt() : Client::getDefaultPort(),
 						  static_cast<ServerDialog *>(m_serverDlg)->getPlayerImage());
 
-	QObject::connect(m_client, SIGNAL(offline(bool)),
-					 m_ui->actionReconnect, SLOT(setEnabled(bool)));
+	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(forceRefreshServers(bool)));
 	QObject::connect(m_client, SIGNAL(offline(bool)),
 					 m_ui->actionDisconnect, SLOT(setDisabled(bool)));
+	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(serverDisconnect(bool)));
 
 	QObject::connect(m_client, SIGNAL(receivingPlayerImage(const QString &)),
 					 this, SLOT(receivingPlayerImage(const QString &)));
@@ -421,7 +407,11 @@ void MainWindow::serverAccept() {
 		m_ui->actionReconnect->setEnabled(false);
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 		clientError(tr("While connecting to <b>%1</b>: <i>%2</i>")
+#ifndef _WIN32
 					.arg(as).arg(QString::fromUtf8(e.what())));
+#else
+					.arg(as).arg(QString::fromLocal8Bit(e.what())));
+#endif
 		forceRefreshServers();
 		m_ui->actionReconnect->setEnabled(false);
 	}
@@ -440,7 +430,7 @@ void MainWindow::clientError(const QString &err) {
 
 	destroyClient(true);
 
-	hideReceiveProgress();
+	m_receivingPlayerImageProgress->hide();
 
 	setEnabled(true);
 
@@ -690,7 +680,7 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 
 	}
 
-	QTimer::singleShot(500, this, SLOT(hideReceiveProgress()));
+	QTimer::singleShot(500, m_receivingPlayerImageProgress, SLOT(hide()));
 
 	si.push_back(new QStandardItem(p));
 	si.push_back(new QStandardItem("5"));
@@ -813,7 +803,7 @@ void MainWindow::cardChosen(CardWidget *c) {
 
 void MainWindow::setOpenCard(const QByteArray &d) {
 
-	hideReceiveProgress();
+	m_receivingPlayerImageProgress->hide();
 
 	if(!m_playTimer.isActive()) m_playTimer.start(1000);
 
@@ -941,8 +931,8 @@ void MainWindow::lostWinConfirmed() {
 	if(m_clientDestroyRequested) destroyClient(true);
 }
 
-void MainWindow::serverDisconnect() {
-	destroyClient(true);
+void MainWindow::serverDisconnect(bool b) {
+	if(b) destroyClient(true);
 }
 
 void MainWindow::destroyClient(bool force) {
@@ -951,13 +941,26 @@ void MainWindow::destroyClient(bool force) {
 
 		if(m_client) {
 
+			m_ui->actionDisconnect->setDisabled(true);
+
 			emit disconnectNow();
 
-			if(!m_client->wait(1000)) {
+#ifndef _WIN32
+			const ulong waitTime = 1000L;
+#else
+			const ulong waitTime = 2000L;
+#endif
+
+			if(!m_client->wait(waitTime)) {
+#ifndef _WIN32
 				qWarning("Client thread didn't stopped within 1 second. Forcing termination...");
 				QObject::connect(m_client, SIGNAL(terminated()), this, SLOT(clientDestroyed()));
 				m_client->terminate();
-				m_ui->actionDisconnect->setDisabled(true);
+#else
+				qWarning("Client thread didn't stopped within 2 seconds.");
+				clientDestroyed();
+#endif
+				forceRefreshServers();
 			} else {
 				clientDestroyed();
 			}
@@ -989,6 +992,8 @@ void MainWindow::clientDestroyed() {
 
 	m_playTimer.stop();
 	m_timeLabel.hide();
+
+	statusBar()->clearMessage();
 
 	m_countWonDisplayed = 0;
 }

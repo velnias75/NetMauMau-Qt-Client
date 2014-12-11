@@ -66,14 +66,13 @@ private slots:
 	void receivingPlayerImage(const QString &);
 	void receivedPlayerImage(const QString &);
 	void showReceiveProgress() const;
-	void hideReceiveProgress() const;
 
 	void serverAccept();
-	void serverDisconnect();
+	void serverDisconnect(bool = true);
 	void lostWinConfirmed();
 	void destroyClient(bool force = false);
 	void clientDestroyed();
-	void forceRefreshServers();
+	void forceRefreshServers(bool = false);
 	void localServerLaunched(bool);
 	void reconnectAvailable(const QString &) const;
 
