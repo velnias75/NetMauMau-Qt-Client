@@ -17,6 +17,10 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef QT_NO_CAST_FROM_BYTEARRAY
+#undef QT_NO_CAST_FROM_BYTEARRAY
+#endif
+
 #include "localserveroutputview.h"
 
 LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_text(QString::null),

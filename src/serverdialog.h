@@ -20,6 +20,8 @@
 #ifndef SERVERDIALOG_H
 #define SERVERDIALOG_H
 
+#include <QMutex>
+#include <QTimer>
 #include <QDialog>
 #include <QStandardItemModel>
 
@@ -41,8 +43,11 @@ public:
 	uint getMaxPlayerCount() const;
 	const QByteArray &getPlayerImage() const _CONST;
 
-private:
+	void setLastServer(const QString &ls);
+
 	void forceRefresh(bool b);
+
+private:
 	bool isForceRefresh() const _PURE;
 	void setPlayerImagePath(const QString &path, bool warn = false);
 
@@ -75,6 +80,8 @@ private:
 	const QRegExpValidator *m_hostRexValidator;
 	const QRegExpValidator *m_nameRexValidator;
 	QByteArray m_playerImage;
+	QTimer m_autoRefresh;
+	QMutex m_mutex;
 };
 
 #endif // SERVERDIALOG_H

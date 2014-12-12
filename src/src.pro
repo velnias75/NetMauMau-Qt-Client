@@ -11,7 +11,8 @@ QMAKE_RESOURCE_FLAGS += -compress 9
 
 CONFIG(debug, debug|release) {
 	 TARGET = nmm-qt-client-debug
-	 DEFINES += _GLIBCXX_VISIBILITY=0 _GLIBCXX_CONCEPT_CHECKS
+	 DEFINES += _GLIBCXX_VISIBILITY=0 _GLIBCXX_CONCEPT_CHECKS QT_NO_CAST_FROM_BYTEARRAY \
+		QT_NO_CAST_TO_ASCII
 	 INCLUDEPATH += "../../netmaumau/src/include"
 	 QMAKE_CXXFLAGS += -g3 -O0 -fstrict-aliasing -ftrapv -fno-inline -W -Wextra -Wall -Wnoexcept \
 	-Woverloaded-virtual -Wno-packed-bitfield-compat -Wmissing-noreturn -Wunused -Wtrampolines \
@@ -25,7 +26,8 @@ CONFIG(debug, debug|release) {
 } else {
 	 TARGET = nmm-qt-client
 	 win32:CONFIG += static
-	 DEFINES += NDEBUG _GLIBCXX_VISIBILITY=0 QT_NO_DEBUG_OUTPUT
+	 DEFINES += NDEBUG _GLIBCXX_VISIBILITY=0 QT_NO_DEBUG_OUTPUT QT_NO_CAST_FROM_BYTEARRAY \
+		QT_NO_CAST_TO_ASCII
 	 unix:INCLUDEPATH += "/usr/include/netmaumau"
 	 win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
 	 unix:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing -Wformat \
@@ -53,7 +55,7 @@ SOURCES += main.cpp mainwindow.cpp \
 	deleteserversdialog.cpp \
 	playerimagedelegate.cpp \
 	launchdialogbase.cpp \
-    playerimageprogressdialog.cpp
+	playerimageprogressdialog.cpp
 
 HEADERS  += mainwindow.h \
 	serverdialog.h \
@@ -71,7 +73,7 @@ HEADERS  += mainwindow.h \
 	deleteserversdialog.h \
 	playerimagedelegate.h \
 	launchdialogbase.h \
-    playerimageprogressdialog.h
+	playerimageprogressdialog.h
 
 FORMS    +=  serverdialog.ui \
 	mainwindow.ui \

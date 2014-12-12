@@ -68,9 +68,10 @@ private slots:
 	void showReceiveProgress() const;
 
 	void serverAccept();
-	void serverDisconnect(bool = true);
+	void serverDisconnect();
 	void lostWinConfirmed();
-	void destroyClient(bool force = false);
+	void destroyClient(bool = false);
+	void destroyClientOffline(bool);
 	void clientDestroyed();
 	void forceRefreshServers(bool = false);
 	void localServerLaunched(bool);

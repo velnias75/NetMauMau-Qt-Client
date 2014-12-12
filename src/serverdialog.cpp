@@ -17,6 +17,7 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QMutexLocker>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>
@@ -42,7 +43,8 @@ const QRegExp nameRex("[^\\+]+.*");
 ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(false),
 	m_lastServer(QString::null), m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
 	m_hostRexValidator(new QRegExpValidator(hostRex)),
-	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage() {
+	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
+	m_mutex() {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -64,7 +66,7 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	QSettings settings;
 	settings.beginGroup("Servers");
 	QStringList servers = settings.value("list", QStringList("localhost")).toStringList();
-	m_lastServer = settings.value("lastServer", QVariant("localhost")).toString();
+	setLastServer(settings.value("lastServer", QVariant("localhost")).toString());
 	settings.endGroup();
 
 	settings.beginGroup("Player");
@@ -152,8 +154,11 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 					 this, SLOT(deleteRows(const QList<int> &)));
 	QObject::connect(playerImagePath, SIGNAL(textChanged(const QString &)),
 					 this, SLOT(enableClearButton(const QString &)));
+	QObject::connect(&m_autoRefresh, SIGNAL(timeout()), this, SLOT(checkOnline()));
 
 	enableClearButton(playerImagePath->text());
+
+	m_autoRefresh.start(30000);
 }
 
 ServerDialog::~ServerDialog() {
@@ -258,6 +263,10 @@ QString ServerDialog::getAcceptedServer() const {
 	}
 }
 
+void ServerDialog::setLastServer(const QString &ls) {
+	m_lastServer = ls;
+}
+
 QString ServerDialog::getPlayerName() const {
 	return playerName->text();
 }
@@ -349,10 +358,14 @@ void ServerDialog::resize() {
 
 void ServerDialog::checkOnline() {
 
+	QMutexLocker locker(&m_mutex);
+
 	m_forceRefresh = false;
 
 	for(int r = 0; r < m_serverInfoThreads.count(); ++r) {
-		m_serverInfoThreads[r]->start();
+		if(!m_serverInfoThreads[r]->isRunning()) {
+			m_serverInfoThreads[r]->start();
+		}
 	}
 }
 

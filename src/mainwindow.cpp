@@ -199,7 +199,11 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::forceRefreshServers(bool b) {
-	if(!b) m_serverDlg->setProperty("forceRefresh", true);
+	if(b) {
+		ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
+		sd->setProperty("forceRefresh", true);
+		sd->forceRefresh(true);
+	}
 }
 
 void MainWindow::localServerLaunched(bool b) {
@@ -298,7 +302,7 @@ void MainWindow::serverAccept() {
 
 	m_ui->actionReconnect->setDisabled(true);
 
-	const ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
+	ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
 	const QString &as(sd->getAcceptedServer());
 	const int p = as.indexOf(':');
 
@@ -315,7 +319,7 @@ void MainWindow::serverAccept() {
 	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(forceRefreshServers(bool)));
 	QObject::connect(m_client, SIGNAL(offline(bool)),
 					 m_ui->actionDisconnect, SLOT(setDisabled(bool)));
-	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(serverDisconnect(bool)));
+	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(destroyClientOffline(bool)));
 
 	QObject::connect(m_client, SIGNAL(receivingPlayerImage(const QString &)),
 					 this, SLOT(receivingPlayerImage(const QString &)));
@@ -401,19 +405,20 @@ void MainWindow::serverAccept() {
 
 		m_client->start(QThread::LowestPriority);
 
+		QObject::disconnect(m_serverDlg, SIGNAL(reconnectAvailable(const QString &)),
+							this, SLOT(reconnectAvailable(const QString &)));
+
+		sd->setLastServer(as);
+
 	} catch(const NetMauMau::Client::Exception::PlayerlistException &) {
 		clientError(tr("Couldn't get player list from server"));
-		forceRefreshServers();
-		m_ui->actionReconnect->setEnabled(false);
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 		clientError(tr("While connecting to <b>%1</b>: <i>%2</i>")
-#ifndef _WIN32
+			#ifndef _WIN32
 					.arg(as).arg(QString::fromUtf8(e.what())));
 #else
 					.arg(as).arg(QString::fromLocal8Bit(e.what())));
 #endif
-		forceRefreshServers();
-		m_ui->actionReconnect->setEnabled(false);
 	}
 }
 
@@ -931,8 +936,12 @@ void MainWindow::lostWinConfirmed() {
 	if(m_clientDestroyRequested) destroyClient(true);
 }
 
-void MainWindow::serverDisconnect(bool b) {
-	if(b) destroyClient(true);
+void MainWindow::serverDisconnect() {
+	destroyClient(true);
+}
+
+void MainWindow::destroyClientOffline(bool b) {
+	if(b) destroyClient(false);
 }
 
 void MainWindow::destroyClient(bool force) {
@@ -960,7 +969,6 @@ void MainWindow::destroyClient(bool force) {
 				qWarning("Client thread didn't stopped within 2 seconds.");
 				clientDestroyed();
 #endif
-				forceRefreshServers();
 			} else {
 				clientDestroyed();
 			}
@@ -979,6 +987,9 @@ void MainWindow::clientDestroyed() {
 
 	delete m_client;
 	m_client = 0L;
+
+	QObject::connect(m_serverDlg, SIGNAL(reconnectAvailable(const QString &)),
+					 this, SLOT(reconnectAvailable(const QString &)));
 
 	clearStats();
 	clearMyCards(true);
