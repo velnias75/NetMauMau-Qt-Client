@@ -90,6 +90,6 @@ RESOURCES += icons.qrc nuoveXT2.qrc cards.qrc
 
 RC_FILE += appicon.rc
 
-DISTFILES += COPYING cards/* *.png *.ico
+DISTFILES += COPYING cards/* *.png *.ico nmm_qt_client.desktop
 
 TRANSLATIONS += nmm_qt_client_de_DE.ts
