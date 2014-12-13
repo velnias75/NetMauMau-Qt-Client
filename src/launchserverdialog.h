@@ -34,14 +34,18 @@ public:
 	explicit LaunchServerDialog(LocalServerOutputView *lsov, QWidget *parent = 0);
 	virtual ~LaunchServerDialog();
 
+	bool launchAtStartup() const;
+
 signals:
 	void serverLaunched(bool);
+
+public slots:
+	void launch();
 
 private slots:
 	void updateOptions();
 	void finished(int);
 	void launched();
-	void launch(bool normal = true);
 	void error(QProcess::ProcessError);
 	void browse();
 	void updateViewer();

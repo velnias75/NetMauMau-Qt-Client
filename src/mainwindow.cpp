@@ -153,9 +153,11 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	QObject::connect(m_ui->actionNetMauMauServerOutput, SIGNAL(toggled(bool)),
 					 m_lsov, SLOT(setShown(bool)));
 
-	static_cast<LaunchServerDialog *>(m_launchDlg)->
-			setTriggerAction(m_ui->actionNetMauMauServerOutput);
+	LaunchServerDialog *lsd = static_cast<LaunchServerDialog *>(m_launchDlg);
+	lsd->setTriggerAction(m_ui->actionNetMauMauServerOutput);
 	m_lsov->setTriggerAction(m_ui->actionNetMauMauServerOutput);
+
+	if(lsd->launchAtStartup()) lsd->launch();
 }
 
 MainWindow::~MainWindow() {
@@ -212,6 +214,7 @@ void MainWindow::localServerLaunched(bool b) {
 
 	if(m_ui->actionNetMauMauServerOutput->isChecked()) {
 		m_lsov->show();
+		m_lsov->lower();
 	} else if(m_lsov->isVisible()) {
 		m_lsov->close();
 	}

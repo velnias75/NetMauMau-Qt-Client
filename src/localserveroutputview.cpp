@@ -23,8 +23,8 @@
 
 #include "localserveroutputview.h"
 
-LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_text(QString::null),
-	m_textFont("Monospace") {
+LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window),
+	m_text(QString::null), m_textFont("Monospace") {
 
 	setupUi(this);
 
@@ -32,8 +32,6 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p), m_text(QS
 	f &= ~Qt::WindowContextHelpButtonHint;
 	f &= ~Qt::WindowSystemMenuHint;
 	setWindowFlags(f);
-
-	setWindowState(Qt::WindowMinimized);
 
 	setAttribute(Qt::WA_QuitOnClose, false);
 
