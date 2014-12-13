@@ -1,10 +1,10 @@
 IDI_ICON1               ICON    DISCARDABLE     "nmm_qt_client.ico"
 
 1 VERSIONINFO
- FILEVERSION 0,0,5,0
- PRODUCTVERSION 0,0,5,0
+ FILEVERSION 0,0,6,0
+ PRODUCTVERSION 0,0,6,0
  FILEFLAGSMASK 0x17L
-#ifdef _DEBUG
+#ifndef NDEBUG
  FILEFLAGS 0x1L
 #else
  FILEFLAGS 0x0L
@@ -19,12 +19,12 @@ BEGIN
 		BEGIN
 			VALUE "CompanyName", "Heiko Schäfer"
 			VALUE "FileDescription", "NetMauMau Qt Client"
-			VALUE "FileVersion", "0.5"
+			VALUE "FileVersion", "0.6"
 			VALUE "InternalName", "nmm-qt-client"
 			VALUE "LegalCopyright", "© 2014 Heiko Schäfer"
 			VALUE "OriginalFilename", "nmm-qt-client.exe"
 			VALUE "ProductName", "NetMauMau Qt Client"
-			VALUE "ProductVersion", "0.5"
+			VALUE "ProductVersion", "0.6"
 		END
 	END
 	BLOCK "VarFileInfo"
