@@ -19,6 +19,7 @@
 
 #include <QMap>
 #include <QPainter>
+#include <QPixmapCache>
 #include <QSvgRenderer>
 
 #include "cardpixmap.h"
@@ -26,15 +27,11 @@
 namespace {
 
 typedef struct _nameSize {
-	_nameSize(const QString &n, const QSize &s = QSize()) : name(n), size(s), pm(0L) {}
-
-	~_nameSize() {
-		delete pm;
-	}
+	_nameSize(const QString &n, const QSize &s = QSize()) : name(n), size(s) {}
 
 	QString name;
 	QSize size;
-	QPixmap *pm;
+	QPixmapCache::Key pm;
 } NAMESIZE;
 
 typedef struct _cardKey {
@@ -135,7 +132,10 @@ CardPixmap::CardPixmap(const QSize &siz, NetMauMau::Common::ICard::SUIT s,
 
 	const QMap<CARDKEY, NAMESIZE>::iterator f(CARDMAP.find(CARDKEY(s, r)));
 
-	if(!f.value().size.isValid() || f.value().size != size()) {
+	QPixmap fpm;
+	const bool cached = QPixmapCache::find(f.value().pm, &fpm);
+
+	if(!cached || !f.value().size.isValid() || f.value().size != size()) {
 
 		fill(Qt::transparent);
 
@@ -146,11 +146,10 @@ CardPixmap::CardPixmap(const QSize &siz, NetMauMau::Common::ICard::SUIT s,
 			renderer.render(&painter);
 
 			f.value().size = size();
-			delete f.value().pm;
-			f.value().pm = new QPixmap(*this);
+			f.value().pm = QPixmapCache::insert(*this);
 		}
 
 	} else {
-		QPixmap::operator=(*f.value().pm);
+		QPixmap::operator=(fpm);
 	}
 }

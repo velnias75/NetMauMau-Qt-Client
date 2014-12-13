@@ -17,10 +17,10 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QMessageBox>
-
+#include <QSplashScreen>
 #include <QLibraryInfo>
 #include <QApplication>
+#include <QMessageBox>
 #include <QTranslator>
 #include <QSettings>
 
@@ -38,11 +38,16 @@ int main(int argc, char *argv[]) {
 #endif
 
 	QApplication a(argc, argv);
+	QSplashScreen splash(QPixmap(":/nmm_qt_client.png"), Qt::WindowStaysOnTopHint);
+
+	splash.show();
+	a.processEvents();
 
 	QTranslator qtTranslator;
 	qtTranslator.load("qt_" + QLocale::system().name(),
 					  QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 	a.installTranslator(&qtTranslator);
+	a.processEvents();
 
 #if defined(NDEBUG) && !defined(_WIN32)
 	QString locDir("/usr/share/nmm-qt-client");
@@ -53,10 +58,13 @@ int main(int argc, char *argv[]) {
 	QTranslator myappTranslator;
 	myappTranslator.load("nmm_qt_client_" + QLocale::system().name(), locDir);
 	a.installTranslator(&myappTranslator);
+	a.processEvents();
 
 	MainWindow w;
+	a.processEvents();
 	w.show();
 
+	splash.finish(&w);
 	return a.exec();
 }
 
