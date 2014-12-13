@@ -44,7 +44,7 @@ public:
 	const QByteArray &getPlayerImage() const _CONST;
 
 	void setLastServer(const QString &ls);
-
+	void blockAutoRefresh(bool b);
 	void forceRefresh(bool b);
 
 private:
@@ -82,6 +82,7 @@ private:
 	QByteArray m_playerImage;
 	QTimer m_autoRefresh;
 	QMutex m_mutex;
+	bool m_blockAutoRefresh;
 };
 
 #endif // SERVERDIALOG_H

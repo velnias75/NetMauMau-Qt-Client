@@ -44,7 +44,7 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	m_lastServer(QString::null), m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
 	m_hostRexValidator(new QRegExpValidator(hostRex)),
 	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
-	m_mutex() {
+	m_mutex(), m_blockAutoRefresh(false) {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -272,9 +272,16 @@ QString ServerDialog::getPlayerName() const {
 }
 
 uint ServerDialog::getMaxPlayerCount() const {
-	const QString &countTxt(m_model.itemFromIndex(availServerView->selectionModel()->
-												  selection().indexes()[2])->text());
-	return countTxt.mid(countTxt.indexOf('/') + 1).toUInt();
+
+	const QModelIndexList &mi(availServerView->selectionModel()->selection().indexes());
+
+	if(!mi.isEmpty()) {
+		const QString &countTxt(m_model.itemFromIndex(availServerView->selectionModel()->
+													  selection().indexes()[2])->text());
+		return countTxt.mid(countTxt.indexOf('/') + 1).toUInt();
+	}
+
+	return 0;
 }
 
 const QByteArray &ServerDialog::getPlayerImage() const {
@@ -360,11 +367,13 @@ void ServerDialog::checkOnline() {
 
 	QMutexLocker locker(&m_mutex);
 
-	m_forceRefresh = false;
+	if(!m_blockAutoRefresh) {
+		m_forceRefresh = false;
 
-	for(int r = 0; r < m_serverInfoThreads.count(); ++r) {
-		if(!m_serverInfoThreads[r]->isRunning()) {
-			m_serverInfoThreads[r]->start();
+		for(int r = 0; r < m_serverInfoThreads.count(); ++r) {
+			if(!m_serverInfoThreads[r]->isRunning()) {
+				m_serverInfoThreads[r]->start();
+			}
 		}
 	}
 }
@@ -400,6 +409,10 @@ bool ServerDialog::isForceRefresh() const {
 void ServerDialog::forceRefresh(bool b) {
 	m_forceRefresh = b;
 	if(b) emit refresh();
+}
+
+void ServerDialog::blockAutoRefresh(bool b) {
+	m_blockAutoRefresh = b;
 }
 
 void ServerDialog::addServer() {

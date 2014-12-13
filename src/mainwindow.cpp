@@ -203,6 +203,7 @@ MainWindow::~MainWindow() {
 void MainWindow::forceRefreshServers(bool b) {
 	if(b) {
 		ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
+		sd->blockAutoRefresh(false);
 		sd->setProperty("forceRefresh", true);
 		sd->forceRefresh(true);
 	}
@@ -309,6 +310,11 @@ void MainWindow::serverAccept() {
 	const QString &as(sd->getAcceptedServer());
 	const int p = as.indexOf(':');
 
+	if(as.isEmpty()) {
+		forceRefreshServers(true);
+		return;
+	}
+
 	clearStats();
 
 	m_cTakeSuit = m_takenSuit = NetMauMau::Common::ICard::SUIT_ILLEGAL;
@@ -317,12 +323,12 @@ void MainWindow::serverAccept() {
 	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
 						  std::string(as.left(p).toStdString()),
 						  p != -1 ? as.mid(p + 1).toUInt() : Client::getDefaultPort(),
-						  static_cast<ServerDialog *>(m_serverDlg)->getPlayerImage());
+						  sd->getPlayerImage());
 
 	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(forceRefreshServers(bool)));
+	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(destroyClientOffline(bool)));
 	QObject::connect(m_client, SIGNAL(offline(bool)),
 					 m_ui->actionDisconnect, SLOT(setDisabled(bool)));
-	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(destroyClientOffline(bool)));
 
 	QObject::connect(m_client, SIGNAL(receivingPlayerImage(const QString &)),
 					 this, SLOT(receivingPlayerImage(const QString &)));
@@ -408,10 +414,8 @@ void MainWindow::serverAccept() {
 
 		m_client->start(QThread::LowestPriority);
 
-		QObject::disconnect(m_serverDlg, SIGNAL(reconnectAvailable(const QString &)),
-							this, SLOT(reconnectAvailable(const QString &)));
-
 		sd->setLastServer(as);
+		sd->blockAutoRefresh(true);
 
 	} catch(const NetMauMau::Client::Exception::PlayerlistException &) {
 		clientError(tr("Couldn't get player list from server"));
@@ -991,8 +995,7 @@ void MainWindow::clientDestroyed() {
 	delete m_client;
 	m_client = 0L;
 
-	QObject::connect(m_serverDlg, SIGNAL(reconnectAvailable(const QString &)),
-					 this, SLOT(reconnectAvailable(const QString &)));
+	forceRefreshServers(true);
 
 	clearStats();
 	clearMyCards(true);
