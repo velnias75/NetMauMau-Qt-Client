@@ -4,5 +4,6 @@
         <file alias="plain.png">face-plain.png</file>
         <file alias="sad.png">face-sad.png</file>
         <file alias="smile.png">face-smile-big.png</file>
+        <file alias="splash.png">nmm_qt_client-splash.png</file>
     </qresource>
 </RCC>
