@@ -39,11 +39,7 @@ int main(int argc, char *argv[]) {
 
 	QApplication a(argc, argv);
 	QSplashScreen splash(QPixmap(":/splash.png"), Qt::WindowStaysOnTopHint);
-	QPalette pal;
 
-	pal.setBrush(splash.backgroundRole(), Qt::white);
-
-	splash.setPalette(pal);
 	splash.show();
 	a.processEvents();
 
