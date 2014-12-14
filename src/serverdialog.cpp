@@ -53,8 +53,6 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 
 	setupUi(this);
 
-	portSpin->setValue(Client::getDefaultPort());
-
 	QStringList labels;
 	labels << tr("Server") << tr("Version") << tr("AI") << tr("Players");
 
