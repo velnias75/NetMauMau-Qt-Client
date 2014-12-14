@@ -55,7 +55,8 @@ SOURCES += main.cpp mainwindow.cpp \
 	deleteserversdialog.cpp \
 	playerimagedelegate.cpp \
 	launchdialogbase.cpp \
-	playerimageprogressdialog.cpp
+	playerimageprogressdialog.cpp \
+    portspin.cpp
 
 HEADERS  += mainwindow.h \
 	serverdialog.h \
@@ -73,7 +74,8 @@ HEADERS  += mainwindow.h \
 	deleteserversdialog.h \
 	playerimagedelegate.h \
 	launchdialogbase.h \
-	playerimageprogressdialog.h
+	playerimageprogressdialog.h \
+    portspin.h
 
 FORMS    +=  serverdialog.ui \
 	mainwindow.ui \
