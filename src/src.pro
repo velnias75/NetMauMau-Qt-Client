@@ -36,7 +36,7 @@ CONFIG(debug, debug|release) {
 	 win32:QMAKE_CXXFLAGS += -O2 -fomit-frame-pointer -fstrict-aliasing
 	 win32:LIBS    += /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
 				/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
-	 unix:LIBS += -lnetmaumaucommon -lnetmaumauclient -lmagic
+	 unix:LIBS += -lnetmaumaucommon -lnetmaumauclient
 }
 
 SOURCES += main.cpp mainwindow.cpp \
