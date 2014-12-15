@@ -22,7 +22,7 @@ CONFIG(debug, debug|release) {
 	-Wuninitialized -Wvariadic-macros -Wlogical-op -Wnoexcept -Wmissing-noreturn -Wpointer-arith \
 	-Wstrict-null-sentinel -Wstrict-overflow=5 -Wshadow -Werror=strict-aliasing
 	 LIBS    += ../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
-		 ../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a
+		 ../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
 	 TARGET = nmm-qt-client
 	 win32:CONFIG += static
@@ -36,7 +36,7 @@ CONFIG(debug, debug|release) {
 	 win32:QMAKE_CXXFLAGS += -O2 -fomit-frame-pointer -fstrict-aliasing
 	 win32:LIBS    += /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
 				/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
-	 unix:LIBS += -lnetmaumaucommon -lnetmaumauclient
+	 unix:LIBS += -lnetmaumaucommon -lnetmaumauclient -lmagic
 }
 
 SOURCES += main.cpp mainwindow.cpp \
@@ -56,7 +56,7 @@ SOURCES += main.cpp mainwindow.cpp \
 	playerimagedelegate.cpp \
 	launchdialogbase.cpp \
 	playerimageprogressdialog.cpp \
-    portspin.cpp
+	portspin.cpp
 
 HEADERS  += mainwindow.h \
 	serverdialog.h \
@@ -75,7 +75,7 @@ HEADERS  += mainwindow.h \
 	playerimagedelegate.h \
 	launchdialogbase.h \
 	playerimageprogressdialog.h \
-    portspin.h
+	portspin.h
 
 FORMS    +=  serverdialog.ui \
 	mainwindow.ui \

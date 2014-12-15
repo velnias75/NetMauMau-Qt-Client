@@ -321,8 +321,13 @@ void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
 			} else {
 				if(warn) {
 					if(QMessageBox::warning(this, tr("Player image"),
-											tr("The chosen image won't be accepted by the server.\n" \
+						#ifndef _WIN32
+											tr("The chosen image won't be accepted by the server.\n"
+											   "It is either too large or no PNG image."),
+						#else
+											tr("The chosen image won't be accepted by the server.\n"
 											   "It is too large."),
+						#endif
 											QMessageBox::Ignore|QMessageBox::Ok) ==
 							QMessageBox::Ignore) {
 
