@@ -19,10 +19,11 @@
 
 #include <QSplashScreen>
 #include <QLibraryInfo>
-#include <QApplication>
-#include <QMessageBox>
 #include <QTranslator>
+
+#ifdef _WIN32
 #include <QSettings>
+#endif
 
 #include "mainwindow.h"
 

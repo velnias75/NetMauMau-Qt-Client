@@ -17,8 +17,10 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cardtools.h>
+
 #include "suitlabel.h"
-#include "cardtools.h"
+
 #include "jackchoosedialog.h"
 
 SuitLabel::SuitLabel(QWidget *p, const QByteArray &suitDesc) : QLabel(p) {

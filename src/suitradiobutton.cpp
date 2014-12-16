@@ -17,8 +17,9 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <cardtools.h>
+
 #include "suitradiobutton.h"
-#include "cardtools.h"
 
 SuitRadioButton::SuitRadioButton(QWidget *p, const QByteArray &suitDesc) : QRadioButton(p) {
 

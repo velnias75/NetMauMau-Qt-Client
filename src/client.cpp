@@ -17,9 +17,6 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QMetaType>
-#include <QEventLoop>
-
 #include <cardtools.h>
 #include <timeoutexception.h>
 #include <shutdownexception.h>
@@ -308,22 +305,18 @@ void Client::unknownServerMessage(std::string msg) const {
 }
 
 void Client::beginReceivePlayerPicture(const std::string &player) const throw() {
-	qDebug("beginReceivePlayerPicture(%s)", player.c_str());
 	emit receivingPlayerImage(QString::fromUtf8(player.c_str()));
 }
 
 void Client::endReceivePlayerPicture(const std::string &player) const throw() {
-	qDebug("endReceivePlayerPicture(%s)", player.c_str());
 	emit receivedPlayerImage(QString::fromUtf8(player.c_str()));
 }
 
 void Client::uploadSucceded(const std::string &p) const throw() {
-	qDebug("Sending player image succeeded");
 	emit sendingPlayerImageSucceeded(QString::fromUtf8(p.c_str()));
 }
 
 void Client::uploadFailed(const std::string &p) const throw() {
-	qDebug("Sending player image failed");
 	emit sendingPlayerImageFailed(QString::fromUtf8(p.c_str()));
 }
 

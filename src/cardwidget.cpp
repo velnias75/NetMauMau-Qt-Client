@@ -19,9 +19,10 @@
 
 #include <QResizeEvent>
 
+#include <cardtools.h>
+
 #include "cardwidget.h"
 #include "cardpixmap.h"
-#include "cardtools.h"
 
 CardWidget::CardWidget(QWidget *p, const QByteArray &cardDesc) : QPushButton(p),
 	NetMauMau::Common::ICard(), m_defaultStyleSheet() {

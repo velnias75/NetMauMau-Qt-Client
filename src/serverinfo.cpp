@@ -60,8 +60,6 @@ void ServerInfo::run() {
 		const Client::CAPABILITIES &caps((Client(0L, 0L, "", std::string(srv.toStdString()),
 												 static_cast<uint16_t>(port))).capabilities(&tv));
 
-		qDebug("Server \"%s\" is online", host.toUtf8().constData());
-
 		ulong curPCnt = (QString::fromStdString(caps.find("CUR_PLAYERS")->second)).toULong();
 		ulong maxPCnt = (QString::fromStdString(caps.find("MAX_PLAYERS")->second)).toULong();
 
@@ -115,14 +113,12 @@ void ServerInfo::run() {
 }
 
 void ServerInfo::setError(QStandardItem *ai, QStandardItem *players, QStandardItem *version,
-						  QStandardItem *server, const QString &host, const QString &err) {
-
-	qDebug("Server \"%s\" is offline: %s", host.toStdString().c_str(), err.toStdString().c_str());
+						  QStandardItem *server, const QString &, const QString &err) {
 
 	ai->setCheckState(Qt::Unchecked);
-	ai->setToolTip("");
+	ai->setToolTip(QString::null);
 	players->setText(tr(NA));
-	players->setToolTip("");
+	players->setToolTip(QString::null);
 	version->setText(tr(NA));
 	server->setToolTip(err);
 }

@@ -17,8 +17,6 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cmath>
-
 #include <QPainter>
 #include <QApplication>
 #include <QTextDocument>
@@ -27,17 +25,11 @@
 #include <qmath.h>
 
 #include "messageitemdelegate.h"
-#include "cardtools.h"
 
 namespace {
-
-const QString SUITS[4] = {
-	QString::fromUtf8("\u2666"),
-	QString::fromUtf8("\u2665"),
-	QString::fromUtf8("\u2660"),
-	QString::fromUtf8("\u2663")
-};
-
+const QString replace("<span style=\"color:red;\">\\1 \\2</span>");
+const QRegExp heartsRex("(" + QString::fromUtf8("\u2665") + ") ([0-9]{1,2}|[JQKA])");
+const QRegExp diamondsRex("(" + QString::fromUtf8("\u2666") + ") ([0-9]{1,2}|[JQKA])");
 }
 
 MessageItemDelegate::MessageItemDelegate(QObject *p, bool cardDetect) : QStyledItemDelegate(p),
@@ -55,28 +47,8 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 	initStyleOption(&opt, index);
 
 	if(m_cardDetect) {
-
-		for(int i = 0; i < 4; ++i) {
-
-			int idx = opt.text.indexOf(SUITS[i]);
-
-			if(idx != -1) {
-				switch(NetMauMau::Common::symbolToSuit(opt.text.mid(idx,
-																	SUITS[i].length()).toUtf8()
-													   .constData())) {
-				case NetMauMau::Common::ICard::HEARTS:
-				case NetMauMau::Common::ICard::DIAMONDS: {
-						const QString &card(opt.text.mid(idx, SUITS[i].length() + 2 +
-														 (opt.text[idx + 2].isDigit() &&
-														 opt.text[idx + 3].isDigit() ? 1 : 0 )));
-						opt.text.replace(card,
-										 QString("<span style=\"color:red;\">%1</span>").arg(card));
-					} break;
-				default:
-					break;
-				}
-			}
-		}
+		opt.text.replace(diamondsRex, replace);
+		opt.text.replace(heartsRex, replace);
 	}
 
 	QTextOption tOpt(opt.displayAlignment|Qt::AlignVCenter);
@@ -102,8 +74,9 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
 	QTextDocument *document = doc(option, index);
-	const QPoint off(opt.rect.left(), opt.rect.top() + qCeil(qreal(opt.rect.height())/qreal(2.0f) -
-															 document->size().height()/qreal(2.0f)));
+	const QPoint off(opt.rect.left(), opt.rect.top() +
+					 qCeil(qreal(opt.rect.height())/qreal(2.0f) -
+						   document->size().height()/qreal(2.0f)));
 
 	painter->save();
 	painter->translate(off);

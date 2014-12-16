@@ -22,7 +22,8 @@
 
 #include <QThread>
 
-#include "abstractclient.h"
+#include <abstractclient.h>
+
 #include "connectionlogdialog.h"
 
 class MainWindow;

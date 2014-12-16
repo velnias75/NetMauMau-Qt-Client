@@ -21,11 +21,12 @@
 #include <QFileDialog>
 #include <QSettings>
 
-#include "launchserverdialog.h"
-#include "localserveroutputview.h"
+#include <cardtools.h>
 
+#include "launchserverdialog.h"
+
+#include "localserveroutputview.h"
 #include "client.h"
-#include "cardtools.h"
 
 LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) : QDialog(p),
 	LaunchDialogBase(), m_process(), m_errFail(false), m_lsov(lsov) {

@@ -18,20 +18,19 @@
  */
 
 #include <QMessageBox>
-#include <QCloseEvent>
 #include <QSettings>
 
 #include <cardtools.h>
 #include <playerlistexception.h>
-#include <versionmismatchexception.h>
 
 #include "mainwindow.h"
+
 #include "cardwidget.h"
 #include "cardpixmap.h"
 #include "serverdialog.h"
 #include "ui_mainwindow.h"
+#include "jackchoosedialog.h"
 #include "launchserverdialog.h"
-#include "connectionlogdialog.h"
 #include "messageitemdelegate.h"
 #include "playerimagedelegate.h"
 #include "localserveroutputview.h"
@@ -40,16 +39,15 @@
 MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
 	m_serverDlg(new ServerDialog(this)), m_lsov(new LocalServerOutputView()),
 	m_launchDlg(new LaunchServerDialog(m_lsov, this)), m_model(0, 5), m_cards(),
-	m_lastPlayedCard(0L), m_jackChooseDialog(this), m_stdForeground(), m_stdBackground(),
-	m_maxPlayerCount(0), m_pickCardPrepended(false),
+	m_lastPlayedCard(0L), m_jackChooseDialog(new JackChooseDialog(this)), m_stdForeground(),
+	m_stdBackground(), m_maxPlayerCount(0), m_pickCardPrepended(false),
 	m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_playerImageDelegate(new PlayerImageDelegate(this)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
 	m_turnItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
-	m_appendPlayerStat(), m_noCardPossible(false),
-	m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
+	m_noCardPossible(false), m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
 	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
 	m_possibleCards(), m_playerCardCounts(), m_ocPm(), m_lostWonConfirmed(false),
 	m_clientDestroyRequested(false), m_countWonDisplayed(0),
@@ -119,11 +117,11 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_model.setHorizontalHeaderItem(3, new QStandardItem(tr("Turn")));
 	m_model.setHorizontalHeaderItem(4, new QStandardItem(tr("Message")));
 
-	m_ui->remotePlayersView->setItemDelegateForColumn(0, m_playerImageDelegate);
-	m_ui->remotePlayersView->setItemDelegateForColumn(1, m_nameItemDelegate);
-	m_ui->remotePlayersView->setItemDelegateForColumn(2, m_countItemDelegate);
-	m_ui->remotePlayersView->setItemDelegateForColumn(3, m_turnItemDelegate);
-	m_ui->remotePlayersView->setItemDelegateForColumn(4, m_messageItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(PLAYERPIC, m_playerImageDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(NAME, m_nameItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(CARDS, m_countItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(TURN, m_turnItemDelegate);
+	m_ui->remotePlayersView->setItemDelegateForColumn(MESSAGE, m_messageItemDelegate);
 
 	m_ui->remotePlayersView->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
 	m_ui->remotePlayersView->horizontalHeader()->setClickable(false);
@@ -192,6 +190,7 @@ MainWindow::~MainWindow() {
 	delete m_serverDlg;
 	delete m_launchDlg;
 	delete m_lastPlayedCard;
+	delete m_jackChooseDialog;
 	delete m_connectionLogDlg;
 	delete m_playerImageDelegate;
 	delete m_nameItemDelegate;
@@ -503,7 +502,7 @@ void MainWindow::clearMyCards(bool del, bool dis) {
 }
 
 void MainWindow::clientTurn(std::size_t t) {
-	m_ui->turnLabel->setText(QString("%1").arg(t));
+	m_ui->turnLabel->setText(QString::number(t));
 	m_turn = t;
 }
 
@@ -559,7 +558,6 @@ void MainWindow::clientCardAccepted(const QByteArray &) {
 
 void MainWindow::clientPlayerSuspends(const QString &p) {
 	updatePlayerStat(p, tr("suspended the turn"));
-	if(m_model.rowCount() == 2) m_appendPlayerStat.push_back(p);
 }
 
 bool MainWindow::isMe(const QString &player) const {
@@ -572,8 +570,8 @@ QList<QStandardItem *> MainWindow::rowForPlayer(const QString &p) const {
 
 void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t pt) const {
 
-	updatePlayerStat(p, tr("<span style=\"color:blue;\">lost</span> in turn %1; " \
-						   "with %n point(s) at hand", "", pt).arg(t), true, true);
+	updatePlayerStat(p, tr("<span style=\"color:blue;\">lost</span> in turn %1 " \
+						   "with %n point(s) at hand", "", pt).arg(t), true);
 
 	if(isMe(p)) {
 
@@ -609,8 +607,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 	m_playerCardCounts[p] = 0;
 
-	updatePlayerStat(p, tr("<span style=\"color:blue;\">wins</span> in turn %1").arg(t),
-					 true, true);
+	updatePlayerStat(p, tr("<span style=\"color:blue;\">wins</span> in turn %1").arg(t), true);
 
 	if(!isMe(p)) statusBar()->showMessage(tr("%1 wins!").arg(p), 10000);
 
@@ -664,17 +661,10 @@ void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 	}
 
 	updatePlayerStat(p, pickStr);
-	m_appendPlayerStat.push_back(p);
 }
 
 void MainWindow::clientPlayedCard(const QString &player, const QByteArray &card) {
-
-	const bool append = m_appendPlayerStat.contains(player);
-
-	if(append) m_appendPlayerStat.removeAll(player);
-
-	updatePlayerStat(player, tr("plays %1").arg(QString::fromUtf8(card.constData())), append);
-
+	updatePlayerStat(player, tr("plays %1").arg(QString::fromUtf8(card.constData())));
 	setOpenCard(card);
 }
 
@@ -764,11 +754,11 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards) {
 
 void MainWindow::clientChooseJackSuitRequest() {
 
-	m_jackChooseDialog.setSuite(m_lastPlayedCard ? m_lastPlayedCard->getSuit() :
-												   NetMauMau::Common::ICard::CLUBS);
-	m_jackChooseDialog.exec();
+	m_jackChooseDialog->setSuite(m_lastPlayedCard ? m_lastPlayedCard->getSuit() :
+													NetMauMau::Common::ICard::CLUBS);
+	m_jackChooseDialog->exec();
 
-	const NetMauMau::Common::ICard::SUIT cs = m_jackChooseDialog.getChosenSuit();
+	const NetMauMau::Common::ICard::SUIT cs = m_jackChooseDialog->getChosenSuit();
 
 	m_ui->jackSuit->setProperty("suitDescription",
 								QByteArray(NetMauMau::Common::suitToSymbol(cs, false).c_str()));
@@ -885,22 +875,26 @@ void MainWindow::enableMyCards(bool b) {
 	}
 }
 
-void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bool append,
-								  bool disable) const {
+void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bool disable) const {
 
 	const QList<QStandardItem *> &ml(rowForPlayer(player));
 
 	if(!ml.empty()) {
 
-		QStandardItem *nam = m_model.item(m_model.indexFromItem(ml.front()).row(), 1);
-		QStandardItem *cnt = m_model.item(m_model.indexFromItem(ml.front()).row(), 2);
-		QStandardItem *trn = m_model.item(m_model.indexFromItem(ml.front()).row(), 3);
-		QStandardItem *msg = m_model.item(m_model.indexFromItem(ml.front()).row(), 4);
+		const int &row(m_model.indexFromItem(ml.front()).row());
+
+		QStandardItem *nam = m_model.item(row, NAME);
+		QStandardItem *cnt = m_model.item(row, CARDS);
+		QStandardItem *trn = m_model.item(row, TURN);
+		QStandardItem *msg = m_model.item(row, MESSAGE);
 
 		cnt->setTextAlignment(Qt::AlignCenter);
 		trn->setTextAlignment(Qt::AlignCenter);
-
 		trn->setText(QString::number(m_turn));
+
+		const QString &txt(msg->text());
+
+		if(txt.count("; ") > 1) msg->setText(txt.right(txt.length() - txt.lastIndexOf("; ") - 2));
 
 		if(isMe(player) || m_playerCardCounts.contains(player)) {
 
@@ -923,11 +917,12 @@ void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bo
 			}
 		}
 
-		m_ui->remotePlayersView->resizeColumnToContents(2);
+		m_ui->remotePlayersView->resizeColumnToContents(CARDS);
+		m_ui->remotePlayersView->resizeColumnToContents(MESSAGE);
 
 		nam->setToolTip(player);
 
-		if(!mesg.isEmpty()) msg->setText(append ? (msg->text() + "; " + mesg) : mesg);
+		if(!mesg.isEmpty()) msg->setText(msg->text() + "; " + mesg);
 
 		if(disable) {
 			nam->setEnabled(false);
@@ -1032,6 +1027,7 @@ void MainWindow::clearStats() {
 }
 
 QString MainWindow::reconnectToolTip() const {
+
 	QString rtt(tr("Reconnect to "));
 
 	const ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);

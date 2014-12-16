@@ -20,22 +20,21 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QTime>
-#include <QLabel>
-#include <QBasicTimer>
 #include <QMainWindow>
-#include <QProgressDialog>
-#include <QStandardItemModel>
-#include <QAbstractItemDelegate>
+
+#include <QBasicTimer>
+#include <QLabel>
+#include <QTime>
 
 #include "client.h"
-#include "jackchoosedialog.h"
 
 namespace Ui {
 class MainWindow;
 }
 
 class CardWidget;
+class QProgressDialog;
+class JackChooseDialog;
 class ConnectionLogDialog;
 class LocalServerOutputView;
 
@@ -119,7 +118,7 @@ private:
 	void enableMyCards(bool b);
 	void clearMyCards(bool del, bool dis = true);
 	void updatePlayerStat(const QString &player, const QString &msg = QString::null,
-						  bool append = false, bool disable = false) const;
+						  bool disable = false) const;
 
 	QString reconnectToolTip() const;
 
@@ -127,6 +126,8 @@ private:
 	void readSettings();
 
 private:
+	typedef enum { PLAYERPIC = 0, NAME, CARDS, TURN, MESSAGE} MSGCOLS;
+
 	Client *m_client;
 	Ui::MainWindow *m_ui;
 	QDialog *m_serverDlg;
@@ -135,7 +136,7 @@ private:
 	QStandardItemModel m_model;
 	QList<CardWidget *> m_cards;
 	CardWidget *m_lastPlayedCard;
-	JackChooseDialog m_jackChooseDialog;
+	JackChooseDialog *m_jackChooseDialog;
 	QBrush m_stdForeground;
 	QBrush m_stdBackground;
 	uint m_maxPlayerCount;
@@ -147,7 +148,6 @@ private:
 	QAbstractItemDelegate *m_turnItemDelegate;
 	QAbstractItemDelegate *m_messageItemDelegate;
 	int m_lastPlayedCardIdx;
-	QStringList m_appendPlayerStat;
 	bool m_noCardPossible;
 	NetMauMau::Common::ICard::SUIT m_cTakeSuit;
 	NetMauMau::Common::ICard::SUIT m_takenSuit;

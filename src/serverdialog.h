@@ -20,10 +20,9 @@
 #ifndef SERVERDIALOG_H
 #define SERVERDIALOG_H
 
+#include <QStandardItemModel>
 #include <QMutex>
 #include <QTimer>
-#include <QDialog>
-#include <QStandardItemModel>
 
 #include "linkercontrol.h"
 #include "ui_serverdialog.h"
