@@ -21,8 +21,8 @@
 #define MAINWINDOW_H
 
 #include <QTime>
-#include <QTimer>
 #include <QLabel>
+#include <QBasicTimer>
 #include <QMainWindow>
 #include <QProgressDialog>
 #include <QStandardItemModel>
@@ -50,6 +50,7 @@ public:
 
 protected:
 	virtual void closeEvent(QCloseEvent *e);
+	virtual void timerEvent(QTimerEvent *e);
 
 signals:
 	void disconnectNow() const;
@@ -59,7 +60,6 @@ signals:
 
 private slots:
 	void about();
-	void timeout();
 	void scrollToLastCard() const;
 
 	void sendingPlayerImageFailed(const QString &) const;
@@ -163,7 +163,7 @@ private:
 	QString m_curReceiving;
 	QLabel m_timeLabel;
 	QTime m_playTime;
-	QTimer m_playTimer;
+	QBasicTimer m_playTimer;
 };
 
 #endif // MAINWINDOW_H

@@ -20,7 +20,6 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QSettings>
-#include <QTimer>
 
 #include <cardtools.h>
 #include <playerlistexception.h>
@@ -156,6 +155,8 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	LaunchServerDialog *lsd = static_cast<LaunchServerDialog *>(m_launchDlg);
 	lsd->setTriggerAction(m_ui->actionNetMauMauServerOutput);
 	m_lsov->setTriggerAction(m_ui->actionNetMauMauServerOutput);
+
+	m_playTimer.stop();
 
 	if(lsd->launchAtStartup()) lsd->launch();
 }
@@ -351,8 +352,6 @@ void MainWindow::serverAccept() {
 			delete [] i->pngData;
 		}
 
-		QObject::connect(&m_playTimer, SIGNAL(timeout()), this, SLOT(timeout()));
-
 		QObject::connect(m_client, SIGNAL(cPlayCard(const Client::CARDS &)),
 						 this, SLOT(clientPlayCardRequest(const Client::CARDS &)));
 		QObject::connect(m_client, SIGNAL(cGetJackSuitChoice()),
@@ -429,9 +428,10 @@ void MainWindow::serverAccept() {
 	}
 }
 
-void MainWindow::timeout() {
-	m_playTime = m_playTime.addSecs(1);
+void MainWindow::timerEvent(QTimerEvent *e) {
+	m_playTime = m_playTime.addMSecs(1000);
 	m_timeLabel.setText(m_playTime.toString("HH:mm:ss"));
+	e->accept();
 }
 
 void MainWindow::clientMessage(const QString &msg) const {
@@ -817,7 +817,7 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 
 	m_receivingPlayerImageProgress->hide();
 
-	if(!m_playTimer.isActive()) m_playTimer.start(1000);
+	if(!m_playTimer.isActive()) m_playTimer.start(1000, this);
 
 	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::RANK_ILLEGAL;
@@ -988,6 +988,8 @@ void MainWindow::destroyClient(bool force) {
 
 void MainWindow::clientDestroyed() {
 
+	m_playTimer.stop();
+
 	m_clientDestroyRequested = false;
 
 	m_client->QThread::disconnect();
@@ -1007,7 +1009,6 @@ void MainWindow::clientDestroyed() {
 	m_ui->takeCardsButton->setEnabled(false);
 	m_ui->suspendButton->setEnabled(false);
 
-	m_playTimer.stop();
 	m_timeLabel.hide();
 
 	statusBar()->clearMessage();
