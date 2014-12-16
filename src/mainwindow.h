@@ -53,7 +53,7 @@ protected:
 
 signals:
 	void disconnectNow() const;
-	void confirmLostWon() const;
+	void confirmLostWon(int) const;
 	void cardToPlay(NetMauMau::Common::ICard *) const;
 	void chosenSuite(NetMauMau::Common::ICard::SUIT) const;
 
@@ -68,7 +68,7 @@ private slots:
 
 	void serverAccept();
 	void serverDisconnect();
-	void lostWinConfirmed();
+	void lostWinConfirmed(int);
 	void destroyClient(bool = false);
 	void destroyClientOffline(bool);
 	void clientDestroyed();

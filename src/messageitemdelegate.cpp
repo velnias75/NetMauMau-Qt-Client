@@ -26,11 +26,7 @@
 
 #include "messageitemdelegate.h"
 
-namespace {
-const QString replace("<span style=\"color:red;\">\\1 \\2</span>");
-const QRegExp heartsRex("(" + QString::fromUtf8("\u2665") + ") ([0-9]{1,2}|[JQKA])");
-const QRegExp diamondsRex("(" + QString::fromUtf8("\u2666") + ") ([0-9]{1,2}|[JQKA])");
-}
+#include "util.h"
 
 MessageItemDelegate::MessageItemDelegate(QObject *p, bool cardDetect) : QStyledItemDelegate(p),
 	m_cardDetect(cardDetect), m_doc(new QTextDocument()) {}
@@ -46,10 +42,7 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 	QStyleOptionViewItemV4 opt(option);
 	initStyleOption(&opt, index);
 
-	if(m_cardDetect) {
-		opt.text.replace(diamondsRex, replace);
-		opt.text.replace(heartsRex, replace);
-	}
+	if(m_cardDetect) Util::cardStyler(opt.text);
 
 	QTextOption tOpt(opt.displayAlignment|Qt::AlignVCenter);
 	tOpt.setWrapMode(QTextOption::NoWrap);

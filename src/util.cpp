@@ -17,24 +17,24 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SUITRADIOBUTTON_H
-#define SUITRADIOBUTTON_H
+#include <QRegExp>
 
-#include "ui_suitradiobutton.h"
+#include "util.h"
 
-class SuitRadioButton : public QRadioButton, private Ui::SuitRadioButton {
-	Q_OBJECT
+namespace {
+const QString replace("<span style=\"color:red;\">\\1 \\2</span>");
+const QRegExp heartsRex("(" + QString::fromUtf8("\u2665") + ") ([0-9]{1,2}|[JQKA])");
+const QRegExp diamondsRex("(" + QString::fromUtf8("\u2666") + ") ([0-9]{1,2}|[JQKA])");
+}
 
-public:
-	explicit SuitRadioButton(QWidget *parent = 0, const QByteArray &suiteDesc = QByteArray());
+Util::Util() {}
 
-	virtual bool event(QEvent *e);
+QString &Util::cardStyler(QString &c) {
+	c.replace(diamondsRex, replace);
+	return c.replace(heartsRex, replace);
+}
 
-protected:
-	virtual void changeEvent(QEvent *e);
-
-private:
-	void styleSuit();
-};
-
-#endif // SUITRADIOBUTTON_H
+QString Util::cardStyler(const QString &c) {
+	QString ret = c;
+	return cardStyler(ret);
+}

@@ -17,24 +17,18 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SUITRADIOBUTTON_H
-#define SUITRADIOBUTTON_H
+#ifndef UTIL_H
+#define UTIL_H
 
-#include "ui_suitradiobutton.h"
+#include <QString>
 
-class SuitRadioButton : public QRadioButton, private Ui::SuitRadioButton {
-	Q_OBJECT
-
+class Util {
 public:
-	explicit SuitRadioButton(QWidget *parent = 0, const QByteArray &suiteDesc = QByteArray());
-
-	virtual bool event(QEvent *e);
-
-protected:
-	virtual void changeEvent(QEvent *e);
+	static QString &cardStyler(QString &c);
+	static QString cardStyler(const QString &c);
 
 private:
-	void styleSuit();
+	Util();
 };
 
-#endif // SUITRADIOBUTTON_H
+#endif // UTIL_H

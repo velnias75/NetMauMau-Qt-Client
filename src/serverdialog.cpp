@@ -422,7 +422,8 @@ void ServerDialog::addServer() {
 	QList<QStandardItem *> row;
 
 	row << new QStandardItem(hostEdit->text() + (!portSpin->text().isEmpty() ?
-													 QString(":%1").arg(portSpin->text()) : ""));
+													 QString(":%1").arg(portSpin->text()) :
+													 QString::null));
 	row.back()->setEnabled(false);
 	row << new QStandardItem(NA);
 	row.back()->setEnabled(false);

@@ -26,7 +26,7 @@ class SuitLabel : public QLabel, private Ui::SuitLabel {
 	Q_OBJECT
 
 public:
-	explicit SuitLabel(QWidget *parent = 0, const QByteArray &suiteDesc = "");
+	explicit SuitLabel(QWidget *parent = 0, const QByteArray &suiteDesc = QByteArray());
 
 	virtual bool event(QEvent *e);
 

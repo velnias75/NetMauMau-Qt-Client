@@ -25,6 +25,7 @@
 
 #include "mainwindow.h"
 
+#include "util.h"
 #include "cardwidget.h"
 #include "cardpixmap.h"
 #include "serverdialog.h"
@@ -370,7 +371,7 @@ void MainWindow::serverAccept() {
 		QObject::connect(m_client, SIGNAL(cStats(const Client::STATS &)),
 						 this, SLOT(clientStats(const Client::STATS &)));
 		QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(destroyClient()));
-		QObject::connect(this, SIGNAL(confirmLostWon()), this, SLOT(lostWinConfirmed()));
+		QObject::connect(this, SIGNAL(confirmLostWon(int)), this, SLOT(lostWinConfirmed(int)));
 		QObject::connect(m_client, SIGNAL(cInitialCard(const QByteArray &)),
 						 this, SLOT(setOpenCard(const QByteArray &)));
 		QObject::connect(m_client, SIGNAL(cOpenCard(const QByteArray &, const QString &)),
@@ -523,13 +524,13 @@ void MainWindow::clientTalonShuffled() {
 
 	m_ocPm = *m_ui->openCard->pixmap();
 
-	setOpenCard("");
+	setOpenCard(QByteArray());
 	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
 	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
-	setOpenCard("");
+	setOpenCard(QByteArray());
 	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
 	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
-	setOpenCard("");
+	setOpenCard(QByteArray());
 	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
 }
 
@@ -548,7 +549,7 @@ void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 	}
 
 	QMessageBox::critical(this, tr("Card rejected"), tr("You cannot play card %1!")
-						  .arg(QString::fromUtf8(c.constData())));
+						  .arg(Util::cardStyler(QString::fromUtf8(c.constData()))));
 }
 
 void MainWindow::clientCardAccepted(const QByteArray &) {
@@ -589,6 +590,9 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 		lost.setText(tr("You have lost!\nYour points: %1\n\nPlaying time: %2").arg(pt).
 					 arg(m_playTime.toString("HH:mm:ss")));
 
+		if(m_model.rowCount() == 2) lost.addButton(tr("Try &again"), QMessageBox::YesRole);
+		lost.addButton(QMessageBox::Ok);
+
 		Qt::WindowFlags f = lost.windowFlags();
 		f &= ~Qt::WindowContextHelpButtonHint;
 		f &= ~Qt::WindowSystemMenuHint;
@@ -596,7 +600,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 		lost.exec();
 
-		emit confirmLostWon();
+		emit confirmLostWon(lost.buttonRole(lost.clickedButton()));
 
 	} else {
 		statusBar()->showMessage(tr("%1 lost!").arg(p), 10000);
@@ -631,9 +635,12 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 		gameOver.setText(tr("You have won!\nPlaying time: %1").
 						 arg(m_playTime.toString("HH:mm:ss")));
 
+		if(m_model.rowCount() == 2) gameOver.addButton(tr("Try &again"), QMessageBox::YesRole);
+		gameOver.addButton(QMessageBox::Ok);
+
 		gameOver.exec();
 
-		emit confirmLostWon();
+		emit confirmLostWon(gameOver.buttonRole(gameOver.clickedButton()));
 
 	} else if(m_model.rowCount() > 2 && (m_countWonDisplayed < m_model.rowCount() - 2)) {
 
@@ -646,7 +653,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		++m_countWonDisplayed;
 
-		emit confirmLostWon();
+		emit confirmLostWon(QMessageBox::AcceptRole);
 	}
 }
 
@@ -933,9 +940,16 @@ void MainWindow::updatePlayerStat(const QString &player, const QString &mesg, bo
 	}
 }
 
-void MainWindow::lostWinConfirmed() {
+void MainWindow::lostWinConfirmed(int tryAgain) {
+
 	m_lostWonConfirmed = false;
-	if(m_clientDestroyRequested) destroyClient(true);
+
+	if(m_clientDestroyRequested) {
+
+		destroyClient(true);
+
+		if(tryAgain == QMessageBox::YesRole) serverAccept();
+	}
 }
 
 void MainWindow::serverDisconnect() {

@@ -57,7 +57,8 @@ void ServerInfo::run() {
 
 		timeval tv = { 30L, 0L };
 
-		const Client::CAPABILITIES &caps((Client(0L, 0L, "", std::string(srv.toStdString()),
+		const Client::CAPABILITIES &caps((Client(0L, 0L, QString::null,
+												 std::string(srv.toStdString()),
 												 static_cast<uint16_t>(port))).capabilities(&tv));
 
 		ulong curPCnt = (QString::fromStdString(caps.find("CUR_PLAYERS")->second)).toULong();

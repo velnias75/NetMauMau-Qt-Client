@@ -246,8 +246,7 @@ void Client::playerPicksCard(const std::string &player,
 }
 
 void Client::playerPicksCard(const std::string &player, std::size_t count) const {
-	log(QString("playerPicksCard(%1, %2)").arg(QString::fromUtf8(player.c_str()))
-		.arg(count));
+	log(QString("playerPicksCard(%1, %2)").arg(QString::fromUtf8(player.c_str())).arg(count));
 	emit cPlayerPicksCard(QString::fromUtf8(player.c_str()), count);
 }
 
