@@ -3,6 +3,14 @@
  <author>Heiko Schäfer &lt;heiko@rangun.de&gt;</author>
  <class>CardWidget</class>
  <widget class="QPushButton" name="CardWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>92</width>
+    <height>126</height>
+   </rect>
+  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
     <horstretch>0</horstretch>
@@ -11,8 +19,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>92</width>
-    <height>126</height>
+    <width>56</width>
+    <height>76</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1400000</width>
+    <height>1900000</height>
    </size>
   </property>
   <property name="iconSize">

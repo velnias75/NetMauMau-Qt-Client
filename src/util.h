@@ -22,13 +22,15 @@
 
 #include <QString>
 
+#include <linkercontrol.h>
+
 class Util {
 public:
 	static QString &cardStyler(QString &c);
 	static QString cardStyler(const QString &c);
 
 private:
-	Util();
+	Util() _CONST;
 };
 
 #endif // UTIL_H
