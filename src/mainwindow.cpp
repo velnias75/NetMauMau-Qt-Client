@@ -50,7 +50,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
 	m_noCardPossible(false), m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
 	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
-	m_possibleCards(), m_playerCardCounts(), m_ocPm(), m_lostWonConfirmed(false),
+	m_possibleCards(), m_playerCardCounts(), m_lostWonConfirmed(false),
 	m_clientDestroyRequested(false), m_countWonDisplayed(0),
 	m_aboutTxt(QString::fromUtf8("%1 %2\n%3: %4.%5\nCopyright \u00a9 2014 by Heiko Sch\u00e4fer")
 			   .arg(QCoreApplication::applicationName())
@@ -68,6 +68,8 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	setCorner(Qt::BottomRightCorner, Qt::BottomDockWidgetArea);
 
 	setAttribute(Qt::WA_AlwaysShowToolTips, true);
+
+	m_ui->shufflingLabel->setVisible(false);
 
 	if(!m_ui->actionReconnect->icon().hasThemeIcon("go-previous")) {
 		m_ui->actionReconnect->setIcon(QIcon(":/go-previous.png"));
@@ -521,21 +523,10 @@ void  MainWindow::clientOpenCard(const QByteArray &c, const QString &jackSuit) {
 }
 
 void MainWindow::clientTalonShuffled() {
-
-	m_ocPm = *m_ui->openCard->pixmap();
-
-	setOpenCard(QByteArray());
-	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
-	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
-	setOpenCard(QByteArray());
-	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
-	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
-	setOpenCard(QByteArray());
-	QTimer::singleShot(750, this, SLOT(resetOCPixmap()));
-}
-
-void MainWindow::resetOCPixmap() const {
-	m_ui->openCard->setPixmap(m_ocPm);
+	if(!m_ui->shufflingLabel->isVisible()) {
+		m_ui->shufflingLabel->setVisible(true);
+		QTimer::singleShot(1500, m_ui->shufflingLabel, SLOT(hide()));
+	}
 }
 
 void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {

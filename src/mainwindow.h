@@ -108,7 +108,6 @@ private slots:
 	void sortMyCards(SORTMODE);
 	void filterMyCards(bool);
 	void setOpenCard(const QByteArray &);
-	void resetOCPixmap() const;
 
 private:
 	bool isMe(const QString &player) const;
@@ -153,7 +152,6 @@ private:
 	NetMauMau::Common::ICard::SUIT m_takenSuit;
 	Client::CARDS m_possibleCards;
 	QMap<QString, std::size_t> m_playerCardCounts;
-	QPixmap m_ocPm;
 	bool m_lostWonConfirmed;
 	bool m_clientDestroyRequested;
 	int m_countWonDisplayed;
