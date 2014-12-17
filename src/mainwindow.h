@@ -162,6 +162,7 @@ private:
 	QLabel m_timeLabel;
 	QTime m_playTime;
 	QBasicTimer m_playTimer;
+	QDialog *m_licenseDialog;
 };
 
 #endif // MAINWINDOW_H

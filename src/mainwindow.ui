@@ -141,6 +141,8 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <addaction name="actionLicense"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQt"/>
    </widget>
@@ -778,6 +780,11 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionLicense">
+   <property name="text">
+    <string>License</string>
    </property>
   </action>
  </widget>

@@ -29,6 +29,7 @@
 #include "cardwidget.h"
 #include "cardpixmap.h"
 #include "serverdialog.h"
+#include "licensedialog.h"
 #include "ui_mainwindow.h"
 #include "jackchoosedialog.h"
 #include "launchserverdialog.h"
@@ -58,7 +59,8 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 			   .arg(tr("Client library version"))
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16))
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))), m_turn(1),
-	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)), m_curReceiving() {
+	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)), m_curReceiving(),
+	m_licenseDialog(new LicenseDialog(this)) {
 
 	m_ui->setupUi(this);
 
@@ -102,6 +104,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	QObject::connect(m_ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
 	QObject::connect(m_ui->actionServer, SIGNAL(triggered()), m_serverDlg, SLOT(show()));
 	QObject::connect(m_ui->actionLaunchServer, SIGNAL(triggered()), m_launchDlg, SLOT(show()));
+	QObject::connect(m_ui->actionLicense, SIGNAL(triggered()), m_licenseDialog, SLOT(show()));
 
 	QFont fnt("Monospace");
 	fnt.setStyleHint(QFont::TypeWriter);
@@ -192,6 +195,7 @@ MainWindow::~MainWindow() {
 	delete m_lsov;
 	delete m_serverDlg;
 	delete m_launchDlg;
+	delete m_licenseDialog;
 	delete m_lastPlayedCard;
 	delete m_jackChooseDialog;
 	delete m_connectionLogDlg;

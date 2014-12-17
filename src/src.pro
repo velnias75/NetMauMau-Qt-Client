@@ -57,7 +57,8 @@ SOURCES += main.cpp mainwindow.cpp \
 	launchdialogbase.cpp \
 	playerimageprogressdialog.cpp \
 	portspin.cpp \
-    util.cpp
+    util.cpp \
+    licensedialog.cpp
 
 HEADERS  += mainwindow.h \
 	serverdialog.h \
@@ -77,7 +78,8 @@ HEADERS  += mainwindow.h \
 	launchdialogbase.h \
 	playerimageprogressdialog.h \
 	portspin.h \
-    util.h
+    util.h \
+    licensedialog.h
 
 FORMS    +=  serverdialog.ui \
 	mainwindow.ui \
@@ -88,7 +90,8 @@ FORMS    +=  serverdialog.ui \
 	connectionlogdialog.ui \
 	launchserverdialog.ui \
 	localserveroutputview.ui \
-	deleteserversdialog.ui
+	deleteserversdialog.ui \
+    licensedialog.ui
 
 RESOURCES += icons.qrc nuoveXT2.qrc cards.qrc
 
