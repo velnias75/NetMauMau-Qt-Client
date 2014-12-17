@@ -591,7 +591,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 					 arg(m_playTime.toString("HH:mm:ss")));
 
 		if(m_model.rowCount() == 2) lost.addButton(tr("Try &again"), QMessageBox::YesRole);
-		lost.addButton(QMessageBox::Ok);
+		lost.setEscapeButton(lost.addButton(QMessageBox::Ok));
 
 		Qt::WindowFlags f = lost.windowFlags();
 		f &= ~Qt::WindowContextHelpButtonHint;
@@ -636,7 +636,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 						 arg(m_playTime.toString("HH:mm:ss")));
 
 		if(m_model.rowCount() == 2) gameOver.addButton(tr("Try &again"), QMessageBox::YesRole);
-		gameOver.addButton(QMessageBox::Ok);
+		gameOver.setEscapeButton(gameOver.addButton(QMessageBox::Ok));
 
 		gameOver.exec();
 
