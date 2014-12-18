@@ -292,7 +292,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
 <context>
     <name>LicenseDialog</name>
     <message>
-        <location filename="licensedialog.ui" line="14"/>
+        <location filename="licensedialog.ui" line="17"/>
         <source>License</source>
         <translation>Lizenz</translation>
     </message>
@@ -314,7 +314,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="53"/>
-        <location filename="mainwindow.cpp" line="1010"/>
+        <location filename="mainwindow.cpp" line="1016"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
@@ -366,7 +366,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="449"/>
-        <location filename="mainwindow.cpp" line="1116"/>
+        <location filename="mainwindow.cpp" line="1122"/>
         <source>Local player</source>
         <translation>Lokaler Spieler</translation>
     </message>
@@ -665,8 +665,8 @@ Spieldauer: %1</translation>
         <translation>Lege Deine Karte...</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow.cpp" line="914"/>
-        <location filename="mainwindow.cpp" line="918"/>
+        <location filename="mainwindow.cpp" line="920"/>
+        <location filename="mainwindow.cpp" line="924"/>
         <source>%n card(s)</source>
         <translation>
             <numerusform>%n Karte</numerusform>
@@ -674,7 +674,7 @@ Spieldauer: %1</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1040"/>
+        <location filename="mainwindow.cpp" line="1046"/>
         <source>Reconnect to </source>
         <translation>Verbinde wieder zu </translation>
     </message>
@@ -682,6 +682,21 @@ Spieldauer: %1</translation>
         <location filename="mainwindow.cpp" line="59"/>
         <source>Client library version</source>
         <translation>Version der Klientenbibliothek</translation>
+    </message>
+</context>
+<context>
+    <name>NetMauMauApplication</name>
+    <message>
+        <location filename="netmaumauapplication.cpp" line="30"/>
+        <source>Severe error</source>
+        <translation>Schwerer Fehler</translation>
+    </message>
+    <message>
+        <location filename="netmaumauapplication.cpp" line="30"/>
+        <source>Unhandled exception caught:
+%1</source>
+        <translation>Unbehandelte Ausnahme abgefangen:
+%1</translation>
     </message>
 </context>
 <context>

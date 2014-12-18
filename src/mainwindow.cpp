@@ -756,16 +756,22 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards) {
 
 void MainWindow::clientChooseJackSuitRequest() {
 
-	m_jackChooseDialog->setSuite(m_lastPlayedCard ? m_lastPlayedCard->getSuit() :
-													NetMauMau::Common::ICard::CLUBS);
-	m_jackChooseDialog->exec();
+	if(!(m_cards.empty() && m_model.rowCount() == 2)) {
 
-	const NetMauMau::Common::ICard::SUIT cs = m_jackChooseDialog->getChosenSuit();
+		m_jackChooseDialog->setSuite(m_lastPlayedCard ? m_lastPlayedCard->getSuit() :
+														NetMauMau::Common::ICard::CLUBS);
+		m_jackChooseDialog->exec();
 
-	m_ui->jackSuit->setProperty("suitDescription",
-								QByteArray(NetMauMau::Common::suitToSymbol(cs, false).c_str()));
+		const NetMauMau::Common::ICard::SUIT cs = m_jackChooseDialog->getChosenSuit();
 
-	emit chosenSuite(cs);
+		m_ui->jackSuit->setProperty("suitDescription",
+									QByteArray(NetMauMau::Common::suitToSymbol(cs, false).c_str()));
+
+		emit chosenSuite(cs);
+
+	} else {
+		emit chosenSuite(NetMauMau::Common::ICard::HEARTS);
+	}
 }
 
 void MainWindow::suspend() {

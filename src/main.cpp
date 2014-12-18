@@ -25,6 +25,7 @@
 #include <QSettings>
 #endif
 
+#include "netmaumauapplication.h"
 #include "mainwindow.h"
 
 int main(int argc, char *argv[]) {
@@ -38,7 +39,7 @@ int main(int argc, char *argv[]) {
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 #endif
 
-	QApplication a(argc, argv);
+	NetMauMauApplication a(argc, argv);
 	QSplashScreen splash(QPixmap(":/splash.png"), Qt::WindowStaysOnTopHint);
 
 	splash.show();
