@@ -110,14 +110,16 @@ private slots:
 	void setOpenCard(const QByteArray &);
 
 private:
+	QString myself() const;
 	bool isMe(const QString &player) const;
 
 	QList<QStandardItem *> rowForPlayer(const QString &p) const;
 
+	void takeCardsMark(bool b) const;
 	void enableMyCards(bool b);
 	void clearMyCards(bool del, bool dis = true);
-	void updatePlayerStat(const QString &player, const QString &msg = QString::null,
-						  bool disable = false) const;
+	void updatePlayerStats(const QString &player, const QString &msg = QString::null,
+						   bool disable = false) const;
 
 	QString reconnectToolTip() const;
 
