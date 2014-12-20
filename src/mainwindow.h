@@ -50,6 +50,7 @@ public:
 protected:
 	virtual void closeEvent(QCloseEvent *e);
 	virtual void timerEvent(QTimerEvent *e);
+	virtual void keyReleaseEvent(QKeyEvent *e);
 
 signals:
 	void disconnectNow() const;

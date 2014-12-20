@@ -115,6 +115,13 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_timeLabel.setFont(fnt);
 	m_timeLabel.setAlignment(Qt::AlignRight);
 
+	m_ui->takeCardsButton->
+			setToolTip(QString("%1 <span style=\"color: gray; font-size: small\">F7</span>")
+									  .arg(m_ui->takeCardsButton->toolTip()));
+	m_ui->suspendButton->
+			setToolTip(QString("%1 <span style=\"color: gray; font-size: small\">F8</span>")
+									  .arg(m_ui->suspendButton->toolTip()));
+
 	statusBar()->addPermanentWidget(&m_timeLabel);
 
 	m_model.setHorizontalHeaderItem(0, new QStandardItem());
@@ -437,6 +444,17 @@ void MainWindow::timerEvent(QTimerEvent *e) {
 	m_playTime = m_playTime.addMSecs(1000);
 	m_timeLabel.setText(m_playTime.toString("HH:mm:ss"));
 	e->accept();
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *e) {
+
+	if(e->key() == Qt::Key_F7) {
+		m_ui->takeCardsButton->click();
+	} else if(e->key() == Qt::Key_F8) {
+		m_ui->suspendButton->click();
+	} else {
+		QMainWindow::keyReleaseEvent(e);
+	}
 }
 
 void MainWindow::clientMessage(const QString &msg) const {

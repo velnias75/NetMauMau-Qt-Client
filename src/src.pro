@@ -3,7 +3,7 @@ QT += svg
 CONFIG += debug_and_release
 CONFIG += rtti exceptions
 
-VERSION = 0.6
+VERSION = 0.7
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
 
@@ -57,9 +57,9 @@ SOURCES += main.cpp mainwindow.cpp \
 	launchdialogbase.cpp \
 	playerimageprogressdialog.cpp \
 	portspin.cpp \
-    util.cpp \
-    licensedialog.cpp \
-    netmaumauapplication.cpp
+	util.cpp \
+	licensedialog.cpp \
+	netmaumauapplication.cpp
 
 HEADERS  += mainwindow.h \
 	serverdialog.h \
@@ -79,9 +79,9 @@ HEADERS  += mainwindow.h \
 	launchdialogbase.h \
 	playerimageprogressdialog.h \
 	portspin.h \
-    util.h \
-    licensedialog.h \
-    netmaumauapplication.h
+	util.h \
+	licensedialog.h \
+	netmaumauapplication.h
 
 FORMS    +=  serverdialog.ui \
 	mainwindow.ui \
@@ -93,7 +93,7 @@ FORMS    +=  serverdialog.ui \
 	launchserverdialog.ui \
 	localserveroutputview.ui \
 	deleteserversdialog.ui \
-    licensedialog.ui
+	licensedialog.ui
 
 RESOURCES += icons.qrc nuoveXT2.qrc cards.qrc
 
