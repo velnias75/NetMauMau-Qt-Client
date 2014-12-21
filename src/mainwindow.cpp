@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16))
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))), m_turn(1),
 	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)), m_curReceiving(),
-	m_licenseDialog(new LicenseDialog(this)) {
+	m_licenseDialog(new LicenseDialog(this)), m_playerStatMsg() {
 
 	m_ui->setupUi(this);
 
@@ -585,7 +585,7 @@ QList<QStandardItem *> MainWindow::rowForPlayer(const QString &p) const {
 	return m_model.findItems(".*" + p + ".*", Qt::MatchRegExp, NAME);
 }
 
-void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t pt) const {
+void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t pt) {
 
 	updatePlayerStats(p, tr("<span style=\"color:blue;\">lost</span> in turn %1 " \
 							"with %n point(s) at hand", "", pt).arg(t), true);
@@ -926,7 +926,7 @@ void MainWindow::enableMyCards(bool b) {
 	}
 }
 
-void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, bool disable) const {
+void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, bool disable) {
 
 	const QList<QStandardItem *> &ml(rowForPlayer(player));
 
@@ -943,9 +943,7 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 		trn->setTextAlignment(Qt::AlignCenter);
 		trn->setText(QString::number(m_turn));
 
-		const QString &txt(msg->text());
-
-		if(txt.count("; ") > 1) msg->setText(txt.right(txt.length() - txt.lastIndexOf("; ") - 2));
+		if(!mesg.isEmpty()) m_playerStatMsg[player] << mesg;
 
 		if(isMe(player) || m_playerCardCounts.contains(player)) {
 
@@ -973,7 +971,17 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 
 		nam->setToolTip(player);
 
-		if(!mesg.isEmpty()) msg->setText(msg->text() + "; " + mesg);
+		const QStringList &msgList(m_playerStatMsg[player]);
+
+		if(!msgList.isEmpty()) {
+			QString prevMsg(msgList.back());
+			if(msgList.count() > 1 && ((prevMsg = msgList[msgList.count() - 2])
+									   != msgList.back())) {
+				msg->setText(prevMsg + "; " + msgList.back());
+			} else {
+				msg->setText(prevMsg);
+			}
+		}
 
 		if(disable) {
 			nam->setEnabled(false);
@@ -1062,6 +1070,8 @@ void MainWindow::clientDestroyed() {
 	m_ui->suspendButton->setEnabled(false);
 
 	m_timeLabel.hide();
+
+	m_playerStatMsg.clear();
 
 	statusBar()->clearMessage();
 

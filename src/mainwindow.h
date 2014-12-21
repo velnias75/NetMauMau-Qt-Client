@@ -95,7 +95,7 @@ private slots:
 	void clientPlayerJoined(const QString &, const QImage &);
 	void clientPlayerSuspends(const QString &);
 	void clientPlayerWins(const QString &, std::size_t);
-	void clientPlayerLost(const QString &, std::size_t, std::size_t) const;
+	void clientPlayerLost(const QString &, std::size_t, std::size_t);
 	void clientPlayerPicksCard(const QString &, std::size_t);
 	void clientPlayedCard(const QString &, const QByteArray &);
 	void clientJackSuit(NetMauMau::Common::ICard::SUIT) const;
@@ -120,7 +120,7 @@ private:
 	void enableMyCards(bool b);
 	void clearMyCards(bool del, bool dis = true);
 	void updatePlayerStats(const QString &player, const QString &msg = QString::null,
-						   bool disable = false) const;
+						   bool disable = false);
 
 	QString reconnectToolTip() const;
 
@@ -166,6 +166,7 @@ private:
 	QTime m_playTime;
 	QBasicTimer m_playTimer;
 	QDialog *m_licenseDialog;
+	QMap<QString, QStringList> m_playerStatMsg;
 };
 
 #endif // MAINWINDOW_H
