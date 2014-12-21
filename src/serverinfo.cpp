@@ -67,6 +67,8 @@ void ServerInfo::run() {
 		const std::string &sVer(caps.find("SERVER_VERSION")->second);
 		version->setText(QString::fromStdString(sVer));
 
+		const std::string &sMinClientVer(caps.find("MIN_VERSION")->second);
+
 		ai->setCheckState(caps.find("AI_OPPONENT")->second == "true" ? Qt::Checked : Qt::Unchecked);
 		ai->setToolTip(ai->checkState() == Qt::Checked ?
 						   tr("You'll play against AI \"%1\"")
@@ -76,7 +78,7 @@ void ServerInfo::run() {
 		players->setToolTip(tr("Waiting for %n more player(s)", "", (maxPCnt - curPCnt)));
 
 		if(Client::parseProtocolVersion(sVer) < Client::getClientProtocolVersion()) {
-			const QString tooOld(tr("The server is too old for this client"));
+			const QString &tooOld(tr("The server is too old for this client"));
 			server->setToolTip(tooOld);
 			version->setToolTip(tooOld);
 			emit online(false, m_row);
@@ -85,6 +87,14 @@ void ServerInfo::run() {
 
 		if(curPCnt >= maxPCnt) {
 			server->setToolTip(tr("The server accepts no more players"));
+			emit online(false, m_row);
+			return;
+		}
+
+		if(Client::parseProtocolVersion(sMinClientVer) > Client::getClientProtocolVersion()) {
+			const QString &tooOld(tr("This client is too old for the server"));
+			server->setToolTip(tooOld);
+			version->setToolTip(tooOld);
 			emit online(false, m_row);
 			return;
 		}

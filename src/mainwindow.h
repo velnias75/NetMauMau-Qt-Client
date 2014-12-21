@@ -57,6 +57,7 @@ signals:
 	void confirmLostWon(int) const;
 	void cardToPlay(NetMauMau::Common::ICard *) const;
 	void chosenSuite(NetMauMau::Common::ICard::SUIT) const;
+	void chosenAceRound(bool) const;
 
 private slots:
 	void about();
@@ -82,6 +83,7 @@ private slots:
 	void cardChosen(CardWidget *);
 	void clientPlayCardRequest(const Client::CARDS &);
 	void clientChooseJackSuitRequest();
+	void clientChooseAceRoundRequest();
 
 	void clientError(const QString &);
 	void clientMessage(const QString &) const;
@@ -100,6 +102,8 @@ private slots:
 	void clientPlayedCard(const QString &, const QByteArray &);
 	void clientJackSuit(NetMauMau::Common::ICard::SUIT) const;
 	void clientNextPlayer(const QString &) const;
+	void clientAceRoundStarted();
+	void clientAceRoundEnded();
 
 	void clearStats();
 	void resizeColumns() const;
@@ -167,6 +171,8 @@ private:
 	QBasicTimer m_playTimer;
 	QDialog *m_licenseDialog;
 	QMap<QString, QStringList> m_playerStatMsg;
+	bool m_aceRoundActive;
+	QLabel m_aceRoundLabel;
 };
 
 #endif // MAINWINDOW_H

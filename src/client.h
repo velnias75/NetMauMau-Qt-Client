@@ -49,6 +49,7 @@ protected:
 
 	virtual NetMauMau::Common::ICard *playCard(const CARDS &cards) const;
 	virtual NetMauMau::Common::ICard::SUIT getJackSuitChoice() const;
+	virtual bool getAceRoundChoice() const;
 
 	virtual void message(const std::string &msg) const;
 	virtual void error(const std::string &msg) const;
@@ -76,18 +77,24 @@ protected:
 	virtual void cardAccepted(const NetMauMau::Common::ICard *card) const;
 	virtual void jackSuit(NetMauMau::Common::ICard::SUIT suit) const;
 
+	virtual void aceRoundStarted() const;
+	virtual void aceRoundEnded() const;
+
 	virtual void unknownServerMessage(std::string message) const;
 
 public slots:
 	void cardToPlay(NetMauMau::Common::ICard *) const;
 	void chosenSuite(NetMauMau::Common::ICard::SUIT);
+	void chosenAceRound(bool c);
 	void disconnectNow();
 
 signals:
-	void choiceAvailable() const;
+	void jackSuitChoiceAvailable() const;
+	void aceRoundChoiceAvailable() const;
 
 	void cPlayCard(const Client::CARDS &) const;
 	void cGetJackSuitChoice() const;
+	void cGetAceRoundChoice() const;
 
 	void cMessage(const QString &) const;
 	void cError(const QString &) const;
@@ -110,6 +117,8 @@ signals:
 	void cCardRejected(const QString &, const QByteArray &) const;
 	void cCardAccepted(const QByteArray &) const;
 	void cJackSuit(NetMauMau::Common::ICard::SUIT) const;
+	void cAceRoundStarted() const;
+	void cAceRoundEnded() const;
 
 	void offline(bool) const;
 
@@ -134,6 +143,7 @@ private:
 	NetMauMau::Common::ICard::SUIT m_chosenSuit;
 	bool m_online;
 	ConnectionLogDialog *const m_connectionLogDialog;
+	bool m_aceRoundChoice;
 };
 
 #endif // CLIENT_H

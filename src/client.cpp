@@ -33,7 +33,7 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 			   const std::string &server, uint16_t port) : QThread(),
 	NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server, port), m_mainWindow(w),
 	m_disconnectNow(false), m_cardToPlay(0L), m_chosenSuit(NetMauMau::Common::ICard::HEARTS),
-	m_online(false), m_connectionLogDialog(cld) {
+	m_online(false), m_connectionLogDialog(cld), m_aceRoundChoice(false) {
 	init();
 }
 
@@ -43,7 +43,7 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 									  reinterpret_cast<const unsigned char *>(buf.constData()),
 									  buf.size(), server, port), m_mainWindow(w),
 	m_disconnectNow(false), m_cardToPlay(0L), m_chosenSuit(NetMauMau::Common::ICard::HEARTS),
-	m_online(false), m_connectionLogDialog(cld) {
+	m_online(false), m_connectionLogDialog(cld), m_aceRoundChoice(false) {
 	init();
 }
 
@@ -66,6 +66,8 @@ void Client::init() const {
 						 this, SLOT(cardToPlay(NetMauMau::Common::ICard*)));
 		QObject::connect(m_mainWindow, SIGNAL(chosenSuite(NetMauMau::Common::ICard::SUIT)),
 						 this, SLOT(chosenSuite(NetMauMau::Common::ICard::SUIT)));
+		QObject::connect(m_mainWindow, SIGNAL(chosenAceRound(bool)),
+						 this, SLOT(chosenAceRound(bool)));
 	}
 }
 
@@ -110,7 +112,7 @@ void Client::run() {
 }
 
 void Client::disconnectNow() {
-	AbstractClient::disconnect();
+	NetMauMau::Client::AbstractClient::disconnect();
 	m_disconnectNow = true;
 }
 
@@ -123,7 +125,7 @@ NetMauMau::Common::ICard *Client::playCard(const CARDS &cards) const {
 	QEventLoop waitForCard;
 
 	QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), &waitForCard, SLOT(quit()));
-	QObject::connect(this, SIGNAL(choiceAvailable()), &waitForCard, SLOT(quit()));
+	QObject::connect(this, SIGNAL(jackSuitChoiceAvailable()), &waitForCard, SLOT(quit()));
 
 	waitForCard.exec();
 
@@ -149,7 +151,7 @@ NetMauMau::Common::ICard::SUIT Client::getJackSuitChoice() const {
 	QEventLoop waitForSuit;
 
 	QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), &waitForSuit, SLOT(quit()));
-	QObject::connect(this, SIGNAL(choiceAvailable()), &waitForSuit, SLOT(quit()));
+	QObject::connect(this, SIGNAL(jackSuitChoiceAvailable()), &waitForSuit, SLOT(quit()));
 
 	waitForSuit.exec();
 
@@ -160,6 +162,25 @@ NetMauMau::Common::ICard::SUIT Client::getJackSuitChoice() const {
 	return m_chosenSuit;
 }
 
+bool Client::getAceRoundChoice() const {
+
+	log("getAceRoundChoice REQUEST");
+
+	emit cGetAceRoundChoice();
+
+	QEventLoop waitForAceRoundChoice;
+
+	QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), &waitForAceRoundChoice, SLOT(quit()));
+	QObject::connect(this, SIGNAL(aceRoundChoiceAvailable()), &waitForAceRoundChoice, SLOT(quit()));
+
+	waitForAceRoundChoice.exec();
+
+	log(QString("getAceRoundChoice(%1)").arg(m_aceRoundChoice ? "TRUE" : "FALSE"),
+		ConnectionLogDialog::TO_SERVER);
+
+	return m_aceRoundChoice;
+}
+
 void Client::cardToPlay(NetMauMau::Common::ICard *ctp) const {
 
 	log(QString("cardToPlay(%1)").arg(QString::fromUtf8(ctp ? ctp->description().c_str()
@@ -167,7 +188,7 @@ void Client::cardToPlay(NetMauMau::Common::ICard *ctp) const {
 		ConnectionLogDialog::FROM_CLIENT);
 
 	m_cardToPlay = ctp;
-	emit choiceAvailable();
+	emit jackSuitChoiceAvailable();
 }
 
 void Client::chosenSuite(NetMauMau::Common::ICard::SUIT s) {
@@ -177,7 +198,15 @@ void Client::chosenSuite(NetMauMau::Common::ICard::SUIT s) {
 		ConnectionLogDialog::FROM_CLIENT);
 
 	m_chosenSuit = s;
-	emit choiceAvailable();
+	emit jackSuitChoiceAvailable();
+}
+
+void Client::chosenAceRound(bool c) {
+
+	log(QString("chosenAceRound(%1)"). arg(c ? "TRUE" : "FALSE"), ConnectionLogDialog::FROM_CLIENT);
+
+	m_aceRoundChoice = c;
+	emit aceRoundChoiceAvailable();
 }
 
 void Client::message(const std::string &msg) const {
@@ -296,6 +325,16 @@ void Client::jackSuit(NetMauMau::Common::ICard::SUIT suit) const {
 	log(QString("jackSuit(%1)")
 		.arg(QString::fromUtf8(NetMauMau::Common::suitToSymbol(suit, false).c_str())));
 	emit cJackSuit(suit);
+}
+
+void Client::aceRoundStarted() const {
+	log(QString("aceRoundStarted()"));
+	emit cAceRoundStarted();
+}
+
+void Client::aceRoundEnded() const {
+	log(QString("aceRoundEnded()"));
+	emit cAceRoundEnded();
 }
 
 void Client::unknownServerMessage(std::string msg) const {

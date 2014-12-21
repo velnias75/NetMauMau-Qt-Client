@@ -50,9 +50,8 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_turnItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
 	m_noCardPossible(false), m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
-	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
-	m_possibleCards(), m_playerCardCounts(), m_lostWonConfirmed(false),
-	m_clientDestroyRequested(false), m_countWonDisplayed(0),
+	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL), m_possibleCards(), m_playerCardCounts(),
+	m_lostWonConfirmed(false), m_clientDestroyRequested(false), m_countWonDisplayed(0),
 	m_aboutTxt(QString::fromUtf8("%1 %2\n%3: %4.%5\nCopyright \u00a9 2014 by Heiko Sch\u00e4fer")
 			   .arg(QCoreApplication::applicationName())
 			   .arg(QCoreApplication::applicationVersion())
@@ -60,7 +59,8 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16))
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))), m_turn(1),
 	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)), m_curReceiving(),
-	m_licenseDialog(new LicenseDialog(this)), m_playerStatMsg() {
+	m_licenseDialog(new LicenseDialog(this)), m_playerStatMsg(), m_aceRoundActive(false),
+	m_aceRoundLabel() {
 
 	m_ui->setupUi(this);
 
@@ -115,12 +115,16 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 	m_timeLabel.setFont(fnt);
 	m_timeLabel.setAlignment(Qt::AlignRight);
 
+	m_aceRoundLabel.setPixmap(CardPixmap(QSize(10, 14), NetMauMau::Common::ICard::HEARTS,
+										 NetMauMau::Common::ICard::ACE));
+	m_aceRoundLabel.setToolTip(tr("Ace round"));
+
 	m_ui->takeCardsButton->
 			setToolTip(QString("%1 <span style=\"color: gray; font-size: small\">F7</span>")
-									  .arg(m_ui->takeCardsButton->toolTip()));
+					   .arg(m_ui->takeCardsButton->toolTip()));
 	m_ui->suspendButton->
 			setToolTip(QString("%1 <span style=\"color: gray; font-size: small\">F8</span>")
-									  .arg(m_ui->suspendButton->toolTip()));
+					   .arg(m_ui->suspendButton->toolTip()));
 
 	statusBar()->addPermanentWidget(&m_timeLabel);
 
@@ -369,6 +373,8 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientPlayCardRequest(const Client::CARDS &)));
 		QObject::connect(m_client, SIGNAL(cGetJackSuitChoice()),
 						 this, SLOT(clientChooseJackSuitRequest()));
+		QObject::connect(m_client, SIGNAL(cGetAceRoundChoice()),
+						 this, SLOT(clientChooseAceRoundRequest()));
 
 		QObject::connect(m_client, SIGNAL(cError(const QString &)),
 						 this, SLOT(clientError(const QString &)));
@@ -408,6 +414,10 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientPlayedCard(QString, const QByteArray &)));
 		QObject::connect(m_client, SIGNAL(cNextPlayer(const QString &)),
 						 this, SLOT(clientNextPlayer(const QString &)));
+		QObject::connect(m_client, SIGNAL(cAceRoundStarted()),
+						 this, SLOT(clientAceRoundStarted()));
+		QObject::connect(m_client, SIGNAL(cAceRoundEnded()),
+						 this, SLOT(clientAceRoundEnded()));
 
 		centralWidget()->setEnabled(true);
 		takeCardsMark(false);
@@ -795,6 +805,37 @@ void MainWindow::clientChooseJackSuitRequest() {
 	}
 }
 
+void MainWindow::clientChooseAceRoundRequest() {
+
+	if(!(m_cards.empty() && m_model.rowCount() == 2)) {
+
+		QMessageBox aceRoundBox;
+		QIcon icon;
+
+		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
+
+		aceRoundBox.setWindowIcon(icon);
+		aceRoundBox.setWindowTitle(tr("Ace round"));
+		aceRoundBox.setWindowModality(Qt::ApplicationModal);
+		aceRoundBox.setIconPixmap(CardPixmap(QSize(42, 57), NetMauMau::Common::ICard::HEARTS,
+											 NetMauMau::Common::ICard::ACE));
+		aceRoundBox.setText(m_aceRoundActive ? tr("Continue current Ace round?") :
+											   tr("Start Ace round?"));
+
+		aceRoundBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+
+		Qt::WindowFlags f = aceRoundBox.windowFlags();
+		f &= ~Qt::WindowContextHelpButtonHint;
+		f &= ~Qt::WindowSystemMenuHint;
+		aceRoundBox.setWindowFlags(f);
+
+		emit chosenAceRound(aceRoundBox.exec() == QMessageBox::Yes);
+
+	} else {
+		emit chosenAceRound(false);
+	}
+}
+
 void MainWindow::suspend() {
 	enableMyCards(false);
 	emit cardToPlay(0L);
@@ -1072,6 +1113,7 @@ void MainWindow::clientDestroyed() {
 	m_timeLabel.hide();
 
 	m_playerStatMsg.clear();
+	m_aceRoundActive = false;
 
 	statusBar()->clearMessage();
 
@@ -1107,6 +1149,17 @@ QString MainWindow::reconnectToolTip() const {
 	}
 
 	return rtt;
+}
+
+void MainWindow::clientAceRoundStarted() {
+	statusBar()->addPermanentWidget(&m_aceRoundLabel);
+	m_aceRoundLabel.show();
+	m_aceRoundActive = true;
+}
+
+void MainWindow::clientAceRoundEnded() {
+	statusBar()->removeWidget(&m_aceRoundLabel);
+	m_aceRoundActive = false;
 }
 
 void MainWindow::writeSettings() const {
