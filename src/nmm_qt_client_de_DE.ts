@@ -296,6 +296,11 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <source>License</source>
         <translation>Lizenz</translation>
     </message>
+    <message>
+        <location filename="licensedialog.ui" line="37"/>
+        <source>qrc:/LICENSE</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LocalServerOutputView</name>
