@@ -95,7 +95,8 @@ FORMS    +=  serverdialog.ui \
 	deleteserversdialog.ui \
 	licensedialog.ui
 
-RESOURCES += icons.qrc nuoveXT2.qrc cards.qrc
+RESOURCES += icons.qrc nuoveXT2.qrc cards.qrc \
+    license.qrc
 
 RC_FILE += appicon.rc
 
