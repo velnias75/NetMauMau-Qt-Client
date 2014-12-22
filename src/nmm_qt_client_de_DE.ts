@@ -223,68 +223,78 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>Der Port auf dem der Server laufen soll</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="149"/>
+        <location filename="launchserverdialog.ui" line="140"/>
+        <source>Ace &amp;round:</source>
+        <translation>Ass&amp;runde:</translation>
+    </message>
+    <message utf8="true">
+        <location filename="launchserverdialog.ui" line="150"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables &lt;span style=&quot; font-weight:600;&quot;&gt;Ace rounds&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;In an &lt;span style=&quot; font-weight:600;&quot;&gt;Ace round&lt;/span&gt; players are only allowed to play &lt;span style=&quot; font-style:italic;&quot;&gt;Aces.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;NOTE:&lt;/span&gt; enabling this option forces other player&apos;s clients to be at least of version 0.7&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aktiviert &lt;span style=&quot; font-weight:600;&quot;&gt;Assrunden&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;In einer &lt;span style=&quot; font-weight:600;&quot;&gt;Assrunde&lt;/span&gt; können die Spieler nur &lt;span style=&quot; font-style:italic;&quot;&gt;Asse&lt;/span&gt; legen.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;HINWEIS:&lt;/span&gt; das Aktivieren dieser Option zwingt andere Spieler mindestens die Version 0.7 des Klienten zu nutzen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="166"/>
         <source>Executable</source>
         <translation>Ausführbare Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="158"/>
+        <location filename="launchserverdialog.ui" line="175"/>
         <source>Pat&amp;h:</source>
         <translation>&amp;Pfad:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="173"/>
+        <location filename="launchserverdialog.ui" line="190"/>
         <source>Path to the server executable</source>
         <translation>Pfad zu der auführbaren Datei des Servers</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="195"/>
+        <location filename="launchserverdialog.ui" line="212"/>
         <source>Browse for a path to the server executable</source>
         <translation>Suche nach einen Pfad zu der ausführbaren Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="210"/>
+        <location filename="launchserverdialog.ui" line="227"/>
         <source>Op&amp;tions:</source>
         <translation>&amp;Optionen:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="220"/>
+        <location filename="launchserverdialog.ui" line="237"/>
         <source>The options the server will be started with</source>
         <translation>Die Optionen mit denen der Server gestartet wird</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="230"/>
+        <location filename="launchserverdialog.ui" line="247"/>
         <source>On &amp;startup:</source>
         <translation>&amp;Beim Start:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="265"/>
+        <location filename="launchserverdialog.ui" line="282"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbruch</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="272"/>
+        <location filename="launchserverdialog.ui" line="289"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to launch the server.&lt;/p&gt;&lt;p&gt;The server will be available at &lt;tt&gt;localhost&lt;/tt&gt; and the given port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Versucht den Server zu starten.&lt;/p&gt;&lt;p&gt;Der Server wird unter &lt;tt&gt;localhost&lt;/tt&gt; und dem angegeben Port verfügbar sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="275"/>
+        <location filename="launchserverdialog.ui" line="292"/>
         <source>&amp;Launch</source>
         <translation>&amp;Starten</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="134"/>
+        <location filename="launchserverdialog.cpp" line="140"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="134"/>
-        <location filename="launchserverdialog.cpp" line="199"/>
+        <location filename="launchserverdialog.cpp" line="140"/>
+        <location filename="launchserverdialog.cpp" line="206"/>
         <source>Failed to start %1</source>
         <translation>Starten von %1 gescheitert</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="213"/>
+        <location filename="launchserverdialog.cpp" line="220"/>
         <source>Find NetMauMau server executable</source>
         <translation>Finde die ausführbare Datei von NetMauMau</translation>
     </message>
@@ -371,7 +381,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="449"/>
-        <location filename="mainwindow.cpp" line="1225"/>
+        <location filename="mainwindow.cpp" line="1231"/>
         <source>Local player</source>
         <translation>Lokaler Spieler</translation>
     </message>
@@ -581,6 +591,16 @@ Spieldauer: %2</translation>
 Playing time: %1</source>
         <translation>Du hast gewonnen!
 Spieldauer: %1</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="1156"/>
+        <source>starts an Ace round</source>
+        <translation>beginnt eine Assrunde</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="1165"/>
+        <source>ends an Ace round</source>
+        <translation>beendet die Assrunde</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="632"/>

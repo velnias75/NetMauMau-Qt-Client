@@ -102,8 +102,8 @@ private slots:
 	void clientPlayedCard(const QString &, const QByteArray &);
 	void clientJackSuit(NetMauMau::Common::ICard::SUIT) const;
 	void clientNextPlayer(const QString &) const;
-	void clientAceRoundStarted();
-	void clientAceRoundEnded();
+	void clientAceRoundStarted(const QString &);
+	void clientAceRoundEnded(const QString &);
 
 	void clearStats();
 	void resizeColumns() const;

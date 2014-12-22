@@ -44,6 +44,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	launchStartup->setChecked(settings.value("onStartup", false).toBool());
 	playersSpin->setValue(settings.value("playersSpin", 1).toInt());
 	ultimateCheck->setChecked(settings.value("ultimate", true).toBool());
+	aceRound->setChecked(settings.value("ace-round", false).toBool());
 	aiNameEdit->setText(settings.value("aiName",
 									   QString::fromUtf8(Client::getDefaultAIName())).toString());
 	portSpin->setValue(settings.value("port", Client::getDefaultPort()).toInt());
@@ -55,6 +56,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	QObject::connect(execChooseButton, SIGNAL(clicked()), this, SLOT(browse()));
 	QObject::connect(playersSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(ultimateCheck, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
+	QObject::connect(aceRound, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(aiNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(updateOptions()));
 	QObject::connect(portSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(launchButton, SIGNAL(clicked()), this, SLOT(launch()));
@@ -76,6 +78,7 @@ LaunchServerDialog::~LaunchServerDialog() {
 	settings.setValue("onStartup", launchStartup->isChecked());
 	settings.setValue("playersSpin", playersSpin->value());
 	settings.setValue("ultimate", ultimateCheck->isChecked());
+	settings.setValue("ace-round", aceRound->isChecked());
 	settings.setValue("aiName", aiNameEdit->text());
 	settings.setValue("port", portSpin->value());
 	settings.setValue("serverExe", pathEdit->text());
@@ -97,6 +100,7 @@ LaunchServerDialog::~LaunchServerDialog() {
 	execChooseButton->disconnect();
 	playersSpin->disconnect();
 	ultimateCheck->disconnect();
+	aceRound->disconnect();
 	aiNameEdit->disconnect();
 	portSpin->disconnect();
 	launchButton->disconnect();
@@ -126,6 +130,8 @@ void LaunchServerDialog::updateOptions() {
 
 	if(ultimateCheck->isChecked()) opt.append("-u");
 
+	if(aceRound->isChecked()) opt.append("-a");
+
 	optionsEdit->setText(opt.trimmed());
 }
 
@@ -149,8 +155,8 @@ void LaunchServerDialog::stateChanged(QProcess::ProcessState ps) {
 	case QProcess::NotRunning:
 		break;
 	default:
-		m_process.waitForStarted(800);
-		emit serverLaunched(true);
+	m_process.waitForStarted(800);
+	emit serverLaunched(true);
 		break;
 	}
 }
@@ -182,6 +188,7 @@ void LaunchServerDialog::launch() {
 	}
 
 	if(ultimateCheck->isChecked()) args << "-u";
+	if(aceRound->isChecked()) args << "-a";
 
 	m_process.start(pathEdit->text(), args, QProcess::ReadOnly);
 

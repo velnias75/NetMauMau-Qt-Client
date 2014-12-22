@@ -327,14 +327,14 @@ void Client::jackSuit(NetMauMau::Common::ICard::SUIT suit) const {
 	emit cJackSuit(suit);
 }
 
-void Client::aceRoundStarted() const {
-	log(QString("aceRoundStarted()"));
-	emit cAceRoundStarted();
+void Client::aceRoundStarted(const std::string &player) const {
+	log(QString("aceRoundStarted(%1)").arg(QString::fromUtf8(player.c_str())));
+	emit cAceRoundStarted(QString::fromUtf8(player.c_str()));
 }
 
-void Client::aceRoundEnded() const {
-	log(QString("aceRoundEnded()"));
-	emit cAceRoundEnded();
+void Client::aceRoundEnded(const std::string &player) const {
+	log(QString("aceRoundEnded(%1)").arg(QString::fromUtf8(player.c_str())));
+	emit cAceRoundEnded(QString::fromUtf8(player.c_str()));
 }
 
 void Client::unknownServerMessage(std::string msg) const {

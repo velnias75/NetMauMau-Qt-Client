@@ -414,10 +414,10 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientPlayedCard(QString, const QByteArray &)));
 		QObject::connect(m_client, SIGNAL(cNextPlayer(const QString &)),
 						 this, SLOT(clientNextPlayer(const QString &)));
-		QObject::connect(m_client, SIGNAL(cAceRoundStarted()),
-						 this, SLOT(clientAceRoundStarted()));
-		QObject::connect(m_client, SIGNAL(cAceRoundEnded()),
-						 this, SLOT(clientAceRoundEnded()));
+		QObject::connect(m_client, SIGNAL(cAceRoundStarted(const QString &)),
+						 this, SLOT(clientAceRoundStarted(const QString &)));
+		QObject::connect(m_client, SIGNAL(cAceRoundEnded(const QString &)),
+						 this, SLOT(clientAceRoundEnded(const QString &)));
 
 		centralWidget()->setEnabled(true);
 		takeCardsMark(false);
@@ -1151,14 +1151,18 @@ QString MainWindow::reconnectToolTip() const {
 	return rtt;
 }
 
-void MainWindow::clientAceRoundStarted() {
+void MainWindow::clientAceRoundStarted(const QString &p) {
+	if(!m_aceRoundActive) updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
+											.arg(tr("starts an Ace round")));
 	statusBar()->addPermanentWidget(&m_aceRoundLabel);
 	m_aceRoundLabel.show();
 	m_aceRoundActive = true;
 }
 
-void MainWindow::clientAceRoundEnded() {
+void MainWindow::clientAceRoundEnded(const QString &p) {
 	statusBar()->removeWidget(&m_aceRoundLabel);
+	if(m_aceRoundActive) updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
+					  .arg(tr("ends an Ace round")));
 	m_aceRoundActive = false;
 }
 

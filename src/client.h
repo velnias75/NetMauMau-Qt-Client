@@ -77,8 +77,8 @@ protected:
 	virtual void cardAccepted(const NetMauMau::Common::ICard *card) const;
 	virtual void jackSuit(NetMauMau::Common::ICard::SUIT suit) const;
 
-	virtual void aceRoundStarted() const;
-	virtual void aceRoundEnded() const;
+	virtual void aceRoundStarted(const std::string &player) const;
+	virtual void aceRoundEnded(const std::string &player) const;
 
 	virtual void unknownServerMessage(std::string message) const;
 
@@ -117,8 +117,8 @@ signals:
 	void cCardRejected(const QString &, const QByteArray &) const;
 	void cCardAccepted(const QByteArray &) const;
 	void cJackSuit(NetMauMau::Common::ICard::SUIT) const;
-	void cAceRoundStarted() const;
-	void cAceRoundEnded() const;
+	void cAceRoundStarted(const QString &) const;
+	void cAceRoundEnded(const QString &) const;
 
 	void offline(bool) const;
 
