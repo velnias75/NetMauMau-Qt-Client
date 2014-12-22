@@ -59,7 +59,8 @@ SOURCES += main.cpp mainwindow.cpp \
 	portspin.cpp \
 	util.cpp \
 	licensedialog.cpp \
-	netmaumauapplication.cpp
+	netmaumauapplication.cpp \
+    netmaumaumessagebox.cpp
 
 HEADERS  += mainwindow.h \
 	serverdialog.h \
@@ -81,7 +82,8 @@ HEADERS  += mainwindow.h \
 	portspin.h \
 	util.h \
 	licensedialog.h \
-	netmaumauapplication.h
+	netmaumauapplication.h \
+    netmaumaumessagebox.h
 
 FORMS    +=  serverdialog.ui \
 	mainwindow.ui \

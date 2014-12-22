@@ -35,6 +35,7 @@
 #include "launchserverdialog.h"
 #include "messageitemdelegate.h"
 #include "playerimagedelegate.h"
+#include "netmaumaumessagebox.h"
 #include "localserveroutputview.h"
 #include "playerimageprogressdialog.h"
 
@@ -604,25 +605,13 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 		takeCardsMark(false);
 
-		QMessageBox lost;
-		QIcon icon;
-
-		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
-
-		lost.setWindowIcon(icon);
-		lost.setWindowTitle(tr("Sorry"));
-		lost.setWindowModality(Qt::ApplicationModal);
-		lost.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
-		lost.setText(tr("You have lost!\nYour points: %1\n\nPlaying time: %2").arg(pt).
-					 arg(m_playTime.toString("HH:mm:ss")));
+		NetMauMauMessageBox lost(tr("Sorry"),
+								 tr("You have lost!\nYour points: %1\n\nPlaying time: %2").arg(pt).
+								 arg(m_playTime.toString("HH:mm:ss")),
+								 QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
 
 		if(m_model.rowCount() == 2) lost.addButton(tr("Try &again"), QMessageBox::YesRole);
 		lost.setEscapeButton(lost.addButton(QMessageBox::Ok));
-
-		Qt::WindowFlags f = lost.windowFlags();
-		f &= ~Qt::WindowContextHelpButtonHint;
-		f &= ~Qt::WindowSystemMenuHint;
-		lost.setWindowFlags(f);
 
 		lost.exec();
 
@@ -641,17 +630,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 	if(!isMe(p)) statusBar()->showMessage(tr("%1 wins!").arg(p), 10000);
 
-	QMessageBox gameOver;
-	QIcon icon;
-
-	icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
-	gameOver.setWindowModality(Qt::ApplicationModal);
-	gameOver.setWindowIcon(icon);
-
-	Qt::WindowFlags f = gameOver.windowFlags();
-	f &= ~Qt::WindowContextHelpButtonHint;
-	f &= ~Qt::WindowSystemMenuHint;
-	gameOver.setWindowFlags(f);
+	NetMauMauMessageBox gameOver;
 
 	if(isMe(p)) {
 
@@ -809,25 +788,13 @@ void MainWindow::clientChooseAceRoundRequest() {
 
 	if(!(m_cards.empty() && m_model.rowCount() == 2)) {
 
-		QMessageBox aceRoundBox;
-		QIcon icon;
-
-		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
-
-		aceRoundBox.setWindowIcon(icon);
-		aceRoundBox.setWindowTitle(tr("Ace round"));
-		aceRoundBox.setWindowModality(Qt::ApplicationModal);
-		aceRoundBox.setIconPixmap(CardPixmap(QSize(42, 57), NetMauMau::Common::ICard::HEARTS,
-											 NetMauMau::Common::ICard::ACE));
-		aceRoundBox.setText(m_aceRoundActive ? tr("Continue current Ace round?") :
-											   tr("Start Ace round?"));
+		NetMauMauMessageBox aceRoundBox(tr("Ace round"),
+										m_aceRoundActive ? tr("Continue current Ace round?") :
+														   tr("Start Ace round?"),
+										CardPixmap(QSize(42, 57), NetMauMau::Common::ICard::HEARTS,
+												   NetMauMau::Common::ICard::ACE));
 
 		aceRoundBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
-
-		Qt::WindowFlags f = aceRoundBox.windowFlags();
-		f &= ~Qt::WindowContextHelpButtonHint;
-		f &= ~Qt::WindowSystemMenuHint;
-		aceRoundBox.setWindowFlags(f);
 
 		emit chosenAceRound(aceRoundBox.exec() == QMessageBox::Yes);
 
@@ -1162,7 +1129,7 @@ void MainWindow::clientAceRoundStarted(const QString &p) {
 void MainWindow::clientAceRoundEnded(const QString &p) {
 	statusBar()->removeWidget(&m_aceRoundLabel);
 	if(m_aceRoundActive) updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
-					  .arg(tr("ends an Ace round")));
+										   .arg(tr("ends an Ace round")));
 	m_aceRoundActive = false;
 }
 
