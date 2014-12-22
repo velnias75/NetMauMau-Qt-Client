@@ -643,6 +643,9 @@
            <property name="text">
             <string>&amp;Suspend</string>
            </property>
+           <property name="default">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
         </layout>

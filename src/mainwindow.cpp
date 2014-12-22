@@ -276,8 +276,10 @@ void MainWindow::sortMyCards(SORTMODE mode) {
 		qSort(m_cards.begin(), m_cards.end(), mode == SUIT_RANK ? NetMauMau::Common::cardLess :
 																  NetMauMau::Common::cardGreater);
 
-		for(QList<CardWidget *>::ConstIterator i(m_cards.begin()); i != m_cards.end(); ++i) {
+		int k = 1;
+		for(QList<CardWidget *>::ConstIterator i(m_cards.begin()); i != m_cards.end(); ++i, ++k) {
 			m_ui->myCardsLayout->addWidget(*i, 0, Qt::AlignHCenter);
+			addKeyShortcutTooltip(*i, k);
 			(*i)->setVisible(true);
 		}
 
@@ -459,10 +461,35 @@ void MainWindow::timerEvent(QTimerEvent *e) {
 
 void MainWindow::keyReleaseEvent(QKeyEvent *e) {
 
-	if(e->key() == Qt::Key_F7) {
-		m_ui->takeCardsButton->click();
-	} else if(e->key() == Qt::Key_F8) {
-		m_ui->suspendButton->click();
+	switch(e->key()) {
+	case Qt::Key_F7:
+	case Qt::Key_Escape:
+	m_ui->takeCardsButton->click(); break;
+	case Qt::Key_F8:
+	case Qt::Key_Return:
+	case Qt::Key_Enter:
+	m_ui->suspendButton->click(); break;
+	case Qt::Key_1: clickCard(0, e); break;
+	case Qt::Key_2: clickCard(1, e); break;
+	case Qt::Key_3: clickCard(2, e); break;
+	case Qt::Key_4: clickCard(3, e); break;
+	case Qt::Key_5: clickCard(4, e); break;
+	case Qt::Key_6: clickCard(5, e); break;
+	case Qt::Key_7: clickCard(6, e); break;
+	case Qt::Key_8: clickCard(7, e); break;
+	case Qt::Key_9: clickCard(8, e); break;
+	case Qt::Key_0: clickCard(9, e); break;
+	default: QMainWindow::keyReleaseEvent(e); break;
+	}
+}
+
+void MainWindow::clickCard(int num, QKeyEvent *e) {
+
+	QPushButton *b = 0L;
+
+	if((num < m_ui->myCardsLayout->count()) &&
+			(b = static_cast<QPushButton *>(m_ui->myCardsLayout->itemAt(num)->widget()))) {
+		b->click();
 	} else {
 		QMainWindow::keyReleaseEvent(e);
 	}
@@ -486,13 +513,15 @@ void MainWindow::clientError(const QString &err) {
 
 void MainWindow::clientCardSet(const Client::CARDS &c) {
 
-	for(Client::CARDS::const_iterator i(c.begin()); i != c.end(); ++i) {
+	int k = 1;
+	for(Client::CARDS::const_iterator i(c.begin()); i != c.end(); ++i, ++k) {
 
 		const NetMauMau::Common::ICard *card = *i;
 
 		if(card) {
 			m_cards.push_back(new CardWidget(m_ui->awidget, card->description().c_str()));
 			m_ui->myCardsLayout->addWidget(m_cards.back(), 0, Qt::AlignHCenter);
+			addKeyShortcutTooltip(m_cards.back(), k);
 			QObject::connect(m_cards.back(), SIGNAL(chosen(CardWidget*)),
 							 this, SLOT(cardChosen(CardWidget*)));
 		} else {
@@ -750,7 +779,7 @@ void MainWindow::clientNextPlayer(const QString &player) const {
 
 void MainWindow::clientPlayCardRequest(const Client::CARDS &cards) {
 
-	QString msg(tr("Play your card..."));
+	const QString &msg(tr("Play your card..."));
 
 	statusBar()->showMessage(m_pickCardPrepended ? (statusBar()->currentMessage() + "; " + msg)
 												 : msg, 2000);
@@ -896,8 +925,6 @@ void MainWindow::takeCardsMark(bool b) const {
 		m_ui->takeCardsButton->setStyleSheet(QString::null);
 		m_ui->takeCardsButton->setDisabled(true);
 	}
-
-	//	qApp->processEvents();
 }
 
 void MainWindow::enableMyCards(bool b) {
@@ -912,6 +939,7 @@ void MainWindow::enableMyCards(bool b) {
 			CardWidget *w = static_cast<CardWidget *>(m_ui->myCardsLayout->itemAt(j)->widget());
 
 			if(w) {
+
 				if(m_ui->filterCards->isChecked()) {
 
 					if(!m_noCardPossible) {
@@ -932,6 +960,17 @@ void MainWindow::enableMyCards(bool b) {
 	} else {
 		m_ui->myCardsGroup->setCursor(Qt::WaitCursor);
 	}
+
+	for(int j = 0; j < m_ui->myCardsLayout->count(); ++j) {
+		addKeyShortcutTooltip(static_cast<CardWidget *>
+							  (m_ui->myCardsLayout->itemAt(j)->widget()), j + 1);
+	}
+}
+
+void MainWindow::addKeyShortcutTooltip(CardWidget *c, int num) {
+	if(c && num <= 9) c->setToolTip(c->tooltipText(c->getSuit(), c->getRank()) +
+									QString("\n<span style=\"color: gray; font-size: small\">%1: %2</span>")
+									.arg(tr("Shortcut")).arg(num));
 }
 
 void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, bool disable) {

@@ -115,10 +115,14 @@ private slots:
 	void setOpenCard(const QByteArray &);
 
 private:
+	void clickCard(int num, QKeyEvent *e);
+
 	QString myself() const;
 	bool isMe(const QString &player) const;
 
 	QList<QStandardItem *> rowForPlayer(const QString &p) const;
+
+	void addKeyShortcutTooltip(CardWidget *c, int num);
 
 	void takeCardsMark(bool b) const;
 	void enableMyCards(bool b);
