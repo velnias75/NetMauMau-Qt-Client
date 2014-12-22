@@ -968,9 +968,10 @@ void MainWindow::enableMyCards(bool b) {
 }
 
 void MainWindow::addKeyShortcutTooltip(CardWidget *c, int num) {
-	if(c && num <= 9) c->setToolTip(c->tooltipText(c->getSuit(), c->getRank()) +
-									QString("\n<span style=\"color: gray; font-size: small\">%1: %2</span>")
-									.arg(tr("Shortcut")).arg(num));
+	if(c && num <= 10) c->setToolTip(c->tooltipText(c->getSuit(), c->getRank()) +
+									 QString("\n<span style=\"color: gray; " \
+											 "font-size: small\">%1: %2</span>")
+									 .arg(tr("Shortcut")).arg(num < 10 ? num : 0));
 }
 
 void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, bool disable) {
