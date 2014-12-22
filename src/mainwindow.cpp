@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16))
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))), m_turn(1),
 	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)), m_curReceiving(),
-	m_licenseDialog(new LicenseDialog(this)), m_playerStatMsg(), m_aceRoundActive(false),
+	m_licenseDialog(new LicenseDialog(this)), m_playerStatMsg(), m_aceRoundActive(),
 	m_aceRoundLabel() {
 
 	m_ui->setupUi(this);
@@ -118,7 +118,6 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 
 	m_aceRoundLabel.setPixmap(CardPixmap(QSize(10, 14), NetMauMau::Common::ICard::HEARTS,
 										 NetMauMau::Common::ICard::ACE));
-	m_aceRoundLabel.setToolTip(tr("Ace round"));
 
 	m_ui->takeCardsButton->
 			setToolTip(QString("%1 <span style=\"color: gray; font-size: small\">F7</span>")
@@ -817,10 +816,12 @@ void MainWindow::clientChooseAceRoundRequest() {
 
 	if(!(m_cards.empty() && m_model.rowCount() == 2)) {
 
-		NetMauMauMessageBox aceRoundBox(tr("Ace round"),
-										m_aceRoundActive ? tr("Continue current Ace round?") :
-														   tr("Start Ace round?"),
-										CardPixmap(QSize(42, 57), NetMauMau::Common::ICard::HEARTS,
+		NetMauMauMessageBox aceRoundBox(tr("Ace round"), isMe(m_aceRoundActive) ?
+											tr("Continue current Ace round?") :
+											tr("Start Ace round?"),
+										CardPixmap(QSize(42, 57), m_lastPlayedCard ?
+													   m_lastPlayedCard->getSuit() :
+													   NetMauMau::Common::ICard::HEARTS,
 												   NetMauMau::Common::ICard::ACE));
 
 		aceRoundBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
@@ -1120,7 +1121,7 @@ void MainWindow::clientDestroyed() {
 	m_timeLabel.hide();
 
 	m_playerStatMsg.clear();
-	m_aceRoundActive = false;
+	m_aceRoundActive.clear();
 
 	statusBar()->clearMessage();
 
@@ -1159,18 +1160,21 @@ QString MainWindow::reconnectToolTip() const {
 }
 
 void MainWindow::clientAceRoundStarted(const QString &p) {
-	if(!m_aceRoundActive) updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
-											.arg(tr("starts an Ace round")));
+	if(m_aceRoundActive != p)
+		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
+						  .arg(tr("starts an Ace round")));
 	statusBar()->addPermanentWidget(&m_aceRoundLabel);
+	m_aceRoundLabel.setToolTip(tr("Ace round of %1").arg(p));
 	m_aceRoundLabel.show();
-	m_aceRoundActive = true;
+	m_aceRoundActive = p;
 }
 
 void MainWindow::clientAceRoundEnded(const QString &p) {
 	statusBar()->removeWidget(&m_aceRoundLabel);
-	if(m_aceRoundActive) updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
-										   .arg(tr("ends an Ace round")));
-	m_aceRoundActive = false;
+	if(m_aceRoundActive == p)
+		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
+						  .arg(tr("ends an Ace round")));
+	m_aceRoundActive.clear();
 }
 
 void MainWindow::writeSettings() const {

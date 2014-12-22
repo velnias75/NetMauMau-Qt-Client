@@ -175,7 +175,7 @@ private:
 	QBasicTimer m_playTimer;
 	QDialog *m_licenseDialog;
 	QMap<QString, QStringList> m_playerStatMsg;
-	bool m_aceRoundActive;
+	QString m_aceRoundActive;
 	QLabel m_aceRoundLabel;
 };
 

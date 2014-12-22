@@ -329,7 +329,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="53"/>
-        <location filename="mainwindow.cpp" line="1115"/>
+        <location filename="mainwindow.cpp" line="1117"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
@@ -360,7 +360,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="212"/>
-        <location filename="mainwindow.cpp" line="135"/>
+        <location filename="mainwindow.cpp" line="134"/>
         <source>Turn</source>
         <translation>Zug</translation>
     </message>
@@ -381,7 +381,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="449"/>
-        <location filename="mainwindow.cpp" line="1237"/>
+        <location filename="mainwindow.cpp" line="1242"/>
         <source>Local player</source>
         <translation>Lokaler Spieler</translation>
     </message>
@@ -513,69 +513,69 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>Lizenz</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="133"/>
+        <location filename="mainwindow.cpp" line="132"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="134"/>
+        <location filename="mainwindow.cpp" line="133"/>
         <source>Cards</source>
         <translation>Karten</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="136"/>
+        <location filename="mainwindow.cpp" line="135"/>
         <source>Message</source>
         <translation>Nachricht</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="307"/>
+        <location filename="mainwindow.cpp" line="306"/>
         <source>Receiving player image for &quot;%1&quot;...</source>
         <translation>Empfange Bild für Spieler &quot;%1&quot;...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="431"/>
+        <location filename="mainwindow.cpp" line="430"/>
         <source>%1 on %2</source>
         <oldsource> on </oldsource>
         <translation>%1 auf %2</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="445"/>
+        <location filename="mainwindow.cpp" line="444"/>
         <source>Couldn&apos;t get player list from server</source>
         <translation>Konnte die Spielerliste nicht vom Server beziehen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="447"/>
+        <location filename="mainwindow.cpp" line="446"/>
         <source>While connecting to &lt;b&gt;%1&lt;/b&gt;: &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>Beim Verbindungsaufbau zu &lt;b&gt;%1&lt;/b&gt;: &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="510"/>
+        <location filename="mainwindow.cpp" line="509"/>
         <source>Server Error</source>
         <translation>Serverfehler</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="603"/>
+        <location filename="mainwindow.cpp" line="602"/>
         <source>Card rejected</source>
         <translation>Karte zurückgewiesen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="603"/>
+        <location filename="mainwindow.cpp" line="602"/>
         <source>You cannot play card %1!</source>
         <translation>Du kannst die Karte %1 nicht legen!</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="613"/>
+        <location filename="mainwindow.cpp" line="612"/>
         <source>suspended the turn</source>
         <translation>hat den Zug ausgesetzt</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="637"/>
-        <location filename="mainwindow.cpp" line="681"/>
+        <location filename="mainwindow.cpp" line="636"/>
+        <location filename="mainwindow.cpp" line="680"/>
         <source>Sorry</source>
         <translation>Entschuldigung</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="638"/>
+        <location filename="mainwindow.cpp" line="637"/>
         <source>You have lost!
 Your points: %1
 
@@ -586,34 +586,39 @@ Deine Punkte: %1
 Spieldauer: %2</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="669"/>
+        <location filename="mainwindow.cpp" line="668"/>
         <source>You have won!
 Playing time: %1</source>
         <translation>Du hast gewonnen!
 Spieldauer: %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="973"/>
+        <location filename="mainwindow.cpp" line="975"/>
         <source>Shortcut</source>
         <translation>Schnellwahl</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1162"/>
+        <location filename="mainwindow.cpp" line="1165"/>
         <source>starts an Ace round</source>
         <translation>beginnt eine Assrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1171"/>
+        <location filename="mainwindow.cpp" line="1167"/>
+        <source>Ace round of %1</source>
+        <translation>Assrunde von %1</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="1176"/>
         <source>ends an Ace round</source>
         <translation>beendet die Assrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="650"/>
+        <location filename="mainwindow.cpp" line="649"/>
         <source>%1 lost!</source>
         <translation>%1 hat verloren!</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow.cpp" line="630"/>
+        <location filename="mainwindow.cpp" line="629"/>
         <source>&lt;span style=&quot;color:blue;&quot;&gt;lost&lt;/span&gt; in turn %1 with %n point(s) at hand</source>
         <translation>
             <numerusform>&lt;span style=&quot;color:blue;&quot;&gt;verliert&lt;/span&gt; in Zug %1 mit %n Punkt auf der Hand</numerusform>
@@ -621,34 +626,34 @@ Spieldauer: %1</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="642"/>
-        <location filename="mainwindow.cpp" line="672"/>
+        <location filename="mainwindow.cpp" line="641"/>
+        <location filename="mainwindow.cpp" line="671"/>
         <source>Try &amp;again</source>
         <oldsource>Try again</oldsource>
         <translation>Nochmals &amp;versuchen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="658"/>
+        <location filename="mainwindow.cpp" line="657"/>
         <source>&lt;span style=&quot;color:blue;&quot;&gt;wins&lt;/span&gt; in turn %1</source>
         <translation>&lt;span style=&quot;color:blue;&quot;&gt;gewinnt&lt;/span&gt; in Zug %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="660"/>
+        <location filename="mainwindow.cpp" line="659"/>
         <source>%1 wins!</source>
         <translation>%1 hat gewonnen!</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="668"/>
+        <location filename="mainwindow.cpp" line="667"/>
         <source>Congratulations</source>
         <translation>Gratulation</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="684"/>
+        <location filename="mainwindow.cpp" line="683"/>
         <source>&lt;font color=&quot;blue&quot;&gt;%1&lt;/font&gt; has won!</source>
         <translation>&lt;font color=&quot;blue&quot;&gt;%1&lt;/font&gt; hat gewonnen!</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow.cpp" line="696"/>
+        <location filename="mainwindow.cpp" line="695"/>
         <source>picked up %n card(s)</source>
         <oldsource>picked up %1 card%2</oldsource>
         <translation>
@@ -657,12 +662,12 @@ Spieldauer: %1</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="699"/>
+        <location filename="mainwindow.cpp" line="698"/>
         <source>You %1</source>
         <translation>Du %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow.cpp" line="699"/>
+        <location filename="mainwindow.cpp" line="698"/>
         <source>picked up %n card(s)</source>
         <comment>playerPick</comment>
         <translation>
@@ -671,17 +676,17 @@ Spieldauer: %1</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="708"/>
+        <location filename="mainwindow.cpp" line="707"/>
         <source>plays %1</source>
         <translation>legt %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="733"/>
+        <location filename="mainwindow.cpp" line="732"/>
         <source>Player &lt;span style=&quot;color:blue;&quot;&gt;%1&lt;/span&gt; joined the game</source>
         <translation>Spieler &lt;span style=&quot;color:blue;&quot;&gt;%1&lt;/span&gt; ist dem Spiel beigetreten</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow.cpp" line="748"/>
+        <location filename="mainwindow.cpp" line="747"/>
         <source>Waiting for %n more player(s)...</source>
         <oldsource>Waiting for %1 more player%2...</oldsource>
         <translation>
@@ -690,39 +695,38 @@ Spieldauer: %1</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="782"/>
+        <location filename="mainwindow.cpp" line="781"/>
         <source>Play your card...</source>
         <translation>Lege Deine Karte...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="121"/>
-        <location filename="mainwindow.cpp" line="820"/>
+        <location filename="mainwindow.cpp" line="819"/>
         <source>Ace round</source>
         <translation>Assrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="821"/>
+        <location filename="mainwindow.cpp" line="820"/>
         <source>Continue current Ace round?</source>
         <translation>Assrunde weiterführen?</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="822"/>
+        <location filename="mainwindow.cpp" line="821"/>
         <source>Start Ace round?</source>
         <translation>Eine Assrunde beginnen?</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="913"/>
+        <location filename="mainwindow.cpp" line="914"/>
         <source>You can play another &lt;i&gt;Seven&lt;/i&gt; or take the cards</source>
         <translation>Du kannst eine andere &lt;i&gt;Sieben&lt;/i&gt; legen oder die Karten ziehen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="916"/>
+        <location filename="mainwindow.cpp" line="917"/>
         <source>You have no &lt;i&gt;Seven&lt;/i&gt; to play over. You must take the cards</source>
         <translation>Du hast keine &lt;i&gt;Sieben&lt;/i&gt; zu legen. Du musst die Karten ziehen</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow.cpp" line="1008"/>
-        <location filename="mainwindow.cpp" line="1012"/>
+        <location filename="mainwindow.cpp" line="1010"/>
+        <location filename="mainwindow.cpp" line="1014"/>
         <source>%n card(s)</source>
         <translation>
             <numerusform>%n Karte</numerusform>
@@ -730,7 +734,7 @@ Spieldauer: %1</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1146"/>
+        <location filename="mainwindow.cpp" line="1148"/>
         <source>Reconnect to </source>
         <translation>Verbinde wieder zu </translation>
     </message>
@@ -892,27 +896,27 @@ Spieldauer: %1</translation>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="322"/>
-        <location filename="serverdialog.cpp" line="345"/>
+        <location filename="serverdialog.cpp" line="323"/>
+        <location filename="serverdialog.cpp" line="346"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="324"/>
+        <location filename="serverdialog.cpp" line="325"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or no PNG image.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist entweder zu groß oder kein PNG-Bild.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="327"/>
+        <location filename="serverdialog.cpp" line="328"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is too large.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist zu groß.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="345"/>
+        <location filename="serverdialog.cpp" line="346"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>

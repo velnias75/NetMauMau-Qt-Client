@@ -261,6 +261,7 @@ QString ServerDialog::getAcceptedServer() const {
 }
 
 void ServerDialog::setLastServer(const QString &ls) {
+	availServerView->clearSelection();
 	m_lastServer = ls;
 }
 
