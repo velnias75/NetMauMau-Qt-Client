@@ -362,7 +362,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <location filename="mainwindow.ui" line="212"/>
         <location filename="mainwindow.cpp" line="134"/>
         <source>Turn</source>
-        <translation>Zug</translation>
+        <translation>Runde</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="236"/>
@@ -381,7 +381,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="449"/>
-        <location filename="mainwindow.cpp" line="1242"/>
+        <location filename="mainwindow.cpp" line="1243"/>
         <source>Local player</source>
         <translation>Lokaler Spieler</translation>
     </message>
@@ -430,7 +430,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.ui" line="641"/>
         <source>Suspend your turn and take one card</source>
-        <translation>Setze diesen Zug aus und ziehe eine Karte</translation>
+        <translation>Setze diese Runde aus und ziehe eine Karte</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="644"/>
@@ -566,7 +566,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.cpp" line="612"/>
         <source>suspended the turn</source>
-        <translation>hat den Zug ausgesetzt</translation>
+        <translation>hat die Runde ausgesetzt</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="636"/>
@@ -598,17 +598,17 @@ Spieldauer: %1</translation>
         <translation>Schnellwahl</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1165"/>
+        <location filename="mainwindow.cpp" line="1166"/>
         <source>starts an Ace round</source>
         <translation>beginnt eine Assrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1167"/>
+        <location filename="mainwindow.cpp" line="1168"/>
         <source>Ace round of %1</source>
         <translation>Assrunde von %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1176"/>
+        <location filename="mainwindow.cpp" line="1177"/>
         <source>ends an Ace round</source>
         <translation>beendet die Assrunde</translation>
     </message>
@@ -621,8 +621,8 @@ Spieldauer: %1</translation>
         <location filename="mainwindow.cpp" line="629"/>
         <source>&lt;span style=&quot;color:blue;&quot;&gt;lost&lt;/span&gt; in turn %1 with %n point(s) at hand</source>
         <translation>
-            <numerusform>&lt;span style=&quot;color:blue;&quot;&gt;verliert&lt;/span&gt; in Zug %1 mit %n Punkt auf der Hand</numerusform>
-            <numerusform>&lt;span style=&quot;color:blue;&quot;&gt;verliert&lt;/span&gt; in Zug %1 mit %n Punkten auf der Hand</numerusform>
+            <numerusform>&lt;span style=&quot;color:blue;&quot;&gt;verliert&lt;/span&gt; in Runde %1 mit %n Punkt auf der Hand</numerusform>
+            <numerusform>&lt;span style=&quot;color:blue;&quot;&gt;verliert&lt;/span&gt; in Runde %1 mit %n Punkten auf der Hand</numerusform>
         </translation>
     </message>
     <message>
@@ -635,7 +635,7 @@ Spieldauer: %1</translation>
     <message>
         <location filename="mainwindow.cpp" line="657"/>
         <source>&lt;span style=&quot;color:blue;&quot;&gt;wins&lt;/span&gt; in turn %1</source>
-        <translation>&lt;span style=&quot;color:blue;&quot;&gt;gewinnt&lt;/span&gt; in Zug %1</translation>
+        <translation>&lt;span style=&quot;color:blue;&quot;&gt;gewinnt&lt;/span&gt; in Runde %1</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="659"/>
@@ -734,7 +734,7 @@ Spieldauer: %1</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1148"/>
+        <location filename="mainwindow.cpp" line="1149"/>
         <source>Reconnect to </source>
         <translation>Verbinde wieder zu </translation>
     </message>
