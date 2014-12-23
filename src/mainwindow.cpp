@@ -1121,7 +1121,8 @@ void MainWindow::clientDestroyed() {
 	m_timeLabel.hide();
 
 	m_playerStatMsg.clear();
-	m_aceRoundActive.clear();
+
+	clientAceRoundEnded(QString::null);
 
 	statusBar()->clearMessage();
 
@@ -1171,7 +1172,7 @@ void MainWindow::clientAceRoundStarted(const QString &p) {
 
 void MainWindow::clientAceRoundEnded(const QString &p) {
 	statusBar()->removeWidget(&m_aceRoundLabel);
-	if(m_aceRoundActive == p)
+	if(!p.isNull() && m_aceRoundActive == p)
 		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
 						  .arg(tr("ends an Ace round")));
 	m_aceRoundActive.clear();
