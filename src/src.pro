@@ -20,7 +20,7 @@ CONFIG(debug, debug|release) {
 	-Wunreachable-code -Wcast-align -Wcast-qual -Wdisabled-optimization -Wformat=2 \
 	-Wimport -Wmissing-format-attribute -Wmissing-include-dirs -Wredundant-decls -Winline \
 	-Wuninitialized -Wvariadic-macros -Wlogical-op -Wnoexcept -Wmissing-noreturn -Wpointer-arith \
-	-Wstrict-null-sentinel -Wstrict-overflow=5 -Wshadow -Werror=strict-aliasing
+	-Wstrict-null-sentinel -Wstrict-overflow -Wshadow -Werror=strict-aliasing
 	 LIBS    += ../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
 		 ../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
@@ -60,7 +60,7 @@ SOURCES += main.cpp mainwindow.cpp \
 	util.cpp \
 	licensedialog.cpp \
 	netmaumauapplication.cpp \
-    netmaumaumessagebox.cpp
+	netmaumaumessagebox.cpp
 
 HEADERS  += mainwindow.h \
 	serverdialog.h \
@@ -83,7 +83,7 @@ HEADERS  += mainwindow.h \
 	util.h \
 	licensedialog.h \
 	netmaumauapplication.h \
-    netmaumaumessagebox.h
+	netmaumaumessagebox.h
 
 FORMS    +=  serverdialog.ui \
 	mainwindow.ui \
@@ -98,7 +98,7 @@ FORMS    +=  serverdialog.ui \
 	licensedialog.ui
 
 RESOURCES += icons.qrc nuoveXT2.qrc cards.qrc \
-    license.qrc
+	license.qrc
 
 RC_FILE += appicon.rc
 

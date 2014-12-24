@@ -74,6 +74,13 @@ void ServerInfo::run() {
 						   tr("You'll play against AI \"%1\"")
 						   .arg(QString::fromUtf8(caps.find("AI_NAME")->second.c_str()))
 						 : tr("The server has only human players"));
+
+		const Client::CAPABILITIES::const_iterator &f(caps.find("ACEROUND"));
+
+		if(f != caps.end() && f->second == "true") {
+			ai->setToolTip(ai->toolTip() + "\n" + tr("You'll play with ace rounds"));
+		}
+
 		players->setText(tr("%1/%2").arg(curPCnt).arg(maxPCnt));
 		players->setToolTip(tr("Waiting for %n more player(s)", "", (maxPCnt - curPCnt)));
 

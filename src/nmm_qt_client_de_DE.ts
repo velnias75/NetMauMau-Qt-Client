@@ -939,12 +939,17 @@ Es ist zu groß.</translation>
         <translation>Auf dem Server befinden sich nur menschliche Spieler</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="77"/>
+        <location filename="serverinfo.cpp" line="81"/>
+        <source>You&apos;ll play with ace rounds</source>
+        <translation>Du wirst mit Assrunden spielen</translation>
+    </message>
+    <message>
+        <location filename="serverinfo.cpp" line="84"/>
         <source>%1/%2</source>
         <translation>%1/%2</translation>
     </message>
     <message numerus="yes">
-        <location filename="serverinfo.cpp" line="78"/>
+        <location filename="serverinfo.cpp" line="85"/>
         <source>Waiting for %n more player(s)</source>
         <oldsource>Waiting for %1 more players</oldsource>
         <translation>
@@ -953,27 +958,27 @@ Es ist zu groß.</translation>
         </translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="81"/>
+        <location filename="serverinfo.cpp" line="88"/>
         <source>The server is too old for this client</source>
         <translation>Der Server ist zu alt für diesen Klienten</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="89"/>
+        <location filename="serverinfo.cpp" line="96"/>
         <source>The server accepts no more players</source>
         <translation>Der Server akzeptiert keine weiteren Spieler</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="95"/>
+        <location filename="serverinfo.cpp" line="102"/>
         <source>This client is too old for the server</source>
         <translation>Dieser Klient ist zu alt für den Server</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="104"/>
+        <location filename="serverinfo.cpp" line="111"/>
         <source>Couldn&apos;t get capabilities from server</source>
         <translation>Konnte die Fähigkeiten nicht vom Server beziehen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="121"/>
+        <location filename="serverinfo.cpp" line="128"/>
         <source>The server is ready and waiting</source>
         <translation>Der Server ist verfügbar und wartet</translation>
     </message>
