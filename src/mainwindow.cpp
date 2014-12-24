@@ -19,6 +19,8 @@
 
 #include <QMessageBox>
 #include <QSettings>
+#include <QResource>
+#include <QBuffer>
 
 #include <cardtools.h>
 #include <playerlistexception.h>
@@ -120,10 +122,10 @@ MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::
 										 NetMauMau::Common::ICard::ACE));
 
 	m_ui->takeCardsButton->
-			setToolTip(QString("%1 <span style=\"color: gray; font-size: small\">F7</span>")
+			setToolTip(QString("%1 <span style=\"color: gray; font-size: small\">F7\\Esc</span>")
 					   .arg(m_ui->takeCardsButton->toolTip()));
 	m_ui->suspendButton->
-			setToolTip(QString("%1 <span style=\"color: gray; font-size: small\">F8</span>")
+			setToolTip(QString("%1 <span style=\"color: gray; font-size: small\">F8\\Return</span>")
 					   .arg(m_ui->suspendButton->toolTip()));
 
 	statusBar()->addPermanentWidget(&m_timeLabel);
@@ -719,7 +721,13 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 																 verticalHeader()->
 																 minimumSectionSize() - 2)),
 						   Qt::DisplayRole);
-
+		QByteArray ba;
+		QBuffer buf(&ba);
+		buf.open(QIODevice::WriteOnly);
+		img.save(&buf, "PNG");
+		si.back()->setToolTip(QString("<p align=\"center\">" \
+									  "<img src=\"data:image/png;base64,%1\"><br />%2</p>")
+							  .arg(ba.toBase64().constData()).arg(p));
 	}
 
 	QTimer::singleShot(500, m_receivingPlayerImageProgress, SLOT(hide()));
@@ -757,21 +765,14 @@ void MainWindow::clientJackSuit(NetMauMau::Common::ICard::SUIT s) const {
 
 void MainWindow::clientNextPlayer(const QString &player) const {
 
+	const QList<QStandardItem *> &ml(rowForPlayer(player));
+	const int row = ml.empty() ? -1 :  m_model.indexFromItem(ml.front()).row();
+
 	for(int r = 0; r < m_model.rowCount(); ++r) {
 		for(int c = 0; c < m_model.columnCount(); ++c) {
 			QStandardItem *item = m_model.item(r, c);
-			item->setBackground(m_stdBackground);
-			item->setForeground(m_stdForeground);
-		}
-	}
-
-	const QList<QStandardItem *> &ml(rowForPlayer(player));
-
-	if(!ml.empty()) {
-		for(int c = 0; c < m_model.columnCount(); ++c) {
-			QStandardItem *item = m_model.item(m_model.indexFromItem(ml.front()).row(), c);
-			item->setBackground(Qt::lightGray);
-			item->setForeground(Qt::black);
+			item->setBackground(r != row ? m_stdBackground : Qt::lightGray);
+			item->setForeground(r != row ? m_stdForeground : Qt::black);
 		}
 	}
 }
@@ -1165,7 +1166,16 @@ void MainWindow::clientAceRoundStarted(const QString &p) {
 		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
 						  .arg(tr("starts an Ace round")));
 	statusBar()->addPermanentWidget(&m_aceRoundLabel);
-	m_aceRoundLabel.setToolTip(tr("Ace round of %1").arg(p));
+
+	QByteArray ba;
+	QBuffer buf(&ba);
+	CardPixmap(QSize(28, 38), NetMauMau::Common::ICard::HEARTS,
+			   NetMauMau::Common::ICard::ACE).toImage().
+			save(&buf, "PNG");
+
+	m_aceRoundLabel.setToolTip("<p align=\"center\"><img src=\"data:image/png;base64,"
+							   + ba.toBase64() + "\"><br />" + tr("Ace round of %1").arg(p)
+							   + "</p");
 	m_aceRoundLabel.show();
 	m_aceRoundActive = p;
 }

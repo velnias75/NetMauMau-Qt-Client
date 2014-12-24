@@ -40,6 +40,10 @@ CardWidget::~CardWidget() {
 	disconnect();
 }
 
+QSize CardWidget::sizeHint() const {
+	return QSize(1400, 1900);
+}
+
 NetMauMau::Common::ICard::SUIT CardWidget::getSuit() const {
 
 	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;

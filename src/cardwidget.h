@@ -31,6 +31,8 @@ public:
 	explicit CardWidget(QWidget *parent = 0, const QByteArray &cardDesc = QByteArray());
 	virtual ~CardWidget();
 
+	virtual QSize sizeHint() const _CONST;
+
 	virtual bool event(QEvent *e);
 
 	virtual NetMauMau::Common::ICard::SUIT getSuit() const;
