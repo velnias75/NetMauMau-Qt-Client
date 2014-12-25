@@ -19,7 +19,6 @@
 
 #include <QMessageBox>
 #include <QSettings>
-#include <QResource>
 #include <QBuffer>
 
 #include <cardtools.h>
@@ -795,22 +794,15 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards) {
 
 void MainWindow::clientChooseJackSuitRequest() {
 
-	if(!(m_cards.empty() && m_model.rowCount() == 2)) {
+	m_jackChooseDialog->setSuite(m_lastPlayedCard ? m_lastPlayedCard->getSuit() :
+													NetMauMau::Common::ICard::CLUBS);
+	m_jackChooseDialog->exec();
 
-		m_jackChooseDialog->setSuite(m_lastPlayedCard ? m_lastPlayedCard->getSuit() :
-														NetMauMau::Common::ICard::CLUBS);
-		m_jackChooseDialog->exec();
+	const NetMauMau::Common::ICard::SUIT cs = m_jackChooseDialog->getChosenSuit();
 
-		const NetMauMau::Common::ICard::SUIT cs = m_jackChooseDialog->getChosenSuit();
-
-		m_ui->jackSuit->setProperty("suitDescription",
-									QByteArray(NetMauMau::Common::suitToSymbol(cs, false).c_str()));
-
-		emit chosenSuite(cs);
-
-	} else {
-		emit chosenSuite(NetMauMau::Common::ICard::HEARTS);
-	}
+	m_ui->jackSuit->setProperty("suitDescription",
+								QByteArray(NetMauMau::Common::suitToSymbol(cs, false).c_str()));
+	emit chosenSuite(cs);
 }
 
 void MainWindow::clientChooseAceRoundRequest() {

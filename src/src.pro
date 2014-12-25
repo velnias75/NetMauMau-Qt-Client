@@ -39,66 +39,69 @@ CONFIG(debug, debug|release) {
 	 unix:LIBS += -lnetmaumaucommon -lnetmaumauclient
 }
 
-SOURCES += main.cpp mainwindow.cpp \
-	serverdialog.cpp \
-	client.cpp \
+SOURCES += cardpixmap.cpp \
 	cardwidget.cpp \
-	jackchoosedialog.cpp \
-	suitlabel.cpp \
-	suitradiobutton.cpp \
+	client.cpp \
 	connectionlogdialog.cpp \
-	messageitemdelegate.cpp \
-	cardpixmap.cpp \
-	serverinfo.cpp \
-	launchserverdialog.cpp \
-	localserveroutputview.cpp \
 	deleteserversdialog.cpp \
-	playerimagedelegate.cpp \
+	jackchoosedialog.cpp \
 	launchdialogbase.cpp \
+	launchserverdialog.cpp \
+	licensedialog.cpp \
+	localserveroutputview.cpp \
+	main.cpp \
+	mainwindow.cpp \
+	messageitemdelegate.cpp \
+	netmaumauapplication.cpp \
+	netmaumaumessagebox.cpp \
+	playerimagedelegate.cpp \
 	playerimageprogressdialog.cpp \
 	portspin.cpp \
-	util.cpp \
-	licensedialog.cpp \
-	netmaumauapplication.cpp \
-	netmaumaumessagebox.cpp
+	serverdialog.cpp \
+	serverinfo.cpp \
+	suitlabel.cpp \
+	suitradiobutton.cpp \
+	util.cpp
 
-HEADERS  += mainwindow.h \
-	serverdialog.h \
-	client.h \
+HEADERS  += cardpixmap.h \
 	cardwidget.h \
-	jackchoosedialog.h \
-	suitlabel.h \
-	suitradiobutton.h \
+	client.h \
 	connectionlogdialog.h \
-	messageitemdelegate.h \
-	cardpixmap.h \
-	serverinfo.h \
-	launchserverdialog.h \
-	localserveroutputview.h \
 	deleteserversdialog.h \
-	playerimagedelegate.h \
+	jackchoosedialog.h \
 	launchdialogbase.h \
+	launchserverdialog.h \
+	licensedialog.h \
+	localserveroutputview.h \
+	mainwindow.h \
+	messageitemdelegate.h \
+	netmaumauapplication.h \
+	netmaumaumessagebox.h \
+	playerimagedelegate.h \
 	playerimageprogressdialog.h \
 	portspin.h \
-	util.h \
-	licensedialog.h \
-	netmaumauapplication.h \
-	netmaumaumessagebox.h
+	serverdialog.h \
+	serverinfo.h \
+	suitlabel.h \
+	suitradiobutton.h \
+	util.h
 
-FORMS    +=  serverdialog.ui \
-	mainwindow.ui \
-	cardwidget.ui \
-	jackchoosedialog.ui \
-	suitlabel.ui \
-	suitradiobutton.ui \
+FORMS    += cardwidget.ui \
 	connectionlogdialog.ui \
-	launchserverdialog.ui \
-	localserveroutputview.ui \
 	deleteserversdialog.ui \
-	licensedialog.ui
+	jackchoosedialog.ui \
+	launchserverdialog.ui \
+	licensedialog.ui \
+	localserveroutputview.ui \
+	mainwindow.ui \
+	serverdialog.ui \
+	suitlabel.ui \
+	suitradiobutton.ui
 
-RESOURCES += icons.qrc nuoveXT2.qrc cards.qrc \
-	license.qrc
+RESOURCES += cards.qrc \
+	icons.qrc \
+	license.qrc \
+	nuoveXT2.qrc
 
 RC_FILE += appicon.rc
 

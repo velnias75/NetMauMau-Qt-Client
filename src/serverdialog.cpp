@@ -39,7 +39,7 @@ const QRegExp nameRex("[^\\+]+.*");
 
 }
 
-ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(false),
+ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(0, 4), m_forceRefresh(false),
 	m_lastServer(QString::null), m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
 	m_hostRexValidator(new QRegExpValidator(hostRex)),
 	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
@@ -81,17 +81,18 @@ ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(), m_forceRefresh(f
 	for(int i = 0, j = 0; i < servers.size(); ++i) {
 		const QString &tHost(servers[i].trimmed());
 		if(!tHost.simplified().isEmpty() && hostRex.exactMatch(tHost.left(tHost.indexOf(':')))) {
-			m_model.setItem(j, 0, new QStandardItem(tHost));
-			m_model.item(j, 0)->setEnabled(false);
-			m_model.setItem(j, 1, new QStandardItem(tr(NA)));
-			m_model.item(j, 1)->setTextAlignment(Qt::AlignCenter);
-			m_model.item(j, 1)->setEnabled(false);
-			m_model.setItem(j, 2, new QStandardItem());
-			m_model.item(j, 2)->setSizeHint(QSize());
-			m_model.item(j, 2)->setEnabled(false);
-			m_model.setItem(j, 3, new QStandardItem(tr(NA)));
-			m_model.item(j, 3)->setTextAlignment(Qt::AlignCenter);
-			m_model.item(j, 3)->setEnabled(false);
+
+			m_model.setItem(j, ServerInfo::SERVER, new QStandardItem(tHost));
+			m_model.item(j, ServerInfo::SERVER)->setEnabled(false);
+			m_model.setItem(j, ServerInfo::VERSION, new QStandardItem(tr(NA)));
+			m_model.item(j, ServerInfo::VERSION)->setTextAlignment(Qt::AlignCenter);
+			m_model.item(j, ServerInfo::VERSION)->setEnabled(false);
+			m_model.setItem(j, ServerInfo::AI, new QStandardItem());
+			m_model.item(j, ServerInfo::AI)->setSizeHint(QSize());
+			m_model.item(j, ServerInfo::AI)->setEnabled(false);
+			m_model.setItem(j, ServerInfo::PLAYERS, new QStandardItem(tr(NA)));
+			m_model.item(j, ServerInfo::PLAYERS)->setTextAlignment(Qt::AlignCenter);
+			m_model.item(j, ServerInfo::PLAYERS)->setEnabled(false);
 
 			m_serverInfoThreads.push_back(new ServerInfo(&m_model, j));
 			QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool, int)),
@@ -383,10 +384,10 @@ void ServerDialog::checkOnline() {
 
 void ServerDialog::updateOnline(bool enabled, int row) {
 
-	QStandardItem *server = m_model.item(row, 0);
-	QStandardItem *version = m_model.item(row, 1);
-	QStandardItem *ai = m_model.item(row, 2);
-	QStandardItem *players = m_model.item(row, 3);
+	QStandardItem *server = m_model.item(row, ServerInfo::SERVER);
+	QStandardItem *version = m_model.item(row, ServerInfo::VERSION);
+	QStandardItem *ai = m_model.item(row, ServerInfo::AI);
+	QStandardItem *players = m_model.item(row, ServerInfo::PLAYERS);
 
 	ai->setCheckable(true);
 	server->setEnabled(enabled);
@@ -398,7 +399,7 @@ void ServerDialog::updateOnline(bool enabled, int row) {
 	players->setEnabled(enabled);
 
 	if(enabled && server->text() == m_lastServer) {
-		availServerView->selectionModel()->select(m_model.index(row, 0),
+		availServerView->selectionModel()->select(m_model.index(row, ServerInfo::SERVER),
 												  QItemSelectionModel::ClearAndSelect|
 												  QItemSelectionModel::Rows);
 		emit reconnectAvailable(m_lastServer);

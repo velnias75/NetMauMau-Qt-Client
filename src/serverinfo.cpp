@@ -38,10 +38,10 @@ ServerInfo::~ServerInfo() {
 
 void ServerInfo::run() {
 
-	QStandardItem *server = m_model->item(m_row, 0);
-	QStandardItem *version = m_model->item(m_row, 1);
-	QStandardItem *ai = m_model->item(m_row, 2);
-	QStandardItem *players = m_model->item(m_row, 3);
+	QStandardItem *server = m_model->item(m_row, SERVER);
+	QStandardItem *version = m_model->item(m_row, VERSION);
+	QStandardItem *ai = m_model->item(m_row, AI);
+	QStandardItem *players = m_model->item(m_row, PLAYERS);
 
 	const QString host(server->text());
 
@@ -68,6 +68,8 @@ void ServerInfo::run() {
 		version->setText(QString::fromStdString(sVer));
 
 		const std::string &sMinClientVer(caps.find("MIN_VERSION")->second);
+		version->setToolTip(tr("Server accepts clients of at least version %1").
+							arg(QString::fromStdString(sMinClientVer)));
 
 		ai->setCheckState(caps.find("AI_OPPONENT")->second == "true" ? Qt::Checked : Qt::Unchecked);
 		ai->setToolTip(ai->checkState() == Qt::Checked ?

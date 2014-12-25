@@ -28,6 +28,8 @@ class QStandardItemModel;
 class ServerInfo : public QThread {
 	Q_OBJECT
 public:
+	typedef enum { SERVER = 0, VERSION, AI, PLAYERS } COLS;
+
 	explicit ServerInfo(const QStandardItemModel *model, int row, QObject *parent = 0);
 	virtual ~ServerInfo();
 
