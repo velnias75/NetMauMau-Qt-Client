@@ -108,3 +108,12 @@ RC_FILE += appicon.rc
 DISTFILES += COPYING cards/* *.png *.ico nmm_qt_client.desktop
 
 TRANSLATIONS += nmm_qt_client_de_DE.ts
+
+DIST_NAME = $$TARGET-$$VERSION
+
+# The 'make dist' target
+QMAKE_EXTRA_TARGETS += dist-xz
+dist-xz.depends = dist
+dist-xz.target = dist-xz
+dist-xz.commands += gzip -dc $$TARGET$$VERSION\\.tar\\.gz | xz -ec9 - > $$DIST_NAME\\.tar\\.xz;
+dist-xz.commands += $(DEL_FILE) -r $$TARGET$$VERSION\\.tar\\.gz
