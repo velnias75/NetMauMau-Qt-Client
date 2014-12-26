@@ -33,6 +33,7 @@ class MainWindow;
 }
 
 class CardWidget;
+class QSplashScreen;
 class QProgressDialog;
 class JackChooseDialog;
 class ConnectionLogDialog;
@@ -44,7 +45,7 @@ class MainWindow : public QMainWindow {
 	typedef enum { NO_SORT, SUIT_RANK, RANK_SUIT } SORTMODE;
 
 public:
-	explicit MainWindow(QWidget *p = 0);
+	explicit MainWindow(QSplashScreen *splash, QWidget *p = 0);
 	virtual ~MainWindow();
 
 protected:

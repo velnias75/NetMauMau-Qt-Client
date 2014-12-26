@@ -28,13 +28,14 @@
 #include "ui_serverdialog.h"
 
 class DeleteServersDialog;
+class QSplashScreen;
 class ServerInfo;
 
 class ServerDialog : public QDialog, public Ui::ServerDialog {
 	Q_OBJECT
 	Q_PROPERTY(bool forceRefresh READ isForceRefresh WRITE forceRefresh NOTIFY refresh)
 public:
-	explicit ServerDialog(QWidget *parent = 0);
+	explicit ServerDialog(QSplashScreen *splash, QWidget *parent = 0);
 	virtual ~ServerDialog();
 
 	QString getAcceptedServer() const;
@@ -82,6 +83,7 @@ private:
 	QTimer m_autoRefresh;
 	QMutex m_mutex;
 	bool m_blockAutoRefresh;
+	QSplashScreen *m_splash;
 };
 
 #endif // SERVERDIALOG_H

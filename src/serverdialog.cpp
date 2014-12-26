@@ -17,6 +17,7 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QSplashScreen>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>
@@ -39,11 +40,12 @@ const QRegExp nameRex("[^\\+]+.*");
 
 }
 
-ServerDialog::ServerDialog(QWidget *p) : QDialog(p), m_model(0, 4), m_forceRefresh(false),
-	m_lastServer(QString::null), m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
+ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_model(0, 4),
+	m_forceRefresh(false), m_lastServer(QString::null),
+	m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
 	m_hostRexValidator(new QRegExpValidator(hostRex)),
 	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
-	m_mutex(), m_blockAutoRefresh(false) {
+	m_mutex(), m_blockAutoRefresh(false), m_splash(splash) {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -344,6 +346,7 @@ void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
 			img.close();
 
 		} else {
+			m_splash->close();
 			QMessageBox::critical(this, tr("Player image"), tr("Cannot open %1").arg(f));
 		}
 	}

@@ -40,11 +40,11 @@
 #include "localserveroutputview.h"
 #include "playerimageprogressdialog.h"
 
-MainWindow::MainWindow(QWidget *p) : QMainWindow(p), m_client(0L), m_ui(new Ui::MainWindow),
-	m_serverDlg(new ServerDialog(this)), m_lsov(new LocalServerOutputView()),
-	m_launchDlg(new LaunchServerDialog(m_lsov, this)), m_model(0, 5), m_cards(),
-	m_lastPlayedCard(0L), m_jackChooseDialog(new JackChooseDialog(this)), m_stdForeground(),
-	m_stdBackground(), m_maxPlayerCount(0), m_pickCardPrepended(false),
+MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_client(0L),
+	m_ui(new Ui::MainWindow),m_serverDlg(new ServerDialog(splash, this)),
+	m_lsov(new LocalServerOutputView()), m_launchDlg(new LaunchServerDialog(m_lsov, this)),
+	m_model(0, 5), m_cards(), m_lastPlayedCard(0L), m_jackChooseDialog(new JackChooseDialog(this)),
+	m_stdForeground(), m_stdBackground(), m_maxPlayerCount(0), m_pickCardPrepended(false),
 	m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_playerImageDelegate(new PlayerImageDelegate(this)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
@@ -316,7 +316,10 @@ void MainWindow::receivedPlayerImage(const QString &) {
 }
 
 void MainWindow::showReceiveProgress() const {
-	static_cast<PlayerImageProgressDialog *>(m_receivingPlayerImageProgress)->show(m_curReceiving);
+	if(m_client) {
+		static_cast<PlayerImageProgressDialog *>(m_receivingPlayerImageProgress)
+				->show(m_curReceiving);
+	}
 }
 
 void MainWindow::sendingPlayerImageFailed(const QString &) const {
@@ -502,8 +505,6 @@ void MainWindow::clientMessage(const QString &msg) const {
 void MainWindow::clientError(const QString &err) {
 
 	destroyClient(true);
-
-	m_receivingPlayerImageProgress->hide();
 
 	setEnabled(true);
 
@@ -1057,6 +1058,8 @@ void MainWindow::destroyClientOffline(bool b) {
 void MainWindow::destroyClient(bool force) {
 
 	if(force || m_lostWonConfirmed) {
+
+		m_receivingPlayerImageProgress->cancel();
 
 		if(m_client) {
 

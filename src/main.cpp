@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
 	a.installTranslator(&myappTranslator);
 	a.processEvents();
 
-	MainWindow w;
+	MainWindow w(&splash);
 	a.processEvents();
 	w.show();
 
