@@ -268,6 +268,10 @@ void ServerDialog::setLastServer(const QString &ls) {
 	m_lastServer = ls;
 }
 
+QString ServerDialog::getLastServer() const {
+	return m_lastServer;
+}
+
 QString ServerDialog::getPlayerName() const {
 	return playerName->text();
 }

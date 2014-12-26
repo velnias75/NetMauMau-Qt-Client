@@ -44,6 +44,8 @@ public:
 	const QByteArray &getPlayerImage() const _CONST;
 
 	void setLastServer(const QString &ls);
+	QString getLastServer() const;
+
 	void blockAutoRefresh(bool b);
 	void forceRefresh(bool b);
 

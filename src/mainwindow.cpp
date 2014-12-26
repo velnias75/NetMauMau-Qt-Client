@@ -62,7 +62,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))), m_turn(1),
 	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)), m_curReceiving(),
 	m_licenseDialog(new LicenseDialog(this)), m_playerStatMsg(), m_aceRoundActive(),
-	m_aceRoundLabel() {
+	m_aceRoundLabel(), m_mmCnt(0), m_markTakeCards(false) {
 
 	m_ui->setupUi(this);
 
@@ -304,7 +304,7 @@ void MainWindow::receivingPlayerImage(const QString &p) {
 	m_curReceiving = p;
 	QTimer::singleShot(1000, this, SLOT(showReceiveProgress()));
 
-	statusBar()->showMessage(tr("Receiving player image for \"%1\"...").arg(p));
+	statusBar()->showMessage(tr("Receiving player image for \"%1\"...").arg(p), 1000);
 }
 
 void MainWindow::receivedPlayerImage(const QString &) {
@@ -467,11 +467,11 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e) {
 	switch(e->key()) {
 	case Qt::Key_F7:
 	case Qt::Key_Escape:
-	m_ui->takeCardsButton->click(); break;
+		m_ui->takeCardsButton->click(); break;
 	case Qt::Key_F8:
 	case Qt::Key_Return:
 	case Qt::Key_Enter:
-	m_ui->suspendButton->click(); break;
+		m_ui->suspendButton->click(); break;
 	case Qt::Key_1: clickCard(0, e); break;
 	case Qt::Key_2: clickCard(1, e); break;
 	case Qt::Key_3: clickCard(2, e); break;
@@ -655,6 +655,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 	m_playerCardCounts[p] = 0;
+	++m_mmCnt;
 
 	updatePlayerStats(p, tr("<span style=\"color:blue;\">wins</span> in turn %1").arg(t), true);
 
@@ -694,7 +695,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 
-	const QString &pickStr(tr("picked up %n card(s)", "", c));
+	const QString &pickStr(tr("picks up %n card(s)", "", c));
 
 	if(isMe(p)) {
 		statusBar()->showMessage(tr("You %1").arg(tr("picked up %n card(s)", "playerPick", c)));
@@ -764,6 +765,8 @@ void MainWindow::clientJackSuit(NetMauMau::Common::ICard::SUIT s) const {
 }
 
 void MainWindow::clientNextPlayer(const QString &player) const {
+
+	if(isMe(player)) takeCardsMark(m_markTakeCards);
 
 	const QList<QStandardItem *> &ml(rowForPlayer(player));
 	const int row = ml.empty() ? -1 :  m_model.indexFromItem(ml.front()).row();
@@ -879,7 +882,8 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 
 		m_cTakeSuit = r == NetMauMau::Common::ICard::SEVEN ? s :
 															 NetMauMau::Common::ICard::SUIT_ILLEGAL;
-		takeCardsMark(r == NetMauMau::Common::ICard::SEVEN && m_cTakeSuit != m_takenSuit);
+		//		takeCardsMark(r == NetMauMau::Common::ICard::SEVEN && m_cTakeSuit != m_takenSuit);
+		m_markTakeCards = r == NetMauMau::Common::ICard::SEVEN && m_cTakeSuit != m_takenSuit;
 
 	} else {
 		m_ui->openCard->setPixmap(QPixmap(QString::fromUtf8(":/nmm_qt_client.png")));
@@ -994,7 +998,10 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 
 			if(count < 2) {
 				cnt->setText(QString("<span style=\"color:red;\"><b>Mau%1</b></span>")
-							 .arg(count == 0 ? " Mau" : ""));
+							 .arg(count == 0 ?  QString(" Mau%1").
+												arg(m_model.rowCount() > 2 ?
+														" #" + QString::number(m_mmCnt) : "") :
+												""));
 
 				if(!isMe(player)) {
 					QApplication::beep();
@@ -1020,7 +1027,8 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 			QString prevMsg(msgList.back());
 			if(msgList.count() > 1 && ((prevMsg = msgList[msgList.count() - 2])
 									   != msgList.back())) {
-				msg->setText(prevMsg + "; " + msgList.back());
+				msg->setText("<span style=\"font-variant:small-caps;\">" + prevMsg + "</span>; "
+							 + msgList.back());
 			} else {
 				msg->setText(prevMsg);
 			}
@@ -1123,6 +1131,9 @@ void MainWindow::clientDestroyed() {
 	statusBar()->clearMessage();
 
 	m_countWonDisplayed = 0;
+	m_lostWonConfirmed = false;
+	m_markTakeCards = false;
+	m_mmCnt = 0;
 }
 
 void MainWindow::clearStats() {
@@ -1210,7 +1221,7 @@ void MainWindow::writeSettings() const {
 	const ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
 	const QString &as(sd->getAcceptedServer());
 
-	if(!as.isEmpty()) {
+	if(!(as.isEmpty() ? as : sd->getLastServer()).isEmpty()) {
 		settings.beginGroup("Servers");
 		settings.setValue("lastServer", as);
 		settings.endGroup();

@@ -178,6 +178,8 @@ private:
 	QMap<QString, QStringList> m_playerStatMsg;
 	QString m_aceRoundActive;
 	QLabel m_aceRoundLabel;
+	uint m_mmCnt;
+	bool m_markTakeCards;
 };
 
 #endif // MAINWINDOW_H
