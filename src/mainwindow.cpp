@@ -27,6 +27,7 @@
 #include "mainwindow.h"
 
 #include "util.h"
+#include "gamestate.h"
 #include "cardwidget.h"
 #include "cardpixmap.h"
 #include "serverdialog.h"
@@ -43,26 +44,21 @@
 MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_client(0L),
 	m_ui(new Ui::MainWindow),m_serverDlg(new ServerDialog(splash, this)),
 	m_lsov(new LocalServerOutputView()), m_launchDlg(new LaunchServerDialog(m_lsov, this)),
-	m_model(0, 5), m_cards(), m_lastPlayedCard(0L), m_jackChooseDialog(new JackChooseDialog(this)),
-	m_stdForeground(), m_stdBackground(), m_maxPlayerCount(0), m_pickCardPrepended(false),
-	m_connectionLogDlg(new ConnectionLogDialog(0L)),
+	m_model(0, 5), m_jackChooseDialog(new JackChooseDialog(this)), m_stdForeground(),
+	m_stdBackground(), m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_playerImageDelegate(new PlayerImageDelegate(this)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new MessageItemDelegate(this, false)),
 	m_turnItemDelegate(new MessageItemDelegate(this, false)),
-	m_messageItemDelegate(new MessageItemDelegate(this)), m_lastPlayedCardIdx(-1),
-	m_noCardPossible(false), m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
-	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL), m_possibleCards(), m_playerCardCounts(),
-	m_lostWonConfirmed(false), m_clientDestroyRequested(false), m_countWonDisplayed(0),
+	m_messageItemDelegate(new MessageItemDelegate(this)),
 	m_aboutTxt(QString::fromUtf8("%1 %2\n%3: %4.%5\nCopyright \u00a9 2014 by Heiko Sch\u00e4fer")
 			   .arg(QCoreApplication::applicationName())
 			   .arg(QCoreApplication::applicationVersion())
 			   .arg(tr("Client library version"))
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16))
-			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))), m_turn(1),
-	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)), m_curReceiving(),
-	m_licenseDialog(new LicenseDialog(this)), m_playerStatMsg(), m_aceRoundActive(),
-	m_aceRoundLabel(), m_mmCnt(0), m_markTakeCards(false) {
+			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))),
+	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)),
+	m_licenseDialog(new LicenseDialog(this)), m_aceRoundLabel(), m_gameState(0L) {
 
 	m_ui->setupUi(this);
 
@@ -208,7 +204,6 @@ MainWindow::~MainWindow() {
 	delete m_serverDlg;
 	delete m_launchDlg;
 	delete m_licenseDialog;
-	delete m_lastPlayedCard;
 	delete m_jackChooseDialog;
 	delete m_connectionLogDlg;
 	delete m_playerImageDelegate;
@@ -217,6 +212,11 @@ MainWindow::~MainWindow() {
 	delete m_turnItemDelegate;
 	delete m_messageItemDelegate;
 	delete m_receivingPlayerImageProgress;
+	delete m_gameState;
+}
+
+GameState *MainWindow::gameState() const {
+	return m_gameState = (m_gameState ? m_gameState : new GameState());
 }
 
 void MainWindow::forceRefreshServers(bool b) {
@@ -267,17 +267,19 @@ void MainWindow::sortRankSuit(bool b) {
 
 void MainWindow::sortMyCards(SORTMODE mode) {
 
-	if(mode != NO_SORT && !m_cards.isEmpty()) {
+	QList<CardWidget *> &cards(gameState()->cards());
+
+	if(mode != NO_SORT && !cards.isEmpty()) {
 
 		clearMyCards(false, false);
 
-		QWidget *prevLast = m_cards.last();
+		QWidget *prevLast = cards.last();
 
-		qSort(m_cards.begin(), m_cards.end(), mode == SUIT_RANK ? NetMauMau::Common::cardLess :
-																  NetMauMau::Common::cardGreater);
+		qSort(cards.begin(), cards.end(), mode == SUIT_RANK ? NetMauMau::Common::cardLess :
+															  NetMauMau::Common::cardGreater);
 
 		int k = 1;
-		for(QList<CardWidget *>::ConstIterator i(m_cards.begin()); i != m_cards.end(); ++i, ++k) {
+		for(QList<CardWidget *>::ConstIterator i(cards.begin()); i != cards.end(); ++i, ++k) {
 			m_ui->myCardsLayout->addWidget(*i, 0, Qt::AlignHCenter);
 			addKeyShortcutTooltip(*i, k);
 			(*i)->setVisible(true);
@@ -301,7 +303,7 @@ void MainWindow::receivingPlayerImage(const QString &p) {
 
 	setDisabled(true);
 
-	m_curReceiving = p;
+	gameState()->setCurReceiving(p);
 	QTimer::singleShot(1000, this, SLOT(showReceiveProgress()));
 
 	statusBar()->showMessage(tr("Receiving player image for \"%1\"...").arg(p), 1000);
@@ -309,7 +311,7 @@ void MainWindow::receivingPlayerImage(const QString &p) {
 
 void MainWindow::receivedPlayerImage(const QString &) {
 
-	m_curReceiving = QString::null;
+	gameState()->setCurReceiving(QString::null);
 
 	setEnabled(true);
 	statusBar()->clearMessage();
@@ -318,7 +320,7 @@ void MainWindow::receivedPlayerImage(const QString &) {
 void MainWindow::showReceiveProgress() const {
 	if(m_client) {
 		static_cast<PlayerImageProgressDialog *>(m_receivingPlayerImageProgress)
-				->show(m_curReceiving);
+				->show(gameState()->curReceiving());
 	}
 }
 
@@ -341,8 +343,7 @@ void MainWindow::serverAccept() {
 
 	clearStats();
 
-	m_cTakeSuit = m_takenSuit = NetMauMau::Common::ICard::SUIT_ILLEGAL;
-	m_maxPlayerCount = sd->getMaxPlayerCount();
+	gameState()->setMaxPlayerCount(sd->getMaxPlayerCount());
 
 	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
 						  std::string(as.left(p).toStdString()),
@@ -433,8 +434,7 @@ void MainWindow::serverAccept() {
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
 		m_ui->remoteGroup->setTitle(tr("%1 on %2").arg(m_ui->remoteGroup->title()).arg(as));
 
-		m_playTime.setHMS(0, 0, 0);
-		m_timeLabel.setText(m_playTime.toString("HH:mm:ss"));
+		m_timeLabel.setText(gameState()->playTime().toString("HH:mm:ss"));
 		m_timeLabel.show();
 
 		m_connectionLogDlg->clear();
@@ -457,8 +457,12 @@ void MainWindow::serverAccept() {
 }
 
 void MainWindow::timerEvent(QTimerEvent *e) {
-	m_playTime = m_playTime.addMSecs(1000);
-	m_timeLabel.setText(m_playTime.toString("HH:mm:ss"));
+
+	if(m_gameState) {
+		m_gameState->addMSecs(1000);
+		m_timeLabel.setText(m_gameState->playTime().toString("HH:mm:ss"));
+	}
+
 	e->accept();
 }
 
@@ -467,11 +471,11 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e) {
 	switch(e->key()) {
 	case Qt::Key_F7:
 	case Qt::Key_Escape:
-		m_ui->takeCardsButton->click(); break;
+	m_ui->takeCardsButton->click(); break;
 	case Qt::Key_F8:
 	case Qt::Key_Return:
 	case Qt::Key_Enter:
-		m_ui->suspendButton->click(); break;
+	m_ui->suspendButton->click(); break;
 	case Qt::Key_1: clickCard(0, e); break;
 	case Qt::Key_2: clickCard(1, e); break;
 	case Qt::Key_3: clickCard(2, e); break;
@@ -514,16 +518,18 @@ void MainWindow::clientError(const QString &err) {
 
 void MainWindow::clientCardSet(const Client::CARDS &c) {
 
+	QList<CardWidget *> &cards(gameState()->cards());
+
 	int k = 1;
 	for(Client::CARDS::const_iterator i(c.begin()); i != c.end(); ++i, ++k) {
 
 		const NetMauMau::Common::ICard *card = *i;
 
 		if(card) {
-			m_cards.push_back(new CardWidget(m_ui->awidget, card->description().c_str()));
-			m_ui->myCardsLayout->addWidget(m_cards.back(), 0, Qt::AlignHCenter);
-			addKeyShortcutTooltip(m_cards.back(), k);
-			QObject::connect(m_cards.back(), SIGNAL(chosen(CardWidget*)),
+			cards.push_back(new CardWidget(m_ui->awidget, card->description().c_str()));
+			m_ui->myCardsLayout->addWidget(cards.back(), 0, Qt::AlignHCenter);
+			addKeyShortcutTooltip(cards.back(), k);
+			QObject::connect(cards.back(), SIGNAL(chosen(CardWidget*)),
 							 this, SLOT(cardChosen(CardWidget*)));
 		} else {
 			qWarning("BUG: clientCardSet: at least one card was NULL");
@@ -539,13 +545,18 @@ void MainWindow::clientCardSet(const Client::CARDS &c) {
 	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
 }
 
-void MainWindow::scrollToLastCard() const {
-	if(!m_cards.isEmpty()) m_ui->myCardsScrollArea->ensureWidgetVisible(m_cards.last());
+void MainWindow::scrollToLastCard() {
+
+	QList<CardWidget *> &cards(gameState()->cards());
+
+	if(!cards.isEmpty()) m_ui->myCardsScrollArea->ensureWidgetVisible(cards.last());
 }
 
 void MainWindow::clearMyCards(bool del, bool dis) {
 
-	for(QList<CardWidget *>::ConstIterator i(m_cards.begin()); i != m_cards.end(); ++i) {
+	QList<CardWidget *> &cards(gameState()->cards());
+
+	for(QList<CardWidget *>::ConstIterator i(cards.begin()); i != cards.end(); ++i) {
 
 		m_ui->myCardsLayout->removeWidget(*i);
 
@@ -556,7 +567,7 @@ void MainWindow::clearMyCards(bool del, bool dis) {
 		}
 	}
 
-	if(del) m_cards.clear();
+	if(del) cards.clear();
 
 	QLayoutItem *child;
 	while((child = m_ui->myCardsLayout->takeAt(0)) != 0) {
@@ -568,13 +579,13 @@ void MainWindow::clearMyCards(bool del, bool dis) {
 
 void MainWindow::clientTurn(std::size_t t) {
 	m_ui->turnLabel->setText(QString::number(t));
-	m_turn = t;
+	gameState()->setTurn(t);
 }
 
 void MainWindow::clientStats(const Client::STATS &s) {
 	for(Client::STATS::const_iterator i(s.begin()); i != s.end(); ++i) {
 		const QString &pName(QString::fromUtf8(i->playerName.c_str()));
-		if(!isMe(pName)) m_playerCardCounts.insert(pName, i->cardCount);
+		if(!isMe(pName)) gameState()->playerCardCounts().insert(pName, i->cardCount);
 		updatePlayerStats(pName);
 	}
 }
@@ -593,12 +604,14 @@ void MainWindow::clientTalonShuffled() {
 
 void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 
-	if(m_lastPlayedCard) {
-		m_cards.insert(m_lastPlayedCardIdx, m_lastPlayedCard);
-		m_ui->myCardsLayout->insertWidget(m_lastPlayedCardIdx, m_lastPlayedCard, 0,
-										  Qt::AlignHCenter);
-		m_lastPlayedCard->setVisible(true);
-		m_lastPlayedCard = 0L;
+	GameState *gs = gameState();
+
+	if(gs->lastPlayedCard()) {
+		gs->cards().insert(gs->lastPlayedCardIdx(), gs->lastPlayedCard());
+		m_ui->myCardsLayout->insertWidget(gs->lastPlayedCardIdx(), gs->lastPlayedCard(),
+										  0, Qt::AlignHCenter);
+		gs->lastPlayedCard()->setVisible(true);
+		gs->setLastPlayedCard(0L);
 	}
 
 	QMessageBox::critical(this, tr("Card rejected"), tr("You cannot play card %1!")
@@ -606,8 +619,8 @@ void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 }
 
 void MainWindow::clientCardAccepted(const QByteArray &) {
-	delete m_lastPlayedCard;
-	m_lastPlayedCard = 0L;
+	delete gameState()->lastPlayedCard();
+	gameState()->setLastPlayedCard(0L);
 }
 
 void MainWindow::clientPlayerSuspends(const QString &p) {
@@ -637,7 +650,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 		NetMauMauMessageBox lost(tr("Sorry"),
 								 tr("You have lost!\nYour points: %1\n\nPlaying time: %2").arg(pt).
-								 arg(m_playTime.toString("HH:mm:ss")),
+								 arg(gameState()->playTime().toString("HH:mm:ss")),
 								 QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
 
 		if(m_model.rowCount() == 2) lost.addButton(tr("Try &again"), QMessageBox::YesRole);
@@ -654,8 +667,10 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
-	m_playerCardCounts[p] = 0;
-	++m_mmCnt;
+	GameState *gs = gameState();
+
+	gs->playerCardCounts()[p] = 0;
+	gs->setMaumauCount(gs->maumauCount() + 1);
 
 	updatePlayerStats(p, tr("<span style=\"color:blue;\">wins</span> in turn %1").arg(t), true);
 
@@ -669,7 +684,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 												QIcon(":/smile.png")).pixmap(48, 48));
 		gameOver.setWindowTitle(tr("Congratulations"));
 		gameOver.setText(tr("You have won!\nPlaying time: %1").
-						 arg(m_playTime.toString("HH:mm:ss")));
+						 arg(gs->playTime().toString("HH:mm:ss")));
 
 		if(m_model.rowCount() == 2) gameOver.addButton(tr("Try &again"), QMessageBox::YesRole);
 		gameOver.setEscapeButton(gameOver.addButton(QMessageBox::Ok));
@@ -678,7 +693,8 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		emit confirmLostWon(gameOver.buttonRole(gameOver.clickedButton()));
 
-	} else if(m_model.rowCount() > 2 && (m_countWonDisplayed < m_model.rowCount() - 2)) {
+	} else if(m_model.rowCount() > 2 && (gs->countWonDisplayed() <
+										 m_model.rowCount() - 2)) {
 
 		gameOver.setWindowTitle(tr("Sorry"));
 		gameOver.setIconPixmap(QIcon::fromTheme("face-plain",
@@ -687,7 +703,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		gameOver.exec();
 
-		++m_countWonDisplayed;
+		gs->setCountWonDisplayed(gs->countWonDisplayed() + 1);
 
 		emit confirmLostWon(QMessageBox::AcceptRole);
 	}
@@ -699,7 +715,7 @@ void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 
 	if(isMe(p)) {
 		statusBar()->showMessage(tr("You %1").arg(tr("picked up %n card(s)", "playerPick", c)));
-		m_pickCardPrepended = true;
+		gameState()->setPickCardPrepended(true);
 	}
 
 	updatePlayerStats(p, pickStr);
@@ -749,7 +765,7 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 	m_model.appendRow(si);
 	//	}
 
-	const long np = static_cast<long>(m_maxPlayerCount) - m_model.rowCount();
+	const long np = static_cast<long>(gameState()->maxPlayerCount()) - m_model.rowCount();
 
 	if(np > 0L) {
 		statusBar()->showMessage(tr("Waiting for %n more player(s)...", "", np));
@@ -763,9 +779,9 @@ void MainWindow::clientJackSuit(NetMauMau::Common::ICard::SUIT s) const {
 								QByteArray(NetMauMau::Common::suitToSymbol(s, false).c_str()));
 }
 
-void MainWindow::clientNextPlayer(const QString &player) const {
+void MainWindow::clientNextPlayer(const QString &player) {
 
-	if(isMe(player)) takeCardsMark(m_markTakeCards);
+	if(isMe(player)) takeCardsMark(gameState()->markTakeCards());
 
 	const QList<QStandardItem *> &ml(rowForPlayer(player));
 	const int row = ml.empty() ? -1 :  m_model.indexFromItem(ml.front()).row();
@@ -781,24 +797,27 @@ void MainWindow::clientNextPlayer(const QString &player) const {
 
 void MainWindow::clientPlayCardRequest(const Client::CARDS &cards) {
 
+	GameState *gs = gameState();
+
 	const QString &msg(tr("Play your card..."));
 
-	statusBar()->showMessage(m_pickCardPrepended ? (statusBar()->currentMessage() + "; " + msg)
-												 : msg, 2000);
+	statusBar()->showMessage(gs->pickCardPrepended() ?
+								 (statusBar()->currentMessage() + "; " + msg) : msg, 2000);
 
 	clientNextPlayer(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
-	m_possibleCards = cards;
+	gs->possibleCards() = cards;
 
 	enableMyCards(true);
-	m_pickCardPrepended = false;
+	gs->setPickCardPrepended(false);
 
 }
 
 void MainWindow::clientChooseJackSuitRequest() {
 
-	m_jackChooseDialog->setSuite(m_lastPlayedCard ? m_lastPlayedCard->getSuit() :
-													NetMauMau::Common::ICard::CLUBS);
+	m_jackChooseDialog->setSuite(gameState()->lastPlayedCard() ?
+									 gameState()->lastPlayedCard()->getSuit() :
+									 NetMauMau::Common::ICard::CLUBS);
 	m_jackChooseDialog->exec();
 
 	const NetMauMau::Common::ICard::SUIT cs = m_jackChooseDialog->getChosenSuit();
@@ -810,13 +829,15 @@ void MainWindow::clientChooseJackSuitRequest() {
 
 void MainWindow::clientChooseAceRoundRequest() {
 
-	if(!(m_cards.empty() && m_model.rowCount() == 2)) {
+	GameState *gs = gameState();
 
-		NetMauMauMessageBox aceRoundBox(tr("Ace round"), isMe(m_aceRoundActive) ?
+	if(!(gs->cards().empty() && m_model.rowCount() == 2)) {
+
+		NetMauMauMessageBox aceRoundBox(tr("Ace round"), isMe(gs->aceRoundActive()) ?
 											tr("Continue current Ace round?") :
 											tr("Start Ace round?"),
-										CardPixmap(QSize(42, 57), m_lastPlayedCard ?
-													   m_lastPlayedCard->getSuit() :
+										CardPixmap(QSize(42, 57), gs->lastPlayedCard() ?
+													   gs->lastPlayedCard()->getSuit() :
 													   NetMauMau::Common::ICard::HEARTS,
 												   NetMauMau::Common::ICard::ACE));
 
@@ -836,7 +857,7 @@ void MainWindow::suspend() {
 
 void MainWindow::takeCards() {
 
-	m_takenSuit = m_cTakeSuit;
+	gameState()->setTakenSuit(gameState()->cTakeSuit());
 
 	enableMyCards(false);
 	emit cardToPlay(NetMauMau::Common::getIllegalCard());
@@ -848,17 +869,21 @@ void MainWindow::cardChosen(CardWidget *c) {
 
 	enableMyCards(false);
 
-	if(c->getRank() == NetMauMau::Common::ICard::SEVEN) m_takenSuit = c->getSuit();
+	GameState *gs = gameState();
+
+	if(c->getRank() == NetMauMau::Common::ICard::SEVEN) gs->setTakenSuit(c->getSuit());
 
 	emit cardToPlay(c);
 
-	const int idx = m_cards.indexOf(c);
+	QList<CardWidget *> &cards(gs->cards());
+
+	const int idx = cards.indexOf(c);
 
 	if(idx >= 0) {
-		m_lastPlayedCardIdx = idx;
-		m_lastPlayedCard = m_cards.takeAt(idx);
-		m_lastPlayedCard->setVisible(false);
-		m_ui->myCardsLayout->removeWidget(m_lastPlayedCard);
+		gs->setLastPlayedCardIdx(idx);
+		gs->setLastPlayedCard(cards.takeAt(idx));
+		gs->lastPlayedCard()->setVisible(false);
+		m_ui->myCardsLayout->removeWidget(gs->lastPlayedCard());
 	}
 
 	updatePlayerStats(QString::fromUtf8(m_client->getPlayerName().c_str()));
@@ -879,10 +904,12 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 		m_ui->openCard->setPixmap(CardPixmap(m_ui->openCard->pixmap()->size(), s, r));
 		m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r, false));
 
-		m_cTakeSuit = r == NetMauMau::Common::ICard::SEVEN ? s :
-															 NetMauMau::Common::ICard::SUIT_ILLEGAL;
-		//		takeCardsMark(r == NetMauMau::Common::ICard::SEVEN && m_cTakeSuit != m_takenSuit);
-		m_markTakeCards = r == NetMauMau::Common::ICard::SEVEN && m_cTakeSuit != m_takenSuit;
+		GameState *gs = gameState();
+
+		gs->setCTakeSuit(r == NetMauMau::Common::ICard::SEVEN ?
+							 s : NetMauMau::Common::ICard::SUIT_ILLEGAL);
+		gs->setMarkTakeCards(r == NetMauMau::Common::ICard::SEVEN &&
+							 gs->cTakeSuit() != gs->takenSuit());
 
 	} else {
 		m_ui->openCard->setPixmap(QPixmap(QString::fromUtf8(":/nmm_qt_client.png")));
@@ -903,8 +930,9 @@ void MainWindow::takeCardsMark(bool b) const {
 
 	if(b) {
 
+		const QList<CardWidget *> &cards(gameState()->cards());
 		const bool normal = NetMauMau::Common::findRank(NetMauMau::Common::ICard::SEVEN,
-														m_cards.begin(), m_cards.end());
+														cards.begin(), cards.end());
 
 		if(name && normal) {
 			name->setText(QString("<span style=\"color:blue;\">%1</span>").arg(me));
@@ -927,8 +955,10 @@ void MainWindow::takeCardsMark(bool b) const {
 
 void MainWindow::enableMyCards(bool b) {
 
+	GameState *gs = gameState();
+
 	m_ui->myCardsDock->setEnabled(b);
-	m_noCardPossible = m_possibleCards.empty();
+	gs->setNoCardPossible(gs->possibleCards().empty());
 
 	if(b) {
 
@@ -940,9 +970,9 @@ void MainWindow::enableMyCards(bool b) {
 
 				if(m_ui->filterCards->isChecked()) {
 
-					if(!m_noCardPossible) {
-						w->setEnabled(NetMauMau::Common::findCard(w, m_possibleCards.begin(),
-																  m_possibleCards.end()) != 0L);
+					if(!gs->noCardPossible()) {
+						w->setEnabled(NetMauMau::Common::findCard(w, gs->possibleCards().begin(),
+																  gs->possibleCards().end()) != 0L);
 					} else {
 						w->setEnabled(false);
 					}
@@ -974,6 +1004,8 @@ void MainWindow::addKeyShortcutTooltip(CardWidget *c, int num) {
 
 void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, bool disable) {
 
+	GameState *gs = gameState();
+
 	const QList<QStandardItem *> &ml(rowForPlayer(player));
 
 	if(!ml.empty()) {
@@ -987,20 +1019,22 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 
 		cnt->setTextAlignment(Qt::AlignCenter);
 		trn->setTextAlignment(Qt::AlignCenter);
-		trn->setText(QString::number(m_turn));
+		trn->setText(QString::number(gs->turn()));
 
-		if(!mesg.isEmpty()) m_playerStatMsg[player] << mesg;
+		if(!mesg.isEmpty()) gs->playerStatMsg()[player] << mesg;
 
-		if(isMe(player) || m_playerCardCounts.contains(player)) {
+		if(isMe(player) || gs->playerCardCounts().contains(player)) {
 
-			const std::size_t count = isMe(player) ? m_cards.count() : m_playerCardCounts[player];
+			const std::size_t count = isMe(player) ? gs->cards().count() :
+													 gs->playerCardCounts()[player];
 
 			if(count < 2) {
 				cnt->setText(QString("<span style=\"color:red;\"><b>Mau%1</b></span>")
 							 .arg(count == 0 ?  QString(" Mau%1").
 												arg(m_model.rowCount() > 2 ?
-														" #" + QString::number(m_mmCnt) : "") :
-												""));
+														" #" +
+														QString::number(gs->maumauCount())
+													  : "") : ""));
 
 				if(!isMe(player)) {
 					QApplication::beep();
@@ -1020,7 +1054,7 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 
 		nam->setToolTip(player);
 
-		const QStringList &msgList(m_playerStatMsg[player]);
+		const QStringList &msgList(gs->playerStatMsg()[player]);
 
 		if(!msgList.isEmpty()) {
 			QString prevMsg(msgList.back());
@@ -1044,9 +1078,9 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 
 void MainWindow::lostWinConfirmed(int tryAgain) {
 
-	m_lostWonConfirmed = false;
+	gameState()->setLostWonConfirmed(false);
 
-	if(m_clientDestroyRequested) {
+	if(gameState()->clientDestroyRequested()) {
 
 		destroyClient(true);
 
@@ -1064,7 +1098,9 @@ void MainWindow::destroyClientOffline(bool b) {
 
 void MainWindow::destroyClient(bool force) {
 
-	if(force || m_lostWonConfirmed) {
+	GameState *gs = gameState();
+
+	if(force || gs->lostWonConfirmed()) {
 
 		m_receivingPlayerImageProgress->cancel();
 
@@ -1095,15 +1131,13 @@ void MainWindow::destroyClient(bool force) {
 		}
 
 	} else {
-		m_clientDestroyRequested = true;
+		gs->setClientDestroyRequested(true);
 	}
 }
 
 void MainWindow::clientDestroyed() {
 
 	m_playTimer.stop();
-
-	m_clientDestroyRequested = false;
 
 	m_client->QThread::disconnect();
 
@@ -1123,21 +1157,19 @@ void MainWindow::clientDestroyed() {
 
 	m_timeLabel.hide();
 
-	m_playerStatMsg.clear();
-
 	clientAceRoundEnded(QString::null);
 
 	statusBar()->clearMessage();
 
-	m_countWonDisplayed = 0;
-	m_lostWonConfirmed = false;
-	m_markTakeCards = false;
-	m_mmCnt = 0;
+	delete m_gameState;
+	m_gameState = 0L;
 }
 
 void MainWindow::clearStats() {
 
-	m_playerCardCounts.clear();
+	GameState *gs = gameState();
+
+	gs->playerCardCounts().clear();
 
 	m_model.removeRows(0, m_model.rowCount());
 
@@ -1145,7 +1177,7 @@ void MainWindow::clearStats() {
 	setOpenCard(QByteArray());
 	m_ui->jackSuit->setProperty("suitDescription", QVariant());
 
-	m_turn = 1;
+	gs->setTurn(1);
 
 	resizeColumns();
 }
@@ -1167,7 +1199,10 @@ QString MainWindow::reconnectToolTip() const {
 }
 
 void MainWindow::clientAceRoundStarted(const QString &p) {
-	if(m_aceRoundActive != p)
+
+	GameState *gs = gameState();
+
+	if(gs->aceRoundActive() != p)
 		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
 						  .arg(tr("starts an Ace round")));
 	statusBar()->addPermanentWidget(&m_aceRoundLabel);
@@ -1182,15 +1217,20 @@ void MainWindow::clientAceRoundStarted(const QString &p) {
 							   + ba.toBase64() + "\"><br />" + tr("Ace round of %1").arg(p)
 							   + "</p");
 	m_aceRoundLabel.show();
-	m_aceRoundActive = p;
+	gs->setAceRoundActive(p);
 }
 
 void MainWindow::clientAceRoundEnded(const QString &p) {
+
+	GameState *gs = gameState();
+
 	statusBar()->removeWidget(&m_aceRoundLabel);
-	if(!p.isNull() && m_aceRoundActive == p)
+
+	if(!p.isNull() && gs->aceRoundActive() == p)
 		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
 						  .arg(tr("ends an Ace round")));
-	m_aceRoundActive.clear();
+
+	gs->setAceRoundActive(QString::null);
 }
 
 void MainWindow::writeSettings() const {

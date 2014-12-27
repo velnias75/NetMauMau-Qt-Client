@@ -61,7 +61,8 @@ SOURCES += cardpixmap.cpp \
 	serverinfo.cpp \
 	suitlabel.cpp \
 	suitradiobutton.cpp \
-	util.cpp
+	util.cpp \
+    gamestate.cpp
 
 HEADERS  += cardpixmap.h \
 	cardwidget.h \
@@ -84,7 +85,8 @@ HEADERS  += cardpixmap.h \
 	serverinfo.h \
 	suitlabel.h \
 	suitradiobutton.h \
-	util.h
+	util.h \
+    gamestate.h
 
 FORMS    += cardwidget.ui \
 	connectionlogdialog.ui \

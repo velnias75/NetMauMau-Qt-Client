@@ -24,7 +24,6 @@
 
 #include <QBasicTimer>
 #include <QLabel>
-#include <QTime>
 
 #include "client.h"
 
@@ -32,6 +31,7 @@ namespace Ui {
 class MainWindow;
 }
 
+class GameState;
 class CardWidget;
 class QSplashScreen;
 class QProgressDialog;
@@ -62,7 +62,7 @@ signals:
 
 private slots:
 	void about();
-	void scrollToLastCard() const;
+	void scrollToLastCard();
 
 	void sendingPlayerImageFailed(const QString &) const;
 	void receivingPlayerImage(const QString &);
@@ -102,7 +102,7 @@ private slots:
 	void clientPlayerPicksCard(const QString &, std::size_t);
 	void clientPlayedCard(const QString &, const QByteArray &);
 	void clientJackSuit(NetMauMau::Common::ICard::SUIT) const;
-	void clientNextPlayer(const QString &) const;
+	void clientNextPlayer(const QString &);
 	void clientAceRoundStarted(const QString &);
 	void clientAceRoundEnded(const QString &);
 
@@ -116,6 +116,9 @@ private slots:
 	void setOpenCard(const QByteArray &);
 
 private:
+
+	GameState *gameState() const;
+
 	void clickCard(int num, QKeyEvent *e);
 
 	QString myself() const;
@@ -145,41 +148,22 @@ private:
 	LocalServerOutputView *m_lsov;
 	QDialog *m_launchDlg;
 	QStandardItemModel m_model;
-	QList<CardWidget *> m_cards;
-	CardWidget *m_lastPlayedCard;
 	JackChooseDialog *m_jackChooseDialog;
 	QBrush m_stdForeground;
 	QBrush m_stdBackground;
-	uint m_maxPlayerCount;
-	bool m_pickCardPrepended;
 	ConnectionLogDialog *m_connectionLogDlg;
 	QAbstractItemDelegate *m_playerImageDelegate;
 	QAbstractItemDelegate *m_nameItemDelegate;
 	QAbstractItemDelegate *m_countItemDelegate;
 	QAbstractItemDelegate *m_turnItemDelegate;
 	QAbstractItemDelegate *m_messageItemDelegate;
-	int m_lastPlayedCardIdx;
-	bool m_noCardPossible;
-	NetMauMau::Common::ICard::SUIT m_cTakeSuit;
-	NetMauMau::Common::ICard::SUIT m_takenSuit;
-	Client::CARDS m_possibleCards;
-	QMap<QString, std::size_t> m_playerCardCounts;
-	bool m_lostWonConfirmed;
-	bool m_clientDestroyRequested;
-	int m_countWonDisplayed;
 	const QString m_aboutTxt;
-	std::size_t m_turn;
 	QProgressDialog *m_receivingPlayerImageProgress;
-	QString m_curReceiving;
 	QLabel m_timeLabel;
-	QTime m_playTime;
 	QBasicTimer m_playTimer;
 	QDialog *m_licenseDialog;
-	QMap<QString, QStringList> m_playerStatMsg;
-	QString m_aceRoundActive;
 	QLabel m_aceRoundLabel;
-	uint m_mmCnt;
-	bool m_markTakeCards;
+	mutable GameState *m_gameState;
 };
 
 #endif // MAINWINDOW_H
