@@ -700,7 +700,6 @@ void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 	if(isMe(p)) {
 		statusBar()->showMessage(tr("You %1").arg(tr("picked up %n card(s)", "playerPick", c)));
 		m_pickCardPrepended = true;
-
 	}
 
 	updatePlayerStats(p, pickStr);
