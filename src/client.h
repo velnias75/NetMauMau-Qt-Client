@@ -42,12 +42,14 @@ public:
 	virtual ~Client();
 
 protected:
+	using NetMauMau::Client::AbstractClient::playCard;
+
 	virtual void beginReceivePlayerPicture(const std::string &player) const throw();
 	virtual void endReceivePlayerPicture(const std::string &player) const throw();
 	virtual void uploadSucceded(const std::string &player) const throw();
 	virtual void uploadFailed(const std::string &player) const throw();
 
-	virtual NetMauMau::Common::ICard *playCard(const CARDS &cards) const;
+	virtual NetMauMau::Common::ICard *playCard(const CARDS &cards, std::size_t takeCount) const;
 	virtual NetMauMau::Common::ICard::SUIT getJackSuitChoice() const;
 	virtual bool getAceRoundChoice() const;
 
@@ -92,7 +94,7 @@ signals:
 	void jackSuitChoiceAvailable() const;
 	void aceRoundChoiceAvailable() const;
 
-	void cPlayCard(const Client::CARDS &) const;
+	void cPlayCard(const Client::CARDS &, std::size_t) const;
 	void cGetJackSuitChoice() const;
 	void cGetAceRoundChoice() const;
 

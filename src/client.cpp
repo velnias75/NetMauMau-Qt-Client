@@ -31,7 +31,8 @@
 
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port) : QThread(),
-	NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server, port), m_mainWindow(w),
+	NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server, port,
+									  parseProtocolVersion(PACKAGE_VERSION)), m_mainWindow(w),
 	m_disconnectNow(false), m_cardToPlay(0L), m_chosenSuit(NetMauMau::Common::ICard::HEARTS),
 	m_online(false), m_connectionLogDialog(cld), m_aceRoundChoice(false) {
 	init();
@@ -41,7 +42,8 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 			   const std::string &server, uint16_t port, const QByteArray &buf) : QThread(),
 	NetMauMau::Client::AbstractClient(player.toUtf8().constData(),
 									  reinterpret_cast<const unsigned char *>(buf.constData()),
-									  buf.size(), server, port), m_mainWindow(w),
+									  buf.size(), server, port,
+									  parseProtocolVersion(PACKAGE_VERSION)), m_mainWindow(w),
 	m_disconnectNow(false), m_cardToPlay(0L), m_chosenSuit(NetMauMau::Common::ICard::HEARTS),
 	m_online(false), m_connectionLogDialog(cld), m_aceRoundChoice(false) {
 	init();
@@ -91,7 +93,7 @@ void Client::run() {
 	} catch(const NetMauMau::Client::Exception::ConnectionRejectedException &e) {
 		emit cError(tr("The server rejected the connection"));
 	} catch(const NetMauMau::Client::Exception::NoNetMauMauServerException &e) {
-		emit cError(tr("The remote host appears to be no NetMauMau server"));
+		emit cError(tr("The remote host seems not to be a NetMauMau server"));
 	} catch(const NetMauMau::Client::Exception::ShutdownException &e) {
 		emit cError(tr("The server is in the progress of a shutdown"));
 	} catch(const NetMauMau::Client::Exception::VersionMismatchException &e) {
@@ -116,11 +118,11 @@ void Client::disconnectNow() {
 	m_disconnectNow = true;
 }
 
-NetMauMau::Common::ICard *Client::playCard(const CARDS &cards) const {
+NetMauMau::Common::ICard *Client::playCard(const CARDS &cards, std::size_t takeCount) const {
 
-	log("playCard REQUEST");
+	log(QString("playCard(%1, %2) REQUEST").arg(cards.size()).arg(takeCount));
 
-	emit cPlayCard(cards);
+	emit cPlayCard(cards, takeCount);
 
 	QEventLoop waitForCard;
 

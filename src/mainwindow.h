@@ -82,7 +82,7 @@ private slots:
 	void suspend();
 	void takeCards();
 	void cardChosen(CardWidget *);
-	void clientPlayCardRequest(const Client::CARDS &);
+	void clientPlayCardRequest(const Client::CARDS &, std::size_t);
 	void clientChooseJackSuitRequest();
 	void clientChooseAceRoundRequest();
 

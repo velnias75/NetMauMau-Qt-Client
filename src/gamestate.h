@@ -32,52 +32,52 @@ class GameState {
 public:
 	GameState();
 
-	uint maumauCount() const;
+	uint maumauCount() const _PURE;
 	void setMaumauCount(uint u);
 
-	int countWonDisplayed() const;
+	int countWonDisplayed() const _PURE;
 	void setCountWonDisplayed(int i);
 
-	bool lostWonConfirmed() const;
+	bool lostWonConfirmed() const _PURE;
 	void setLostWonConfirmed(bool b);
 
-	bool markTakeCards() const;
+	bool markTakeCards() const _PURE;
 	void setMarkTakeCards(bool b);
 
-	bool clientDestroyRequested() const;
+	bool clientDestroyRequested() const _PURE;
 	void setClientDestroyRequested(bool b);
 
-	CardWidget *lastPlayedCard() const;
+	CardWidget *lastPlayedCard() const _PURE;
 	void setLastPlayedCard(CardWidget *cw);
 
-	int lastPlayedCardIdx() const;
+	int lastPlayedCardIdx() const _PURE;
 	void setLastPlayedCardIdx(int i);
 
-	bool pickCardPrepended() const;
+	bool pickCardPrepended() const _PURE;
 	void setPickCardPrepended(bool b);
 
-	bool noCardPossible() const;
+	bool noCardPossible() const _PURE;
 	void setNoCardPossible(bool b);
 
-	std::size_t turn() const;
+	std::size_t turn() const _PURE;
 	void setTurn(std::size_t t);
 
-	QMap<QString, QStringList> &playerStatMsg();
-	QMap<QString, std::size_t> &playerCardCounts();
+	QMap<QString, QStringList> &playerStatMsg() _CONST;
+	QMap<QString, std::size_t> &playerCardCounts() _CONST;
 
-	QList<CardWidget *> &cards();
-	const QList<CardWidget *> &cards() const;
+	QList<CardWidget *> &cards() _CONST;
+	const QList<CardWidget *> &cards() const _CONST;
 
-	NetMauMau::Common::ICard::SUIT cTakeSuit() const;
+	NetMauMau::Common::ICard::SUIT cTakeSuit() const _PURE;
 	void setCTakeSuit(NetMauMau::Common::ICard::SUIT s);
 
-	NetMauMau::Common::ICard::SUIT takenSuit() const;
+	NetMauMau::Common::ICard::SUIT takenSuit() const _PURE;
 	void setTakenSuit(NetMauMau::Common::ICard::SUIT s);
 
-	uint maxPlayerCount() const;
+	uint maxPlayerCount() const _PURE;
 	void setMaxPlayerCount(uint u);
 
-	Client::CARDS &possibleCards();
+	Client::CARDS &possibleCards() _CONST;
 
 	QString curReceiving() const;
 	void setCurReceiving(const QString& s);
@@ -85,7 +85,7 @@ public:
 	QString aceRoundActive() const;
 	void setAceRoundActive(const QString& s);
 
-	const QTime &playTime() const;
+	const QTime &playTime() const _CONST;
 	void addMSecs(int ms);
 
 private:

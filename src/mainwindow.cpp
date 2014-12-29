@@ -376,8 +376,8 @@ void MainWindow::serverAccept() {
 			delete [] i->pngData;
 		}
 
-		QObject::connect(m_client, SIGNAL(cPlayCard(const Client::CARDS &)),
-						 this, SLOT(clientPlayCardRequest(const Client::CARDS &)));
+		QObject::connect(m_client, SIGNAL(cPlayCard(const Client::CARDS &, std::size_t)),
+						 this, SLOT(clientPlayCardRequest(const Client::CARDS &, std::size_t)));
 		QObject::connect(m_client, SIGNAL(cGetJackSuitChoice()),
 						 this, SLOT(clientChooseJackSuitRequest()));
 		QObject::connect(m_client, SIGNAL(cGetAceRoundChoice()),
@@ -693,8 +693,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		emit confirmLostWon(gameOver.buttonRole(gameOver.clickedButton()));
 
-	} else if(m_model.rowCount() > 2 && (gs->countWonDisplayed() <
-										 m_model.rowCount() - 2)) {
+	} else if(m_model.rowCount() > 2 && (gs->countWonDisplayed() < m_model.rowCount() - 2)) {
 
 		gameOver.setWindowTitle(tr("Sorry"));
 		gameOver.setIconPixmap(QIcon::fromTheme("face-plain",
@@ -795,7 +794,7 @@ void MainWindow::clientNextPlayer(const QString &player) {
 	}
 }
 
-void MainWindow::clientPlayCardRequest(const Client::CARDS &cards) {
+void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t /*takeCount*/) {
 
 	GameState *gs = gameState();
 
