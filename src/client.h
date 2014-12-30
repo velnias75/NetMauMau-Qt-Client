@@ -82,12 +82,12 @@ protected:
 	virtual void aceRoundStarted(const std::string &player) const;
 	virtual void aceRoundEnded(const std::string &player) const;
 
-	virtual void unknownServerMessage(std::string message) const;
+	virtual void unknownServerMessage(const std::string &msg) const;
 
 public slots:
 	void cardToPlay(NetMauMau::Common::ICard *) const;
 	void chosenSuite(NetMauMau::Common::ICard::SUIT);
-	void chosenAceRound(bool c);
+	void chosenAceRound(bool);
 	void disconnectNow();
 
 signals:

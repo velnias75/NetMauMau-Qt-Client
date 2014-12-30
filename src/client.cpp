@@ -339,7 +339,7 @@ void Client::aceRoundEnded(const std::string &player) const {
 	emit cAceRoundEnded(QString::fromUtf8(player.c_str()));
 }
 
-void Client::unknownServerMessage(std::string msg) const {
+void Client::unknownServerMessage(const std::string &msg) const {
 	qWarning("Unknown server message: \"%s\"", msg.c_str());
 	log(QString("unknownServerMessage(%1)").arg(QString::fromUtf8(msg.c_str())));
 }
