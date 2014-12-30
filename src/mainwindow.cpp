@@ -780,8 +780,6 @@ void MainWindow::clientJackSuit(NetMauMau::Common::ICard::SUIT s) const {
 
 void MainWindow::clientNextPlayer(const QString &player) {
 
-	if(isMe(player)) takeCardsMark(gameState()->markTakeCards());
-
 	const QList<QStandardItem *> &ml(rowForPlayer(player));
 	const int row = ml.empty() ? -1 :  m_model.indexFromItem(ml.front()).row();
 
@@ -794,11 +792,11 @@ void MainWindow::clientNextPlayer(const QString &player) {
 	}
 }
 
-void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t /*takeCount*/) {
-
-	GameState *gs = gameState();
+void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t takeCount) {
 
 	const QString &msg(tr("Play your card..."));
+
+	GameState *gs = gameState();
 
 	statusBar()->showMessage(gs->pickCardPrepended() ?
 								 (statusBar()->currentMessage() + "; " + msg) : msg, 2000);
@@ -806,6 +804,8 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t /
 	clientNextPlayer(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
 	gs->possibleCards() = cards;
+
+	takeCardsMark(takeCount);
 
 	enableMyCards(true);
 	gs->setPickCardPrepended(false);
@@ -855,12 +855,8 @@ void MainWindow::suspend() {
 }
 
 void MainWindow::takeCards() {
-
-	gameState()->setTakenSuit(gameState()->cTakeSuit());
-
 	enableMyCards(false);
 	emit cardToPlay(NetMauMau::Common::getIllegalCard());
-
 	takeCardsMark(false);
 }
 
@@ -869,8 +865,6 @@ void MainWindow::cardChosen(CardWidget *c) {
 	enableMyCards(false);
 
 	GameState *gs = gameState();
-
-	if(c->getRank() == NetMauMau::Common::ICard::SEVEN) gs->setTakenSuit(c->getSuit());
 
 	emit cardToPlay(c);
 
@@ -899,24 +893,15 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::RANK_ILLEGAL;
 
 	if(NetMauMau::Common::parseCardDesc(d.constData(), &s, &r)) {
-
 		m_ui->openCard->setPixmap(CardPixmap(m_ui->openCard->pixmap()->size(), s, r));
 		m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r, false));
-
-		GameState *gs = gameState();
-
-		gs->setCTakeSuit(r == NetMauMau::Common::ICard::SEVEN ?
-							 s : NetMauMau::Common::ICard::SUIT_ILLEGAL);
-		gs->setMarkTakeCards(r == NetMauMau::Common::ICard::SEVEN &&
-							 gs->cTakeSuit() != gs->takenSuit());
-
 	} else {
 		m_ui->openCard->setPixmap(QPixmap(QString::fromUtf8(":/nmm_qt_client.png")));
 		m_ui->openCard->setToolTip(m_aboutTxt);
 	}
 }
 
-void MainWindow::takeCardsMark(bool b) const {
+void MainWindow::takeCardsMark(std::size_t count) const {
 
 	const QString &me(myself());
 	const QList<QStandardItem *> &l(rowForPlayer(me));
@@ -927,7 +912,7 @@ void MainWindow::takeCardsMark(bool b) const {
 		name->setToolTip(me);
 	}
 
-	if(b) {
+	if(count) {
 
 		const QList<CardWidget *> &cards(gameState()->cards());
 		const bool normal = NetMauMau::Common::findRank(NetMauMau::Common::ICard::SEVEN,
@@ -935,20 +920,22 @@ void MainWindow::takeCardsMark(bool b) const {
 
 		if(name && normal) {
 			name->setText(QString("<span style=\"color:blue;\">%1</span>").arg(me));
-			name->setToolTip(tr("You can play another <i>Seven</i> or take the cards"));
+			name->setToolTip(tr("You can play another <i>Seven</i> or take %n card(s)", "", count));
 		} else if(name) {
 			name->setText(QString("<span style=\"color:red;\">%1</span>").arg(me));
-			name->setToolTip(tr("You have no <i>Seven</i> to play over. You must take the cards"));
+			name->setToolTip(tr("You have no <i>Seven</i> to play over. You must take %n card(s)",
+								"", count));
 		}
 
 		m_ui->takeCardsButton->setStyleSheet(normal ? QString::null :
 													  QString("QPushButton { color:red; }"));
-
 		m_ui->takeCardsButton->setDisabled(false);
+		m_ui->suspendButton->setDisabled(true);
 
 	} else {
 		m_ui->takeCardsButton->setStyleSheet(QString::null);
 		m_ui->takeCardsButton->setDisabled(true);
+		m_ui->suspendButton->setDisabled(false);
 	}
 }
 

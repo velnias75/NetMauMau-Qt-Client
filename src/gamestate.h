@@ -41,9 +41,6 @@ public:
 	bool lostWonConfirmed() const _PURE;
 	void setLostWonConfirmed(bool b);
 
-	bool markTakeCards() const _PURE;
-	void setMarkTakeCards(bool b);
-
 	bool clientDestroyRequested() const _PURE;
 	void setClientDestroyRequested(bool b);
 
@@ -68,12 +65,6 @@ public:
 	QList<CardWidget *> &cards() _CONST;
 	const QList<CardWidget *> &cards() const _CONST;
 
-	NetMauMau::Common::ICard::SUIT cTakeSuit() const _PURE;
-	void setCTakeSuit(NetMauMau::Common::ICard::SUIT s);
-
-	NetMauMau::Common::ICard::SUIT takenSuit() const _PURE;
-	void setTakenSuit(NetMauMau::Common::ICard::SUIT s);
-
 	uint maxPlayerCount() const _PURE;
 	void setMaxPlayerCount(uint u);
 
@@ -97,13 +88,10 @@ private:
 	bool m_clientDestroyRequested;
 	int m_countWonDisplayed;
 	bool m_lostWonConfirmed;
-	bool m_markTakeCards;
 	uint m_mmCnt;
 	bool m_pickCardPrepended;
 	bool m_noCardPossible;
 	std::size_t m_turn;
-	NetMauMau::Common::ICard::SUIT m_cTakeSuit;
-	NetMauMau::Common::ICard::SUIT m_takenSuit;
 	uint m_maxPlayerCount;
 	Client::CARDS m_possibleCards;
 	QString m_curReceiving;

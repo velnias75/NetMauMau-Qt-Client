@@ -128,7 +128,7 @@ private:
 
 	void addKeyShortcutTooltip(CardWidget *c, int num);
 
-	void takeCardsMark(bool b) const;
+	void takeCardsMark(std::size_t count) const;
 	void enableMyCards(bool b);
 	void clearMyCards(bool del, bool dis = true);
 	void updatePlayerStats(const QString &player, const QString &msg = QString::null,

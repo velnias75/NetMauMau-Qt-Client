@@ -329,7 +329,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="53"/>
-        <location filename="mainwindow.cpp" line="1153"/>
+        <location filename="mainwindow.cpp" line="1140"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
@@ -381,7 +381,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="449"/>
-        <location filename="mainwindow.cpp" line="1297"/>
+        <location filename="mainwindow.cpp" line="1284"/>
         <source>Local player</source>
         <translation>Lokaler Spieler</translation>
     </message>
@@ -592,23 +592,39 @@ Playing time: %1</source>
         <translation>Du hast gewonnen!
 Spieldauer: %1</translation>
     </message>
+    <message numerus="yes">
+        <location filename="mainwindow.cpp" line="923"/>
+        <source>You can play another &lt;i&gt;Seven&lt;/i&gt; or take %n card(s)</source>
+        <translation>
+            <numerusform>Du kannst eine andere &lt;i&gt;Sieben&lt;/i&gt; legen oder %n Karte ziehen</numerusform>
+            <numerusform>Du kannst eine andere &lt;i&gt;Sieben&lt;/i&gt; legen oder %n Karten ziehen</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="mainwindow.cpp" line="926"/>
+        <source>You have no &lt;i&gt;Seven&lt;/i&gt; to play over. You must take %n card(s)</source>
+        <translation>
+            <numerusform>Du hast keine &lt;i&gt;Sieben&lt;/i&gt; zu legen. Du musst %n Karte ziehen</numerusform>
+            <numerusform>Du hast keine &lt;i&gt;Sieben&lt;/i&gt; zu legen. Du musst %n Karten ziehen</numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="mainwindow.cpp" line="1001"/>
+        <location filename="mainwindow.cpp" line="988"/>
         <source>Shortcut</source>
         <translation>Schnellwahl</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1206"/>
+        <location filename="mainwindow.cpp" line="1193"/>
         <source>starts an Ace round</source>
         <translation>beginnt eine Assrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1216"/>
+        <location filename="mainwindow.cpp" line="1203"/>
         <source>Ace round of %1</source>
         <translation>Assrunde von %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1230"/>
+        <location filename="mainwindow.cpp" line="1217"/>
         <source>ends an Ace round</source>
         <translation>beendet die Assrunde</translation>
     </message>
@@ -696,7 +712,7 @@ Spieldauer: %1</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="801"/>
+        <location filename="mainwindow.cpp" line="797"/>
         <source>Play your card...</source>
         <translation>Lege Deine Karte...</translation>
     </message>
@@ -716,18 +732,16 @@ Spieldauer: %1</translation>
         <translation>Eine Assrunde beginnen?</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="938"/>
         <source>You can play another &lt;i&gt;Seven&lt;/i&gt; or take the cards</source>
-        <translation>Du kannst eine andere &lt;i&gt;Sieben&lt;/i&gt; legen oder die Karten ziehen</translation>
+        <translation type="obsolete">Du kannst eine andere &lt;i&gt;Sieben&lt;/i&gt; legen oder die Karten ziehen</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="941"/>
         <source>You have no &lt;i&gt;Seven&lt;/i&gt; to play over. You must take the cards</source>
-        <translation>Du hast keine &lt;i&gt;Sieben&lt;/i&gt; zu legen. Du musst die Karten ziehen</translation>
+        <translation type="obsolete">Du hast keine &lt;i&gt;Sieben&lt;/i&gt; zu legen. Du musst die Karten ziehen</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow.cpp" line="1043"/>
-        <location filename="mainwindow.cpp" line="1047"/>
+        <location filename="mainwindow.cpp" line="1030"/>
+        <location filename="mainwindow.cpp" line="1034"/>
         <source>%n card(s)</source>
         <translation>
             <numerusform>%n Karte</numerusform>
@@ -735,7 +749,7 @@ Spieldauer: %1</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1186"/>
+        <location filename="mainwindow.cpp" line="1173"/>
         <source>Reconnect to </source>
         <translation>Verbinde wieder zu </translation>
     </message>

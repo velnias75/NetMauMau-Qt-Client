@@ -21,11 +21,9 @@
 
 GameState::GameState() : m_cards(), m_lastPlayedCard(0L), m_lastPlayedCardIdx(-1),
 	m_playerStatMsg(), m_playerCardCounts(), m_clientDestroyRequested(false),
-	m_countWonDisplayed(0), m_lostWonConfirmed(false), m_markTakeCards(false), m_mmCnt(0),
-	m_pickCardPrepended(false), m_noCardPossible(false), m_turn(1),
-	m_cTakeSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL),
-	m_takenSuit(NetMauMau::Common::ICard::SUIT_ILLEGAL), m_maxPlayerCount(0), m_possibleCards(),
-	m_curReceiving(), m_aceRoundActive(), m_playTime(0, 0, 0) {}
+	m_countWonDisplayed(0), m_lostWonConfirmed(false), m_mmCnt(0), m_pickCardPrepended(false),
+	m_noCardPossible(false), m_turn(1), m_maxPlayerCount(0), m_possibleCards(), m_curReceiving(),
+	m_aceRoundActive(), m_playTime(0, 0, 0) {}
 
 uint GameState::maumauCount() const {
 	return m_mmCnt;
@@ -41,14 +39,6 @@ int GameState::countWonDisplayed() const {
 
 void GameState::setCountWonDisplayed(int i) {
 	m_countWonDisplayed = i;
-}
-
-bool GameState::markTakeCards() const {
-	return m_markTakeCards;
-}
-
-void GameState::setMarkTakeCards(bool b) {
-	m_markTakeCards = b;
 }
 
 bool GameState::lostWonConfirmed() const {
@@ -121,22 +111,6 @@ QList<CardWidget *> &GameState::cards() {
 
 const QList<CardWidget *> &GameState::cards() const {
 	return m_cards;
-}
-
-NetMauMau::Common::ICard::SUIT GameState::cTakeSuit() const {
-	return m_cTakeSuit;
-}
-
-void GameState::setCTakeSuit(NetMauMau::Common::ICard::SUIT s) {
-	m_cTakeSuit = s;
-}
-
-NetMauMau::Common::ICard::SUIT GameState::takenSuit() const {
-	return m_takenSuit;
-}
-
-void GameState::setTakenSuit(NetMauMau::Common::ICard::SUIT s) {
-	m_takenSuit = s;
 }
 
 uint GameState::maxPlayerCount() const {
