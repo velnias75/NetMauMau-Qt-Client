@@ -646,17 +646,23 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 	if(isMe(p)) {
 
+		GameState *gs = gameState();
+
+		gs->setLostDisplaying(true);
+
 		takeCardsMark(false);
 
 		NetMauMauMessageBox lost(tr("Sorry"),
 								 tr("You have lost!\nYour points: %1\n\nPlaying time: %2").arg(pt).
-								 arg(gameState()->playTime().toString("HH:mm:ss")),
+								 arg(gs->playTime().toString("HH:mm:ss")),
 								 QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
 
 		if(m_model.rowCount() == 2) lost.addButton(tr("Try &again"), QMessageBox::YesRole);
 		lost.setEscapeButton(lost.addButton(QMessageBox::Ok));
 
 		lost.exec();
+
+		gs->setLostDisplaying(false);
 
 		emit confirmLostWon(lost.buttonRole(lost.clickedButton()));
 
@@ -678,7 +684,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 	NetMauMauMessageBox gameOver;
 
-	if(isMe(p)) {
+	if(isMe(p) && !gs->lostWonConfirmed()) {
 
 		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
 												QIcon(":/smile.png")).pixmap(48, 48));
@@ -691,9 +697,12 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		gameOver.exec();
 
+		gs->incCountWonDisplayed();
+
 		emit confirmLostWon(gameOver.buttonRole(gameOver.clickedButton()));
 
-	} else if(m_model.rowCount() > 2 && (gs->countWonDisplayed() < m_model.rowCount() - 2)) {
+	} else if(m_model.rowCount() > 2 && gs->maumauCount() ==
+			  static_cast<ulong>(m_model.rowCount() - 1) && !gs->lostDisplaying()) {
 
 		gameOver.setWindowTitle(tr("Sorry"));
 		gameOver.setIconPixmap(QIcon::fromTheme("face-plain",
@@ -702,7 +711,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		gameOver.exec();
 
-		gs->setCountWonDisplayed(gs->countWonDisplayed() + 1);
+		gs->incCountWonDisplayed();
 
 		emit confirmLostWon(QMessageBox::AcceptRole);
 	}
@@ -801,7 +810,7 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t t
 	statusBar()->showMessage(gs->pickCardPrepended() ?
 								 (statusBar()->currentMessage() + "; " + msg) : msg, 2000);
 
-	clientNextPlayer(QString::fromUtf8(m_client->getPlayerName().c_str()));
+	clientNextPlayer(myself());
 
 	gs->possibleCards() = cards;
 
@@ -867,6 +876,8 @@ void MainWindow::cardChosen(CardWidget *c) {
 	GameState *gs = gameState();
 
 	emit cardToPlay(c);
+
+	takeCardsMark(false);
 
 	QList<CardWidget *> &cards(gs->cards());
 

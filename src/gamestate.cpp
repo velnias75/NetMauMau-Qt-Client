@@ -23,7 +23,7 @@ GameState::GameState() : m_cards(), m_lastPlayedCard(0L), m_lastPlayedCardIdx(-1
 	m_playerStatMsg(), m_playerCardCounts(), m_clientDestroyRequested(false),
 	m_countWonDisplayed(0), m_lostWonConfirmed(false), m_mmCnt(0), m_pickCardPrepended(false),
 	m_noCardPossible(false), m_turn(1), m_maxPlayerCount(0), m_possibleCards(), m_curReceiving(),
-	m_aceRoundActive(), m_playTime(0, 0, 0) {}
+	m_aceRoundActive(), m_playTime(0, 0, 0), m_lostDisplaying(false) {}
 
 uint GameState::maumauCount() const {
 	return m_mmCnt;
@@ -37,8 +37,8 @@ int GameState::countWonDisplayed() const {
 	return m_countWonDisplayed;
 }
 
-void GameState::setCountWonDisplayed(int i) {
-	m_countWonDisplayed = i;
+void GameState::incCountWonDisplayed() {
+	++m_countWonDisplayed;
 }
 
 bool GameState::lostWonConfirmed() const {
@@ -147,4 +147,12 @@ const QTime &GameState::playTime() const {
 
 void GameState::addMSecs(int ms) {
 	m_playTime = m_playTime.addMSecs(ms);
+}
+
+bool GameState::lostDisplaying() const {
+	return m_lostDisplaying;
+}
+
+void GameState::setLostDisplaying(bool b) {
+	m_lostDisplaying = b;
 }

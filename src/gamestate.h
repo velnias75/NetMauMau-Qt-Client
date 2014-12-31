@@ -36,7 +36,7 @@ public:
 	void setMaumauCount(uint u);
 
 	int countWonDisplayed() const _PURE;
-	void setCountWonDisplayed(int i);
+	void incCountWonDisplayed();
 
 	bool lostWonConfirmed() const _PURE;
 	void setLostWonConfirmed(bool b);
@@ -79,6 +79,9 @@ public:
 	const QTime &playTime() const _CONST;
 	void addMSecs(int ms);
 
+	bool lostDisplaying() const;
+	void setLostDisplaying(bool b);
+
 private:
 	QList<CardWidget *> m_cards;
 	CardWidget *m_lastPlayedCard;
@@ -97,6 +100,7 @@ private:
 	QString m_curReceiving;
 	QString m_aceRoundActive;
 	QTime m_playTime;
+	bool m_lostDisplaying;
 };
 
 #endif // GAMESTATE_H
