@@ -79,10 +79,10 @@ public:
 	const QTime &playTime() const _CONST;
 	void addMSecs(int ms);
 
-	bool lostDisplaying() const;
+	bool lostDisplaying() const _PURE;
 	void setLostDisplaying(bool b);
 
-	NetMauMau::Common::ICard::RANK aceRoundRank() const;
+	NetMauMau::Common::ICard::RANK aceRoundRank() const _PURE;
 	void setAceRoundRank(NetMauMau::Common::ICard::RANK r);
 
 private:

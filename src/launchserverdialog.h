@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -43,7 +43,7 @@ public slots:
 	void launch();
 
 private slots:
-	void updateOptions();
+	void updateOptions(int = 0);
 	void finished(int);
 	void launched();
 	void error(QProcess::ProcessError);

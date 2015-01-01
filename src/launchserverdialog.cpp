@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -45,6 +45,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	playersSpin->setValue(settings.value("playersSpin", 1).toInt());
 	ultimateCheck->setChecked(settings.value("ultimate", true).toBool());
 	aceRound->setChecked(settings.value("ace-round", false).toBool());
+	rankCombo->setCurrentIndex(settings.value("ace-round-rank", 0).toInt());
 	aiNameEdit->setText(settings.value("aiName",
 									   QString::fromUtf8(Client::getDefaultAIName())).toString());
 	portSpin->setValue(settings.value("port", Client::getDefaultPort()).toInt());
@@ -57,6 +58,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	QObject::connect(playersSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(ultimateCheck, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(aceRound, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
+	QObject::connect(rankCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(aiNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(updateOptions()));
 	QObject::connect(portSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(launchButton, SIGNAL(clicked()), this, SLOT(launch()));
@@ -79,6 +81,7 @@ LaunchServerDialog::~LaunchServerDialog() {
 	settings.setValue("playersSpin", playersSpin->value());
 	settings.setValue("ultimate", ultimateCheck->isChecked());
 	settings.setValue("ace-round", aceRound->isChecked());
+	settings.setValue("ace-round-rank", rankCombo->currentIndex());
 	settings.setValue("aiName", aiNameEdit->text());
 	settings.setValue("port", portSpin->value());
 	settings.setValue("serverExe", pathEdit->text());
@@ -112,7 +115,7 @@ bool LaunchServerDialog::launchAtStartup() const {
 	return launchStartup->isChecked();
 }
 
-void LaunchServerDialog::updateOptions() {
+void LaunchServerDialog::updateOptions(int) {
 
 	QString opt;
 
@@ -130,7 +133,9 @@ void LaunchServerDialog::updateOptions() {
 
 	if(ultimateCheck->isChecked()) opt.append("-u");
 
-	if(aceRound->isChecked()) opt.append("-a");
+	if(aceRound->isChecked()) opt.append("-a").
+			append(rankCombo->currentIndex() == 0 ? 'a' :
+													(rankCombo->currentIndex() == 1 ? 'q' : 'k'));
 
 	optionsEdit->setText(opt.trimmed());
 }
@@ -188,7 +193,13 @@ void LaunchServerDialog::launch() {
 	}
 
 	if(ultimateCheck->isChecked()) args << "-u";
-	if(aceRound->isChecked()) args << "-a";
+
+	if(aceRound->isChecked()) {
+		args << QString("-a").
+				append(rankCombo->currentIndex() == 0 ? 'a' :
+														(rankCombo->currentIndex() == 1 ? 'q' :
+																						  'k'));
+	}
 
 	m_process.start(pathEdit->text(), args, QProcess::ReadOnly);
 
