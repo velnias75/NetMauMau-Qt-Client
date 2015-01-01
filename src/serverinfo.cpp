@@ -79,8 +79,14 @@ void ServerInfo::run() {
 
 		const Client::CAPABILITIES::const_iterator &f(caps.find("ACEROUND"));
 
-		if(f != caps.end() && f->second == "true") {
-			ai->setToolTip(ai->toolTip() + "\n" + tr("You'll play with ace rounds"));
+		if(f != caps.end() && f->second != "false") {
+			ai->setToolTip(ai->toolTip() + "\n" + tr("You'll play with %1").
+						   arg(f->second == "A" ? tr("ace rounds") : (f->second == "Q"
+																	  ? tr("queen rounds") :
+																		(f->second == "K"
+																		 ? tr("king rounds") :
+																		   tr("ace rounds")))));
+			ai->setData(QString::fromStdString(f->second));
 		}
 
 		players->setText(tr("%1/%2").arg(curPCnt).arg(maxPCnt));

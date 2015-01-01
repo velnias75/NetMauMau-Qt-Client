@@ -24,7 +24,8 @@
 #include <QMutex>
 #include <QTimer>
 
-#include "linkercontrol.h"
+#include <icard.h>
+
 #include "ui_serverdialog.h"
 
 class DeleteServersDialog;
@@ -39,6 +40,7 @@ public:
 	virtual ~ServerDialog();
 
 	QString getAcceptedServer() const;
+	NetMauMau::Common::ICard::RANK getAceRoundRank() const;
 	QString getPlayerName() const;
 	uint getMaxPlayerCount() const;
 	const QByteArray &getPlayerImage() const _CONST;

@@ -134,6 +134,7 @@ private:
 	void updatePlayerStats(const QString &player, const QString &msg = QString::null,
 						   bool disable = false);
 
+	QString getAceRoundRankString(const GameState *gs, bool capitalize = false) const;
 	QString reconnectToolTip() const;
 
 	void writeSettings() const;

@@ -263,6 +263,23 @@ QString ServerDialog::getAcceptedServer() const {
 	}
 }
 
+NetMauMau::Common::ICard::RANK ServerDialog::getAceRoundRank() const {
+
+	const QModelIndexList &l(availServerView->selectionModel()->selection().indexes());
+
+	if(!l.isEmpty()) {
+
+		const QString &rank(m_model.item(l.first().row(), ServerInfo::AI)->data().toString());
+
+		return rank == "A" ? NetMauMau::Common::ICard::ACE :
+							 (rank == "Q" ?  NetMauMau::Common::ICard::QUEEN :
+											 (rank == "K" ?  NetMauMau::Common::ICard::KING :
+												 NetMauMau::Common::ICard::ACE));
+	} else {
+		return NetMauMau::Common::ICard::ACE;
+	}
+}
+
 void ServerDialog::setLastServer(const QString &ls) {
 	availServerView->clearSelection();
 	m_lastServer = ls;

@@ -82,6 +82,9 @@ public:
 	bool lostDisplaying() const;
 	void setLostDisplaying(bool b);
 
+	NetMauMau::Common::ICard::RANK aceRoundRank() const;
+	void setAceRoundRank(NetMauMau::Common::ICard::RANK r);
+
 private:
 	QList<CardWidget *> m_cards;
 	CardWidget *m_lastPlayedCard;
@@ -101,6 +104,7 @@ private:
 	QString m_aceRoundActive;
 	QTime m_playTime;
 	bool m_lostDisplaying;
+	NetMauMau::Common::ICard::RANK m_aceRoundRank;
 };
 
 #endif // GAMESTATE_H

@@ -343,7 +343,9 @@ void MainWindow::serverAccept() {
 
 	clearStats();
 
-	gameState()->setMaxPlayerCount(sd->getMaxPlayerCount());
+	GameState *gs = gameState();
+
+	gs->setMaxPlayerCount(sd->getMaxPlayerCount());
 
 	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
 						  std::string(as.left(p).toStdString()),
@@ -429,12 +431,14 @@ void MainWindow::serverAccept() {
 		centralWidget()->setEnabled(true);
 		takeCardsMark(false);
 
+		gs->setAceRoundRank(sd->getAceRoundRank());
+
 		m_ui->actionServer->setEnabled(false);
 		m_ui->suspendButton->setEnabled(true);
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
 		m_ui->remoteGroup->setTitle(tr("%1 on %2").arg(m_ui->remoteGroup->title()).arg(as));
 
-		m_timeLabel.setText(gameState()->playTime().toString("HH:mm:ss"));
+		m_timeLabel.setText(gs->playTime().toString("HH:mm:ss"));
 		m_timeLabel.show();
 
 		m_connectionLogDlg->clear();
@@ -841,13 +845,15 @@ void MainWindow::clientChooseAceRoundRequest() {
 
 	if(!(gs->cards().empty() && m_model.rowCount() == 2)) {
 
-		NetMauMauMessageBox aceRoundBox(tr("Ace round"), isMe(gs->aceRoundActive()) ?
-											tr("Continue current Ace round?") :
-											tr("Start Ace round?"),
+		NetMauMauMessageBox aceRoundBox(getAceRoundRankString(gs, true),
+										isMe(gs->aceRoundActive()) ?
+											tr("Continue current %1?").
+											arg(getAceRoundRankString(gs)) : tr("Start %1?")
+											.arg(getAceRoundRankString(gs)),
 										CardPixmap(QSize(42, 57), gs->lastPlayedCard() ?
 													   gs->lastPlayedCard()->getSuit() :
 													   NetMauMau::Common::ICard::HEARTS,
-												   NetMauMau::Common::ICard::ACE));
+												   gs->aceRoundRank()));
 
 		aceRoundBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
 
@@ -1179,6 +1185,14 @@ void MainWindow::clearStats() {
 	resizeColumns();
 }
 
+QString MainWindow::getAceRoundRankString(const GameState *gs, bool capitalize) const {
+	switch(gs->aceRoundRank()) {
+	case NetMauMau::Common::ICard::QUEEN: return capitalize ? tr("Queen round") : tr("queen round");
+	case NetMauMau::Common::ICard::KING: return capitalize ? tr("King round") : tr("king round");
+	default: return capitalize ? tr("Ace round") : tr("ace round");
+	}
+}
+
 QString MainWindow::reconnectToolTip() const {
 
 	QString rtt(tr("Reconnect to "));
@@ -1201,18 +1215,19 @@ void MainWindow::clientAceRoundStarted(const QString &p) {
 
 	if(gs->aceRoundActive() != p)
 		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
-						  .arg(tr("starts an Ace round")));
+						  .arg(tr("starts a %1").arg(getAceRoundRankString(gs))));
 	statusBar()->addPermanentWidget(&m_aceRoundLabel);
 
 	QByteArray ba;
 	QBuffer buf(&ba);
-	CardPixmap(QSize(28, 38), NetMauMau::Common::ICard::HEARTS,
-			   NetMauMau::Common::ICard::ACE).toImage().
+	CardPixmap(QSize(28, 38), NetMauMau::Common::ICard::HEARTS, gs->aceRoundRank()).toImage().
 			save(&buf, "PNG");
 
+	m_aceRoundLabel.setPixmap(CardPixmap(QSize(10, 14), NetMauMau::Common::ICard::HEARTS,
+												 gs->aceRoundRank()));
 	m_aceRoundLabel.setToolTip("<p align=\"center\"><img src=\"data:image/png;base64,"
-							   + ba.toBase64() + "\"><br />" + tr("Ace round of %1").arg(p)
-							   + "</p");
+							   + ba.toBase64() + "\"><br />" + tr("%1 of %2").
+							   arg(getAceRoundRankString(gs, true)).arg(p) + "</p");
 	m_aceRoundLabel.show();
 	gs->setAceRoundActive(p);
 }
@@ -1225,7 +1240,7 @@ void MainWindow::clientAceRoundEnded(const QString &p) {
 
 	if(!p.isNull() && gs->aceRoundActive() == p)
 		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
-						  .arg(tr("ends an Ace round")));
+						  .arg(tr("ends a %1").arg(getAceRoundRankString(gs))));
 
 	gs->setAceRoundActive(QString::null);
 }

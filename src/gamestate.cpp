@@ -23,7 +23,8 @@ GameState::GameState() : m_cards(), m_lastPlayedCard(0L), m_lastPlayedCardIdx(-1
 	m_playerStatMsg(), m_playerCardCounts(), m_clientDestroyRequested(false),
 	m_countWonDisplayed(0), m_lostWonConfirmed(false), m_mmCnt(0), m_pickCardPrepended(false),
 	m_noCardPossible(false), m_turn(1), m_maxPlayerCount(0), m_possibleCards(), m_curReceiving(),
-	m_aceRoundActive(), m_playTime(0, 0, 0), m_lostDisplaying(false) {}
+	m_aceRoundActive(), m_playTime(0, 0, 0), m_lostDisplaying(false),
+	m_aceRoundRank(NetMauMau::Common::ICard::ACE) {}
 
 uint GameState::maumauCount() const {
 	return m_mmCnt;
@@ -155,4 +156,12 @@ bool GameState::lostDisplaying() const {
 
 void GameState::setLostDisplaying(bool b) {
 	m_lostDisplaying = b;
+}
+
+NetMauMau::Common::ICard::RANK GameState::aceRoundRank() const {
+	return m_aceRoundRank;
+}
+
+void GameState::setAceRoundRank(NetMauMau::Common::ICard::RANK r) {
+	m_aceRoundRank = r;
 }
