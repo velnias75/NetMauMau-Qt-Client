@@ -41,6 +41,10 @@
 #include "localserveroutputview.h"
 #include "playerimageprogressdialog.h"
 
+namespace {
+const QString PASTSPAN("<span style=\"font-variant:small-caps;\">%1</span>");
+}
+
 MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_client(0L),
 	m_ui(new Ui::MainWindow),m_serverDlg(new ServerDialog(splash, this)),
 	m_lsov(new LocalServerOutputView()), m_launchDlg(new LaunchServerDialog(m_lsov, this)),
@@ -1063,12 +1067,10 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 
 			if(msgList.count() > 1 && msgList[1] != m) {
 
-				const QString &past("<span style=\"font-variant:small-caps;\">%1</span>");
-
-				m.append("; ").append(past.arg(msgList[1]));
+				m.append("; ").append(PASTSPAN.arg(msgList[1]));
 
 				if(msgList.count() > 2 && msgList[2] != msgList[1]) {
-					m.append("; ").append(past.arg(msgList[2]));
+					m.append("; ").append(PASTSPAN.arg(msgList[2]));
 				}
 			}
 
@@ -1229,7 +1231,7 @@ void MainWindow::clientAceRoundStarted(const QString &p) {
 			save(&buf, "PNG");
 
 	m_aceRoundLabel.setPixmap(CardPixmap(QSize(10, 14), NetMauMau::Common::ICard::HEARTS,
-												 gs->aceRoundRank()));
+										 gs->aceRoundRank()));
 	m_aceRoundLabel.setToolTip("<p align=\"center\"><img src=\"data:image/png;base64,"
 							   + ba.toBase64() + "\"><br />" + tr("%1 of %2").
 							   arg(getAceRoundRankString(gs, true)).arg(p) + "</p");
