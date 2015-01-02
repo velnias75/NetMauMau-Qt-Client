@@ -219,13 +219,11 @@ GameState *MainWindow::gameState() const {
 	return m_gameState = (m_gameState ? m_gameState : new GameState());
 }
 
-void MainWindow::forceRefreshServers(bool b) {
-	if(b) {
-		ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
-		sd->blockAutoRefresh(false);
-		sd->setProperty("forceRefresh", true);
-		sd->forceRefresh(true);
-	}
+void MainWindow::forceRefreshServers(bool) {
+	ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
+	sd->blockAutoRefresh(false);
+	sd->setProperty("forceRefresh", true);
+	sd->forceRefresh(true);
 }
 
 void MainWindow::localServerLaunched(bool b) {
@@ -337,7 +335,7 @@ void MainWindow::serverAccept() {
 	const int p = as.indexOf(':');
 
 	if(as.isEmpty()) {
-		forceRefreshServers(true);
+		forceRefreshServers();
 		return;
 	}
 
@@ -1024,7 +1022,7 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 		trn->setTextAlignment(Qt::AlignCenter);
 		trn->setText(QString::number(gs->turn()));
 
-		if(!mesg.isEmpty()) gs->playerStatMsg()[player] << mesg;
+		if(!mesg.isEmpty()) gs->playerStatMsg()[player].prepend(mesg);
 
 		if(isMe(player) || gs->playerCardCounts().contains(player)) {
 
@@ -1060,14 +1058,21 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 		const QStringList &msgList(gs->playerStatMsg()[player]);
 
 		if(!msgList.isEmpty()) {
-			QString prevMsg(msgList.back());
-			if(msgList.count() > 1 && ((prevMsg = msgList[msgList.count() - 2])
-									   != msgList.back())) {
-				msg->setText("<span style=\"font-variant:small-caps;\">" + prevMsg + "</span>; "
-							 + msgList.back());
-			} else {
-				msg->setText(prevMsg);
+
+			QString m(msgList[0]);
+
+			if(msgList.count() > 1 && msgList[1] != m) {
+
+				const QString &past("<span style=\"font-variant:small-caps;\">%1</span>");
+
+				m.append("; ").append(past.arg(msgList[1]));
+
+				if(msgList.count() > 2 && msgList[2] != msgList[1]) {
+					m.append("; ").append(past.arg(msgList[2]));
+				}
 			}
+
+			msg->setText(m);
 		}
 
 		if(disable) {
@@ -1147,7 +1152,7 @@ void MainWindow::clientDestroyed() {
 	delete m_client;
 	m_client = 0L;
 
-	forceRefreshServers(true);
+	forceRefreshServers();
 
 	clearStats();
 	clearMyCards(true);

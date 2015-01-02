@@ -75,7 +75,7 @@ private slots:
 	void destroyClient(bool = false);
 	void destroyClientOffline(bool);
 	void clientDestroyed();
-	void forceRefreshServers(bool = false);
+	void forceRefreshServers(bool = true);
 	void localServerLaunched(bool);
 	void reconnectAvailable(const QString &) const;
 
