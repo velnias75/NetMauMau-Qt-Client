@@ -32,6 +32,9 @@ class GameState {
 public:
 	GameState();
 
+	bool inGame() const;
+	void setInGame(bool b);
+
 	uint maumauCount() const _PURE;
 	void setMaumauCount(uint u);
 
@@ -86,6 +89,7 @@ public:
 	void setAceRoundRank(NetMauMau::Common::ICard::RANK r);
 
 private:
+	bool m_inGame;
 	QList<CardWidget *> m_cards;
 	CardWidget *m_lastPlayedCard;
 	int m_lastPlayedCardIdx;

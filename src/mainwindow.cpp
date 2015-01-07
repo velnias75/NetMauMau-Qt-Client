@@ -249,8 +249,12 @@ void MainWindow::localServerLaunched(bool b) {
 }
 
 void MainWindow::reconnectAvailable(const QString &srv) const {
-	m_ui->actionReconnect->setDisabled(srv.isEmpty());
-	m_ui->actionReconnect->setToolTip(reconnectToolTip());
+	if(!m_gameState || !m_gameState->inGame()) {
+		m_ui->actionReconnect->setDisabled(srv.isEmpty());
+		m_ui->actionReconnect->setToolTip(reconnectToolTip());
+	} else {
+		m_ui->actionReconnect->setDisabled(true);
+	}
 }
 
 void MainWindow::resizeColumns() const {
@@ -438,6 +442,7 @@ void MainWindow::serverAccept() {
 		takeCardsMark(false);
 
 		gs->setAceRoundRank(sd->getAceRoundRank());
+		gs->setInGame(true);
 
 		m_ui->actionServer->setEnabled(false);
 		m_ui->suspendButton->setEnabled(true);
@@ -453,6 +458,8 @@ void MainWindow::serverAccept() {
 
 		sd->setLastServer(as);
 		sd->blockAutoRefresh(true);
+
+		m_scoresDialog->setServer(as);
 
 	} catch(const NetMauMau::Client::Exception::PlayerlistException &) {
 		clientError(tr("Couldn't get player list from server"));
@@ -476,7 +483,7 @@ void MainWindow::timerEvent(QTimerEvent *e) {
 	e->accept();
 }
 
-void MainWindow::keyReleaseEvent(QKeyEvent *e) {
+void MainWindow::keyPressEvent(QKeyEvent *e) {
 
 	switch(e->key()) {
 	case Qt::Key_F7:

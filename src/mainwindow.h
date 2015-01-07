@@ -52,7 +52,7 @@ public:
 protected:
 	virtual void closeEvent(QCloseEvent *e);
 	virtual void timerEvent(QTimerEvent *e);
-	virtual void keyReleaseEvent(QKeyEvent *e);
+	virtual void keyPressEvent(QKeyEvent *e);
 
 signals:
 	void disconnectNow() const;
@@ -117,7 +117,6 @@ private slots:
 	void setOpenCard(const QByteArray &);
 
 private:
-
 	GameState *gameState() const;
 
 	void clickCard(int num, QKeyEvent *e);

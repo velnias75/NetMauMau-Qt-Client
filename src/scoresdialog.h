@@ -31,12 +31,18 @@ class ScoresDialog : public QDialog, private Ui::ScoresDialog {
 public:
 	explicit ScoresDialog(ServerDialog *sd, QWidget *parent = 0);
 
+	void setServer(const QString &server);
+
+protected:
+	virtual void showEvent(QShowEvent *event);
+
 private slots:
 	void currentIndexChanged(const QString &);
 
 private:
-	const ServerDialog *m_serverdialog;
+	ServerDialog *m_serverdialog;
 	QStandardItemModel m_model;
+	QString m_server;
 };
 
 #endif // SCORESDIALOG_H

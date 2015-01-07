@@ -23,7 +23,7 @@
 #include "client.h"
 
 ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : QDialog(p), m_serverdialog(sd),
-	m_model(0, 2) {
+	m_model(0, 2), m_server(QString::null) {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -46,7 +46,32 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : QDialog(p), m_serverd
 	serverCombo->setCurrentIndex(serverCombo->findText(sd->getLastServer()));
 }
 
+void ScoresDialog::showEvent(QShowEvent *evt) {
+
+	const QList<QStandardItem *> &its(m_serverdialog->getModel()->
+									  findItems(m_server.isEmpty() ?
+													serverCombo->currentText() : m_server));
+
+	if(!its.empty() && its.first()->isEnabled()) {
+		currentIndexChanged(m_server.isEmpty() ? serverCombo->currentText() : m_server);
+	} else {
+		for(int i = 0; i < m_serverdialog->getModel()->rowCount(); ++i) {
+			if(m_serverdialog->getModel()->item(i)->isEnabled()) {
+				serverCombo->setCurrentIndex(i);
+				break;
+			}
+		}
+	}
+
+	QDialog::showEvent(evt);
+}
+
 void ScoresDialog::currentIndexChanged(const QString &txt) {
+
+	if(txt != serverCombo->currentText()) {
+		const int cIdx = serverCombo->findText(txt);
+		if(cIdx != -1) serverCombo->setCurrentIndex(cIdx);
+	}
 
 	const int idx = txt.indexOf(':');
 	const QString srv(txt.left(idx != -1 ? idx : txt.length()));
@@ -57,9 +82,12 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 	try {
 
+		timeval tv = { 5, 0 };
+
 		const Client::SCORES &scores((Client(0L, 0L, QString::null,
 											 std::string(srv.toStdString()),
-											 static_cast<uint16_t>(port))).getScores());
+											 static_cast<uint16_t>(port))).
+									 getScores(Client::SCORE_TYPE::ABS, 0, &tv));
 
 		m_model.removeRows(0, m_model.rowCount());
 
@@ -74,8 +102,16 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 			m_model.appendRow(items);
 		}
 
-	} catch(const NetMauMau::Common::Exception::SocketException &) {}
+		m_server = QString::null;
+
+	} catch(const NetMauMau::Common::Exception::SocketException &e) {
+		qWarning("Get server score for %s: %s", txt.toLocal8Bit().constData(), e.what());
+	}
 
 	scoresView->unsetCursor();
 	scoresView->resizeColumnToContents(0);
+}
+
+void ScoresDialog::setServer(const QString &server) {
+	m_server = server;
 }

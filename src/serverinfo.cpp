@@ -43,6 +43,8 @@ void ServerInfo::run() {
 	QStandardItem *ai = m_model->item(m_row, AI);
 	QStandardItem *players = m_model->item(m_row, PLAYERS);
 
+	if(!(server && version && ai && players)) return;
+
 	const QString host(server->text());
 
 	version->setToolTip(QString::null);
