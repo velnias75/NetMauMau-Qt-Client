@@ -857,14 +857,19 @@ Spieldauer: %1</translation>
         <translation>Punktzahlen</translation>
     </message>
     <message>
-        <location filename="scoresdialog.cpp" line="40"/>
+        <location filename="scoresdialog.cpp" line="41"/>
         <source>Player</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="scoresdialog.cpp" line="40"/>
+        <location filename="scoresdialog.cpp" line="41"/>
         <source>Score</source>
         <translation>Punktzahl</translation>
+    </message>
+    <message>
+        <location filename="scoresdialog.cpp" line="129"/>
+        <source>This server provides no scores</source>
+        <translation>Dieser Server liefert keine Punktzahlen</translation>
     </message>
 </context>
 <context>

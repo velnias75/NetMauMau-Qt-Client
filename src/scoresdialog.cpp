@@ -20,6 +20,7 @@
 #include "scoresdialog.h"
 
 #include "serverdialog.h"
+#include "serverinfo.h"
 #include "client.h"
 
 ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : QDialog(p), m_serverdialog(sd),
@@ -81,42 +82,57 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 		if(cIdx != -1) serverCombo->setCurrentIndex(cIdx);
 	}
 
-	const int idx = txt.indexOf(':');
-	const QString srv(txt.left(idx != -1 ? idx : txt.length()));
-	const uint port = (QString(idx != -1 ? txt.mid(idx + 1) :
-										   QString::number(Client::getDefaultPort()))).toUInt();
+	if(serverCombo->itemData(serverCombo->currentIndex(), ServerInfo::HAVESCORES).toBool()) {
 
-	scoresView->setCursor(Qt::WaitCursor);
+		const int idx = txt.indexOf(':');
+		const QString srv(txt.left(idx != -1 ? idx : txt.length()));
+		const uint port = (QString(idx != -1 ? txt.mid(idx + 1) :
+											   QString::number(Client::getDefaultPort()))).toUInt();
 
-	try {
+		scoresView->setCursor(Qt::WaitCursor);
 
-		timeval tv = { 5, 0 };
+		try {
 
-		const Client::SCORES &scores((Client(0L, 0L, QString::null,
-											 std::string(srv.toStdString()),
-											 static_cast<uint16_t>(port))).
-									 getScores(Client::SCORE_TYPE::ABS, 0, &tv));
+			timeval tv = { 5, 0 };
+
+			const Client::SCORES &scores((Client(0L, 0L, QString::null,
+												 std::string(srv.toStdString()),
+												 static_cast<uint16_t>(port))).
+										 getScores(Client::SCORE_TYPE::ABS, 0, &tv));
+
+			m_model.removeRows(0, m_model.rowCount());
+
+			for(Client::SCORES::const_iterator i(scores.begin()); i != scores.end(); ++i) {
+
+				QList<QStandardItem *> items;
+
+				items << new QStandardItem(QString::fromUtf8(i->name.c_str()));
+				items << new QStandardItem(QString::number(i->score));
+				items.back()->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+
+				m_model.appendRow(items);
+			}
+
+			m_server = QString::null;
+
+		} catch(const NetMauMau::Common::Exception::SocketException &e) {
+			qWarning("Get server score for %s: %s", txt.toLocal8Bit().constData(), e.what());
+		}
+
+		scoresView->unsetCursor();
+
+	} else {
 
 		m_model.removeRows(0, m_model.rowCount());
 
-		for(Client::SCORES::const_iterator i(scores.begin()); i != scores.end(); ++i) {
+		QList<QStandardItem *> items;
 
-			QList<QStandardItem *> items;
+		items << new QStandardItem(tr("This server provides no scores"));
+		items << new QStandardItem(QString::null);
 
-			items << new QStandardItem(QString::fromUtf8(i->name.c_str()));
-			items << new QStandardItem(QString::number(i->score));
-			items.back()->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
-
-			m_model.appendRow(items);
-		}
-
-		m_server = QString::null;
-
-	} catch(const NetMauMau::Common::Exception::SocketException &e) {
-		qWarning("Get server score for %s: %s", txt.toLocal8Bit().constData(), e.what());
+		m_model.appendRow(items);
 	}
 
-	scoresView->unsetCursor();
 	scoresView->resizeColumnToContents(0);
 }
 
