@@ -29,6 +29,25 @@
       <item>
        <widget class="QComboBox" name="serverCombo"/>
       </item>
+      <item>
+       <widget class="QPushButton" name="refreshButton">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Refresh scores</string>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="icon">
+         <iconset theme="view-refresh"/>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -55,6 +74,9 @@
         <property name="wordWrap">
          <bool>false</bool>
         </property>
+        <property name="cornerButtonEnabled">
+         <bool>false</bool>
+        </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
          <number>24</number>
         </attribute>
@@ -79,9 +101,10 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>buttonBox</tabstop>
   <tabstop>serverCombo</tabstop>
+  <tabstop>refreshButton</tabstop>
   <tabstop>scoresView</tabstop>
+  <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>
  <connections>

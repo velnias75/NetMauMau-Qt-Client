@@ -38,6 +38,7 @@ protected:
 
 private slots:
 	void currentIndexChanged(const QString &);
+	void refresh();
 
 private:
 	ServerDialog *m_serverdialog;

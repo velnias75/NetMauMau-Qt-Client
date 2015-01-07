@@ -842,17 +842,22 @@ Spieldauer: %1</translation>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="scoresdialog.ui" line="38"/>
+        <location filename="scoresdialog.ui" line="41"/>
+        <source>Refresh scores</source>
+        <translation>Aktualisiere Punktzahlen</translation>
+    </message>
+    <message>
+        <location filename="scoresdialog.ui" line="57"/>
         <source>Scores</source>
         <translation>Punktzahlen</translation>
     </message>
     <message>
-        <location filename="scoresdialog.cpp" line="36"/>
+        <location filename="scoresdialog.cpp" line="40"/>
         <source>Player</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="scoresdialog.cpp" line="36"/>
+        <location filename="scoresdialog.cpp" line="40"/>
         <source>Score</source>
         <translation>Punktzahl</translation>
     </message>

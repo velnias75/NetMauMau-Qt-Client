@@ -32,6 +32,10 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : QDialog(p), m_serverd
 
 	setupUi(this);
 
+	if(!refreshButton->icon().hasThemeIcon("view-refresh")) {
+		refreshButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_BrowserReload));
+	}
+
 	QStringList header;
 	header << tr("Player") << tr("Score");
 
@@ -41,12 +45,18 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : QDialog(p), m_serverd
 
 	QObject::connect(serverCombo, SIGNAL(currentIndexChanged(const QString &)),
 					 this, SLOT(currentIndexChanged(const QString &)));
+	QObject::connect(refreshButton, SIGNAL(clicked()), this, SLOT(refresh()));
 
 	serverCombo->setModel(sd->getModel());
 	serverCombo->setCurrentIndex(serverCombo->findText(sd->getLastServer()));
 }
 
 void ScoresDialog::showEvent(QShowEvent *evt) {
+	refresh();
+	QDialog::showEvent(evt);
+}
+
+void ScoresDialog::refresh() {
 
 	const QList<QStandardItem *> &its(m_serverdialog->getModel()->
 									  findItems(m_server.isEmpty() ?
@@ -62,8 +72,6 @@ void ScoresDialog::showEvent(QShowEvent *evt) {
 			}
 		}
 	}
-
-	QDialog::showEvent(evt);
 }
 
 void ScoresDialog::currentIndexChanged(const QString &txt) {
