@@ -21,6 +21,11 @@ Requirements
 
 It requires Qt in at least version 4.8.2
 
+Help translating
+----------------
+<a href="https://hosted.weblate.org/engage/netmaumau/?utm_source=widget">
+<img src="https://hosted.weblate.org/widgets/netmaumau/-/287x66-white.png" alt="Übersetzungsstatus" />
+</a>
 
 Binary releases
 ===============
