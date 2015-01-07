@@ -842,12 +842,17 @@ Spieldauer: %1</translation>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="scoresdialog.ui" line="41"/>
+        <location filename="scoresdialog.ui" line="32"/>
+        <source>Choose the server to show the scores</source>
+        <translation>Wähle den Server von dem die Punktzahlen angezeigt werden sollen</translation>
+    </message>
+    <message>
+        <location filename="scoresdialog.ui" line="45"/>
         <source>Refresh scores</source>
         <translation>Aktualisiere Punktzahlen</translation>
     </message>
     <message>
-        <location filename="scoresdialog.ui" line="57"/>
+        <location filename="scoresdialog.ui" line="63"/>
         <source>Scores</source>
         <translation>Punktzahlen</translation>
     </message>

@@ -2,9 +2,17 @@
 <ui version="4.0">
  <class>SuitLabel</class>
  <widget class="QLabel" name="SuitLabel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>8</width>
+    <height>19</height>
+   </rect>
+  </property>
   <property name="font">
    <font>
-    <pointsize>12</pointsize>
+    <pointsize>14</pointsize>
    </font>
   </property>
   <property name="alignment">

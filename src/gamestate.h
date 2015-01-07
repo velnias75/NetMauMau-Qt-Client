@@ -32,7 +32,7 @@ class GameState {
 public:
 	GameState();
 
-	bool inGame() const;
+	bool inGame() const _PURE;
 	void setInGame(bool b);
 
 	uint maumauCount() const _PURE;

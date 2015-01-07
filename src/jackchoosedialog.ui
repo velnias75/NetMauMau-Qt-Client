@@ -50,7 +50,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <pointsize>18</pointsize>
            </font>
           </property>
           <property name="shortcut">
@@ -81,7 +81,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <pointsize>18</pointsize>
            </font>
           </property>
           <property name="shortcut">
@@ -109,7 +109,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <pointsize>18</pointsize>
            </font>
           </property>
           <property name="shortcut">
@@ -140,7 +140,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <pointsize>18</pointsize>
            </font>
           </property>
           <property name="shortcut">

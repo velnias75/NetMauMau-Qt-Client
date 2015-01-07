@@ -27,7 +27,11 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QComboBox" name="serverCombo"/>
+       <widget class="QComboBox" name="serverCombo">
+        <property name="toolTip">
+         <string>Choose the server to show the scores</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="refreshButton">
@@ -44,7 +48,9 @@
          <string notr="true"/>
         </property>
         <property name="icon">
-         <iconset theme="view-refresh"/>
+         <iconset theme="view-refresh">
+          <normaloff/>
+         </iconset>
         </property>
        </widget>
       </item>

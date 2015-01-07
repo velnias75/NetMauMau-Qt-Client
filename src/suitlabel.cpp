@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -79,6 +79,6 @@ void SuitLabel::styleSuit() {
 	}
 
 	QFont f = font();
-	f.setPointSize(12);
+	f.setPointSize(14);
 	setFont(f);
 }
