@@ -62,7 +62,8 @@ SOURCES += cardpixmap.cpp \
 	serverinfo.cpp \
 	suitlabel.cpp \
 	suitradiobutton.cpp \
-	util.cpp
+	util.cpp \
+    scoresdialog.cpp
 
 HEADERS  += cardpixmap.h \
 	cardwidget.h \
@@ -86,7 +87,8 @@ HEADERS  += cardpixmap.h \
 	serverinfo.h \
 	suitlabel.h \
 	suitradiobutton.h \
-	util.h
+	util.h \
+    scoresdialog.h
 
 FORMS    += cardwidget.ui \
 	connectionlogdialog.ui \
@@ -98,7 +100,8 @@ FORMS    += cardwidget.ui \
 	mainwindow.ui \
 	serverdialog.ui \
 	suitlabel.ui \
-	suitradiobutton.ui
+	suitradiobutton.ui \
+    scoresdialog.ui
 
 RESOURCES += cards.qrc \
 	icons.qrc \

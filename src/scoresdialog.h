@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,36 +17,26 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SERVERINFO_H
-#define SERVERINFO_H
+#ifndef SCORESDIALOG_H
+#define SCORESDIALOG_H
 
-#include <QThread>
+#include <QStandardItemModel>
 
-class QStandardItem;
-class QStandardItemModel;
+#include "ui_scoresdialog.h"
 
-class ServerInfo : public QThread {
+class ServerDialog;
+
+class ScoresDialog : public QDialog, private Ui::ScoresDialog {
 	Q_OBJECT
 public:
-	typedef enum { SERVER = 0, VERSION, AI, PLAYERS } COLS;
-	typedef enum { ACEROUNDRANK = Qt::UserRole + 1, HAVESCORES } DATAROLES;
+	explicit ScoresDialog(ServerDialog *sd, QWidget *parent = 0);
 
-	explicit ServerInfo(const QStandardItemModel *model, int row, QObject *parent = 0);
-	virtual ~ServerInfo();
-
-protected:
-	virtual void run();
-
-signals:
-	void online(bool, int);
+private slots:
+	void currentIndexChanged(const QString &);
 
 private:
-	void setError(QStandardItem *ai, QStandardItem *players, QStandardItem *version,
-				  QStandardItem *server, const QString &host, const QString &err);
-
-private:
-	const QStandardItemModel *m_model;
-	const int m_row;
+	const ServerDialog *m_serverdialog;
+	QStandardItemModel m_model;
 };
 
-#endif // SERVERINFO_H
+#endif // SCORESDIALOG_H

@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>542</height>
+    <height>548</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -150,6 +150,8 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
+    <addaction name="actionHallOfFame"/>
+    <addaction name="separator"/>
     <addaction name="actionConnectionlog"/>
     <addaction name="actionNetMauMauServerOutput"/>
    </widget>
@@ -788,6 +790,14 @@
   <action name="actionLicense">
    <property name="text">
     <string>License</string>
+   </property>
+  </action>
+  <action name="actionHallOfFame">
+   <property name="text">
+    <string>Hall of Fame...</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+H</string>
    </property>
   </action>
  </widget>

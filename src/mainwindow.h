@@ -33,6 +33,7 @@ class MainWindow;
 
 class GameState;
 class CardWidget;
+class ScoresDialog;
 class QSplashScreen;
 class QProgressDialog;
 class JackChooseDialog;
@@ -165,6 +166,7 @@ private:
 	QDialog *m_licenseDialog;
 	QLabel m_aceRoundLabel;
 	mutable GameState *m_gameState;
+	ScoresDialog *m_scoresDialog;
 };
 
 #endif // MAINWINDOW_H

@@ -30,6 +30,7 @@
 #include "gamestate.h"
 #include "cardwidget.h"
 #include "cardpixmap.h"
+#include "scoresdialog.h"
 #include "serverdialog.h"
 #include "licensedialog.h"
 #include "ui_mainwindow.h"
@@ -62,7 +63,8 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16))
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))),
 	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)),
-	m_licenseDialog(new LicenseDialog(this)), m_aceRoundLabel(), m_gameState(0L) {
+	m_licenseDialog(new LicenseDialog(this)), m_aceRoundLabel(), m_gameState(0L),
+	m_scoresDialog(new ScoresDialog(static_cast<ServerDialog *>(m_serverDlg), this)) {
 
 	m_ui->setupUi(this);
 
@@ -107,6 +109,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	QObject::connect(m_ui->actionServer, SIGNAL(triggered()), m_serverDlg, SLOT(show()));
 	QObject::connect(m_ui->actionLaunchServer, SIGNAL(triggered()), m_launchDlg, SLOT(show()));
 	QObject::connect(m_ui->actionLicense, SIGNAL(triggered()), m_licenseDialog, SLOT(exec()));
+	QObject::connect(m_ui->actionHallOfFame, SIGNAL(triggered()), m_scoresDialog, SLOT(exec()));
 
 	QFont fnt("Monospace");
 	fnt.setStyleHint(QFont::TypeWriter);
@@ -203,8 +206,8 @@ MainWindow::~MainWindow() {
 
 	disconnect();
 
-	delete m_ui;
 	delete m_lsov;
+	delete m_scoresDialog;
 	delete m_serverDlg;
 	delete m_launchDlg;
 	delete m_licenseDialog;
@@ -217,6 +220,7 @@ MainWindow::~MainWindow() {
 	delete m_messageItemDelegate;
 	delete m_receivingPlayerImageProgress;
 	delete m_gameState;
+	delete m_ui;
 }
 
 GameState *MainWindow::gameState() const {

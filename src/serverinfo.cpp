@@ -86,8 +86,11 @@ void ServerInfo::run() {
 																		(f->second == "K"
 																		 ? tr("king rounds") :
 																		   tr("ace rounds")))));
-			ai->setData(QString::fromStdString(f->second));
+			ai->setData(QString::fromStdString(f->second), ACEROUNDRANK);
 		}
+
+		const Client::CAPABILITIES::const_iterator &hs(caps.find("HAVE_SCORES"));
+		server->setData(hs != caps.end() && hs->second != "false", HAVESCORES);
 
 		players->setText(tr("%1/%2").arg(curPCnt).arg(maxPCnt));
 		players->setToolTip(tr("Waiting for %n more player(s)", "", (maxPCnt - curPCnt)));

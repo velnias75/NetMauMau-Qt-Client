@@ -48,6 +48,8 @@ public:
 	void setLastServer(const QString &ls);
 	QString getLastServer() const;
 
+	QStandardItemModel *getModel() _CONST;
+
 	void blockAutoRefresh(bool b);
 	void forceRefresh(bool b);
 
