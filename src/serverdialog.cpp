@@ -41,11 +41,11 @@ const QRegExp nameRex("[^\\+]+.*");
 }
 
 ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_model(0, 4),
-	m_forceRefresh(false), m_lastServer(QString::null),
+	m_playerNameModel(), m_forceRefresh(false), m_lastServer(QString::null),
 	m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
 	m_hostRexValidator(new QRegExpValidator(hostRex)),
 	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
-	m_mutex(), m_blockAutoRefresh(false), m_splash(splash) {
+	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null) {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -59,6 +59,7 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 	hostEdit->setValidator(m_hostRexValidator);
 	playerName->setValidator(m_nameRexValidator);
+	playerName->lineEdit()->setMaxLength(1023);
 
 	m_model.setHorizontalHeaderLabels(labels);
 
@@ -69,11 +70,20 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	settings.endGroup();
 
 	settings.beginGroup("Player");
-	playerName->setText(settings.value("name", "Phoenix").toString());
+	m_lastPlayerName = settings.value("name", "Phoenix").toString();
+	m_playerNameModel.appendRow(new QStandardItem(m_lastPlayerName));
+
+	const QStringList &pNames(settings.value("altNames", QStringList()).toStringList());
+
+	for(int i = 0; i < pNames.count(); ++i) {
+		m_playerNameModel.appendRow(new QStandardItem(pNames[i]));
+	}
+
 	setPlayerImagePath(settings.value("playerImage").toString());
 	settings.endGroup();
 
 	availServerView->setModel(&m_model);
+	playerName->setModel(&m_playerNameModel);
 
 	QObject::connect(availServerView->selectionModel(),
 					 SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
@@ -206,7 +216,7 @@ void ServerDialog::enableClearButton(const QString &s) {
 
 void ServerDialog::doubleClick() {
 
-	if(!playerName->text().isEmpty()) {
+	if(!playerName->lineEdit()->text().isEmpty()) {
 
 		try {
 
@@ -220,7 +230,7 @@ void ServerDialog::doubleClick() {
 
 			//			timeval tv = { 0, 800 };
 
-			QByteArray pn = playerName->text().toUtf8();
+			QByteArray pn = playerName->lineEdit()->text().toUtf8();
 			const Client::PLAYERLIST &pl((Client(0L, 0L, pn.constData(),
 												 std::string(srv.toStdString()),
 												 static_cast<uint16_t>(port))).playerList());
@@ -228,9 +238,9 @@ void ServerDialog::doubleClick() {
 			if(qBinaryFind(pl.begin(), pl.end(), pn.constData()) != pl.end()) {
 
 				QMessageBox::warning(this, tr("Connect"), tr("%1 is already in use!")
-									 .arg(playerName->text()));
+									 .arg(playerName->lineEdit()->text()));
 
-				playerName->selectAll();
+				playerName->lineEdit()->selectAll();
 				playerName->setFocus();
 
 				return;
@@ -240,7 +250,17 @@ void ServerDialog::doubleClick() {
 
 		QSettings settings;
 		settings.beginGroup("Player");
-		settings.setValue("name", playerName->text());
+		settings.setValue("name", playerName->lineEdit()->text());
+
+		QStringList altNames;
+
+		for(int i = 0; i < m_playerNameModel.rowCount(); ++i) {
+			altNames << m_playerNameModel.item(i)->text();
+		}
+
+		altNames.removeAll(playerName->lineEdit()->text());
+
+		settings.setValue("altNames", altNames);
 		settings.setValue("playerImage", playerImagePath->text());
 		settings.endGroup();
 
@@ -295,7 +315,21 @@ QStandardItemModel *ServerDialog::getModel() {
 }
 
 QString ServerDialog::getPlayerName() const {
-	return playerName->text();
+
+	const QString &curPlayerName(playerName->lineEdit()->text());
+
+	if(curPlayerName != m_lastPlayerName) {
+
+		m_lastPlayerName = curPlayerName;
+
+		if(m_playerNameModel.findItems(m_lastPlayerName).isEmpty()) {
+			m_playerNameModel.appendRow(new QStandardItem(m_lastPlayerName));
+		}
+
+		playerName->setCurrentIndex(playerName->findText(m_lastPlayerName));
+	}
+
+	return curPlayerName;
 }
 
 uint ServerDialog::getMaxPlayerCount() const {

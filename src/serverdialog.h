@@ -80,6 +80,7 @@ signals:
 private:
 	QList<ServerInfo *> m_serverInfoThreads;
 	QStandardItemModel m_model;
+	mutable QStandardItemModel m_playerNameModel;
 	mutable bool m_forceRefresh;
 	QString m_lastServer;
 	const DeleteServersDialog *m_deleteServersDlg;
@@ -90,6 +91,7 @@ private:
 	QMutex m_mutex;
 	bool m_blockAutoRefresh;
 	QSplashScreen *m_splash;
+	mutable QString m_lastPlayerName;
 };
 
 #endif // SERVERDIALOG_H
