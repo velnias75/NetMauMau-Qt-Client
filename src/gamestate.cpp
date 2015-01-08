@@ -20,7 +20,7 @@
 #include "gamestate.h"
 
 GameState::GameState() : m_inGame(false), m_cards(), m_lastPlayedCard(0L), m_lastPlayedCardIdx(-1),
-	m_playerStatMsg(), m_playerCardCounts(), m_clientDestroyRequested(false),
+	m_playerStatMsg(), m_playerScores(), m_playerCardCounts(), m_clientDestroyRequested(false),
 	m_countWonDisplayed(0), m_lostWonConfirmed(false), m_mmCnt(0), m_pickCardPrepended(false),
 	m_noCardPossible(false), m_turn(1), m_maxPlayerCount(0), m_possibleCards(), m_curReceiving(),
 	m_aceRoundActive(), m_playTime(0, 0, 0), m_lostDisplaying(false),
@@ -108,6 +108,10 @@ void GameState::setTurn(std::size_t t) {
 
 QMap<QString, QStringList> &GameState::playerStatMsg() {
 	return m_playerStatMsg;
+}
+
+QMap<QString, QString> &GameState::playerScores() {
+	return m_playerScores;
 }
 
 QMap<QString, std::size_t> &GameState::playerCardCounts() {

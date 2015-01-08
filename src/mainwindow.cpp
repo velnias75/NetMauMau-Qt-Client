@@ -22,6 +22,7 @@
 #include <QBuffer>
 
 #include <cardtools.h>
+#include <scoresexception.h>
 #include <playerlistexception.h>
 
 #include "mainwindow.h"
@@ -44,6 +45,13 @@
 
 namespace {
 const QString PASTSPAN("<span style=\"font-variant:small-caps;\">%1</span>");
+
+struct scoresPlayer : public std::binary_function<Client::SCORE, std::string, bool> {
+	bool operator()(const Client::SCORE &x, const std::string& y) const {
+		return x.name == y;
+	}
+};
+
 }
 
 MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_client(0L),
@@ -380,11 +388,30 @@ void MainWindow::serverAccept() {
 	try {
 
 		const Client::PLAYERINFOS &pl(m_client->playerList(true));
+		const Client::SCORES &scores(m_client->getScores(Client::SCORE_TYPE::ABS, 0));
 
 		for(Client::PLAYERINFOS::const_iterator i(pl.begin()); i != pl.end(); ++i) {
 			qApp->processEvents();
-			clientPlayerJoined(QString::fromUtf8(i->name.c_str()), i->pngDataLen ?
-								   QImage::fromData(i->pngData, i->pngDataLen) : QImage());
+
+			const QString &pName(QString::fromUtf8(i->name.c_str()));
+
+			const Client::SCORES::const_iterator &ps(std::find_if(scores.begin(), scores.end(),
+																  std::bind2nd(scoresPlayer(),
+																			   i->name)));
+
+			if(ps != scores.end()) gs->playerScores()[pName] = QString::number(ps->score);
+
+			const Client::SCORES::const_iterator
+					&myScore(std::find_if(scores.begin(), scores.end(),
+										  std::bind2nd(scoresPlayer(),
+													   sd->getPlayerName().toUtf8().constData())));
+
+			if(myScore != scores.end()) {
+				gs->playerScores()[sd->getPlayerName()] = QString::number(myScore->score);
+			}
+
+			clientPlayerJoined(pName, i->pngDataLen ?  QImage::fromData(i->pngData,
+																		i->pngDataLen) : QImage());
 			delete [] i->pngData;
 		}
 
@@ -461,6 +488,8 @@ void MainWindow::serverAccept() {
 
 		m_scoresDialog->setServer(as);
 
+	} catch(const NetMauMau::Client::Exception::ScoresException &) {
+		clientError(tr("Couldn't get scores from server"));
 	} catch(const NetMauMau::Client::Exception::PlayerlistException &) {
 		clientError(tr("Couldn't get player list from server"));
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
@@ -784,11 +813,7 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 	m_stdForeground = si.back()->foreground();
 	m_stdBackground = si.back()->background();
 
-	//	if(isMe(p)) {
-	//		m_model.insertRow(0, si);
-	//	} else {
 	m_model.appendRow(si);
-	//	}
 
 	const long np = static_cast<long>(gameState()->maxPlayerCount()) - m_model.rowCount();
 
@@ -933,18 +958,20 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 
 void MainWindow::takeCardsMark(std::size_t count) const {
 
+	GameState *gs = gameState();
+
 	const QString &me(myself());
 	const QList<QStandardItem *> &l(rowForPlayer(me));
 	QStandardItem *name = (l.isEmpty()) ? 0L : l.first();
 
 	if(name) {
 		name->setText(me);
-		name->setToolTip(me);
+		name->setToolTip(playerToolTip(gs, me));
 	}
 
 	if(count) {
 
-		const QList<CardWidget *> &cards(gameState()->cards());
+		const QList<CardWidget *> &cards(gs->cards());
 		const bool normal = NetMauMau::Common::findRank(NetMauMau::Common::ICard::SEVEN,
 														cards.begin(), cards.end());
 
@@ -1068,7 +1095,7 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 		m_ui->remotePlayersView->resizeColumnToContents(CARDS);
 		m_ui->remotePlayersView->resizeColumnToContents(MESSAGE);
 
-		nam->setToolTip(player);
+		nam->setToolTip(playerToolTip(gs, player));
 
 		const QStringList &msgList(gs->playerStatMsg()[player]);
 
@@ -1095,6 +1122,20 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 			msg->setEnabled(false);
 		}
 	}
+}
+
+QString MainWindow::playerToolTip(GameState *gs, const QString &player) const {
+
+	QString ptt("<html><body>");
+	ptt.append(player);
+
+	if(gs->playerScores().contains(player)) {
+		ptt.append("<br /><span style=\"font-size:small;\">").
+				append(tr("Current score: %1").arg(gs->playerScores()[player])).
+				append("</span>");
+	}
+
+	return ptt.append("</body></html>");
 }
 
 void MainWindow::lostWinConfirmed(int tryAgain) {
