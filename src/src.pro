@@ -32,7 +32,7 @@ CONFIG(debug, debug|release) {
 	 win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
 	 unix:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing -Wformat \
 	 -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \
-	 -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wdisabled-optimization
+	 -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wdisabled-optimization -Wuninitialized
 	 win32:QMAKE_CXXFLAGS += -O2 -fomit-frame-pointer -fstrict-aliasing
 	 win32:LIBS    += /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
 				/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
@@ -63,7 +63,7 @@ SOURCES += cardpixmap.cpp \
 	suitlabel.cpp \
 	suitradiobutton.cpp \
 	util.cpp \
-    scoresdialog.cpp
+	scoresdialog.cpp
 
 HEADERS  += cardpixmap.h \
 	cardwidget.h \
@@ -88,7 +88,7 @@ HEADERS  += cardpixmap.h \
 	suitlabel.h \
 	suitradiobutton.h \
 	util.h \
-    scoresdialog.h
+	scoresdialog.h
 
 FORMS    += cardwidget.ui \
 	connectionlogdialog.ui \
@@ -101,7 +101,7 @@ FORMS    += cardwidget.ui \
 	serverdialog.ui \
 	suitlabel.ui \
 	suitradiobutton.ui \
-    scoresdialog.ui
+	scoresdialog.ui
 
 RESOURCES += cards.qrc \
 	icons.qrc \
@@ -111,6 +111,8 @@ RESOURCES += cards.qrc \
 RC_FILE += appicon.rc
 
 DISTFILES += COPYING cards/* *.png *.ico nmm_qt_client.desktop
+
+#OTHER_FILES += ../README.md
 
 TRANSLATIONS += nmm_qt_client_de_DE.ts
 
@@ -122,3 +124,4 @@ dist-xz.depends = dist
 dist-xz.target = dist-xz
 dist-xz.commands += gzip -dc $$TARGET$$VERSION\\.tar\\.gz | xz -ec9 - > $$DIST_NAME\\.tar\\.xz;
 dist-xz.commands += $(DEL_FILE) -r $$TARGET$$VERSION\\.tar\\.gz
+

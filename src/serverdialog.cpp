@@ -462,9 +462,10 @@ void ServerDialog::updateOnline(bool enabled, int row) {
 	players->setEnabled(enabled);
 
 	if(enabled && server->text() == m_lastServer) {
-		availServerView->selectionModel()->select(m_model.index(row, ServerInfo::SERVER),
-												  QItemSelectionModel::ClearAndSelect|
+		const QModelIndex &idx(m_model.index(row, ServerInfo::SERVER));
+		availServerView->selectionModel()->select(idx, QItemSelectionModel::ClearAndSelect|
 												  QItemSelectionModel::Rows);
+		availServerView->scrollTo(idx);
 		emit reconnectAvailable(m_lastServer);
 	}
 }
