@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="de_DE">
+<defaultcodec>UTF-8</defaultcodec>
 <context>
     <name>CardWidget</name>
     <message>
@@ -227,7 +228,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <source>Ace &amp;round:</source>
         <translation>Ass&amp;runde:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="launchserverdialog.ui" line="106"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables &lt;span style=&quot; font-weight:600;&quot;&gt;Ace rounds&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;In an &lt;span style=&quot; font-weight:600;&quot;&gt;Ace round&lt;/span&gt; players are only allowed to play &lt;span style=&quot; font-style:italic;&quot;&gt;Aces.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;NOTE:&lt;/span&gt; enabling this option forces other player&apos;s clients to be at least of version 0.7&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aktiviert &lt;span style=&quot; font-weight:600;&quot;&gt;Assrunden&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;In einer &lt;span style=&quot; font-weight:600;&quot;&gt;Assrunde&lt;/span&gt; können die Spieler nur &lt;span style=&quot; font-style:italic;&quot;&gt;Asse&lt;/span&gt; legen.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;HINWEIS:&lt;/span&gt; das Aktivieren dieser Option zwingt andere Spieler mindestens die Version 0.7 des Klienten zu nutzen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
@@ -499,8 +500,9 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="734"/>
-        <source>Connection &amp;log...</source>
-        <translation>&amp;Verbindungslog...</translation>
+        <source>Connection &amp;log</source>
+        <oldsource>Connection &amp;log...</oldsource>
+        <translation>&amp;Verbindungslog</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="745"/>
@@ -514,8 +516,9 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="762"/>
-        <source>&amp;NetMauMau server output...</source>
-        <translation>&amp;NetMauMau Serverausgabe...</translation>
+        <source>&amp;NetMauMau server output</source>
+        <oldsource>&amp;NetMauMau server output...</oldsource>
+        <translation>&amp;NetMauMau Serverausgabe</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="781"/>
@@ -534,8 +537,9 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="797"/>
-        <source>Hall of Fame...</source>
-        <translation>Ruhmeshalle...</translation>
+        <source>Hall of Fame</source>
+        <oldsource>Hall of Fame...</oldsource>
+        <translation>Ruhmeshalle</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="144"/>
@@ -554,8 +558,9 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.cpp" line="327"/>
-        <source>Receiving player image for &quot;%1&quot;...</source>
-        <translation>Empfange Bild für Spieler &quot;%1&quot;...</translation>
+        <source>Receiving player image for &quot;%1&quot;…</source>
+        <oldsource>Receiving player image for &quot;%1&quot;u2026</oldsource>
+        <translation>Empfange Bild für Spieler &quot;%1&quot;…</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="477"/>
@@ -749,17 +754,18 @@ Spieldauer: %1</translation>
     </message>
     <message numerus="yes">
         <location filename="mainwindow.cpp" line="821"/>
-        <source>Waiting for %n more player(s)...</source>
-        <oldsource>Waiting for %1 more player%2...</oldsource>
+        <source>Waiting for %n more player(s)…</source>
+        <oldsource>Waiting for %n more player(s)u2026</oldsource>
         <translation>
-            <numerusform>Warte auf %n weiteren Spieler...</numerusform>
-            <numerusform>Warte auf %n weitere Spieler...</numerusform>
+            <numerusform>Warte auf %n weiteren Spieler…</numerusform>
+            <numerusform>Warte auf %n weitere Spieler…</numerusform>
         </translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="848"/>
-        <source>Play your card...</source>
-        <translation>Lege Deine Karte...</translation>
+        <source>Play your card…</source>
+        <oldsource>Play your cardu2026</oldsource>
+        <translation>Lege Deine Karte…</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="1249"/>
@@ -830,13 +836,15 @@ Spieldauer: %1</translation>
     <name>PlayerImageProgressDialog</name>
     <message>
         <location filename="playerimageprogressdialog.cpp" line="28"/>
-        <source>Receiving player image...</source>
-        <translation>Empfange Spielerbild...</translation>
+        <source>Receiving player image…</source>
+        <oldsource>Receiving player imageu2026</oldsource>
+        <translation>Empfange Spielerbild…</translation>
     </message>
     <message>
         <location filename="playerimageprogressdialog.cpp" line="42"/>
-        <source>Receiving player image for &quot;%1&quot;...</source>
-        <translation>Empfange Bild für Spieler &quot;%1&quot;...</translation>
+        <source>Receiving player image for &quot;%1&quot;…</source>
+        <oldsource>Receiving player image for &quot;%1&quot;u2026</oldsource>
+        <translation>Empfange Bild für Spieler &quot;%1&quot;…</translation>
     </message>
 </context>
 <context>

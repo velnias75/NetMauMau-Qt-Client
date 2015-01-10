@@ -324,7 +324,7 @@ void MainWindow::receivingPlayerImage(const QString &p) {
 	gameState()->setCurReceiving(p);
 	QTimer::singleShot(1000, this, SLOT(showReceiveProgress()));
 
-	statusBar()->showMessage(tr("Receiving player image for \"%1\"...").arg(p), 1000);
+	statusBar()->showMessage(trUtf8("Receiving player image for \"%1\"…").arg(p), 1000);
 }
 
 void MainWindow::receivedPlayerImage(const QString &) {
@@ -818,7 +818,7 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 	const long np = static_cast<long>(gameState()->maxPlayerCount()) - m_model.rowCount();
 
 	if(np > 0L) {
-		statusBar()->showMessage(tr("Waiting for %n more player(s)...", "", np));
+		statusBar()->showMessage(trUtf8("Waiting for %n more player(s)…", "", np));
 	} else {
 		statusBar()->clearMessage();
 	}
@@ -845,7 +845,7 @@ void MainWindow::clientNextPlayer(const QString &player) {
 
 void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t takeCount) {
 
-	const QString &msg(tr("Play your card..."));
+	const QString &msg(trUtf8("Play your card…"));
 
 	GameState *gs = gameState();
 

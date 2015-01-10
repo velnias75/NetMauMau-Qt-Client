@@ -114,6 +114,8 @@ DISTFILES += COPYING cards/* *.png *.ico nmm_qt_client.desktop lgpl-3.html
 
 #OTHER_FILES += ../README.md
 
+CODECFORTR = UTF-8
+
 TRANSLATIONS += nmm_qt_client_de_DE.ts
 
 DIST_NAME = $$TARGET-$$VERSION

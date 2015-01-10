@@ -731,7 +731,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Connection &amp;log...</string>
+    <string>Connection &amp;log</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+L</string>
@@ -759,7 +759,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>&amp;NetMauMau server output...</string>
+    <string>&amp;NetMauMau server output</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+O</string>
@@ -794,7 +794,7 @@
   </action>
   <action name="actionHallOfFame">
    <property name="text">
-    <string>Hall of Fame...</string>
+    <string>Hall of Fame</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+H</string>
