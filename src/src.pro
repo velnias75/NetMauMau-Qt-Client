@@ -3,7 +3,7 @@ QT += svg
 CONFIG += debug_and_release
 CONFIG += rtti exceptions
 
-VERSION = 0.9
+VERSION = 0.10
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
 
