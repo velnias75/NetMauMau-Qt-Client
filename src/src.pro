@@ -110,7 +110,7 @@ RESOURCES += cards.qrc \
 
 RC_FILE += appicon.rc
 
-DISTFILES += COPYING cards/* *.png *.ico nmm_qt_client.desktop
+DISTFILES += COPYING cards/* *.png *.ico nmm_qt_client.desktop lgpl-3.html
 
 #OTHER_FILES += ../README.md
 
