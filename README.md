@@ -29,7 +29,7 @@ Help translating
 
 Binary releases
 ===============
-
+[![Download NetMauMau](https://img.shields.io/sourceforge/dm/netmaumau.svg)](https://sourceforge.net/projects/netmaumau/files/latest/download)
 Gentoo
 ------
 NetMauMau is available on Gentoo via the overlay **games-overlay** which can be added by `layman`
@@ -60,5 +60,5 @@ Debian 7
 
 Windows
 -------
-[https://sourceforge.net/projects/netmaumau/](https://sourceforge.net/projects/netmaumau/)
+[![Download NetMauMau](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/netmaumau/files/latest/download)
 
