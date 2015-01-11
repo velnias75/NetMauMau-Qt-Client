@@ -352,6 +352,7 @@ void MainWindow::serverAccept() {
 
 	ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
 	const QString &as(sd->getAcceptedServer());
+	const QString &alias(sd->getAcceptedServerAlias());
 	const int p = as.indexOf(':');
 
 	if(as.isEmpty()) {
@@ -474,7 +475,7 @@ void MainWindow::serverAccept() {
 		m_ui->actionServer->setEnabled(false);
 		m_ui->suspendButton->setEnabled(true);
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
-		m_ui->remoteGroup->setTitle(tr("%1 on %2").arg(m_ui->remoteGroup->title()).arg(as));
+		m_ui->remoteGroup->setTitle(tr("%1 on %2").arg(m_ui->remoteGroup->title()).arg(alias));
 
 		m_timeLabel.setText(gs->playTime().toString("HH:mm:ss"));
 		m_timeLabel.show();

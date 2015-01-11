@@ -66,6 +66,7 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	QSettings settings;
 	settings.beginGroup("Servers");
 	QStringList servers = settings.value("list", QStringList("localhost")).toStringList();
+	QStringList aliases = settings.value("alias", servers).toStringList();
 	setLastServer(settings.value("lastServer", QVariant("localhost")).toString());
 	settings.endGroup();
 
@@ -85,6 +86,9 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	availServerView->setModel(&m_model);
 	playerName->setModel(&m_playerNameModel);
 
+	QObject::connect(&m_model, SIGNAL(itemChanged(QStandardItem *)),
+					 this, SLOT(itemChanged(QStandardItem *)));
+
 	QObject::connect(availServerView->selectionModel(),
 					 SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
 					 this, SLOT(enableRemoveAndOkButton(const QItemSelection &,
@@ -94,17 +98,22 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 		const QString &tHost(servers[i].trimmed());
 		if(!tHost.simplified().isEmpty() && hostRex.exactMatch(tHost.left(tHost.indexOf(':')))) {
 
-			m_model.setItem(j, ServerInfo::SERVER, new QStandardItem(tHost));
+			m_model.setItem(j, ServerInfo::SERVER, new QStandardItem(aliases[i]));
+			m_model.item(j, ServerInfo::SERVER)->setData(tHost, ServerInfo::HOST);
 			m_model.item(j, ServerInfo::SERVER)->setEnabled(false);
+			m_model.item(j, ServerInfo::SERVER)->setEditable(false);
 			m_model.setItem(j, ServerInfo::VERSION, new QStandardItem(tr(NA)));
 			m_model.item(j, ServerInfo::VERSION)->setTextAlignment(Qt::AlignCenter);
 			m_model.item(j, ServerInfo::VERSION)->setEnabled(false);
+			m_model.item(j, ServerInfo::VERSION)->setEditable(false);
 			m_model.setItem(j, ServerInfo::AI, new QStandardItem());
 			m_model.item(j, ServerInfo::AI)->setSizeHint(QSize());
 			m_model.item(j, ServerInfo::AI)->setEnabled(false);
+			m_model.item(j, ServerInfo::AI)->setEditable(false);
 			m_model.setItem(j, ServerInfo::PLAYERS, new QStandardItem(tr(NA)));
 			m_model.item(j, ServerInfo::PLAYERS)->setTextAlignment(Qt::AlignCenter);
 			m_model.item(j, ServerInfo::PLAYERS)->setEnabled(false);
+			m_model.item(j, ServerInfo::PLAYERS)->setEditable(false);
 
 			m_serverInfoThreads.push_back(new ServerInfo(&m_model, j));
 			QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool, int)),
@@ -273,6 +282,17 @@ void ServerDialog::doubleClick() {
 }
 
 QString ServerDialog::getAcceptedServer() const {
+
+	const QModelIndexList &l(availServerView->selectionModel()->selection().indexes());
+
+	if(!l.isEmpty()) {
+		return m_model.itemFromIndex(l.first())->data(ServerInfo::HOST).toString();
+	} else {
+		return QString::null;
+	}
+}
+
+QString ServerDialog::getAcceptedServerAlias() const {
 
 	const QModelIndexList &l(availServerView->selectionModel()->selection().indexes());
 
@@ -454,14 +474,18 @@ void ServerDialog::updateOnline(bool enabled, int row) {
 
 	ai->setCheckable(true);
 	server->setEnabled(enabled);
-	server->setEditable(false);
+	server->setEditable(enabled);
 	version->setEnabled(enabled);
 	version->setEditable(false);
-	ai->setEnabled(false);
+	ai->setEnabled(enabled);
+	version->setEditable(false);
+	Qt::ItemFlags f = ai->flags();
+	f &= ~Qt::ItemIsUserCheckable;
+	ai->setFlags(f);
 	players->setEditable(false);
 	players->setEnabled(enabled);
 
-	if(enabled && server->text() == m_lastServer) {
+	if(enabled && server->data(ServerInfo::HOST).toString() == m_lastServer) {
 		const QModelIndex &idx(m_model.index(row, ServerInfo::SERVER));
 		availServerView->selectionModel()->select(idx, QItemSelectionModel::ClearAndSelect|
 												  QItemSelectionModel::Rows);
@@ -483,13 +507,20 @@ void ServerDialog::blockAutoRefresh(bool b) {
 	m_blockAutoRefresh = b;
 }
 
+void ServerDialog::itemChanged(QStandardItem *) {
+	saveServers();
+}
+
 void ServerDialog::addServer() {
 
 	QList<QStandardItem *> row;
 
-	row << new QStandardItem(hostEdit->text() + (!portSpin->text().isEmpty() ?
-													 QString(":%1").arg(portSpin->text()) :
-													 QString::null));
+	const QString &host(hostEdit->text() + (!portSpin->text().isEmpty() ?
+												QString(":%1").arg(portSpin->text()) :
+												QString::null));
+
+	row << new QStandardItem(host);
+	row.back()->setData(host, ServerInfo::HOST);
 	row.back()->setEnabled(false);
 	row << new QStandardItem(NA);
 	row.back()->setEnabled(false);
@@ -534,15 +565,17 @@ void ServerDialog::deleteRows(const QList<int> &rows) {
 
 void ServerDialog::saveServers() {
 
-	QStringList srvs;
+	QStringList srvs, alias;
 
 	for(int r = 0; r < m_model.rowCount(); ++r) {
-		srvs << m_model.item(r)->text();
+		srvs << m_model.item(r)->data(ServerInfo::HOST).toString();
+		alias << m_model.item(r)->text();
 	}
 
 	QSettings settings;
 	settings.beginGroup("Servers");
 	settings.setValue("list", srvs);
+	settings.setValue("alias", alias);
 	settings.endGroup();
 }
 

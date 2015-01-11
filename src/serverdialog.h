@@ -40,6 +40,7 @@ public:
 	virtual ~ServerDialog();
 
 	QString getAcceptedServer() const;
+	QString getAcceptedServerAlias() const;
 	NetMauMau::Common::ICard::RANK getAceRoundRank() const;
 	QString getPlayerName() const;
 	uint getMaxPlayerCount() const;
@@ -72,6 +73,7 @@ private slots:
 	void choosePlayerImage();
 	void clearPlayerImage();
 	void enableClearButton(const QString &);
+	void itemChanged(QStandardItem *);
 
 signals:
 	void refresh();

@@ -46,7 +46,7 @@
         <item>
          <widget class="QTableView" name="availServerView">
           <property name="editTriggers">
-           <set>QAbstractItemView::NoEditTriggers</set>
+           <set>QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
           </property>
           <property name="tabKeyNavigation">
            <bool>false</bool>

@@ -45,7 +45,7 @@ void ServerInfo::run() {
 
 	if(!(server && version && ai && players)) return;
 
-	const QString host(server->text());
+	const QString host(server->data(HOST).toString());
 
 	version->setToolTip(QString::null);
 

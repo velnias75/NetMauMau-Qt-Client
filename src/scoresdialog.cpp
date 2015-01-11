@@ -49,7 +49,7 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : QDialog(p), m_serverd
 	QObject::connect(refreshButton, SIGNAL(clicked()), this, SLOT(refresh()));
 
 	serverCombo->setModel(sd->getModel());
-	serverCombo->setCurrentIndex(serverCombo->findText(sd->getLastServer()));
+	serverCombo->setCurrentIndex(serverCombo->findData(sd->getLastServer(), ServerInfo::HOST));
 }
 
 void ScoresDialog::showEvent(QShowEvent *evt) {
@@ -84,9 +84,12 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 	if(serverCombo->itemData(serverCombo->currentIndex(), ServerInfo::HAVESCORES).toBool()) {
 
-		const int idx = txt.indexOf(':');
-		const QString srv(txt.left(idx != -1 ? idx : txt.length()));
-		const uint port = (QString(idx != -1 ? txt.mid(idx + 1) :
+		const QString &host(serverCombo->itemData(serverCombo->currentIndex(), ServerInfo::HOST).
+							toString());
+
+		const int idx = host.indexOf(':');
+		const QString srv(host.left(idx != -1 ? idx : host.length()));
+		const uint port = (QString(idx != -1 ? host.mid(idx + 1) :
 											   QString::number(Client::getDefaultPort()))).toUInt();
 
 		scoresView->setCursor(Qt::WaitCursor);
@@ -116,7 +119,7 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 			m_server = QString::null;
 
 		} catch(const NetMauMau::Common::Exception::SocketException &e) {
-			qWarning("Get server score for %s: %s", txt.toLocal8Bit().constData(), e.what());
+			qWarning("Get server score for %s: %s", host.toLocal8Bit().constData(), e.what());
 		}
 
 		scoresView->unsetCursor();

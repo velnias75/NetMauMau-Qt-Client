@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -21,6 +21,8 @@
 #include <QAbstractButton>
 
 #include "deleteserversdialog.h"
+
+#include "serverinfo.h"
 
 DeleteServersDialog::DeleteServersDialog(const QStandardItemModel *model, QWidget *p) : QDialog(p),
 	m_pModel(model), m_model(0, 1) {
@@ -54,7 +56,7 @@ void DeleteServersDialog::showEvent(QShowEvent *evt) {
 	m_model.clear();
 
 	for(int r = 0; r < m_pModel->rowCount(); ++r) {
-		m_model.setItem(r, new QStandardItem(m_pModel->item(r)->text()));
+		m_model.setItem(r, new QStandardItem(m_pModel->item(r)->data(ServerInfo::HOST).toString()));
 		serversList->selectionModel()->select(m_model.item(r)->index(),
 											  m_pModel->item(r)->isEnabled() ?
 												  QItemSelectionModel::Deselect :
