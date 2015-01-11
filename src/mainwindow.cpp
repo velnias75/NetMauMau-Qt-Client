@@ -337,8 +337,8 @@ void MainWindow::receivedPlayerImage(const QString &) {
 
 void MainWindow::showReceiveProgress() const {
 	if(m_client) {
-		static_cast<PlayerImageProgressDialog *>(m_receivingPlayerImageProgress)
-				->show(gameState()->curReceiving());
+		static_cast<PlayerImageProgressDialog *>(m_receivingPlayerImageProgress)->
+				show(gameState()->curReceiving());
 	}
 }
 
@@ -1258,7 +1258,7 @@ QString MainWindow::reconnectToolTip() const {
 	QString rtt(tr("Reconnect to "));
 
 	const ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
-	const QString &as(sd->getAcceptedServer());
+	const QString &as(sd->getAcceptedServerAlias());
 
 	if(!as.isEmpty()) {
 		rtt.append(as);

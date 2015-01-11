@@ -442,12 +442,15 @@ void ServerDialog::enableAddButton(const QString &str) {
 }
 
 void ServerDialog::resize() {
+	resizeColumns();
+	deleteServers->setEnabled(m_model.rowCount());
+}
+
+void ServerDialog::resizeColumns() {
 
 	for(int i = 0; i < m_model.columnCount() - 1; ++i) {
 		availServerView->resizeColumnToContents(i);
 	}
-
-	deleteServers->setEnabled(m_model.rowCount());
 }
 
 void ServerDialog::checkOnline() {
@@ -509,6 +512,7 @@ void ServerDialog::blockAutoRefresh(bool b) {
 
 void ServerDialog::itemChanged(QStandardItem *) {
 	saveServers();
+	resizeColumns();
 }
 
 void ServerDialog::addServer() {
@@ -518,7 +522,6 @@ void ServerDialog::addServer() {
 	const QString &host(hostEdit->text() + (!portSpin->text().isEmpty() ?
 												QString(":%1").arg(portSpin->text()) :
 												QString::null));
-
 	row << new QStandardItem(host);
 	row.back()->setData(host, ServerInfo::HOST);
 	row.back()->setEnabled(false);

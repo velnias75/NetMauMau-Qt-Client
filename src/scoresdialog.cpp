@@ -59,15 +59,25 @@ void ScoresDialog::showEvent(QShowEvent *evt) {
 
 void ScoresDialog::refresh() {
 
-	const QList<QStandardItem *> &its(m_serverdialog->getModel()->
-									  findItems(m_server.isEmpty() ?
-													serverCombo->currentText() : m_server));
+	QStandardItemModel *model = m_serverdialog->getModel();
+
+	if(!m_server.isEmpty()) {
+		for(int i = 0; i < model->rowCount(); ++i) {
+			if(model->itemData(model->index(i, 0))[ServerInfo::HOST].toString() == m_server) {
+				m_server = model->itemData(model->index(i, 0))[Qt::DisplayRole].toString();
+				break;
+			}
+		}
+	}
+
+	const QList<QStandardItem *> &its(model->findItems(m_server.isEmpty() ?
+														   serverCombo->currentText() : m_server));
 
 	if(!its.empty() && its.first()->isEnabled()) {
 		currentIndexChanged(m_server.isEmpty() ? serverCombo->currentText() : m_server);
 	} else {
-		for(int i = 0; i < m_serverdialog->getModel()->rowCount(); ++i) {
-			if(m_serverdialog->getModel()->item(i)->isEnabled()) {
+		for(int i = 0; i < model->rowCount(); ++i) {
+			if(model->item(i)->isEnabled()) {
 				serverCombo->setCurrentIndex(i);
 				break;
 			}

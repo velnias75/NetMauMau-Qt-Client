@@ -70,6 +70,7 @@ private slots:
 	void removeSelected();
 	void addServer();
 	void resize();
+	void resizeColumns();
 	void choosePlayerImage();
 	void clearPlayerImage();
 	void enableClearButton(const QString &);
