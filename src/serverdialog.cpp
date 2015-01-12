@@ -65,7 +65,16 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 	QSettings settings;
 	settings.beginGroup("Servers");
+
+#if _WIN32
+	const QString &localhost(getenv("COMPUTERNAME"));
+#else
+	const QString &localhost("localhost");
+#endif
+
 	QStringList servers = settings.value("list", QStringList("localhost")).toStringList();
+	QStringList aliases = settings.value("alias", servers.count() == 1 && servers[0] == "localhost"
+			&& !localhost.isEmpty() ? QStringList(localhost) : servers).toStringList();
 	QStringList aliases = settings.value("alias", servers).toStringList();
 	setLastServer(settings.value("lastServer", QVariant("localhost")).toString());
 	settings.endGroup();
