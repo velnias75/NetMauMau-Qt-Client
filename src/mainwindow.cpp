@@ -518,11 +518,11 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
 	switch(e->key()) {
 	case Qt::Key_F7:
 	case Qt::Key_Escape:
-	m_ui->takeCardsButton->click(); break;
+		m_ui->takeCardsButton->click(); break;
 	case Qt::Key_F8:
 	case Qt::Key_Return:
 	case Qt::Key_Enter:
-	m_ui->suspendButton->click(); break;
+		m_ui->suspendButton->click(); break;
 	case Qt::Key_1: clickCard(0, e); break;
 	case Qt::Key_2: clickCard(1, e); break;
 	case Qt::Key_3: clickCard(2, e); break;

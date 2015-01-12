@@ -75,7 +75,6 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	QStringList servers = settings.value("list", QStringList("localhost")).toStringList();
 	QStringList aliases = settings.value("alias", servers.count() == 1 && servers[0] == "localhost"
 			&& !localhost.isEmpty() ? QStringList(localhost) : servers).toStringList();
-	QStringList aliases = settings.value("alias", servers).toStringList();
 	setLastServer(settings.value("lastServer", QVariant("localhost")).toString());
 	settings.endGroup();
 
@@ -196,7 +195,7 @@ ServerDialog::~ServerDialog() {
 
 		ServerInfo *si = *r;
 
-		if(si->isRunning()) si->wait(31000UL);
+		if(si->isRunning()) si->wait(3100UL);
 
 		si->disconnect();
 		delete si;

@@ -19,6 +19,7 @@
 
 #include <QStandardItemModel>
 
+#include <timeoutexception.h>
 #include <capabilitiesexception.h>
 
 #include "serverinfo.h"
@@ -57,7 +58,7 @@ void ServerInfo::run() {
 
 	try {
 
-		timeval tv = { 30L, 0L };
+		timeval tv = { 3L, 0L };
 
 		const Client::CAPABILITIES &caps((Client(0L, 0L, QString::null,
 												 std::string(srv.toStdString()),
@@ -122,6 +123,14 @@ void ServerInfo::run() {
 	} catch(const NetMauMau::Client::Exception::CapabilitiesException &e) {
 
 		setError(ai, players, version, server, host, tr("Couldn't get capabilities from server"));
+
+		emit online(false, m_row);
+		return;
+
+	} catch(const NetMauMau::Client::Exception::TimeoutException &e) {
+
+		setError(ai, players, version, server, host,
+				 tr("Server timed out while getting capabilities"));
 
 		emit online(false, m_row);
 		return;
