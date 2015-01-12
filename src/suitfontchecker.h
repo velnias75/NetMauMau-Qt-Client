@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,28 +17,19 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTIL_H
-#define UTIL_H
+#ifndef SUITFONTCHECKER_H
+#define SUITFONTCHECKER_H
 
-#include <QCoreApplication>
-
-#include <icard.h>
+#include <linkercontrol.h>
 
 class QFont;
-//class QString;
-//class QRegExp;
 
-class Util {
-	Q_DECLARE_TR_FUNCTIONS(Util)
+class SuitFontChecker {
 public:
-	static QString &cardStyler(QString &c, const QFont &f, bool color = true);
-	static QString cardStyler(const QString &c, const QFont &f, bool color = true);
+	static bool suitsInFont(const QFont &f);
 
 private:
-	Util() _CONST;
-
-	static void replaceSymbolCard(const QRegExp &rex, QString &c, const QString &suit);
-	static QString rank(const QString &r);
+	SuitFontChecker() _CONST;
 };
 
-#endif // UTIL_H
+#endif // SUITFONTCHECKER_H

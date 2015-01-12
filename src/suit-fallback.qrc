@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/suit-fallback">
+        <file alias="clubs.png">suit-clubs.png</file>
+        <file alias="diamonds.png">suit-diamonds.png</file>
+        <file alias="hearts.png">suit-hearts.png</file>
+        <file alias="spades.png">suit-spades.png</file>
+    </qresource>
+</RCC>

@@ -6,17 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>8</width>
-    <height>19</height>
+    <width>9</width>
+    <height>26</height>
    </rect>
-  </property>
-  <property name="font">
-   <font>
-    <pointsize>14</pointsize>
-   </font>
   </property>
   <property name="alignment">
    <set>Qt::AlignCenter</set>
+  </property>
+  <property name="wordWrap">
+   <bool>false</bool>
   </property>
   <property name="suitDescription" stdset="0">
    <cstring></cstring>

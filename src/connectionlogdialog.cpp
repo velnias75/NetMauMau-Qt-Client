@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -23,6 +23,7 @@
 #include <QMenu>
 
 #include "connectionlogdialog.h"
+#include "util.h"
 
 ConnectionLogDialog::ConnectionLogDialog(QWidget *p)
 	: QDialog(p, Qt::Window), m_entryFont("Monospace"), m_model(),
@@ -111,7 +112,7 @@ void ConnectionLogDialog::addEntry(const QString &e, DIRECTION dir) {
 	items.back()->setToolTip(dir == TO_SERVER || dir == TO_CLIENT ? QString::fromUtf8("\u2190") :
 																	QString::fromUtf8("\u2192"));
 	items.back()->setSelectable(false);
-	items << new QStandardItem(e);
+	items << new QStandardItem(Util::cardStyler(e, m_entryFont, false));
 	items.back()->setFont(m_entryFont);
 	items.back()->setSelectable(false);
 

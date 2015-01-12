@@ -662,7 +662,8 @@ void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 	}
 
 	QMessageBox::critical(this, tr("Card rejected"), tr("You cannot play card %1!")
-						  .arg(Util::cardStyler(QString::fromUtf8(c.constData()))));
+						  .arg(Util::cardStyler(QString::fromUtf8(c.constData()),
+												QMessageBox().font())));
 }
 
 void MainWindow::clientCardAccepted(const QByteArray &) {

@@ -21,11 +21,14 @@
 
 #include "suitlabel.h"
 
+#include "suitfontchecker.h"
 #include "jackchoosedialog.h"
 
-SuitLabel::SuitLabel(QWidget *p, const QByteArray &suitDesc) : QLabel(p) {
+SuitLabel::SuitLabel(QWidget *p, const QByteArray &suitDesc) : QLabel(p), m_useFallbackSuit(false) {
 
 	setupUi(this);
+
+	m_useFallbackSuit = !SuitFontChecker::suitsInFont(font());
 
 	if(!suitDesc.isEmpty()) setProperty("suitDescription", suitDesc);
 }
@@ -58,27 +61,60 @@ void SuitLabel::styleSuit() {
 
 		if(s != NetMauMau::Common::ICard::SUIT_ILLEGAL) {
 
-			if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
-							   s == NetMauMau::Common::ICard::DIAMONDS)) {
-				setStyleSheet("SuitLabel { color: red; }");
+			if(!m_useFallbackSuit) {
+
+				if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
+								   s == NetMauMau::Common::ICard::DIAMONDS)) {
+					setStyleSheet("SuitLabel { color: red; }");
+				} else {
+					setStyleSheet(QString::null);
+				}
+
+				setText(QString::fromUtf8(suitDesc.constData()));
+
 			} else {
-				setStyleSheet(QString::null);
+
+				qDebug("No suit symbols in font %s, using fallback images",
+					   font().family().toLocal8Bit().constData());
+
+				setText(QString::null);
+				setPixmap(QPixmap());
+
+				switch (s) {
+				case NetMauMau::Common::ICard::HEARTS:
+					setPixmap(QPixmap(":/suit-fallback/hearts.png"));
+					setStyleSheet("SuitLabel { color: red; }");
+					break;
+				case NetMauMau::Common::ICard::DIAMONDS:
+					setPixmap(QPixmap(":/suit-fallback/diamonds.png"));
+					setStyleSheet("SuitLabel { color: red; }");
+					break;
+				case NetMauMau::Common::ICard::CLUBS:
+					setPixmap(QPixmap(":/suit-fallback/clubs.png"));
+					setStyleSheet(QString::null);
+					break;
+				default:
+					setPixmap(QPixmap(":/suit-fallback/spades.png"));
+					setStyleSheet(QString::null);
+					break;
+				}
 			}
 
-			setText(QString::fromUtf8(suitDesc.constData()));
 			setToolTip(JackChooseDialog::suitToolTip(s));
 
 		} else {
 			setText(QString::null);
+			setPixmap(QPixmap());
 			setToolTip(QString::null);
 		}
 
 	} else {
 		setText(QString::null);
+		setPixmap(QPixmap());
 		setToolTip(QString::null);
 	}
 
 	QFont f = font();
-	f.setPointSize(14);
+	f.setPointSize(18);
 	setFont(f);
 }

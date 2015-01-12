@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 201-20154 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,24 +17,61 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QObject>
 #include <QRegExp>
 
 #include "util.h"
+#include "suitfontchecker.h"
 
 namespace {
-const QString replace("<span style=\"color:red;\">\\1 \\2</span>");
+
+const QString replaceSuitSymbolColor("<span style=\"color:red;\">\\1 \\2</span>");
+const QString replaceSuitSymbol("\\1 \\2");
+
+const QRegExp spadesRex("(" + QString::fromUtf8("\u2660") + ") ([0-9]{1,2}|[JQKA])");
+const QRegExp clubsRex("(" + QString::fromUtf8("\u2663") + ") ([0-9]{1,2}|[JQKA])");
 const QRegExp heartsRex("(" + QString::fromUtf8("\u2665") + ") ([0-9]{1,2}|[JQKA])");
 const QRegExp diamondsRex("(" + QString::fromUtf8("\u2666") + ") ([0-9]{1,2}|[JQKA])");
+
 }
 
 Util::Util() {}
 
-QString &Util::cardStyler(QString &c) {
-	c.replace(diamondsRex, replace);
-	return c.replace(heartsRex, replace);
+QString &Util::cardStyler(QString &c, const QFont &f, bool color) {
+
+	c.replace(diamondsRex, color ? replaceSuitSymbolColor : replaceSuitSymbol);
+	c.replace(heartsRex, color ? replaceSuitSymbolColor : replaceSuitSymbol);
+
+	if(!SuitFontChecker::suitsInFont(f)) {
+		replaceSymbolCard(diamondsRex, c, tr("Diamonds"));
+		replaceSymbolCard(heartsRex, c, tr("Hearts"));
+		replaceSymbolCard(spadesRex, c, tr("Spades"));
+		replaceSymbolCard(clubsRex, c, tr("Clubs"));
+
+		c.replace(QString::fromUtf8("\u2660"), tr("Spades"));
+		c.replace(QString::fromUtf8("\u2663"), tr("Clubs"));
+		c.replace(QString::fromUtf8("\u2665"), tr("Hearts"));
+		c.replace(QString::fromUtf8("\u2666"), tr("Diamonds"));
+	}
+
+	return c;
 }
 
-QString Util::cardStyler(const QString &c) {
+QString Util::cardStyler(const QString &c, const QFont &f, bool color) {
 	QString ret = c;
-	return cardStyler(ret);
+	return cardStyler(ret, f, color);
+}
+
+void Util::replaceSymbolCard(const QRegExp &rex, QString &c, const QString &suit) {
+
+	int pos = 0;
+
+	while((pos = rex.indexIn(c, pos)) >= 0) {
+		c.replace(pos, rex.matchedLength(), tr("%1 of %2").arg(rank(rex.cap(2))).arg(suit));
+	}
+}
+
+QString Util::rank(const QString &r) {
+	return r == "K" ? tr("King") : r == "Q" ? tr("Queen") : r == "J" ? tr("Jack") : r == "A" ?
+																		   tr("Ace") : r;
 }

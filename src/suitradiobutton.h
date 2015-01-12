@@ -35,6 +35,9 @@ protected:
 
 private:
 	void styleSuit();
+
+private:
+	bool m_useFallbackSuit;
 };
 
 #endif // SUITRADIOBUTTON_H

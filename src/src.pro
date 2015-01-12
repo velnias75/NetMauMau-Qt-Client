@@ -58,12 +58,13 @@ SOURCES += cardpixmap.cpp \
 	playerimagedelegate.cpp \
 	playerimageprogressdialog.cpp \
 	portspin.cpp \
+	scoresdialog.cpp \
 	serverdialog.cpp \
 	serverinfo.cpp \
+    suitfontchecker.cpp \
 	suitlabel.cpp \
 	suitradiobutton.cpp \
-	util.cpp \
-	scoresdialog.cpp
+	util.cpp
 
 HEADERS  += cardpixmap.h \
 	cardwidget.h \
@@ -83,12 +84,13 @@ HEADERS  += cardpixmap.h \
 	playerimagedelegate.h \
 	playerimageprogressdialog.h \
 	portspin.h \
+	scoresdialog.h \
 	serverdialog.h \
 	serverinfo.h \
+    suitfontchecker.h \
 	suitlabel.h \
 	suitradiobutton.h \
-	util.h \
-	scoresdialog.h
+	util.h
 
 FORMS    += cardwidget.ui \
 	connectionlogdialog.ui \
@@ -98,15 +100,16 @@ FORMS    += cardwidget.ui \
 	licensedialog.ui \
 	localserveroutputview.ui \
 	mainwindow.ui \
+	scoresdialog.ui \
 	serverdialog.ui \
 	suitlabel.ui \
-	suitradiobutton.ui \
-	scoresdialog.ui
+	suitradiobutton.ui
 
 RESOURCES += cards.qrc \
 	icons.qrc \
 	license.qrc \
-	nuoveXT2.qrc
+	nuoveXT2.qrc \
+    suit-fallback.qrc
 
 RC_FILE += appicon.rc
 

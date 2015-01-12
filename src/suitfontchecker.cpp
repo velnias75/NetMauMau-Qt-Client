@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,28 +17,28 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef UTIL_H
-#define UTIL_H
+#include <QFontMetrics>
 
-#include <QCoreApplication>
+#include "suitfontchecker.h"
 
-#include <icard.h>
+SuitFontChecker::SuitFontChecker() {}
 
-class QFont;
-//class QString;
-//class QRegExp;
+bool SuitFontChecker::suitsInFont(const QFont &f) {
 
-class Util {
-	Q_DECLARE_TR_FUNCTIONS(Util)
-public:
-	static QString &cardStyler(QString &c, const QFont &f, bool color = true);
-	static QString cardStyler(const QString &c, const QFont &f, bool color = true);
+	QFont testFont(f);
 
-private:
-	Util() _CONST;
+#if _WIN32
+	testFont.setStyleStrategy(QFont::NoFontMerging);
+#endif
 
-	static void replaceSymbolCard(const QRegExp &rex, QString &c, const QString &suit);
-	static QString rank(const QString &r);
-};
+	const QFontMetrics &fm(testFont);
 
-#endif // UTIL_H
+#ifndef _WIN32
+	return fm.inFont(L'\u2660') && fm.inFont(L'\u2663') && fm.inFont(L'\u2665') &&
+			fm.inFont(L'\u2666');
+#else
+	//return fm.inFont(0x2660) && fm.inFont(0x2663) && fm.inFont(0x2665) && fm.inFont(0x2666);
+	// See https://github.com/velnias75/NetMauMau-Qt-Client/issues/13
+	return false;
+#endif
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -42,13 +42,14 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 	QStyleOptionViewItemV4 opt(option);
 	initStyleOption(&opt, index);
 
-	if(m_cardDetect) Util::cardStyler(opt.text);
+	if(m_cardDetect) Util::cardStyler(opt.text, opt.font);
 
 	QTextOption tOpt(opt.displayAlignment|Qt::AlignVCenter);
 	tOpt.setWrapMode(QTextOption::NoWrap);
 
 	m_doc->setHtml(opt.text);
 	m_doc->setDefaultTextOption(tOpt);
+	m_doc->setDefaultFont(opt.font);
 	m_doc->setTextWidth(opt.rect.width());
 
 	return m_doc;

@@ -20,10 +20,18 @@
 #include <cardtools.h>
 
 #include "suitradiobutton.h"
+#include "suitfontchecker.h"
 
-SuitRadioButton::SuitRadioButton(QWidget *p, const QByteArray &suitDesc) : QRadioButton(p) {
+SuitRadioButton::SuitRadioButton(QWidget *p, const QByteArray &suitDesc) : QRadioButton(p),
+	m_useFallbackSuit(false) {
 
 	setupUi(this);
+
+	QFont f = font();
+	f.setPointSize(18);
+	setFont(f);
+
+	m_useFallbackSuit = !SuitFontChecker::suitsInFont(font());
 
 	if(!suitDesc.isEmpty()) setProperty("suitDescription", suitDesc);
 }
@@ -52,12 +60,40 @@ void SuitRadioButton::styleSuit() {
 	const NetMauMau::Common::ICard::SUIT s =
 			NetMauMau::Common::symbolToSuit(suitDesc.constData());
 
-	if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
-					   s == NetMauMau::Common::ICard::DIAMONDS)) {
-		setStyleSheet("SuitRadioButton { color: red; }");
-	} else {
-		setStyleSheet(QString::null);
-	}
+	if(!m_useFallbackSuit) {
 
-	setText(QString::fromUtf8(suitDesc.constData()));
+		if(isEnabled() && (s == NetMauMau::Common::ICard::HEARTS ||
+						   s == NetMauMau::Common::ICard::DIAMONDS)) {
+			setStyleSheet("SuitRadioButton { color: red; }");
+		} else {
+			setStyleSheet(QString::null);
+		}
+
+		setText(QString::fromUtf8(suitDesc.constData()));
+
+	} else {
+
+		qDebug("No suit symbols in font %s, using fallback images",
+			   font().family().toLocal8Bit().constData());
+
+		setText(QString::null);
+		switch (s) {
+		case NetMauMau::Common::ICard::HEARTS:
+			setIcon(QIcon(":/suit-fallback/hearts.png"));
+			setStyleSheet("SuitRadioButton { color: red; }");
+			break;
+		case NetMauMau::Common::ICard::DIAMONDS:
+			setIcon(QIcon(":/suit-fallback/diamonds.png"));
+			setStyleSheet("SuitRadioButton { color: red; }");
+			break;
+		case NetMauMau::Common::ICard::CLUBS:
+			setIcon(QIcon(":/suit-fallback/clubs.png"));
+			setStyleSheet(QString::null);
+			break;
+		default:
+			setIcon(QIcon(":/suit-fallback/spades.png"));
+			setStyleSheet(QString::null);
+			break;
+		}
+	}
 }

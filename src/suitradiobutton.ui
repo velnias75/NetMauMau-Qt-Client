@@ -2,6 +2,20 @@
 <ui version="4.0">
  <class>SuitRadioButton</class>
  <widget class="QRadioButton" name="SuitRadioButton">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>21</width>
+    <height>17</height>
+   </rect>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>22</width>
+    <height>22</height>
+   </size>
+  </property>
   <property name="suitDescription" stdset="0">
    <cstring></cstring>
   </property>
