@@ -37,8 +37,6 @@ bool SuitFontChecker::suitsInFont(const QFont &f) {
 	return fm.inFont(L'\u2660') && fm.inFont(L'\u2663') && fm.inFont(L'\u2665') &&
 			fm.inFont(L'\u2666');
 #else
-	//return fm.inFont(0x2660) && fm.inFont(0x2663) && fm.inFont(0x2665) && fm.inFont(0x2666);
-	// See https://github.com/velnias75/NetMauMau-Qt-Client/issues/13
-	return false;
+	return fm.inFont(0x2660) && fm.inFont(0x2663) && fm.inFont(0x2665) && fm.inFont(0x2666);
 #endif
 }

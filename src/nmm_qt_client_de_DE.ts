@@ -47,7 +47,7 @@
     <message>
         <location filename="cardwidget.cpp" line="141"/>
         <source>Ace</source>
-        <translation>As</translation>
+        <translation>Ass</translation>
     </message>
     <message>
         <location filename="cardwidget.cpp" line="145"/>
@@ -1177,7 +1177,7 @@ Es ist zu groß.</translation>
     <message>
         <location filename="util.cpp" line="76"/>
         <source>Ace</source>
-        <translation>As</translation>
+        <translation>Ass</translation>
     </message>
 </context>
 </TS>
