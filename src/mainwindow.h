@@ -35,6 +35,7 @@ class GameState;
 class CardWidget;
 class ScoresDialog;
 class QSplashScreen;
+class FileDownloader;
 class QProgressDialog;
 class JackChooseDialog;
 class ConnectionLogDialog;
@@ -69,6 +70,8 @@ private slots:
 	void receivingPlayerImage(const QString &);
 	void receivedPlayerImage(const QString &);
 	void showReceiveProgress() const;
+
+	void notifyClientUpdate();
 
 	void serverAccept();
 	void serverDisconnect();
@@ -167,6 +170,7 @@ private:
 	QLabel m_aceRoundLabel;
 	mutable GameState *m_gameState;
 	ScoresDialog *m_scoresDialog;
+	FileDownloader *m_clientReleaseDownloader;
 };
 
 #endif // MAINWINDOW_H

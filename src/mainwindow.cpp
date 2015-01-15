@@ -35,6 +35,7 @@
 #include "serverdialog.h"
 #include "licensedialog.h"
 #include "ui_mainwindow.h"
+#include "filedownloader.h"
 #include "jackchoosedialog.h"
 #include "launchserverdialog.h"
 #include "messageitemdelegate.h"
@@ -44,7 +45,9 @@
 #include "playerimageprogressdialog.h"
 
 namespace {
+
 const QString PASTSPAN("<span style=\"font-variant:small-caps;\">%1</span>");
+const char *TAGNAME = "\"tag_name\":";
 
 struct scoresPlayer : public std::binary_function<Client::SCORE, std::string, bool> {
 	bool operator()(const Client::SCORE &x, const std::string& y) const {
@@ -72,7 +75,8 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))),
 	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)),
 	m_licenseDialog(new LicenseDialog(this)), m_aceRoundLabel(), m_gameState(0L),
-	m_scoresDialog(new ScoresDialog(static_cast<ServerDialog *>(m_serverDlg), this)) {
+	m_scoresDialog(new ScoresDialog(static_cast<ServerDialog *>(m_serverDlg), this)),
+	m_clientReleaseDownloader(0L) {
 
 	m_ui->setupUi(this);
 
@@ -105,6 +109,12 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 
 	setWindowTitle(QCoreApplication::applicationName() + " " +
 				   QCoreApplication::applicationVersion());
+
+	m_clientReleaseDownloader = new FileDownloader(QUrl("https://api.github.com/repos/velnias75/" \
+														"NetMauMau-Qt-Client/releases?per_page=1"));
+
+	QObject::connect(m_clientReleaseDownloader, SIGNAL(downloaded()),
+					 this, SLOT(notifyClientUpdate()));
 
 	QObject::connect(m_ui->actionConnectionlog, SIGNAL(toggled(bool)),
 					 m_connectionLogDlg, SLOT(setShown(bool)));
@@ -227,6 +237,7 @@ MainWindow::~MainWindow() {
 	delete m_turnItemDelegate;
 	delete m_messageItemDelegate;
 	delete m_receivingPlayerImageProgress;
+	delete m_clientReleaseDownloader;
 	delete m_gameState;
 	delete m_ui;
 }
@@ -1386,6 +1397,25 @@ void MainWindow::readSettings() {
 
 void MainWindow::about() {
 	QMessageBox::about(this, QCoreApplication::applicationName(), m_aboutTxt);
+}
+
+void MainWindow::notifyClientUpdate() {
+
+	const QByteArray &dld(m_clientReleaseDownloader->downloadedData());
+	const int idx = dld.indexOf(TAGNAME), idxl = idx + qstrlen(TAGNAME);
+	const QString &rel(idx > 0 ? dld.mid(idxl + 2, dld.indexOf(",", idxl) - idxl - 3).constData() :
+								 "0.0");
+
+	const uint32_t avail  = Client::parseProtocolVersion(rel.toStdString());
+	const uint32_t actual = Client::parseProtocolVersion(PACKAGE_VERSION);
+
+	if(avail > actual) {
+		QLabel *url = new QLabel(QString("<html><body><a href=\"https://sourceforge.net/projects" \
+										 "/netmaumau/\">%1</a></body></html>").
+								 arg(tr("Version %1 is available!").arg(rel)));
+		url->setOpenExternalLinks(true);
+		statusBar()->insertPermanentWidget(0, url);
+	}
 }
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,19 +17,32 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LICENSEDIALOG_H
-#define LICENSEDIALOG_H
+#ifndef FILEDOWNLOADER_H
+#define FILEDOWNLOADER_H
 
-#include "ui_licensedialog.h"
+#include <QObject>
+#include <QByteArray>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
-class LicenseDialog : public QDialog, private Ui::LicenseDialog {
+class FileDownloader : public QObject {
 	Q_OBJECT
-
 public:
-	explicit LicenseDialog(QWidget *parent = 0);
+	explicit FileDownloader(QUrl url, QObject *parent = 0);
+	virtual ~FileDownloader();
+
+	QByteArray downloadedData() const;
+
+signals:
+	void downloaded();
 
 private slots:
-	void anchorClicked(const QUrl &);
+	void fileDownloaded(QNetworkReply *pReply);
+
+private:
+	QNetworkAccessManager m_WebCtrl;
+	QByteArray m_DownloadedData;
 };
 
-#endif // LICENSEDIALOG_H
+#endif // FILEDOWNLOADER_H

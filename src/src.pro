@@ -1,4 +1,4 @@
-QT += svg
+QT += svg network
 
 CONFIG += debug_and_release
 CONFIG += rtti exceptions
@@ -61,12 +61,13 @@ SOURCES += cardpixmap.cpp \
 	scoresdialog.cpp \
 	serverdialog.cpp \
 	serverinfo.cpp \
-    suitfontchecker.cpp \
+	suitfontchecker.cpp \
 	suitlabel.cpp \
 	suitradiobutton.cpp \
-	util.cpp
+	util.cpp \
+	filedownloader.cpp
 
-HEADERS  += cardpixmap.h \
+HEADERS += cardpixmap.h \
 	cardwidget.h \
 	client.h \
 	connectionlogdialog.h \
@@ -87,12 +88,13 @@ HEADERS  += cardpixmap.h \
 	scoresdialog.h \
 	serverdialog.h \
 	serverinfo.h \
-    suitfontchecker.h \
+	suitfontchecker.h \
 	suitlabel.h \
 	suitradiobutton.h \
-	util.h
+	util.h \
+	filedownloader.h
 
-FORMS    += cardwidget.ui \
+FORMS += cardwidget.ui \
 	connectionlogdialog.ui \
 	deleteserversdialog.ui \
 	jackchoosedialog.ui \
@@ -109,7 +111,7 @@ RESOURCES += cards.qrc \
 	icons.qrc \
 	license.qrc \
 	nuoveXT2.qrc \
-    suit-fallback.qrc
+	suit-fallback.qrc
 
 RC_FILE += appicon.rc
 
@@ -129,4 +131,3 @@ dist-xz.depends = dist
 dist-xz.target = dist-xz
 dist-xz.commands += gzip -dc $$TARGET$$VERSION\\.tar\\.gz | xz -ec9 - > $$DIST_NAME\\.tar\\.xz;
 dist-xz.commands += $(DEL_FILE) -r $$TARGET$$VERSION\\.tar\\.gz
-

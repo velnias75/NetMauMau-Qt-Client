@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,19 +17,32 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LICENSEDIALOG_H
-#define LICENSEDIALOG_H
+#include "filedownloader.h"
 
-#include "ui_licensedialog.h"
+FileDownloader::FileDownloader(QUrl url, QObject *p) : QObject(p) {
 
-class LicenseDialog : public QDialog, private Ui::LicenseDialog {
-	Q_OBJECT
+	QObject::connect(&m_WebCtrl, SIGNAL(finished(QNetworkReply *)),
+					 SLOT(fileDownloaded(QNetworkReply *)));
 
-public:
-	explicit LicenseDialog(QWidget *parent = 0);
+	QNetworkRequest request(url);
 
-private slots:
-	void anchorClicked(const QUrl &);
-};
+	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute,
+						 QNetworkRequest::AlwaysNetwork);
 
-#endif // LICENSEDIALOG_H
+	m_WebCtrl.get(request);
+}
+
+FileDownloader::~FileDownloader() {}
+
+void FileDownloader::fileDownloaded(QNetworkReply *pReply) {
+
+	m_DownloadedData = pReply->readAll();
+
+	pReply->deleteLater();
+
+	emit downloaded();
+}
+
+QByteArray FileDownloader::downloadedData() const {
+	return m_DownloadedData;
+}

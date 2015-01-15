@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -18,6 +18,7 @@
  */
 
 #include <QPushButton>
+#include <QDesktopServices>
 
 #include "licensedialog.h"
 
@@ -30,5 +31,12 @@ LicenseDialog::LicenseDialog(QWidget *p) : QDialog(p) {
 	f &= ~Qt::WindowSystemMenuHint;
 	setWindowFlags(f);
 
+	QObject::connect(textBrowser, SIGNAL(anchorClicked(const QUrl &)),
+					 this, SLOT(anchorClicked(const QUrl &)));
+
 	static_cast<QPushButton *>(buttonBox->buttons()[0])->setDefault(true);
+}
+
+void LicenseDialog::anchorClicked(const QUrl &url) {
+	QDesktopServices::openUrl(url);
 }
