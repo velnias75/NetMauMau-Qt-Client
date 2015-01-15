@@ -1415,6 +1415,8 @@ void MainWindow::notifyClientUpdate() {
 								 arg(tr("Version %1 is available!").arg(rel)));
 		url->setOpenExternalLinks(true);
 		statusBar()->insertPermanentWidget(0, url);
+	} else {
+		qDebug("Current release: %s", rel.toLocal8Bit().constData());
 	}
 }
 

@@ -19,7 +19,7 @@
 
 #include "filedownloader.h"
 
-FileDownloader::FileDownloader(QUrl url, QObject *p) : QObject(p) {
+FileDownloader::FileDownloader(const QUrl &url, QObject *p) : QObject(p) {
 
 	QObject::connect(&m_WebCtrl, SIGNAL(finished(QNetworkReply *)),
 					 SLOT(fileDownloaded(QNetworkReply *)));
@@ -43,6 +43,6 @@ void FileDownloader::fileDownloaded(QNetworkReply *pReply) {
 	emit downloaded();
 }
 
-QByteArray FileDownloader::downloadedData() const {
+const QByteArray &FileDownloader::downloadedData() const {
 	return m_DownloadedData;
 }

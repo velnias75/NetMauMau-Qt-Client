@@ -26,13 +26,15 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
+#include <linkercontrol.h>
+
 class FileDownloader : public QObject {
 	Q_OBJECT
 public:
-	explicit FileDownloader(QUrl url, QObject *parent = 0);
+	explicit FileDownloader(const QUrl &url, QObject *parent = 0L);
 	virtual ~FileDownloader();
 
-	QByteArray downloadedData() const;
+	const QByteArray &downloadedData() const _CONST;
 
 signals:
 	void downloaded();
