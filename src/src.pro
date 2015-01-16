@@ -44,6 +44,7 @@ SOURCES += cardpixmap.cpp \
 	client.cpp \
 	connectionlogdialog.cpp \
 	deleteserversdialog.cpp \
+	filedownloader.cpp \
 	gamestate.cpp \
 	jackchoosedialog.cpp \
 	launchdialogbase.cpp \
@@ -64,14 +65,14 @@ SOURCES += cardpixmap.cpp \
 	suitfontchecker.cpp \
 	suitlabel.cpp \
 	suitradiobutton.cpp \
-	util.cpp \
-	filedownloader.cpp
+	util.cpp
 
 HEADERS += cardpixmap.h \
 	cardwidget.h \
 	client.h \
 	connectionlogdialog.h \
 	deleteserversdialog.h \
+	filedownloader.h \
 	gamestate.h \
 	jackchoosedialog.h \
 	launchdialogbase.h \
@@ -91,8 +92,7 @@ HEADERS += cardpixmap.h \
 	suitfontchecker.h \
 	suitlabel.h \
 	suitradiobutton.h \
-	util.h \
-	filedownloader.h
+	util.h
 
 FORMS += cardwidget.ui \
 	connectionlogdialog.ui \

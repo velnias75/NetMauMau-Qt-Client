@@ -170,7 +170,7 @@ Der Server erwartet mindestens Version %3.%4</translation>
     <message>
         <location filename="launchserverdialog.ui" line="14"/>
         <source>Launch local server</source>
-        <translation>Lokalen Server starten </translation>
+        <translation>Lokalen Server starten</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="33"/>
@@ -201,7 +201,7 @@ Don&apos;t close the client while a game is running, because it will disconnect 
         <translation>Wenn ausgewählt wird das Spiel erst dann beendet, wenn der letzte Spieler gewonnen hat.
 
 Wenn Du vor dem Spielende gewonnen hast, dann wirst Du das Spiel beobachten.
-Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spieler getrennt. </translation>
+Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spieler getrennt.</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="140"/>
@@ -507,12 +507,12 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.ui" line="740"/>
         <source>&amp;Launch local server...</source>
-        <translation>&amp;Lokalen Server starten... </translation>
+        <translation>&amp;Lokalen Server starten...</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="743"/>
         <source>Launch a local server</source>
-        <translation>Lokalen Server starten </translation>
+        <translation>Lokalen Server starten</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="757"/>

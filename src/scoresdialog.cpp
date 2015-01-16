@@ -117,11 +117,16 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 			for(Client::SCORES::const_iterator i(scores.begin()); i != scores.end(); ++i) {
 
+				const QString pName(QString::fromUtf8(i->name.c_str()));
+				const bool isMe = m_serverdialog->getPlayerName() == pName;
+
 				QList<QStandardItem *> items;
 
-				items << new QStandardItem(QString::fromUtf8(i->name.c_str()));
+				items << new QStandardItem(pName);
+				if(isMe) items.back()->setBackground(Qt::lightGray);
 				items << new QStandardItem(QString::number(i->score));
 				items.back()->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+				if(isMe) items.back()->setBackground(Qt::lightGray);
 
 				m_model.appendRow(items);
 			}
