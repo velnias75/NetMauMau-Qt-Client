@@ -39,7 +39,8 @@ CONFIG(debug, debug|release) {
 	 unix:LIBS += -lnetmaumaucommon -lnetmaumauclient
 }
 
-SOURCES += cardpixmap.cpp \
+SOURCES += base64bridge.cpp \
+	cardpixmap.cpp \
 	cardwidget.cpp \
 	client.cpp \
 	connectionlogdialog.cpp \
@@ -67,7 +68,8 @@ SOURCES += cardpixmap.cpp \
 	suitradiobutton.cpp \
 	util.cpp
 
-HEADERS += cardpixmap.h \
+HEADERS += base64bridge.h \
+	cardpixmap.h \
 	cardwidget.h \
 	client.h \
 	connectionlogdialog.h \
@@ -92,7 +94,7 @@ HEADERS += cardpixmap.h \
 	suitfontchecker.h \
 	suitlabel.h \
 	suitradiobutton.h \
-	util.h
+	util.h \
 
 FORMS += cardwidget.ui \
 	connectionlogdialog.ui \

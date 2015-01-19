@@ -25,6 +25,7 @@
 #include "serverdialog.h"
 
 #include "deleteserversdialog.h"
+#include "base64bridge.h"
 #include "serverinfo.h"
 #include "client.h"
 
@@ -401,7 +402,8 @@ void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
 
 			const bool ok = Client::isPlayerImageUploadable(reinterpret_cast<const unsigned char *>
 															(m_playerImage.constData()),
-															m_playerImage.size());
+															m_playerImage.size(),
+															new Base64Bridge());
 
 			qApp->processEvents();
 

@@ -67,34 +67,34 @@
 <context>
     <name>Client</name>
     <message>
-        <location filename="client.cpp" line="90"/>
+        <location filename="client.cpp" line="93"/>
         <source>A timeout occured while connection to the server</source>
         <translation>Zeitüberschreitung während des Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="92"/>
+        <location filename="client.cpp" line="95"/>
         <source>An protocol error occured while connection to the server</source>
         <translation>Es gab einen Protokollfehler beim
 Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="94"/>
+        <location filename="client.cpp" line="97"/>
         <source>The server rejected the connection</source>
         <translation>Der Server hat die Verbindung zurückgewiesen</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="96"/>
+        <location filename="client.cpp" line="99"/>
         <source>The remote host seems not to be a NetMauMau server</source>
         <translation>Die Gegenstelle scheint kein NetMauMau-Server zu sein</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="98"/>
+        <location filename="client.cpp" line="101"/>
         <source>The server is in the progress of a shutdown</source>
         <oldsource>The server is in the progress of a ashutdown</oldsource>
         <translation>Der Server ist gerade dabei herunter zu fahren</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="100"/>
+        <location filename="client.cpp" line="103"/>
         <source>Client (version %1.%2) not supported.
 Server wants at least version %3.%4</source>
         <translation>Klient (Version %1.%2) wird nicht unterstützt.
@@ -968,78 +968,78 @@ Spieldauer: %1</translation>
         <translation>&amp;Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="33"/>
+        <location filename="serverdialog.cpp" line="34"/>
         <source>n/a</source>
         <translation>n.V.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="58"/>
+        <location filename="serverdialog.cpp" line="59"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="58"/>
+        <location filename="serverdialog.cpp" line="59"/>
         <source>AI</source>
         <translation>KI</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="58"/>
+        <location filename="serverdialog.cpp" line="59"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="58"/>
+        <location filename="serverdialog.cpp" line="59"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="221"/>
+        <location filename="serverdialog.cpp" line="222"/>
         <source>Choose a player image</source>
         <translation>Wähle ein Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="223"/>
+        <location filename="serverdialog.cpp" line="224"/>
         <source>PNG-Images (*.png)</source>
         <translation>PNG-Bilder (*.png)</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="257"/>
-        <location filename="serverdialog.cpp" line="288"/>
+        <location filename="serverdialog.cpp" line="258"/>
+        <location filename="serverdialog.cpp" line="289"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="257"/>
+        <location filename="serverdialog.cpp" line="258"/>
         <source>%1 is already in use!</source>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="288"/>
+        <location filename="serverdialog.cpp" line="289"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="414"/>
-        <location filename="serverdialog.cpp" line="438"/>
+        <location filename="serverdialog.cpp" line="416"/>
+        <location filename="serverdialog.cpp" line="440"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="416"/>
+        <location filename="serverdialog.cpp" line="418"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or no PNG image.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist entweder zu groß oder kein PNG-Bild.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="419"/>
+        <location filename="serverdialog.cpp" line="421"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is too large.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist zu groß.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="438"/>
+        <location filename="serverdialog.cpp" line="440"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>
