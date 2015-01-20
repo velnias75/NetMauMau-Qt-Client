@@ -1423,21 +1423,27 @@ void MainWindow::notifyClientUpdate() {
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *evt) {
-	if(!gameState()->inGame() && evt->mimeData()->hasFormat("text/plain")) {
+	if(!gameState()->inGame() && evt->mimeData()->hasUrls() &&
+			evt->mimeData()->urls().first().isLocalFile()) {
 		evt->acceptProposedAction();
 	}
 }
 
 void MainWindow::dropEvent(QDropEvent *evt) {
 
-	QUrl url(evt->mimeData()->text(), QUrl::StrictMode);
+	if(evt->mimeData()->hasUrls()) {
 
-	if(url.isValid() && url.isLocalFile()) {
-		ServerDialog * sd = static_cast<ServerDialog *>(m_serverDlg);
-		sd->setPlayerImagePath(url.path(), true);
-		evt->acceptProposedAction();
-		if(sd->getPlayerNamePath() == url.path()) {
-			statusBar()->showMessage(tr("%1 set as player image").arg(url.path()), 1000);
+		const QUrl url(evt->mimeData()->urls().first());
+
+		if(url.isLocalFile()) {
+			ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
+			const QString lf(url.toLocalFile());
+
+			sd->setPlayerImagePath(lf, true);
+			evt->acceptProposedAction();
+			if(sd->getPlayerNamePath() == lf) {
+				statusBar()->showMessage(tr("%1 set as player image").arg(lf), 1000);
+			}
 		}
 	}
 }

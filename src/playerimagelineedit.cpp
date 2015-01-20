@@ -28,17 +28,20 @@ PlayerImageLineEdit::PlayerImageLineEdit(QWidget *p) : QLineEdit(p) {
 }
 
 void PlayerImageLineEdit::dragEnterEvent(QDragEnterEvent *evt) {
-	if(evt->mimeData()->hasFormat("text/plain")) {
+	if(evt->mimeData()->hasUrls() && evt->mimeData()->urls().first().isLocalFile()) {
 		evt->acceptProposedAction();
 	}
 }
 
 void PlayerImageLineEdit::dropEvent(QDropEvent *evt) {
 
-	QUrl url(evt->mimeData()->text(), QUrl::StrictMode);
+	if(evt->mimeData()->hasUrls()) {
 
-	if(url.isValid() && url.isLocalFile()) {
-		setText(url.path());
-		evt->acceptProposedAction();
+		const QUrl url(evt->mimeData()->urls().first());
+
+		if(url.isLocalFile()) {
+			setText(url.toLocalFile());
+			evt->acceptProposedAction();
+		}
 	}
 }
