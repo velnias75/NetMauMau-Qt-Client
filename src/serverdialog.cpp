@@ -75,7 +75,7 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 	QStringList servers = settings.value("list", QStringList("localhost")).toStringList();
 	QStringList aliases = settings.value("alias", servers.count() == 1 && servers[0] == "localhost"
-			&& !localhost.isEmpty() ? QStringList(localhost) : servers).toStringList();
+						  && !localhost.isEmpty() ? QStringList(localhost) : servers).toStringList();
 	setLastServer(settings.value("lastServer", QVariant("localhost")).toString());
 	settings.endGroup();
 
@@ -97,7 +97,6 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 	QObject::connect(&m_model, SIGNAL(itemChanged(QStandardItem *)),
 					 this, SLOT(itemChanged(QStandardItem *)));
-
 	QObject::connect(availServerView->selectionModel(),
 					 SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
 					 this, SLOT(enableRemoveAndOkButton(const QItemSelection &,
@@ -180,6 +179,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	QObject::connect(deleteServers, SIGNAL(clicked()), m_deleteServersDlg, SLOT(show()));
 	QObject::connect(m_deleteServersDlg, SIGNAL(deleteRows(const QList<int> &)),
 					 this, SLOT(deleteRows(const QList<int> &)));
+	QObject::connect(playerImagePath, SIGNAL(textChanged(const QString &)),
+					 this, SLOT(setPlayerImagePath(const QString &)));
 	QObject::connect(playerImagePath, SIGNAL(textChanged(const QString &)),
 					 this, SLOT(enableClearButton(const QString &)));
 	QObject::connect(&m_autoRefresh, SIGNAL(timeout()), this, SLOT(checkOnline()));
@@ -279,7 +280,6 @@ void ServerDialog::doubleClick() {
 		altNames.removeAll(playerName->lineEdit()->text());
 
 		settings.setValue("altNames", altNames);
-		settings.setValue("playerImage", playerImagePath->text());
 		settings.endGroup();
 
 		accept();
@@ -378,6 +378,10 @@ const QByteArray &ServerDialog::getPlayerImage() const {
 	return m_playerImage;
 }
 
+QString ServerDialog::getPlayerNamePath() const {
+	return playerImagePath->text();
+}
+
 void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
 
 	QByteArray prevImgData;
@@ -411,6 +415,12 @@ void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
 
 			if(ok) {
 				playerImagePath->setText(f);
+
+				QSettings settings;
+				settings.beginGroup("Player");
+				settings.setValue("playerImage", playerImagePath->text());
+				settings.endGroup();
+
 			} else {
 				if(warn) {
 					if(QMessageBox::warning(this, tr("Player image"),

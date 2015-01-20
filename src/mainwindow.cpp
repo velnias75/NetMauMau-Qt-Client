@@ -86,6 +86,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	setCorner(Qt::BottomRightCorner, Qt::BottomDockWidgetArea);
 
 	setAttribute(Qt::WA_AlwaysShowToolTips, true);
+	setAcceptDrops(true);
 
 	m_ui->shufflingLabel->setVisible(false);
 
@@ -529,11 +530,11 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
 	switch(e->key()) {
 	case Qt::Key_F7:
 	case Qt::Key_Escape:
-		m_ui->takeCardsButton->click(); break;
+	m_ui->takeCardsButton->click(); break;
 	case Qt::Key_F8:
 	case Qt::Key_Return:
 	case Qt::Key_Enter:
-		m_ui->suspendButton->click(); break;
+	m_ui->suspendButton->click(); break;
 	case Qt::Key_1: clickCard(0, e); break;
 	case Qt::Key_2: clickCard(1, e); break;
 	case Qt::Key_3: clickCard(2, e); break;
@@ -1418,6 +1419,26 @@ void MainWindow::notifyClientUpdate() {
 	} else {
 		qDebug("Current version: %s (%u)", PACKAGE_VERSION, actual);
 		qDebug("Current release: %s (%u)", rel.toLocal8Bit().constData(), avail);
+	}
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *evt) {
+	if(!gameState()->inGame() && evt->mimeData()->hasFormat("text/plain")) {
+		evt->acceptProposedAction();
+	}
+}
+
+void MainWindow::dropEvent(QDropEvent *evt) {
+
+	QUrl url(evt->mimeData()->text(), QUrl::StrictMode);
+
+	if(url.isValid() && url.isLocalFile()) {
+		ServerDialog * sd = static_cast<ServerDialog *>(m_serverDlg);
+		sd->setPlayerImagePath(url.path(), true);
+		evt->acceptProposedAction();
+		if(sd->getPlayerNamePath() == url.path()) {
+			statusBar()->showMessage(tr("%1 set as player image").arg(url.path()), 1000);
+		}
 	}
 }
 

@@ -58,6 +58,7 @@ SOURCES += base64bridge.cpp \
 	netmaumauapplication.cpp \
 	netmaumaumessagebox.cpp \
 	playerimagedelegate.cpp \
+    playerimagelineedit.cpp \
 	playerimageprogressdialog.cpp \
 	portspin.cpp \
 	scoresdialog.cpp \
@@ -86,6 +87,7 @@ HEADERS += base64bridge.h \
 	netmaumauapplication.h \
 	netmaumaumessagebox.h \
 	playerimagedelegate.h \
+    playerimagelineedit.h \
 	playerimageprogressdialog.h \
 	portspin.h \
 	scoresdialog.h \
@@ -94,7 +96,7 @@ HEADERS += base64bridge.h \
 	suitfontchecker.h \
 	suitlabel.h \
 	suitradiobutton.h \
-	util.h \
+	util.h
 
 FORMS += cardwidget.ui \
 	connectionlogdialog.ui \

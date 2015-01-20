@@ -35,6 +35,7 @@ class ServerInfo;
 class ServerDialog : public QDialog, public Ui::ServerDialog {
 	Q_OBJECT
 	Q_PROPERTY(bool forceRefresh READ isForceRefresh WRITE forceRefresh NOTIFY refresh)
+
 public:
 	explicit ServerDialog(QSplashScreen *splash, QWidget *parent = 0);
 	virtual ~ServerDialog();
@@ -45,6 +46,7 @@ public:
 	QString getPlayerName() const;
 	uint getMaxPlayerCount() const;
 	const QByteArray &getPlayerImage() const _CONST;
+	QString getPlayerNamePath() const;
 
 	void setLastServer(const QString &ls);
 	QString getLastServer() const;
@@ -56,9 +58,10 @@ public:
 
 private:
 	bool isForceRefresh() const _PURE;
-	void setPlayerImagePath(const QString &path, bool warn = false);
-
 	void saveServers();
+
+public slots:
+	void setPlayerImagePath(const QString &path, bool warn = false);
 
 private slots:
 	void checkOnline();

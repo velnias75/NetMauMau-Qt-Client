@@ -248,11 +248,7 @@
         <item row="1" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <widget class="QLineEdit" name="playerImagePath">
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
+           <widget class="PlayerImageLineEdit" name="playerImagePath"/>
           </item>
           <item>
            <widget class="QPushButton" name="imageChooseButton">
@@ -433,6 +429,11 @@
    <class>PortSpin</class>
    <extends>QSpinBox</extends>
    <header>portspin.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PlayerImageLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>playerimagelineedit.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

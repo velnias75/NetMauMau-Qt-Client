@@ -54,6 +54,8 @@ protected:
 	virtual void closeEvent(QCloseEvent *e);
 	virtual void timerEvent(QTimerEvent *e);
 	virtual void keyPressEvent(QKeyEvent *e);
+	virtual void dragEnterEvent(QDragEnterEvent *event);
+	virtual void dropEvent(QDropEvent *event);
 
 signals:
 	void disconnectNow() const;
