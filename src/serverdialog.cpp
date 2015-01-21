@@ -402,7 +402,7 @@ QByteArray ServerDialog::convertToPNG(const QByteArray &ba) const {
 		QBuffer buffer(&tba);
 
 		buffer.open(QIODevice::WriteOnly);
-		if(img.save(&buffer, "PNG")) oba = tba;
+		if(scalePlayerPic(img).save(&buffer, "PNG")) oba = tba;
 	}
 
 	return oba;
@@ -607,6 +607,17 @@ void ServerDialog::deleteRows(const QList<int> &rows) {
 
 	resize();
 	saveServers();
+}
+
+QImage ServerDialog::scalePlayerPic(const QImage &img) {
+
+	if(img.height() > 400) {
+		return img.scaledToHeight(400);
+	} else if(img.width() > 640) {
+		return img.scaledToWidth(640);
+	}
+
+	return img;
 }
 
 void ServerDialog::saveServers() {

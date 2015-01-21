@@ -56,6 +56,8 @@ public:
 	void blockAutoRefresh(bool b);
 	void forceRefresh(bool b);
 
+	static QImage scalePlayerPic(const QImage &img);
+
 private:
 	bool isForceRefresh() const _PURE;
 	void saveServers();

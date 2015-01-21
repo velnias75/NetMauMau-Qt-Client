@@ -17,17 +17,18 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QSharedMemory>
 #include <QSplashScreen>
 #include <QLibraryInfo>
 #include <QTranslator>
 
 #ifdef _WIN32
 #include <QSettings>
+#else
+#include <QSharedMemory>
+#include "netmaumaumessagebox.h"
 #endif
 
 #include "netmaumauapplication.h"
-#include "netmaumaumessagebox.h"
 #include "mainwindow.h"
 
 int main(int argc, char *argv[]) {
@@ -37,18 +38,22 @@ int main(int argc, char *argv[]) {
 	QCoreApplication::setApplicationName(PACKAGE_NAME);
 	QCoreApplication::setApplicationVersion(PACKAGE_VERSION);
 
-	QSharedMemory sharedMemory;
-	sharedMemory.setKey(QCoreApplication::applicationName());
-
 #ifdef _WIN32
 	QSettings::setDefaultFormat(QSettings::IniFormat);
+#else
+	QSharedMemory sharedMemory;
+	sharedMemory.setKey(QCoreApplication::applicationName());
 #endif
 
 	NetMauMauApplication a(argc, argv);
 
 	QTranslator qtTranslator;
+#ifndef _WIN32
 	qtTranslator.load("qt_" + QLocale::system().name(),
 					  QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+#else
+	qtTranslator.load("qt_" + QLocale::system().name());
+#endif
 	a.installTranslator(&qtTranslator);
 	a.processEvents();
 
@@ -63,6 +68,7 @@ int main(int argc, char *argv[]) {
 	a.installTranslator(&myappTranslator);
 	a.processEvents();
 
+#ifndef _WIN32
 	if(!sharedMemory.create(1)) {
 		NetMauMauMessageBox mb(QApplication::translate("main", "Warning"),
 							   QApplication::translate("main", "NetMauMau is already running!"),
@@ -71,6 +77,7 @@ int main(int argc, char *argv[]) {
 		mb.exec();
 		exit(0);
 	}
+#endif
 
 	QSplashScreen splash(QPixmap(":/splash.png"), Qt::WindowStaysOnTopHint);
 
