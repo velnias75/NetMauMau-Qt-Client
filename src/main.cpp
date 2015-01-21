@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,6 +17,7 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QSharedMemory>
 #include <QSplashScreen>
 #include <QLibraryInfo>
 #include <QTranslator>
@@ -26,6 +27,7 @@
 #endif
 
 #include "netmaumauapplication.h"
+#include "netmaumaumessagebox.h"
 #include "mainwindow.h"
 
 int main(int argc, char *argv[]) {
@@ -35,15 +37,14 @@ int main(int argc, char *argv[]) {
 	QCoreApplication::setApplicationName(PACKAGE_NAME);
 	QCoreApplication::setApplicationVersion(PACKAGE_VERSION);
 
+	QSharedMemory sharedMemory;
+	sharedMemory.setKey(QCoreApplication::applicationName());
+
 #ifdef _WIN32
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 #endif
 
 	NetMauMauApplication a(argc, argv);
-	QSplashScreen splash(QPixmap(":/splash.png"), Qt::WindowStaysOnTopHint);
-
-	splash.show();
-	a.processEvents();
 
 	QTranslator qtTranslator;
 	qtTranslator.load("qt_" + QLocale::system().name(),
@@ -60,6 +61,20 @@ int main(int argc, char *argv[]) {
 	QTranslator myappTranslator;
 	myappTranslator.load("nmm_qt_client_" + QLocale::system().name(), locDir);
 	a.installTranslator(&myappTranslator);
+	a.processEvents();
+
+	if(!sharedMemory.create(1)) {
+		NetMauMauMessageBox mb(QApplication::translate("main", "Warning"),
+							   QApplication::translate("main", "NetMauMau is already running!"),
+							   QApplication::style()->standardIcon(QStyle::SP_MessageBoxWarning).
+							   pixmap(48));
+		mb.exec();
+		exit(0);
+	}
+
+	QSplashScreen splash(QPixmap(":/splash.png"), Qt::WindowStaysOnTopHint);
+
+	splash.show();
 	a.processEvents();
 
 	MainWindow w(&splash);

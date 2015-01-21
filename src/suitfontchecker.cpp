@@ -25,13 +25,14 @@ SuitFontChecker::SuitFontChecker() {}
 
 bool SuitFontChecker::suitsInFont(const QFont &f) {
 
-	QFont testFont(f);
-
 #if _WIN32
+	QFont testFont(f);
 	testFont.setStyleStrategy(QFont::NoFontMerging);
+#else
+	const QFont testFont(f);
 #endif
 
-	const QFontMetrics &fm(testFont);
+	const QFontMetrics fm(testFont);
 
 #ifndef _WIN32
 	return fm.inFont(L'\u2660') && fm.inFont(L'\u2663') && fm.inFont(L'\u2665') &&

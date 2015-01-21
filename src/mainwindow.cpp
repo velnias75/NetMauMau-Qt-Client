@@ -805,10 +805,19 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 																 verticalHeader()->
 																 minimumSectionSize() - 2)),
 						   Qt::DisplayRole);
+
 		QByteArray ba;
 		QBuffer buf(&ba);
 		buf.open(QIODevice::WriteOnly);
-		img.save(&buf, "PNG");
+
+		if(img.height() > 400) {
+			img.scaledToHeight(400).save(&buf, "PNG");
+		} else if(img.width() > 640) {
+			img.scaledToWidth(640).save(&buf, "PNG");
+		} else {
+			img.save(&buf, "PNG");
+		}
+
 		si.back()->setToolTip(QString("<p align=\"center\">" \
 									  "<img src=\"data:image/png;base64,%1\"><br />%2</p>")
 							  .arg(ba.toBase64().constData()).arg(p));

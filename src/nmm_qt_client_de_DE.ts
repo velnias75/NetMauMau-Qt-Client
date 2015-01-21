@@ -1183,4 +1183,17 @@ Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
         <translation>Ass</translation>
     </message>
 </context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="main.cpp" line="74"/>
+        <source>Warning</source>
+        <translation>Warnung</translation>
+    </message>
+    <message>
+        <location filename="main.cpp" line="75"/>
+        <source>NetMauMau is already running!</source>
+        <translation>NetMauMau läuft bereits!</translation>
+    </message>
+</context>
 </TS>
