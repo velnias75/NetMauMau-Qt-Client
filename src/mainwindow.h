@@ -68,7 +68,6 @@ private slots:
 	void about();
 	void scrollToLastCard();
 
-	void sendingPlayerImageFailed(const QString &) const;
 	void receivingPlayerImage(const QString &);
 	void receivedPlayerImage(const QString &);
 	void showReceiveProgress() const;
@@ -173,6 +172,7 @@ private:
 	mutable GameState *m_gameState;
 	ScoresDialog *m_scoresDialog;
 	FileDownloader *m_clientReleaseDownloader;
+	const QImage m_defaultPlayerImage;
 };
 
 #endif // MAINWINDOW_H

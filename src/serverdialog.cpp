@@ -235,7 +235,13 @@ void ServerDialog::choosePlayerImage() {
 }
 
 void ServerDialog::clearPlayerImage() {
+
 	m_playerImage.clear();
+
+	QSettings settings;
+	settings.beginGroup("Player");
+	settings.remove("playerImage");
+	settings.endGroup();
 }
 
 void ServerDialog::enableClearButton(const QString &s) {

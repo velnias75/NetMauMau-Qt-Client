@@ -23,6 +23,7 @@
 
 #include <cardtools.h>
 #include <scoresexception.h>
+#include <defaultplayerimage.h>
 #include <playerlistexception.h>
 
 #include "mainwindow.h"
@@ -76,7 +77,10 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)),
 	m_licenseDialog(new LicenseDialog(this)), m_aceRoundLabel(), m_gameState(0L),
 	m_scoresDialog(new ScoresDialog(static_cast<ServerDialog *>(m_serverDlg), this)),
-	m_clientReleaseDownloader(0L) {
+	m_clientReleaseDownloader(0L),
+	m_defaultPlayerImage(QImage::fromData
+						 (QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
+									 NetMauMau::Common::DefaultPlayerImage.length()))) {
 
 	m_ui->setupUi(this);
 
@@ -354,10 +358,6 @@ void MainWindow::showReceiveProgress() const {
 	}
 }
 
-void MainWindow::sendingPlayerImageFailed(const QString &) const {
-	// TODO: show some broken image and tooltip
-}
-
 void MainWindow::serverAccept() {
 
 	m_ui->actionReconnect->setDisabled(true);
@@ -392,9 +392,6 @@ void MainWindow::serverAccept() {
 					 this, SLOT(receivingPlayerImage(const QString &)));
 	QObject::connect(m_client, SIGNAL(receivedPlayerImage(const QString &)),
 					 this, SLOT(receivedPlayerImage(const QString &)));
-
-	QObject::connect(m_client, SIGNAL(sendingPlayerImageFailed(const QString &)),
-					 this, SLOT(sendingPlayerImageFailed(const QString &)));
 
 	m_ui->localPlayerDock->setWindowTitle(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
@@ -800,8 +797,10 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 
 	si.push_back(new QStandardItem(QString::null));
 
-	if(!img.isNull()) {
-		si.back()->setData(QPixmap::fromImage(img.scaledToHeight(m_ui->remotePlayersView->
+	const QImage myImg(!img.isNull() ? img : m_defaultPlayerImage);
+
+	if(!myImg.isNull()) {
+		si.back()->setData(QPixmap::fromImage(myImg.scaledToHeight(m_ui->remotePlayersView->
 																 verticalHeader()->
 																 minimumSectionSize() - 2)),
 						   Qt::DisplayRole);
@@ -809,7 +808,7 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 		QByteArray ba;
 		QBuffer buf(&ba);
 		buf.open(QIODevice::WriteOnly);
-		ServerDialog::scalePlayerPic(img).save(&buf, "PNG");
+		ServerDialog::scalePlayerPic(myImg).save(&buf, "PNG");
 
 		si.back()->setToolTip(QString("<p align=\"center\">" \
 									  "<img src=\"data:image/png;base64,%1\"><br />%2</p>")
