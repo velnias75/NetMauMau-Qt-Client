@@ -18,9 +18,11 @@
  */
 
 #include <QSplashScreen>
+#include <QImageReader>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>
+#include <QBuffer>
 
 #include "serverdialog.h"
 
@@ -46,7 +48,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
 	m_hostRexValidator(new QRegExpValidator(hostRex)),
 	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
-	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null) {
+	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null),
+	m_imageFormats() {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -54,6 +57,12 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	setWindowFlags(f);
 
 	setupUi(this);
+
+	QList<QByteArray> sif(QImageReader::supportedImageFormats());
+	QStringList ssif;
+
+	for(int i = 0; i < sif.count(); ++i) ssif << sif[i];
+	m_imageFormats = "*." + ssif.join(" *.");
 
 	QStringList labels;
 	labels << tr("Server") << tr("Version") << tr("AI") << tr("Players");
@@ -221,8 +230,8 @@ ServerDialog::~ServerDialog() {
 
 void ServerDialog::choosePlayerImage() {
 	setPlayerImagePath(QFileDialog::getOpenFileName(this, tr("Choose a player image"),
-													playerImagePath->text(),
-													tr("PNG-Images (*.png)")), true);
+													playerImagePath->text(), tr("Images (%1)").
+													arg(m_imageFormats)), true);
 }
 
 void ServerDialog::clearPlayerImage() {
@@ -374,12 +383,29 @@ uint ServerDialog::getMaxPlayerCount() const {
 	return 0;
 }
 
-const QByteArray &ServerDialog::getPlayerImage() const {
-	return m_playerImage;
+const QByteArray ServerDialog::getPlayerImage() const {
+	return convertToPNG(m_playerImage);
 }
 
 QString ServerDialog::getPlayerNamePath() const {
 	return playerImagePath->text();
+}
+
+QByteArray ServerDialog::convertToPNG(const QByteArray &ba) const {
+
+	QImage img(QImage::fromData(ba));
+	QByteArray oba = ba;
+
+	if(!img.isNull()) {
+
+		QByteArray tba;
+		QBuffer buffer(&tba);
+
+		buffer.open(QIODevice::WriteOnly);
+		if(img.save(&buffer, "PNG")) oba = tba;
+	}
+
+	return oba;
 }
 
 void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
@@ -398,7 +424,7 @@ void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
 
 			qApp->processEvents();
 
-			m_playerImage = img.readAll();
+			m_playerImage = convertToPNG(img.readAll());
 
 			if(m_playerImage.isEmpty()) m_playerImage = prevImgData;
 
@@ -414,6 +440,7 @@ void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
 			QApplication::restoreOverrideCursor();
 
 			if(ok) {
+
 				playerImagePath->setText(f);
 
 				QSettings settings;
@@ -424,13 +451,9 @@ void ServerDialog::setPlayerImagePath(const QString &f, bool warn) {
 			} else {
 				if(warn) {
 					if(QMessageBox::warning(this, tr("Player image"),
-						#ifndef _WIN32
 											tr("The chosen image won't be accepted by the server.\n"
-											   "It is either too large or no PNG image."),
-						#else
-											tr("The chosen image won't be accepted by the server.\n"
-											   "It is too large."),
-						#endif
+											   "It is either too large or of an unsupported " \
+											   "image format."),
 											QMessageBox::Ignore|QMessageBox::Ok) ==
 							QMessageBox::Ignore) {
 

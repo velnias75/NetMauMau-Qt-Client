@@ -45,7 +45,7 @@ public:
 	NetMauMau::Common::ICard::RANK getAceRoundRank() const;
 	QString getPlayerName() const;
 	uint getMaxPlayerCount() const;
-	const QByteArray &getPlayerImage() const _CONST;
+	const QByteArray getPlayerImage() const;
 	QString getPlayerNamePath() const;
 
 	void setLastServer(const QString &ls);
@@ -59,6 +59,7 @@ public:
 private:
 	bool isForceRefresh() const _PURE;
 	void saveServers();
+	QByteArray convertToPNG(const QByteArray &ba) const;
 
 public slots:
 	void setPlayerImagePath(const QString &path, bool warn = false);
@@ -98,6 +99,7 @@ private:
 	bool m_blockAutoRefresh;
 	QSplashScreen *m_splash;
 	mutable QString m_lastPlayerName;
+	QString  m_imageFormats;
 };
 
 #endif // SERVERDIALOG_H
