@@ -73,7 +73,9 @@ private slots:
 	void doubleClick();
 	void enableRemoveAndOkButton(const QItemSelection &sel, const QItemSelection &desel);
 	void deleteRows(const QList<int> &);
+	void deleteRow(const QModelIndex &);
 	void removeSelected();
+	void removeServer();
 	void addServer();
 	void addServer(const QString &, const QString &);
 	void resize();
@@ -105,6 +107,7 @@ private:
 	QString m_imageFormats;
 	AddServerDialog *m_addServerDialog;
 	QMenu *m_ctxPopup;
+	QPoint m_ctxPoint;
 };
 
 #endif // SERVERDIALOG_H

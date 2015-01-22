@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -25,7 +25,7 @@ PlayerImageProgressDialog::PlayerImageProgressDialog(QWidget *p) :
 	QProgressDialog(p, Qt::Dialog|Qt::CustomizeWindowHint|Qt::WindowTitleHint) {
 
 	setWindowModality(Qt::ApplicationModal);
-	setWindowTitle(trUtf8("Receiving player image…"));
+	setWindowTitle(trUtf8("Receiving player image..."));
 	setWindowFlags(windowFlags() & ~(Qt::WindowMinMaxButtonsHint));
 	setCancelButton(0L);
 	setMinimum(0);
@@ -39,7 +39,7 @@ PlayerImageProgressDialog::~PlayerImageProgressDialog() {
 void PlayerImageProgressDialog::show(const QString &player) {
 
 	if(!player.isEmpty()) {
-		setLabelText(trUtf8("Receiving player image for \"%1\"…").arg(player));
+		setLabelText(trUtf8("Receiving player image for \"%1\"...").arg(player));
 		if(!isVisible()) QProgressDialog::show();
 	}
 }

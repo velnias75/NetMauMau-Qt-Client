@@ -43,7 +43,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
 	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
 	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null),
-	m_imageFormats(), m_addServerDialog(new AddServerDialog(this)), m_ctxPopup(new QMenu(this)) {
+	m_imageFormats(), m_addServerDialog(new AddServerDialog(this)), m_ctxPopup(new QMenu(this)),
+	m_ctxPoint() {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -56,9 +57,13 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 		actionAddServer->setIcon(QIcon(":/list-add.png"));
 	}
 
-	m_ctxPopup->addAction(actionAddServer);
 	addAction(actionAddServer);
+
+	m_ctxPopup->addAction(actionAddServer);
+	m_ctxPopup->addAction(actionDeleteServer);
+
 	QObject::connect(actionAddServer, SIGNAL(triggered()), m_addServerDialog, SLOT(exec()));
+	QObject::connect(actionDeleteServer, SIGNAL(triggered()), this, SLOT(removeServer()));
 
 	QList<QByteArray> sif(QImageReader::supportedImageFormats());
 	QStringList ssif;
@@ -161,6 +166,7 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 	if(!removeButton->icon().hasThemeIcon("list-remove")) {
 		removeButton->setIcon(QIcon(":/list-remove.png"));
+		actionDeleteServer->setIcon(QIcon(":/list-remove.png"));
 	}
 
 	if(!picRemoveButton->icon().hasThemeIcon("list-remove")) {
@@ -594,9 +600,33 @@ void ServerDialog::addServer(const QString &shost, const QString &sport) {
 
 }
 
+void ServerDialog::removeServer() {
+
+	if(!m_ctxPoint.isNull()) {
+
+		const QModelIndex idx = availServerView->indexAt(m_ctxPoint);
+
+		if(idx.isValid() &&
+				QMessageBox::question(this, tr("Delete server"),
+									  tr("<html><body>Really delete server\n" \
+										 "<b>%1</b>?</body></html>").
+									  arg(m_model.item(idx.row(), ServerInfo::SERVER)->text()),
+									  QMessageBox::Yes|QMessageBox::No,
+									  QMessageBox::No) == QMessageBox::Yes) {
+			deleteRow(availServerView->indexAt(m_ctxPoint));
+		}
+	}
+}
+
 void ServerDialog::removeSelected() {
 	QList<int> r;
 	r << (availServerView->selectionModel()->selection().indexes().first().row());
+	deleteRows(r);
+}
+
+void ServerDialog::deleteRow(const QModelIndex &idx) {
+	QList<int> r;
+	r << idx.row();
 	deleteRows(r);
 }
 
@@ -625,7 +655,9 @@ QImage ServerDialog::scalePlayerPic(const QImage &img) {
 }
 
 void ServerDialog::serverViewContext(const QPoint &p) {
+	m_ctxPoint = p;
 	m_ctxPopup->popup(availServerView->mapToGlobal(p));
+	actionDeleteServer->setEnabled(availServerView->indexAt(p).isValid());
 }
 
 void ServerDialog::saveServers() {

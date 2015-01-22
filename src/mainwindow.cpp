@@ -81,8 +81,11 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_defaultPlayerImage(QImage::fromData
 						 (QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
 									 NetMauMau::Common::DefaultPlayerImage.length()))) {
-
 	m_ui->setupUi(this);
+
+	m_ui->myCardsScrollArea->installEventFilter(this);
+	m_ui->takeCardsButton->installEventFilter(this);
+	m_ui->suspendButton->installEventFilter(this);
 
 	setCorner(Qt::TopLeftCorner, Qt::TopDockWidgetArea);
 	setCorner(Qt::TopRightCorner, Qt::TopDockWidgetArea);
@@ -314,6 +317,7 @@ void MainWindow::sortMyCards(SORTMODE mode) {
 		int k = 1;
 		for(QList<CardWidget *>::ConstIterator i(cards.begin()); i != cards.end(); ++i, ++k) {
 			m_ui->myCardsLayout->addWidget(*i, 0, Qt::AlignHCenter);
+			(*i)->installEventFilter(this);
 			addKeyShortcutTooltip(*i, k);
 			(*i)->setVisible(true);
 		}
@@ -324,6 +328,14 @@ void MainWindow::sortMyCards(SORTMODE mode) {
 
 void MainWindow::filterMyCards(bool) {
 	enableMyCards(m_ui->myCardsDock->isEnabled());
+}
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *e) {
+	if(e->type() == QEvent::ToolTip) {
+		return !m_ui->actionShowCardTooltips->isChecked();
+	} else {
+		return QMainWindow::eventFilter(watched, e);
+	}
 }
 
 void MainWindow::closeEvent(QCloseEvent *e) {
@@ -339,7 +351,7 @@ void MainWindow::receivingPlayerImage(const QString &p) {
 	gameState()->setCurReceiving(p);
 	QTimer::singleShot(1000, this, SLOT(showReceiveProgress()));
 
-	statusBar()->showMessage(trUtf8("Receiving player image for \"%1\"…").arg(p), 1000);
+	statusBar()->showMessage(trUtf8("Receiving player image for \"%1\"...").arg(p), 1000);
 }
 
 void MainWindow::receivedPlayerImage(const QString &) {
@@ -832,7 +844,7 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 	const long np = static_cast<long>(gameState()->maxPlayerCount()) - m_model.rowCount();
 
 	if(np > 0L) {
-		statusBar()->showMessage(trUtf8("Waiting for %n more player(s)…", "", np));
+		statusBar()->showMessage(trUtf8("Waiting for %n more player(s)...", "", np));
 	} else {
 		statusBar()->clearMessage();
 	}
@@ -859,7 +871,7 @@ void MainWindow::clientNextPlayer(const QString &player) {
 
 void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t takeCount) {
 
-	const QString &msg(trUtf8("Play your card…"));
+	const QString &msg(trUtf8("Play your card..."));
 
 	GameState *gs = gameState();
 
@@ -1336,6 +1348,7 @@ void MainWindow::writeSettings() const {
 	}
 
 	settings.setValue("filterCards", m_ui->filterCards->isChecked());
+	settings.setValue("cardTooltips", m_ui->actionShowCardTooltips->isChecked());
 	settings.endGroup();
 
 	settings.beginGroup("ConnectionLog");
@@ -1376,6 +1389,8 @@ void MainWindow::readSettings() {
 	}
 
 	m_ui->filterCards->setChecked(settings.value("filterCards", QVariant(false)).toBool());
+	m_ui->actionShowCardTooltips->setChecked(settings.value("cardTooltips",
+															QVariant(true)).toBool());
 
 	settings.endGroup();
 

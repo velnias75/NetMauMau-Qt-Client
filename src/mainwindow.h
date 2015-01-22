@@ -50,6 +50,8 @@ public:
 	explicit MainWindow(QSplashScreen *splash, QWidget *p = 0);
 	virtual ~MainWindow();
 
+	virtual bool eventFilter(QObject *watched, QEvent *event);
+
 protected:
 	virtual void closeEvent(QCloseEvent *e);
 	virtual void timerEvent(QTimerEvent *e);

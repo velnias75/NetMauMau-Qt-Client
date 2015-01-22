@@ -349,13 +349,23 @@
   </layout>
   <action name="actionAddServer">
    <property name="icon">
-    <iconset theme="list-add"/>
+    <iconset theme="list-add">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
-    <string>Add server…</string>
+    <string>Add server...</string>
    </property>
    <property name="toolTip">
     <string>Add server</string>
+   </property>
+  </action>
+  <action name="actionDeleteServer">
+   <property name="icon">
+    <iconset theme="list-remove"/>
+   </property>
+   <property name="text">
+    <string>Delete server...</string>
    </property>
   </action>
  </widget>

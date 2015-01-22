@@ -157,6 +157,8 @@
     <addaction name="separator"/>
     <addaction name="actionConnectionlog"/>
     <addaction name="actionNetMauMauServerOutput"/>
+    <addaction name="separator"/>
+    <addaction name="actionShowCardTooltips"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
@@ -796,6 +798,17 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+H</string>
+   </property>
+  </action>
+  <action name="actionShowCardTooltips">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show card tooltips</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+T</string>
    </property>
   </action>
  </widget>
