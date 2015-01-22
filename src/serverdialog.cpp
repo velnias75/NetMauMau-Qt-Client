@@ -23,10 +23,12 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QBuffer>
+#include <QMenu>
 
 #include "serverdialog.h"
 
 #include "deleteserversdialog.h"
+#include "addserverdialog.h"
 #include "base64bridge.h"
 #include "serverinfo.h"
 #include "client.h"
@@ -41,7 +43,7 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
 	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
 	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null),
-	m_imageFormats() {
+	m_imageFormats(), m_addServerDialog(new AddServerDialog(this)), m_ctxPopup(new QMenu(this)) {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -49,6 +51,14 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	setWindowFlags(f);
 
 	setupUi(this);
+
+	if(!actionAddServer->icon().hasThemeIcon("list-add")) {
+		actionAddServer->setIcon(QIcon(":/list-add.png"));
+	}
+
+	m_ctxPopup->addAction(actionAddServer);
+	addAction(actionAddServer);
+	QObject::connect(actionAddServer, SIGNAL(triggered()), m_addServerDialog, SLOT(exec()));
 
 	QList<QByteArray> sif(QImageReader::supportedImageFormats());
 	QStringList ssif;
@@ -97,6 +107,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 	QObject::connect(&m_model, SIGNAL(itemChanged(QStandardItem *)),
 					 this, SLOT(itemChanged(QStandardItem *)));
+	QObject::connect(availServerView, SIGNAL(customContextMenuRequested(const QPoint &)),
+					 this, SLOT(serverViewContext(const QPoint &)));
 	QObject::connect(availServerView->selectionModel(),
 					 SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
 					 this, SLOT(enableRemoveAndOkButton(const QItemSelection &,
@@ -168,6 +180,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	QObject::connect(refreshButton, SIGNAL(clicked()), this, SLOT(checkOnline()));
 	QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeSelected()));
 	QObject::connect(serverAdd, SIGNAL(addServer()), this, SLOT(addServer()));
+	QObject::connect(m_addServerDialog, SIGNAL(addServer(const QString &, const QString &)),
+					 this, SLOT(addServer(const QString &, const QString &)));
 	QObject::connect(imageChooseButton, SIGNAL(clicked()), this, SLOT(choosePlayerImage()));
 	QObject::connect(picRemoveButton, SIGNAL(clicked()), this, SLOT(clearPlayerImage()));
 	QObject::connect(this, SIGNAL(refresh()), this, SLOT(checkOnline()));
@@ -205,6 +219,8 @@ ServerDialog::~ServerDialog() {
 	removeButton->disconnect();
 	deleteServers->disconnect();
 
+	delete m_ctxPopup;
+	delete m_addServerDialog;
 	delete m_deleteServersDlg;
 	delete m_nameRexValidator;
 
@@ -544,12 +560,15 @@ void ServerDialog::itemChanged(QStandardItem *) {
 }
 
 void ServerDialog::addServer() {
+	addServer(serverAdd->getHost(), serverAdd->getPort());
+}
+
+void ServerDialog::addServer(const QString &shost, const QString &sport) {
 
 	QList<QStandardItem *> row;
 
-	const QString &host(serverAdd->getHost() + (!serverAdd->getPort().isEmpty() ?
-												QString(":%1").arg(serverAdd->getPort()) :
-												QString::null));
+	const QString &host(shost + (!sport.isEmpty() ? QString(":%1").arg(sport) : QString::null));
+
 	row << new QStandardItem(host);
 	row.back()->setData(host, ServerInfo::HOST);
 	row.back()->setEnabled(false);
@@ -603,6 +622,10 @@ QImage ServerDialog::scalePlayerPic(const QImage &img) {
 	}
 
 	return img;
+}
+
+void ServerDialog::serverViewContext(const QPoint &p) {
+	m_ctxPopup->popup(availServerView->mapToGlobal(p));
 }
 
 void ServerDialog::saveServers() {

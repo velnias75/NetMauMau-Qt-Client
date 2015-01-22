@@ -50,8 +50,16 @@ const QRegExp &AddServerWidget::getHostRex() const {
 	return hostRex;
 }
 
+QPushButton *AddServerWidget::getAddButton() const {
+	return addButton;
+}
+
+QLineEdit *AddServerWidget::getHostEdit() const {
+	return hostEdit;
+}
+
 QString AddServerWidget::getHost() const {
-	return hostEdit->text();
+	return getHostEdit()->text();
 }
 
 QString AddServerWidget::getPort() const {

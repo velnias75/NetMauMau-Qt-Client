@@ -29,6 +29,7 @@
 #include "ui_serverdialog.h"
 
 class DeleteServersDialog;
+class AddServerDialog;
 class QSplashScreen;
 class ServerInfo;
 
@@ -74,12 +75,14 @@ private slots:
 	void deleteRows(const QList<int> &);
 	void removeSelected();
 	void addServer();
+	void addServer(const QString &, const QString &);
 	void resize();
 	void resizeColumns();
 	void choosePlayerImage();
 	void clearPlayerImage();
 	void enableClearButton(const QString &);
 	void itemChanged(QStandardItem *);
+	void serverViewContext(const QPoint &);
 
 signals:
 	void refresh();
@@ -99,7 +102,9 @@ private:
 	bool m_blockAutoRefresh;
 	QSplashScreen *m_splash;
 	mutable QString m_lastPlayerName;
-	QString  m_imageFormats;
+	QString m_imageFormats;
+	AddServerDialog *m_addServerDialog;
+	QMenu *m_ctxPopup;
 };
 
 #endif // SERVERDIALOG_H

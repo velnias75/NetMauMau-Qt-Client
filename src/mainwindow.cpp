@@ -800,8 +800,8 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 
 	if(!myImg.isNull()) {
 		si.back()->setData(QPixmap::fromImage(myImg.scaledToHeight(m_ui->remotePlayersView->
-																 verticalHeader()->
-																 minimumSectionSize() - 2)),
+																   verticalHeader()->
+																   minimumSectionSize() - 2)),
 						   Qt::DisplayRole);
 
 		QByteArray ba;

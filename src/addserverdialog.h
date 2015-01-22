@@ -17,38 +17,25 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADDSERVERWIDGET_H
-#define ADDSERVERWIDGET_H
+#ifndef ADDSERVERDIALOG_H
+#define ADDSERVERDIALOG_H
 
-#include <linkercontrol.h>
+#include "ui_addserverdialog.h"
 
-#include "ui_addserverwidget.h"
-
-class AddServerWidget : public QGroupBox, private Ui::AddServerWidget {
+class AddServerDialog : public QDialog, private Ui::AddServerDialog {
 	Q_OBJECT
-
 public:
-	explicit AddServerWidget(QWidget *parent = 0);
-	virtual ~AddServerWidget();
-
-public:
-	const QRegExp &getHostRex() const _CONST;
-
-	QPushButton *getAddButton() const _PURE;
-	QLineEdit *getHostEdit() const _PURE;
-
-	QString getHost() const;
-	QString getPort() const;
+	explicit AddServerDialog(QWidget *parent = 0);
 
 signals:
-	void addServer();
+	void addServer(const QString &, const QString &);
 
 private slots:
-	void enableAddButton(const QString &str);
+	void enableOkButton(const QString &);
 	void addServerClicked();
 
 private:
-	const QRegExpValidator *m_hostRexValidator;
+	QAbstractButton *m_okButton;
 };
 
-#endif // ADDSERVERWIDGET_H
+#endif // ADDSERVERDIALOG_H

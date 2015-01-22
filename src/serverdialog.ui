@@ -45,6 +45,9 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QTableView" name="availServerView">
+          <property name="contextMenuPolicy">
+           <enum>Qt::CustomContextMenu</enum>
+          </property>
           <property name="editTriggers">
            <set>QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
           </property>
@@ -344,6 +347,17 @@
     </layout>
    </item>
   </layout>
+  <action name="actionAddServer">
+   <property name="icon">
+    <iconset theme="list-add"/>
+   </property>
+   <property name="text">
+    <string>Add server…</string>
+   </property>
+   <property name="toolTip">
+    <string>Add server</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
