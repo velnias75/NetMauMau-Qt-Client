@@ -295,92 +295,13 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="AddServerWidget" name="serverAdd" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="title">
-        <string>Add server</string>
-       </property>
-       <layout class="QFormLayout" name="formLayout_2">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>&amp;Server:</string>
-          </property>
-          <property name="buddy">
-           <cstring>hostEdit</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="hostEdit">
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
-          <property name="maxLength">
-           <number>64</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <widget class="PortSpin" name="portSpin"/>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="addButton">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="toolTip">
-             <string>Add server to list</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset theme="list-add">
-              <normaloff/>
-             </iconset>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>&amp;Port:</string>
-          </property>
-          <property name="buddy">
-           <cstring>portSpin</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </widget>
      </item>
     </layout>
@@ -426,23 +347,21 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PortSpin</class>
-   <extends>QSpinBox</extends>
-   <header>portspin.h</header>
-  </customwidget>
-  <customwidget>
    <class>PlayerImageLineEdit</class>
    <extends>QLineEdit</extends>
    <header>playerimagelineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AddServerWidget</class>
+   <extends>QWidget</extends>
+   <header>addserverwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>playerName</tabstop>
   <tabstop>playerImagePath</tabstop>
   <tabstop>imageChooseButton</tabstop>
-  <tabstop>hostEdit</tabstop>
-  <tabstop>portSpin</tabstop>
-  <tabstop>addButton</tabstop>
   <tabstop>refreshButton</tabstop>
   <tabstop>removeButton</tabstop>
   <tabstop>deleteServers</tabstop>

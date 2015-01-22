@@ -70,7 +70,6 @@ private slots:
 	void checkOnline();
 	void updateOnline(bool enabled, int row);
 	void doubleClick();
-	void enableAddButton(const QString &str);
 	void enableRemoveAndOkButton(const QItemSelection &sel, const QItemSelection &desel);
 	void deleteRows(const QList<int> &);
 	void removeSelected();
@@ -93,7 +92,6 @@ private:
 	mutable bool m_forceRefresh;
 	QString m_lastServer;
 	const DeleteServersDialog *m_deleteServersDlg;
-	const QRegExpValidator *m_hostRexValidator;
 	const QRegExpValidator *m_nameRexValidator;
 	QByteArray m_playerImage;
 	QTimer m_autoRefresh;

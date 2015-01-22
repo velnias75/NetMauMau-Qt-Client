@@ -39,7 +39,8 @@ CONFIG(debug, debug|release) {
 	 unix:LIBS += -lnetmaumaucommon -lnetmaumauclient
 }
 
-SOURCES += base64bridge.cpp \
+SOURCES += addserverwidget.cpp \
+	base64bridge.cpp \
 	cardpixmap.cpp \
 	cardwidget.cpp \
 	client.cpp \
@@ -69,7 +70,8 @@ SOURCES += base64bridge.cpp \
 	suitradiobutton.cpp \
 	util.cpp
 
-HEADERS += base64bridge.h \
+HEADERS += addserverwidget.h \
+	base64bridge.h \
 	cardpixmap.h \
 	cardwidget.h \
 	client.h \
@@ -109,7 +111,8 @@ FORMS += cardwidget.ui \
 	scoresdialog.ui \
 	serverdialog.ui \
 	suitlabel.ui \
-	suitradiobutton.ui
+	suitradiobutton.ui \
+    addserverwidget.ui
 
 RESOURCES += cards.qrc \
 	icons.qrc \

@@ -32,21 +32,13 @@
 #include "client.h"
 
 namespace {
-
 const char *NA = QT_TRANSLATE_NOOP("ServerDialog", "n/a");
-const QRegExp hostRex("^(?=.{1,255}$)[0-9A-Za-z]" \
-					  "(?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?" \
-					  "(?:\\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|-)" \
-					  "{0,61}[0-9A-Za-z])?)*\\.?$");
-
 const QRegExp nameRex("[^\\+]+.*");
-
 }
 
 ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_model(0, 4),
 	m_playerNameModel(), m_forceRefresh(false), m_lastServer(QString::null),
 	m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
-	m_hostRexValidator(new QRegExpValidator(hostRex)),
 	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
 	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null),
 	m_imageFormats() {
@@ -67,7 +59,6 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	QStringList labels;
 	labels << tr("Server") << tr("Version") << tr("AI") << tr("Players");
 
-	hostEdit->setValidator(m_hostRexValidator);
 	playerName->setValidator(m_nameRexValidator);
 	playerName->lineEdit()->setMaxLength(1023);
 
@@ -113,7 +104,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 	for(int i = 0, j = 0; i < servers.size(); ++i) {
 		const QString &tHost(servers[i].trimmed());
-		if(!tHost.simplified().isEmpty() && hostRex.exactMatch(tHost.left(tHost.indexOf(':')))) {
+		if(!tHost.simplified().isEmpty() &&
+				serverAdd->getHostRex().exactMatch(tHost.left(tHost.indexOf(':')))) {
 
 			m_model.setItem(j, ServerInfo::SERVER, new QStandardItem(aliases[i]));
 			m_model.item(j, ServerInfo::SERVER)->setData(tHost, ServerInfo::HOST);
@@ -167,21 +159,15 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 		deleteServers->setIcon(QApplication::style()->standardIcon(QStyle::SP_TrashIcon));
 	}
 
-	if(!addButton->icon().hasThemeIcon("list-add")) {
-		addButton->setIcon(QIcon(":/list-add.png"));
-	}
-
 	connectButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_DialogOkButton));
 	cancelButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_DialogCancelButton));
 
 	QObject::connect(availServerView, SIGNAL(doubleClicked(const QModelIndex &)),
 					 this, SLOT(doubleClick()));
-	QObject::connect(hostEdit, SIGNAL(textChanged(const QString &)),
-					 this, SLOT(enableAddButton(const QString &)));
 	QObject::connect(connectButton, SIGNAL(clicked()), this, SLOT(doubleClick()));
 	QObject::connect(refreshButton, SIGNAL(clicked()), this, SLOT(checkOnline()));
 	QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeSelected()));
-	QObject::connect(addButton, SIGNAL(clicked()), this, SLOT(addServer()));
+	QObject::connect(serverAdd, SIGNAL(addServer()), this, SLOT(addServer()));
 	QObject::connect(imageChooseButton, SIGNAL(clicked()), this, SLOT(choosePlayerImage()));
 	QObject::connect(picRemoveButton, SIGNAL(clicked()), this, SLOT(clearPlayerImage()));
 	QObject::connect(this, SIGNAL(refresh()), this, SLOT(checkOnline()));
@@ -214,15 +200,12 @@ ServerDialog::~ServerDialog() {
 	}
 
 	availServerView->disconnect();
-	hostEdit->disconnect();
 	connectButton->disconnect();
 	refreshButton->disconnect();
 	removeButton->disconnect();
-	addButton->disconnect();
 	deleteServers->disconnect();
 
 	delete m_deleteServersDlg;
-	delete m_hostRexValidator;
 	delete m_nameRexValidator;
 
 	disconnect();
@@ -486,10 +469,6 @@ void ServerDialog::enableRemoveAndOkButton(const QItemSelection &, const QItemSe
 	connectButton->setEnabled(availServerView->selectionModel()->hasSelection());
 }
 
-void ServerDialog::enableAddButton(const QString &str) {
-	addButton->setDisabled(str.isEmpty());
-}
-
 void ServerDialog::resize() {
 	resizeColumns();
 	deleteServers->setEnabled(m_model.rowCount());
@@ -568,8 +547,8 @@ void ServerDialog::addServer() {
 
 	QList<QStandardItem *> row;
 
-	const QString &host(hostEdit->text() + (!portSpin->text().isEmpty() ?
-												QString(":%1").arg(portSpin->text()) :
+	const QString &host(serverAdd->getHost() + (!serverAdd->getPort().isEmpty() ?
+												QString(":%1").arg(serverAdd->getPort()) :
 												QString::null));
 	row << new QStandardItem(host);
 	row.back()->setData(host, ServerInfo::HOST);

@@ -90,7 +90,6 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	setCorner(Qt::BottomRightCorner, Qt::BottomDockWidgetArea);
 
 	setAttribute(Qt::WA_AlwaysShowToolTips, true);
-	setAcceptDrops(true);
 
 	m_ui->shufflingLabel->setVisible(false);
 
