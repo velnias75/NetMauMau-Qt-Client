@@ -96,12 +96,15 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 	settings.beginGroup("Player");
 	m_lastPlayerName = settings.value("name", "Phoenix").toString();
-	m_playerNameModel.appendRow(new QStandardItem(m_lastPlayerName));
+
+	if(!m_lastPlayerName.isEmpty()) {
+		m_playerNameModel.appendRow(new QStandardItem(m_lastPlayerName));
+	}
 
 	const QStringList &pNames(settings.value("altNames", QStringList()).toStringList());
 
 	for(int i = 0; i < pNames.count(); ++i) {
-		m_playerNameModel.appendRow(new QStandardItem(pNames[i]));
+		if(!pNames.isEmpty()) m_playerNameModel.appendRow(new QStandardItem(pNames[i]));
 	}
 
 	setPlayerImagePath(settings.value("playerImage").toString());
@@ -308,7 +311,9 @@ void ServerDialog::savePlayer() {
 	QStringList altNames;
 
 	for(int i = 0; i < m_playerNameModel.rowCount(); ++i) {
-		altNames << m_playerNameModel.item(i)->text();
+		if(!m_playerNameModel.item(i)->text().isEmpty()) {
+			altNames << m_playerNameModel.item(i)->text();
+		}
 	}
 
 	altNames.removeAll(pName);
@@ -373,7 +378,7 @@ QStandardItemModel *ServerDialog::getModel() {
 }
 
 void ServerDialog::setPlayerName(const QString &name) {
-	playerName->lineEdit()->setText(name);
+	if(!name.isEmpty()) playerName->lineEdit()->setText(name);
 }
 
 QString ServerDialog::getPlayerName() const {
@@ -399,7 +404,9 @@ QStringList ServerDialog::getPlayerAltNames() const {
 	QStringList altNames;
 
 	for(int i = 0; i < m_playerNameModel.rowCount(); ++i) {
-		altNames << m_playerNameModel.item(i)->text();
+		if(!m_playerNameModel.item(i)->text().isEmpty()) {
+			altNames << m_playerNameModel.item(i)->text();
+		}
 	}
 
 	return altNames;
