@@ -80,7 +80,9 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_clientReleaseDownloader(0L),
 	m_defaultPlayerImage(QImage::fromData
 						 (QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
-									 NetMauMau::Common::DefaultPlayerImage.length()))) {
+									 NetMauMau::Common::DefaultPlayerImage.length()))),
+	m_playerNameMenu(0L) {
+
 	m_ui->setupUi(this);
 
 	m_ui->myCardsScrollArea->installEventFilter(this);
@@ -175,6 +177,8 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 
 	resizeColumns();
 
+	QObject::connect(m_ui->localPlayerDock, SIGNAL(customContextMenuRequested(const QPoint &)),
+					 this, SLOT(showPlayerNameSelectMenu(const QPoint &)));
 	QObject::connect(m_ui->noSort, SIGNAL(toggled(bool)), this, SLOT(sortNoSort(bool)));
 	QObject::connect(m_ui->sortSuitRank, SIGNAL(toggled(bool)), this, SLOT(sortSuitRank(bool)));
 	QObject::connect(m_ui->sortRankSuit, SIGNAL(toggled(bool)), this, SLOT(sortRankSuit(bool)));
@@ -245,6 +249,7 @@ MainWindow::~MainWindow() {
 	delete m_messageItemDelegate;
 	delete m_receivingPlayerImageProgress;
 	delete m_clientReleaseDownloader;
+	delete m_playerNameMenu;
 	delete m_gameState;
 	delete m_ui;
 }
@@ -371,12 +376,14 @@ void MainWindow::showReceiveProgress() const {
 
 void MainWindow::updatePlayerScores(GameState *gs, uint attempts) {
 
-	for(uint i = 0; attempts < 3; ++i) {
+	gs->playerScores().clear();
+
+	for(uint i = 0; i < attempts; ++i) {
 		try {
 			updatePlayerScores(gs, m_client->playerList(false));
 			break;
-		} catch(const NetMauMau::Common::Exception::SocketException &) {
-			gs->playerScores().clear();
+		} catch(const NetMauMau::Common::Exception::SocketException &e) {
+			qDebug("Retrieving scores failed in attempt %u: %s", (i + 1), e.what());
 		}
 	}
 }
@@ -1507,6 +1514,31 @@ void MainWindow::dropEvent(QDropEvent *evt) {
 				statusBar()->showMessage(tr("%1 set as player image").arg(lf), 1000);
 			}
 		}
+	}
+}
+
+void MainWindow::changePlayerName(QAction *act) {
+	m_ui->localPlayerDock->setWindowTitle(act->text());
+	static_cast<ServerDialog *>(m_serverDlg)->setPlayerName(act->text());
+}
+
+void MainWindow::showPlayerNameSelectMenu(const QPoint &p) {
+
+	const QStringList &altNames(static_cast<ServerDialog *>(m_serverDlg)->getPlayerAltNames());
+
+	if(!gameState()->inGame() && altNames.size() > 1) {
+
+		delete m_playerNameMenu;
+		m_playerNameMenu = new QMenu();
+
+		QObject::connect(m_playerNameMenu, SIGNAL(triggered(QAction *)),
+						 this, SLOT(changePlayerName(QAction *)));
+
+		for(int i = 0; i < altNames.count(); ++i) {
+			m_playerNameMenu->addAction(altNames[i]);
+		}
+
+		m_playerNameMenu->popup(m_ui->localPlayerDock->mapToGlobal(p));
 	}
 }
 

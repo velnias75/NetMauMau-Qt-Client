@@ -70,6 +70,8 @@ private slots:
 	void about();
 	void scrollToLastCard();
 
+	void changePlayerName(QAction *);
+	void showPlayerNameSelectMenu(const QPoint &);
 	void receivingPlayerImage(const QString &);
 	void receivedPlayerImage(const QString &);
 	void showReceiveProgress() const;
@@ -177,6 +179,7 @@ private:
 	ScoresDialog *m_scoresDialog;
 	FileDownloader *m_clientReleaseDownloader;
 	const QImage m_defaultPlayerImage;
+	QMenu *m_playerNameMenu;
 };
 
 #endif // MAINWINDOW_H

@@ -45,6 +45,8 @@ public:
 	QString getAcceptedServerAlias() const;
 	NetMauMau::Common::ICard::RANK getAceRoundRank() const;
 	QString getPlayerName() const;
+	void setPlayerName(const QString &name);
+	QStringList getPlayerAltNames() const;
 	uint getMaxPlayerCount() const;
 	const QByteArray getPlayerImage() const;
 	QString getPlayerImagePath() const;

@@ -90,8 +90,13 @@ void ScoresDialog::refresh() {
 void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 	if(txt != serverCombo->currentText()) {
+
 		const int cIdx = serverCombo->findText(txt);
-		if(cIdx != -1) serverCombo->setCurrentIndex(cIdx);
+
+		if(cIdx != -1) {
+			serverCombo->setCurrentIndex(cIdx);
+			return;
+		}
 	}
 
 	if(serverCombo->itemData(serverCombo->currentIndex(), ServerInfo::HAVESCORES).toBool()) {
@@ -126,6 +131,7 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 				items << new QStandardItem(pName);
 				if(isMe) items.back()->setBackground(Qt::lightGray);
+				items.back()->setToolTip(pName);
 				items << new QStandardItem(QString::number(i->score));
 				items.back()->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
 				if(isMe) items.back()->setBackground(Qt::lightGray);

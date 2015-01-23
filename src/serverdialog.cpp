@@ -372,6 +372,10 @@ QStandardItemModel *ServerDialog::getModel() {
 	return &m_model;
 }
 
+void ServerDialog::setPlayerName(const QString &name) {
+	playerName->lineEdit()->setText(name);
+}
+
 QString ServerDialog::getPlayerName() const {
 
 	const QString &curPlayerName(playerName->lineEdit()->text());
@@ -388,6 +392,17 @@ QString ServerDialog::getPlayerName() const {
 	}
 
 	return curPlayerName;
+}
+
+QStringList ServerDialog::getPlayerAltNames() const {
+
+	QStringList altNames;
+
+	for(int i = 0; i < m_playerNameModel.rowCount(); ++i) {
+		altNames << m_playerNameModel.item(i)->text();
+	}
+
+	return altNames;
 }
 
 uint ServerDialog::getMaxPlayerCount() const {
