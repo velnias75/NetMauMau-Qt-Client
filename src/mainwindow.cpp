@@ -552,11 +552,11 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
 	switch(e->key()) {
 	case Qt::Key_F7:
 	case Qt::Key_Escape:
-	m_ui->takeCardsButton->click(); break;
+		m_ui->takeCardsButton->click(); break;
 	case Qt::Key_F8:
 	case Qt::Key_Return:
 	case Qt::Key_Enter:
-	m_ui->suspendButton->click(); break;
+		m_ui->suspendButton->click(); break;
 	case Qt::Key_1: clickCard(0, e); break;
 	case Qt::Key_2: clickCard(1, e); break;
 	case Qt::Key_3: clickCard(2, e); break;
@@ -1301,9 +1301,12 @@ void MainWindow::clearStats() {
 
 QString MainWindow::getAceRoundRankString(const GameState *gs, bool capitalize) const {
 	switch(gs->aceRoundRank()) {
-	case NetMauMau::Common::ICard::QUEEN: return capitalize ? tr("Queen round") : tr("queen round");
-	case NetMauMau::Common::ICard::KING: return capitalize ? tr("King round") : tr("king round");
-	default: return capitalize ? tr("Ace round") : tr("ace round");
+	case NetMauMau::Common::ICard::QUEEN:
+		return capitalize ? tr("Queen round") : tr("queen round");
+	case NetMauMau::Common::ICard::KING:
+		return capitalize ? tr("King round") : tr("king round");
+	default:
+		return capitalize ? tr("Ace round") : tr("ace round");
 	}
 }
 
@@ -1410,17 +1413,20 @@ void MainWindow::readSettings() {
 	restoreGeometry(settings.value("geometry").toByteArray());
 	restoreState(settings.value("windowState").toByteArray());
 
-	switch(static_cast<SORTMODE>(settings.value("sortMode",
-												QVariant(static_cast<uint>(SUIT_RANK))).toUInt())) {
-	case SUIT_RANK: m_ui->sortSuitRank->setChecked(true); break;
-	case RANK_SUIT: m_ui->sortRankSuit->setChecked(true); break;
-	default: m_ui->noSort->setChecked(true); break;
+	switch(static_cast<SORTMODE>(settings.
+								 value("sortMode",
+									   QVariant(static_cast<uint>(SUIT_RANK))).toUInt())) {
+	case SUIT_RANK:
+		m_ui->sortSuitRank->setChecked(true); break;
+	case RANK_SUIT:
+		m_ui->sortRankSuit->setChecked(true); break;
+	default:
+		m_ui->noSort->setChecked(true); break;
 	}
 
 	m_ui->filterCards->setChecked(settings.value("filterCards", QVariant(false)).toBool());
 	m_ui->actionShowCardTooltips->setChecked(settings.value("cardTooltips",
 															QVariant(true)).toBool());
-
 	settings.endGroup();
 
 	settings.beginGroup("Player");
@@ -1485,7 +1491,7 @@ void MainWindow::dropEvent(QDropEvent *evt) {
 
 			sd->setPlayerImagePath(lf, true);
 			evt->acceptProposedAction();
-			if(sd->getPlayerNamePath() == lf) {
+			if(sd->getPlayerImagePath() == lf) {
 				statusBar()->showMessage(tr("%1 set as player image").arg(lf), 1000);
 			}
 		}

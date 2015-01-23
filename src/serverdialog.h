@@ -47,7 +47,7 @@ public:
 	QString getPlayerName() const;
 	uint getMaxPlayerCount() const;
 	const QByteArray getPlayerImage() const;
-	QString getPlayerNamePath() const;
+	QString getPlayerImagePath() const;
 
 	void setLastServer(const QString &ls);
 	QString getLastServer() const;
@@ -62,6 +62,7 @@ public:
 private:
 	bool isForceRefresh() const _PURE;
 	void saveServers();
+	void savePlayer();
 	QByteArray convertToPNG(const QByteArray &ba) const;
 
 public slots:

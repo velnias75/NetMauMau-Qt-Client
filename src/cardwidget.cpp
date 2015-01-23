@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -117,29 +117,38 @@ QString CardWidget::tooltipText(NetMauMau::Common::ICard::SUIT s,
 
 		switch(s) {
 		case NetMauMau::Common::ICard::HEARTS:
-		suit = tr("Hearts"); break;
+			suit = tr("Hearts"); break;
 		case NetMauMau::Common::ICard::DIAMONDS:
-		suit = tr("Diamonds"); break;
+			suit = tr("Diamonds"); break;
 		case NetMauMau::Common::ICard::CLUBS:
-		suit = tr("Clubs"); break;
+			suit = tr("Clubs"); break;
 		case NetMauMau::Common::ICard::SPADES:
-		suit = tr("Spades"); break;
+			suit = tr("Spades"); break;
 		case NetMauMau::Common::ICard::SUIT_ILLEGAL:
-		suit = "X"; break;
+			suit = "X"; break;
 		}
 
 		QString rank;
 
 		switch(r) {
-		case NetMauMau::Common::ICard::SEVEN: rank.append('7'); break;
-		case NetMauMau::Common::ICard::EIGHT: rank.append('8'); break;
-		case NetMauMau::Common::ICard::NINE: rank.append('9'); break;
-		case NetMauMau::Common::ICard::TEN: rank.append("10"); break;
-		case NetMauMau::Common::ICard::JACK: rank.append(tr("Jack")); break;
-		case NetMauMau::Common::ICard::QUEEN: rank.append(tr("Queen")); break;
-		case NetMauMau::Common::ICard::KING: rank.append(tr("King")); break;
-		case NetMauMau::Common::ICard::ACE: rank.append(tr("Ace")); break;
-		case NetMauMau::Common::ICard::RANK_ILLEGAL: rank.append("X"); break;
+		case NetMauMau::Common::ICard::SEVEN:
+			rank.append('7'); break;
+		case NetMauMau::Common::ICard::EIGHT:
+			rank.append('8'); break;
+		case NetMauMau::Common::ICard::NINE:
+			rank.append('9'); break;
+		case NetMauMau::Common::ICard::TEN:
+			rank.append("10"); break;
+		case NetMauMau::Common::ICard::JACK:
+			rank.append(tr("Jack")); break;
+		case NetMauMau::Common::ICard::QUEEN:
+			rank.append(tr("Queen")); break;
+		case NetMauMau::Common::ICard::KING:
+			rank.append(tr("King")); break;
+		case NetMauMau::Common::ICard::ACE:
+			rank.append(tr("Ace")); break;
+		case NetMauMau::Common::ICard::RANK_ILLEGAL:
+			rank.append("X"); break;
 		}
 
 		ttt.append(tr("%1 of %2").arg(rank).arg(suit));

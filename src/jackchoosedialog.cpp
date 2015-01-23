@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -41,19 +41,27 @@ JackChooseDialog::~JackChooseDialog() {
 
 QString JackChooseDialog::suitToolTip(NetMauMau::Common::ICard::SUIT s) {
 	switch(s) {
-	case NetMauMau::Common::ICard::HEARTS: return tr("Hearts");
-	case NetMauMau::Common::ICard::DIAMONDS: return tr("Diamonds");
-	case NetMauMau::Common::ICard::CLUBS: return tr("Clubs");
-	default: return tr("Spades");
+	case NetMauMau::Common::ICard::HEARTS:
+		return tr("Hearts");
+	case NetMauMau::Common::ICard::DIAMONDS:
+		return tr("Diamonds");
+	case NetMauMau::Common::ICard::CLUBS:
+		return tr("Clubs");
+	default:
+		return tr("Spades");
 	}
 }
 
 void JackChooseDialog::setSuite(NetMauMau::Common::ICard::SUIT s) {
 	switch(s) {
-	case NetMauMau::Common::ICard::HEARTS: heartsSuit->setChecked(true); break;
-	case NetMauMau::Common::ICard::DIAMONDS: diamondsSuit->setChecked(true); break;
-	case NetMauMau::Common::ICard::CLUBS: clubsSuit->setChecked(true); break;
-	default: spadesSuit->setChecked(true); break;
+	case NetMauMau::Common::ICard::HEARTS:
+		heartsSuit->setChecked(true); break;
+	case NetMauMau::Common::ICard::DIAMONDS:
+		diamondsSuit->setChecked(true); break;
+	case NetMauMau::Common::ICard::CLUBS:
+		clubsSuit->setChecked(true); break;
+	default:
+		spadesSuit->setChecked(true); break;
 	}
 }
 

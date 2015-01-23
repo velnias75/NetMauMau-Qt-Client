@@ -160,8 +160,8 @@ void LaunchServerDialog::stateChanged(QProcess::ProcessState ps) {
 	case QProcess::NotRunning:
 		break;
 	default:
-	m_process.waitForStarted(800);
-	emit serverLaunched(true);
+		m_process.waitForStarted(800);
+		emit serverLaunched(true);
 		break;
 	}
 }

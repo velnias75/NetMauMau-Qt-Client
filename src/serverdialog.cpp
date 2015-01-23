@@ -219,6 +219,8 @@ ServerDialog::~ServerDialog() {
 
 	}
 
+	savePlayer();
+
 	availServerView->disconnect();
 	connectButton->disconnect();
 	refreshButton->disconnect();
@@ -267,8 +269,6 @@ void ServerDialog::doubleClick() {
 			uint port = (QString(idx != -1 ? host.mid(idx + 1) :
 											 QString::number(Client::getDefaultPort()))).toUInt();
 
-			//			timeval tv = { 0, 800 };
-
 			QByteArray pn = playerName->lineEdit()->text().toUtf8();
 			const Client::PLAYERLIST &pl((Client(0L, 0L, pn.constData(),
 												 std::string(srv.toStdString()),
@@ -287,20 +287,7 @@ void ServerDialog::doubleClick() {
 
 		} catch(const NetMauMau::Common::Exception::SocketException &) {}
 
-		QSettings settings;
-		settings.beginGroup("Player");
-		settings.setValue("name", playerName->lineEdit()->text());
-
-		QStringList altNames;
-
-		for(int i = 0; i < m_playerNameModel.rowCount(); ++i) {
-			altNames << m_playerNameModel.item(i)->text();
-		}
-
-		altNames.removeAll(playerName->lineEdit()->text());
-
-		settings.setValue("altNames", altNames);
-		settings.endGroup();
+		savePlayer();
 
 		accept();
 		hide();
@@ -308,6 +295,28 @@ void ServerDialog::doubleClick() {
 	} else {
 		QMessageBox::warning(this, tr("Connect"), tr("Please fill in player name"));
 	}
+}
+
+void ServerDialog::savePlayer() {
+
+	const QString pName(getPlayerName());
+
+	QSettings settings;
+	settings.beginGroup("Player");
+	settings.setValue("name", pName);
+
+	QStringList altNames;
+
+	for(int i = 0; i < m_playerNameModel.rowCount(); ++i) {
+		altNames << m_playerNameModel.item(i)->text();
+	}
+
+	altNames.removeAll(pName);
+
+	settings.setValue("altNames", altNames);
+	settings.setValue("playerImage", getPlayerImagePath());
+
+	settings.endGroup();
 }
 
 QString ServerDialog::getAcceptedServer() const {
@@ -398,7 +407,7 @@ const QByteArray ServerDialog::getPlayerImage() const {
 	return convertToPNG(m_playerImage);
 }
 
-QString ServerDialog::getPlayerNamePath() const {
+QString ServerDialog::getPlayerImagePath() const {
 	return playerImagePath->text();
 }
 

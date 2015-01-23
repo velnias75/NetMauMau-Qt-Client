@@ -77,6 +77,7 @@ void SuitRadioButton::styleSuit() {
 			   font().family().toLocal8Bit().constData());
 
 		setText(QString::null);
+
 		switch (s) {
 		case NetMauMau::Common::ICard::HEARTS:
 			setIcon(QIcon(":/suit-fallback/hearts.png"));

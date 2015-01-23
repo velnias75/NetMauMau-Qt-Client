@@ -66,37 +66,37 @@
         <translation>Pik</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="156"/>
+        <location filename="cardwidget.cpp" line="165"/>
         <source>Illegal card</source>
         <translation>Ungültige Karte</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="138"/>
+        <location filename="cardwidget.cpp" line="143"/>
         <source>Jack</source>
         <translation>Bube</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="139"/>
+        <location filename="cardwidget.cpp" line="145"/>
         <source>Queen</source>
         <translation>Dame</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="140"/>
+        <location filename="cardwidget.cpp" line="147"/>
         <source>King</source>
         <translation>König</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="141"/>
+        <location filename="cardwidget.cpp" line="149"/>
         <source>Ace</source>
         <translation>Ass</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="145"/>
+        <location filename="cardwidget.cpp" line="154"/>
         <source>%1 of %2</source>
         <translation>%2 %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="cardwidget.cpp" line="148"/>
+        <location filename="cardwidget.cpp" line="157"/>
         <source>%n point(s)</source>
         <oldsource>%n points(s)</oldsource>
         <translation>
@@ -191,22 +191,22 @@ Der Server erwartet mindestens Version %3.%4</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="44"/>
+        <location filename="jackchoosedialog.cpp" line="45"/>
         <source>Hearts</source>
         <translation>Herz</translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="45"/>
+        <location filename="jackchoosedialog.cpp" line="47"/>
         <source>Diamonds</source>
         <translation>Karo</translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="46"/>
+        <location filename="jackchoosedialog.cpp" line="49"/>
         <source>Clubs</source>
         <translation>Kreuz</translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="47"/>
+        <location filename="jackchoosedialog.cpp" line="51"/>
         <source>Spades</source>
         <translation>Pik</translation>
     </message>
@@ -453,7 +453,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
     <message>
         <location filename="mainwindow.ui" line="451"/>
-        <location filename="mainwindow.cpp" line="1427"/>
+        <location filename="mainwindow.cpp" line="1433"/>
         <source>Local player</source>
         <translation>Lokaler Spieler</translation>
     </message>
@@ -702,27 +702,27 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>Gegenwärtige Punktzahl: %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1332"/>
+        <location filename="mainwindow.cpp" line="1335"/>
         <source>starts a %1</source>
         <translation>beginnt eine %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1343"/>
+        <location filename="mainwindow.cpp" line="1346"/>
         <source>%1 of %2</source>
         <translation>%1 von %2</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1357"/>
+        <location filename="mainwindow.cpp" line="1360"/>
         <source>ends a %1</source>
         <translation>beendet die %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1460"/>
+        <location filename="mainwindow.cpp" line="1466"/>
         <source>Version %1 is available!</source>
         <translation>Version %1 ist verfügbar!</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1489"/>
+        <location filename="mainwindow.cpp" line="1495"/>
         <source>%1 set as player image</source>
         <translation>%1 als Spielerbild gesetzt</translation>
     </message>
@@ -847,27 +847,27 @@ Spieldauer: %2</translation>
         <translation>Lege Deine Karte…</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1304"/>
+        <location filename="mainwindow.cpp" line="1305"/>
         <source>Queen round</source>
         <translation>Damenrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1304"/>
+        <location filename="mainwindow.cpp" line="1305"/>
         <source>queen round</source>
         <translation>Damenrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1305"/>
+        <location filename="mainwindow.cpp" line="1307"/>
         <source>King round</source>
         <translation>Königsrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1305"/>
+        <location filename="mainwindow.cpp" line="1307"/>
         <source>king round</source>
         <translation>Königsrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1306"/>
+        <location filename="mainwindow.cpp" line="1309"/>
         <source>Ace round</source>
         <translation>Assrunde</translation>
     </message>
@@ -881,12 +881,12 @@ Spieldauer: %2</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1306"/>
+        <location filename="mainwindow.cpp" line="1309"/>
         <source>ace round</source>
         <translation>Assrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="1312"/>
+        <location filename="mainwindow.cpp" line="1315"/>
         <source>Reconnect to </source>
         <translation>Verbinde wieder zu </translation>
     </message>
@@ -1059,7 +1059,7 @@ Spieldauer: %2</translation>
         <translation>Server löschen…</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="610"/>
+        <location filename="serverdialog.cpp" line="619"/>
         <source>Delete server</source>
         <translation>Server löschen</translation>
     </message>
@@ -1089,31 +1089,31 @@ Spieldauer: %2</translation>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="237"/>
+        <location filename="serverdialog.cpp" line="239"/>
         <source>Choose a player image</source>
         <translation>Wähle ein Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="238"/>
+        <location filename="serverdialog.cpp" line="240"/>
         <source>Images (%1)</source>
         <translation>Bilder (%1)</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="465"/>
+        <location filename="serverdialog.cpp" line="474"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or of an unsupported image format.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="611"/>
+        <location filename="serverdialog.cpp" line="620"/>
         <source>&lt;html&gt;&lt;body&gt;Really delete server
 &lt;b&gt;%1&lt;/b&gt;?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Server &lt;b&gt;%1&lt;/b&gt; wirklich löschen?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="serverdialog.cpp" line="279"/>
-        <location filename="serverdialog.cpp" line="309"/>
+        <location filename="serverdialog.cpp" line="296"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
@@ -1123,18 +1123,18 @@ Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="309"/>
+        <location filename="serverdialog.cpp" line="296"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="464"/>
-        <location filename="serverdialog.cpp" line="484"/>
+        <location filename="serverdialog.cpp" line="473"/>
+        <location filename="serverdialog.cpp" line="493"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="484"/>
+        <location filename="serverdialog.cpp" line="493"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>
