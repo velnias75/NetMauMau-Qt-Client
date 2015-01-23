@@ -369,6 +369,33 @@ void MainWindow::showReceiveProgress() const {
 	}
 }
 
+void MainWindow::updatePlayerScores(GameState *gs, const Client::PLAYERINFOS &pl) {
+
+	const Client::SCORES &scores(m_client->getScores(Client::SCORE_TYPE::ABS, 0));
+
+	for(Client::PLAYERINFOS::const_iterator i(pl.begin()); i != pl.end(); ++i) {
+
+		const QString &pName(QString::fromUtf8(i->name.c_str()));
+		const Client::SCORES::const_iterator &ps(std::find_if(scores.begin(), scores.end(),
+															  std::bind2nd(scoresPlayer(),
+																		   i->name)));
+
+		if(ps != scores.end()) gs->playerScores()[pName] = QString::number(ps->score);
+
+		const Client::SCORES::const_iterator
+				&myScore(std::find_if(scores.begin(), scores.end(),
+									  std::bind2nd(scoresPlayer(),
+												   static_cast<ServerDialog *>
+												   (m_serverDlg)->getPlayerName().toUtf8().
+												   constData())));
+
+		if(myScore != scores.end()) {
+			gs->playerScores()[static_cast<ServerDialog *>(m_serverDlg)->getPlayerName()] =
+					QString::number(myScore->score);
+		}
+	}
+}
+
 void MainWindow::serverAccept() {
 
 	m_ui->actionReconnect->setDisabled(true);
@@ -409,32 +436,18 @@ void MainWindow::serverAccept() {
 	try {
 
 		const Client::PLAYERINFOS &pl(m_client->playerList(true));
-		const Client::SCORES &scores(m_client->getScores(Client::SCORE_TYPE::ABS, 0));
 
 		for(Client::PLAYERINFOS::const_iterator i(pl.begin()); i != pl.end(); ++i) {
 			qApp->processEvents();
 
 			const QString &pName(QString::fromUtf8(i->name.c_str()));
 
-			const Client::SCORES::const_iterator &ps(std::find_if(scores.begin(), scores.end(),
-																  std::bind2nd(scoresPlayer(),
-																			   i->name)));
-
-			if(ps != scores.end()) gs->playerScores()[pName] = QString::number(ps->score);
-
-			const Client::SCORES::const_iterator
-					&myScore(std::find_if(scores.begin(), scores.end(),
-										  std::bind2nd(scoresPlayer(),
-													   sd->getPlayerName().toUtf8().constData())));
-
-			if(myScore != scores.end()) {
-				gs->playerScores()[sd->getPlayerName()] = QString::number(myScore->score);
-			}
-
 			clientPlayerJoined(pName, i->pngDataLen ?  QImage::fromData(i->pngData,
 																		i->pngDataLen) : QImage());
 			delete [] i->pngData;
 		}
+
+		updatePlayerScores(gs, pl);
 
 		QObject::connect(m_client, SIGNAL(cPlayCard(const Client::CARDS &, std::size_t)),
 						 this, SLOT(clientPlayCardRequest(const Client::CARDS &, std::size_t)));
@@ -716,14 +729,20 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 		GameState *gs = gameState();
 
+		updatePlayerScores(gs, m_client->playerList(false));
+
 		gs->setLostDisplaying(true);
 
 		takeCardsMark(false);
 
 		NetMauMauMessageBox lost(tr("Sorry"),
-								 tr("You have lost!\nYour points: %1\n\nPlaying time: %2").arg(pt).
+								 tr("You have lost!\n%1\n\nPlaying time: %2").
+								 arg(gs->playerScores().contains(p) ?
+										 tr("Your score: %1").arg(gs->playerScores()[p]) :
+										 tr("Your points: %1").arg(pt)).
 								 arg(gs->playTime().toString("HH:mm:ss")),
-								 QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
+								 QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48),
+								 this);
 
 		if(m_model.rowCount() == 2) lost.addButton(tr("Try &again"), QMessageBox::YesRole);
 		lost.setEscapeButton(lost.addButton(QMessageBox::Ok));
@@ -750,14 +769,22 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 	if(!isMe(p)) statusBar()->showMessage(tr("%1 wins!").arg(p), 10000);
 
-	NetMauMauMessageBox gameOver;
+	NetMauMauMessageBox gameOver(this);
 
 	if(isMe(p) && !gs->lostWonConfirmed()) {
+
+		QString yourScore;
+
+		updatePlayerScores(gs, m_client->playerList(false));
+
+		if(gs->playerScores().contains(p)) {
+			yourScore = tr("Your score: %1").arg(gs->playerScores()[p]) + "\n";
+		}
 
 		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
 												QIcon(":/smile.png")).pixmap(48, 48));
 		gameOver.setWindowTitle(tr("Congratulations"));
-		gameOver.setText(tr("You have won!\nPlaying time: %1").
+		gameOver.setText(tr("You have won!\n%1\nPlaying time: %2").arg(yourScore).
 						 arg(gs->playTime().toString("HH:mm:ss")));
 
 		if(m_model.rowCount() == 2) gameOver.addButton(tr("Try &again"), QMessageBox::YesRole);
@@ -917,7 +944,7 @@ void MainWindow::clientChooseAceRoundRequest() {
 										CardPixmap(QSize(42, 57), gs->lastPlayedCard() ?
 													   gs->lastPlayedCard()->getSuit() :
 													   NetMauMau::Common::ICard::HEARTS,
-												   gs->aceRoundRank()));
+												   gs->aceRoundRank()), this);
 
 		aceRoundBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
 

@@ -43,6 +43,8 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : QDialog(p), m_serverd
 	m_model.setHorizontalHeaderLabels(header);
 
 	scoresView->setModel(&m_model);
+	scoresView->verticalHeader()->setClickable(false);
+	scoresView->horizontalHeader()->setClickable(false);
 
 	QObject::connect(serverCombo, SIGNAL(currentIndexChanged(const QString &)),
 					 this, SLOT(currentIndexChanged(const QString &)));

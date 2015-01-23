@@ -139,6 +139,7 @@ private:
 	void clearMyCards(bool del, bool dis = true);
 	void updatePlayerStats(const QString &player, const QString &msg = QString::null,
 						   bool disable = false);
+	void updatePlayerScores(GameState *gs, const Client::AbstractClientV05::PLAYERINFOS &pl);
 	QString playerToolTip(GameState *gs, const QString &player) const;
 
 	QString getAceRoundRankString(const GameState *gs, bool capitalize = false) const;
