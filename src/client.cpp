@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -132,7 +132,7 @@ NetMauMau::Common::ICard *Client::playCard(const CARDS &cards, std::size_t takeC
 	QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), &waitForCard, SLOT(quit()));
 	QObject::connect(this, SIGNAL(jackSuitChoiceAvailable()), &waitForCard, SLOT(quit()));
 
-	waitForCard.exec();
+	waitForCard.exec(QEventLoop::ExcludeUserInputEvents);
 
 	if(m_disconnectNow) {
 		m_cardToPlay = 0L;
@@ -158,7 +158,7 @@ NetMauMau::Common::ICard::SUIT Client::getJackSuitChoice() const {
 	QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), &waitForSuit, SLOT(quit()));
 	QObject::connect(this, SIGNAL(jackSuitChoiceAvailable()), &waitForSuit, SLOT(quit()));
 
-	waitForSuit.exec();
+	waitForSuit.exec(QEventLoop::ExcludeUserInputEvents);
 
 	log(QString("getJackSuitChoice(%1)").
 		arg(QString::fromUtf8(NetMauMau::Common::suitToSymbol(m_chosenSuit, false).c_str())),
@@ -178,7 +178,7 @@ bool Client::getAceRoundChoice() const {
 	QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), &waitForAceRoundChoice, SLOT(quit()));
 	QObject::connect(this, SIGNAL(aceRoundChoiceAvailable()), &waitForAceRoundChoice, SLOT(quit()));
 
-	waitForAceRoundChoice.exec();
+	waitForAceRoundChoice.exec(QEventLoop::ExcludeUserInputEvents);
 
 	log(QString("getAceRoundChoice(%1)").arg(m_aceRoundChoice ? "TRUE" : "FALSE"),
 		ConnectionLogDialog::TO_SERVER);

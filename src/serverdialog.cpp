@@ -549,9 +549,11 @@ void ServerDialog::updateOnline(bool enabled, int row) {
 
 	if(enabled && server->data(ServerInfo::HOST).toString() == m_lastServer) {
 		const QModelIndex &idx(m_model.index(row, ServerInfo::SERVER));
-		availServerView->selectionModel()->select(idx, QItemSelectionModel::ClearAndSelect|
-												  QItemSelectionModel::Rows);
-		availServerView->scrollTo(idx);
+		if(!isVisible()) {
+			availServerView->selectionModel()->select(idx, QItemSelectionModel::ClearAndSelect|
+													  QItemSelectionModel::Rows);
+			availServerView->scrollTo(idx);
+		}
 		emit reconnectAvailable(m_lastServer);
 	}
 }

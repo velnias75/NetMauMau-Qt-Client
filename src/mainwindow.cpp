@@ -369,6 +369,18 @@ void MainWindow::showReceiveProgress() const {
 	}
 }
 
+void MainWindow::updatePlayerScores(GameState *gs, uint attempts) {
+
+	for(uint i = 0; attempts < 3; ++i) {
+		try {
+			updatePlayerScores(gs, m_client->playerList(false));
+			break;
+		} catch(const NetMauMau::Common::Exception::SocketException &) {
+			gs->playerScores().clear();
+		}
+	}
+}
+
 void MainWindow::updatePlayerScores(GameState *gs, const Client::PLAYERINFOS &pl) {
 
 	const Client::SCORES &scores(m_client->getScores(Client::SCORE_TYPE::ABS, 0));
@@ -730,7 +742,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 		GameState *gs = gameState();
 
-		updatePlayerScores(gs, m_client->playerList(false));
+		updatePlayerScores(gs);
 
 		gs->setLostDisplaying(true);
 
@@ -740,7 +752,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 								 tr("You have lost!\n%1\n\nPlaying time: %2").
 								 arg(gs->playerScores().contains(p) ?
 										 tr("Your score: %1").arg(gs->playerScores()[p]) :
-										 tr("Your points: %1").arg(pt)).
+										 tr("Your deduction of points: %1").arg(pt)).
 								 arg(gs->playTime().toString("HH:mm:ss")),
 								 QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48),
 								 this);
@@ -776,7 +788,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		QString yourScore;
 
-		updatePlayerScores(gs, m_client->playerList(false));
+		updatePlayerScores(gs);
 
 		if(gs->playerScores().contains(p)) {
 			yourScore = tr("Your score: %1").arg(gs->playerScores()[p]) + "\n";
