@@ -507,6 +507,7 @@ void MainWindow::serverAccept() {
 
 		m_ui->actionServer->setEnabled(false);
 		m_ui->suspendButton->setEnabled(true);
+		m_ui->actionLaunchServer->setEnabled(false);
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
 		m_ui->remoteGroup->setTitle(tr("%1 on %2").arg(m_ui->remoteGroup->title()).arg(alias));
 
@@ -1268,6 +1269,7 @@ void MainWindow::clientDestroyed() {
 
 	m_ui->remoteGroup->setTitle(tr("Players"));
 	m_ui->actionServer->setEnabled(true);
+	m_ui->actionLaunchServer->setEnabled(true);
 	m_ui->suspendButton->setEnabled(false);
 
 	m_timeLabel.hide();
