@@ -89,7 +89,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 #endif
 
 	QStringList servers = settings.value("list", QStringList("localhost")).toStringList();
-	QStringList aliases = settings.value("alias", servers.count() == 1 && servers[0] == "localhost"
+	QStringList aliases = settings.value("alias", servers.count() == 1 && servers[0] ==
+						  QLatin1String("localhost")
 						  && !localhost.isEmpty() ? QStringList(localhost) : servers).toStringList();
 	setLastServer(settings.value("lastServer", QVariant("localhost")).toString());
 	settings.endGroup();
@@ -355,10 +356,12 @@ NetMauMau::Common::ICard::RANK ServerDialog::getAceRoundRank() const {
 		const QString &rank(m_model.item(l.first().row(), ServerInfo::AI)->
 							data(ServerInfo::ACEROUNDRANK).toString());
 
-		return rank == "A" ? NetMauMau::Common::ICard::ACE :
-							 (rank == "Q" ?  NetMauMau::Common::ICard::QUEEN :
-											 (rank == "K" ?  NetMauMau::Common::ICard::KING :
-															 NetMauMau::Common::ICard::ACE));
+		return rank == QLatin1String("A") ? NetMauMau::Common::ICard::ACE :
+											(rank == QLatin1String("Q") ?
+												 NetMauMau::Common::ICard::QUEEN :
+												 (rank == QLatin1String("K") ?
+													  NetMauMau::Common::ICard::KING :
+													  NetMauMau::Common::ICard::ACE));
 	} else {
 		return NetMauMau::Common::ICard::ACE;
 	}

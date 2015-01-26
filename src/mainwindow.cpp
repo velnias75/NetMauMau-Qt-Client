@@ -1148,9 +1148,9 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 				cnt->setText(QString("<span style=\"color:red;\"><b>Mau%1</b></span>")
 							 .arg(count == 0 ?  QString(" Mau%1").
 												arg(m_model.rowCount() > 2 ?
-														" #" +
+														QString(" #") +
 														QString::number(gs->maumauCount())
-													  : "") : ""));
+													  : QString("")) : ""));
 
 				if(!isMe(player)) {
 					QApplication::beep();

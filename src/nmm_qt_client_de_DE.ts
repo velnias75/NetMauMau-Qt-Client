@@ -108,34 +108,34 @@
 <context>
     <name>Client</name>
     <message>
-        <location filename="client.cpp" line="93"/>
+        <location filename="client.cpp" line="95"/>
         <source>A timeout occured while connection to the server</source>
         <translation>Zeitüberschreitung während des Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="95"/>
+        <location filename="client.cpp" line="97"/>
         <source>An protocol error occured while connection to the server</source>
         <translation>Es gab einen Protokollfehler beim
 Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="97"/>
+        <location filename="client.cpp" line="99"/>
         <source>The server rejected the connection</source>
         <translation>Der Server hat die Verbindung zurückgewiesen</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="99"/>
+        <location filename="client.cpp" line="101"/>
         <source>The remote host seems not to be a NetMauMau server</source>
         <translation>Die Gegenstelle scheint kein NetMauMau-Server zu sein</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="101"/>
+        <location filename="client.cpp" line="103"/>
         <source>The server is in the progress of a shutdown</source>
         <oldsource>The server is in the progress of a ashutdown</oldsource>
         <translation>Der Server ist gerade dabei herunter zu fahren</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="103"/>
+        <location filename="client.cpp" line="105"/>
         <source>Client (version %1.%2) not supported.
 Server wants at least version %3.%4</source>
         <translation>Klient (Version %1.%2) wird nicht unterstützt.
@@ -1059,7 +1059,7 @@ Spieldauer: %2</translation>
         <translation>Server löschen…</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="643"/>
+        <location filename="serverdialog.cpp" line="646"/>
         <source>Delete server</source>
         <translation>Server löschen</translation>
     </message>
@@ -1089,52 +1089,52 @@ Spieldauer: %2</translation>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="242"/>
+        <location filename="serverdialog.cpp" line="243"/>
         <source>Choose a player image</source>
         <translation>Wähle ein Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="243"/>
+        <location filename="serverdialog.cpp" line="244"/>
         <source>Images (%1)</source>
         <translation>Bilder (%1)</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="496"/>
+        <location filename="serverdialog.cpp" line="499"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or of an unsupported image format.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="644"/>
+        <location filename="serverdialog.cpp" line="647"/>
         <source>&lt;html&gt;&lt;body&gt;Really delete server
 &lt;b&gt;%1&lt;/b&gt;?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Server &lt;b&gt;%1&lt;/b&gt; wirklich löschen?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="282"/>
-        <location filename="serverdialog.cpp" line="299"/>
+        <location filename="serverdialog.cpp" line="283"/>
+        <location filename="serverdialog.cpp" line="300"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="282"/>
+        <location filename="serverdialog.cpp" line="283"/>
         <source>%1 is already in use!</source>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="299"/>
+        <location filename="serverdialog.cpp" line="300"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="495"/>
-        <location filename="serverdialog.cpp" line="515"/>
+        <location filename="serverdialog.cpp" line="498"/>
+        <location filename="serverdialog.cpp" line="518"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="515"/>
+        <location filename="serverdialog.cpp" line="518"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>
@@ -1265,17 +1265,17 @@ Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
         <translation>König</translation>
     </message>
     <message>
-        <location filename="util.cpp" line="75"/>
+        <location filename="util.cpp" line="76"/>
         <source>Queen</source>
         <translation>Dame</translation>
     </message>
     <message>
-        <location filename="util.cpp" line="75"/>
+        <location filename="util.cpp" line="77"/>
         <source>Jack</source>
         <translation>Bube</translation>
     </message>
     <message>
-        <location filename="util.cpp" line="76"/>
+        <location filename="util.cpp" line="78"/>
         <source>Ace</source>
         <translation>Ass</translation>
     </message>

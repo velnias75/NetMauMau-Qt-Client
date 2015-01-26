@@ -33,7 +33,8 @@
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port) : QThread(),
 	NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server, port,
-									  parseProtocolVersion(PACKAGE_VERSION), new Base64Bridge()),
+									  /*parseProtocolVersion(PACKAGE_VERSION)*/ 11,
+									  new Base64Bridge()),
 	m_mainWindow(w), m_disconnectNow(false), m_cardToPlay(0L),
 	m_chosenSuit(NetMauMau::Common::ICard::HEARTS), m_online(false), m_connectionLogDialog(cld),
 	m_aceRoundChoice(false) {
@@ -45,7 +46,8 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 	NetMauMau::Client::AbstractClient(player.toUtf8().constData(),
 									  reinterpret_cast<const unsigned char *>(buf.constData()),
 									  buf.size(), server, port,
-									  parseProtocolVersion(PACKAGE_VERSION), new Base64Bridge()),
+									  /*parseProtocolVersion(PACKAGE_VERSION)*/ 11,
+									  new Base64Bridge()),
 	m_mainWindow(w), m_disconnectNow(false), m_cardToPlay(0L),
 	m_chosenSuit(NetMauMau::Common::ICard::HEARTS), m_online(false), m_connectionLogDialog(cld),
 	m_aceRoundChoice(false) {

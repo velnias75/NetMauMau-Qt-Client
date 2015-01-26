@@ -1,5 +1,5 @@
 /*
- * Copyright 201-20154 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -72,6 +72,8 @@ void Util::replaceSymbolCard(const QRegExp &rex, QString &c, const QString &suit
 }
 
 QString Util::rank(const QString &r) {
-	return r == "K" ? tr("King") : r == "Q" ? tr("Queen") : r == "J" ? tr("Jack") : r == "A" ?
-																		   tr("Ace") : r;
+	return r == QLatin1String("K") ? tr("King") : r == QLatin1String("Q") ?
+										 tr("Queen") : r == QLatin1String("J") ?
+											 tr("Jack") : r == QLatin1String("A") ?
+												 tr("Ace") : r;
 }
