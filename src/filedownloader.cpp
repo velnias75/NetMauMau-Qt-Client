@@ -21,8 +21,8 @@
 
 FileDownloader::FileDownloader(const QUrl &url, QObject *p) : QObject(p) {
 
-	QObject::connect(&m_WebCtrl, SIGNAL(finished(QNetworkReply *)),
-					 SLOT(fileDownloaded(QNetworkReply *)));
+	QObject::connect(&m_WebCtrl, SIGNAL(finished(QNetworkReply*)),
+					 SLOT(fileDownloaded(QNetworkReply*)));
 
 	QNetworkRequest request(url);
 

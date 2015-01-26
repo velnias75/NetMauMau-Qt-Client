@@ -46,8 +46,8 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : QDialog(p), m_serverd
 	scoresView->verticalHeader()->setClickable(false);
 	scoresView->horizontalHeader()->setClickable(false);
 
-	QObject::connect(serverCombo, SIGNAL(currentIndexChanged(const QString &)),
-					 this, SLOT(currentIndexChanged(const QString &)));
+	QObject::connect(serverCombo, SIGNAL(currentIndexChanged(QString)),
+					 this, SLOT(currentIndexChanged(QString)));
 	QObject::connect(refreshButton, SIGNAL(clicked()), this, SLOT(refresh()));
 
 	serverCombo->setModel(sd->getModel());

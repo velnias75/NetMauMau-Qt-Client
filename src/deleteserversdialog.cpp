@@ -40,8 +40,8 @@ DeleteServersDialog::DeleteServersDialog(const QStandardItemModel *model, QWidge
 	QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(hide()));
 
 	QObject::connect(serversList->selectionModel(),
-					 SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-					 this, SLOT(selectionChanged(const QItemSelection &, const QItemSelection &)));
+					 SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+					 this, SLOT(selectionChanged(QItemSelection,QItemSelection)));
 }
 
 DeleteServersDialog::~DeleteServersDialog() {

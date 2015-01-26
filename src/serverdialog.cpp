@@ -114,14 +114,13 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	availServerView->setModel(&m_model);
 	playerName->setModel(&m_playerNameModel);
 
-	QObject::connect(&m_model, SIGNAL(itemChanged(QStandardItem *)),
-					 this, SLOT(itemChanged(QStandardItem *)));
-	QObject::connect(availServerView, SIGNAL(customContextMenuRequested(const QPoint &)),
-					 this, SLOT(serverViewContext(const QPoint &)));
+	QObject::connect(&m_model, SIGNAL(itemChanged(QStandardItem*)),
+					 this, SLOT(itemChanged(QStandardItem*)));
+	QObject::connect(availServerView, SIGNAL(customContextMenuRequested(QPoint)),
+					 this, SLOT(serverViewContext(QPoint)));
 	QObject::connect(availServerView->selectionModel(),
-					 SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
-					 this, SLOT(enableRemoveAndOkButton(const QItemSelection &,
-														const QItemSelection &)));
+					 SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
+					 this, SLOT(enableRemoveAndOkButton(QItemSelection,QItemSelection)));
 
 	for(int i = 0, j = 0; i < servers.size(); ++i) {
 		const QString &tHost(servers[i].trimmed());
@@ -146,8 +145,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 			m_model.item(j, ServerInfo::PLAYERS)->setEditable(false);
 
 			m_serverInfoThreads.push_back(new ServerInfo(&m_model, j));
-			QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool, int)),
-							 this, SLOT(updateOnline(bool, int)));
+			QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool,int)),
+							 this, SLOT(updateOnline(bool,int)));
 			++j;
 		} else {
 			qWarning("\"%s\" is no valid host name", tHost.toUtf8().constData());
@@ -156,7 +155,7 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 	checkOnline();
 
-	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+	QObject::connect(&m_model, SIGNAL(rowsInserted(QModelIndex,int,int)),
 					 this, SLOT(resize()));
 
 	resize();
@@ -184,24 +183,24 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	connectButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_DialogOkButton));
 	cancelButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_DialogCancelButton));
 
-	QObject::connect(availServerView, SIGNAL(doubleClicked(const QModelIndex &)),
+	QObject::connect(availServerView, SIGNAL(doubleClicked(QModelIndex)),
 					 this, SLOT(doubleClick()));
 	QObject::connect(connectButton, SIGNAL(clicked()), this, SLOT(doubleClick()));
 	QObject::connect(refreshButton, SIGNAL(clicked()), this, SLOT(checkOnline()));
 	QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeSelected()));
 	QObject::connect(serverAdd, SIGNAL(addServer()), this, SLOT(addServer()));
-	QObject::connect(m_addServerDialog, SIGNAL(addServer(const QString &, const QString &)),
-					 this, SLOT(addServer(const QString &, const QString &)));
+	QObject::connect(m_addServerDialog, SIGNAL(addServer(QString,QString)),
+					 this, SLOT(addServer(QString,QString)));
 	QObject::connect(imageChooseButton, SIGNAL(clicked()), this, SLOT(choosePlayerImage()));
 	QObject::connect(picRemoveButton, SIGNAL(clicked()), this, SLOT(clearPlayerImage()));
 	QObject::connect(this, SIGNAL(refresh()), this, SLOT(checkOnline()));
 	QObject::connect(deleteServers, SIGNAL(clicked()), m_deleteServersDlg, SLOT(show()));
-	QObject::connect(m_deleteServersDlg, SIGNAL(deleteRows(const QList<int> &)),
-					 this, SLOT(deleteRows(const QList<int> &)));
-	QObject::connect(playerImagePath, SIGNAL(textChanged(const QString &)),
-					 this, SLOT(setPlayerImagePath(const QString &)));
-	QObject::connect(playerImagePath, SIGNAL(textChanged(const QString &)),
-					 this, SLOT(enableClearButton(const QString &)));
+	QObject::connect(m_deleteServersDlg, SIGNAL(deleteRows(QList<int>)),
+					 this, SLOT(deleteRows(QList<int>)));
+	QObject::connect(playerImagePath, SIGNAL(textChanged(QString)),
+					 this, SLOT(setPlayerImagePath(QString)));
+	QObject::connect(playerImagePath, SIGNAL(textChanged(QString)),
+					 this, SLOT(enableClearButton(QString)));
 	QObject::connect(&m_autoRefresh, SIGNAL(timeout()), this, SLOT(checkOnline()));
 
 	enableClearButton(playerImagePath->text());
@@ -627,8 +626,8 @@ void ServerDialog::addServer(const QString &shost, const QString &sport) {
 	m_model.appendRow(row);
 
 	m_serverInfoThreads.push_back(new ServerInfo(&m_model, m_model.rowCount() - 1));
-	QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool, int)),
-					 this, SLOT(updateOnline(bool, int)));
+	QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool,int)),
+					 this, SLOT(updateOnline(bool,int)));
 
 	saveServers();
 	checkOnline();

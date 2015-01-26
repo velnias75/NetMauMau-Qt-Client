@@ -53,15 +53,15 @@ ConnectionLogDialog::ConnectionLogDialog(QWidget *p)
 
 	m_entryFont.setStyleHint(QFont::TypeWriter);
 
-	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+	QObject::connect(&m_model, SIGNAL(rowsInserted(QModelIndex,int,int)),
 					 logView, SLOT(resizeColumnsToContents()));
-	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+	QObject::connect(&m_model, SIGNAL(rowsInserted(QModelIndex,int,int)),
 					 logView, SLOT(scrollToBottom()));
 
 	logView->setModel(&m_model);
 
-	QObject::connect(logView, SIGNAL(customContextMenuRequested(const QPoint &)),
-					 this, SLOT(showContextMenu(const QPoint &)));
+	QObject::connect(logView, SIGNAL(customContextMenuRequested(QPoint)),
+					 this, SLOT(showContextMenu(QPoint)));
 
 	logView->setAttribute(Qt::WA_Hover, false);
 

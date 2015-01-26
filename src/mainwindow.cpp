@@ -177,8 +177,8 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 
 	resizeColumns();
 
-	QObject::connect(m_ui->localPlayerDock, SIGNAL(customContextMenuRequested(const QPoint &)),
-					 this, SLOT(showPlayerNameSelectMenu(const QPoint &)));
+	QObject::connect(m_ui->localPlayerDock, SIGNAL(customContextMenuRequested(QPoint)),
+					 this, SLOT(showPlayerNameSelectMenu(QPoint)));
 	QObject::connect(m_ui->noSort, SIGNAL(toggled(bool)), this, SLOT(sortNoSort(bool)));
 	QObject::connect(m_ui->sortSuitRank, SIGNAL(toggled(bool)), this, SLOT(sortSuitRank(bool)));
 	QObject::connect(m_ui->sortRankSuit, SIGNAL(toggled(bool)), this, SLOT(sortRankSuit(bool)));
@@ -186,10 +186,10 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	QObject::connect(m_ui->suspendButton, SIGNAL(clicked()), this, SLOT(suspend()));
 	QObject::connect(m_ui->takeCardsButton, SIGNAL(clicked()), this, SLOT(takeCards()));
 	QObject::connect(m_serverDlg, SIGNAL(accepted()), this, SLOT(serverAccept()));
-	QObject::connect(&m_model, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+	QObject::connect(&m_model, SIGNAL(rowsInserted(QModelIndex,int,int)),
 					 this, SLOT(resizeColumns()));
-	QObject::connect(m_serverDlg, SIGNAL(reconnectAvailable(const QString &)),
-					 this, SLOT(reconnectAvailable(const QString &)));
+	QObject::connect(m_serverDlg, SIGNAL(reconnectAvailable(QString)),
+					 this, SLOT(reconnectAvailable(QString )));
 	QObject::connect(m_launchDlg, SIGNAL(serverLaunched(bool)),
 					 this, SLOT(localServerLaunched(bool)));
 
@@ -445,10 +445,10 @@ void MainWindow::serverAccept() {
 	QObject::connect(m_client, SIGNAL(offline(bool)),
 					 m_ui->actionDisconnect, SLOT(setDisabled(bool)));
 
-	QObject::connect(m_client, SIGNAL(receivingPlayerImage(const QString &)),
-					 this, SLOT(receivingPlayerImage(const QString &)));
-	QObject::connect(m_client, SIGNAL(receivedPlayerImage(const QString &)),
-					 this, SLOT(receivedPlayerImage(const QString &)));
+	QObject::connect(m_client, SIGNAL(receivingPlayerImage(QString)),
+					 this, SLOT(receivingPlayerImage(QString)));
+	QObject::connect(m_client, SIGNAL(receivedPlayerImage(QString)),
+					 this, SLOT(receivedPlayerImage(QString)));
 
 	m_ui->localPlayerDock->setWindowTitle(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
@@ -468,55 +468,55 @@ void MainWindow::serverAccept() {
 
 		updatePlayerScores(gs, pl);
 
-		QObject::connect(m_client, SIGNAL(cPlayCard(const Client::CARDS &, std::size_t)),
-						 this, SLOT(clientPlayCardRequest(const Client::CARDS &, std::size_t)));
+		QObject::connect(m_client, SIGNAL(cPlayCard(Client::CARDS,std::size_t)),
+						 this, SLOT(clientPlayCardRequest(Client::CARDS,std::size_t)));
 		QObject::connect(m_client, SIGNAL(cGetJackSuitChoice()),
 						 this, SLOT(clientChooseJackSuitRequest()));
 		QObject::connect(m_client, SIGNAL(cGetAceRoundChoice()),
 						 this, SLOT(clientChooseAceRoundRequest()));
 
-		QObject::connect(m_client, SIGNAL(cError(const QString &)),
-						 this, SLOT(clientError(const QString &)));
-		QObject::connect(m_client, SIGNAL(cMessage(const QString &)),
-						 this, SLOT(clientMessage(const QString &)));
-		QObject::connect(m_client, SIGNAL(cCardSet(const Client::CARDS &)),
-						 this, SLOT(clientCardSet(const Client::CARDS &)));
+		QObject::connect(m_client, SIGNAL(cError(QString)),
+						 this, SLOT(clientError(QString)));
+		QObject::connect(m_client, SIGNAL(cMessage(QString)),
+						 this, SLOT(clientMessage(QString)));
+		QObject::connect(m_client, SIGNAL(cCardSet(Client::CARDS)),
+						 this, SLOT(clientCardSet(Client::CARDS)));
 		QObject::connect(m_client, SIGNAL(cEnableSuspend(bool)),
 						 m_ui->suspendButton, SLOT(setEnabled(bool)));
 		QObject::connect(m_client, SIGNAL(cTurn(std::size_t)), this, SLOT(clientTurn(std::size_t)));
-		QObject::connect(m_client, SIGNAL(cPlayerJoined(const QString &, const QImage &)),
-						 this, SLOT(clientPlayerJoined(const QString &, const QImage &)));
-		QObject::connect(m_client, SIGNAL(cStats(const Client::STATS &)),
-						 this, SLOT(clientStats(const Client::STATS &)));
+		QObject::connect(m_client, SIGNAL(cPlayerJoined(QString,QImage)),
+						 this, SLOT(clientPlayerJoined(QString,QImage)));
+		QObject::connect(m_client, SIGNAL(cStats(Client::STATS)),
+						 this, SLOT(clientStats(Client::STATS)));
 		QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(destroyClient()));
 		QObject::connect(this, SIGNAL(confirmLostWon(int)), this, SLOT(lostWinConfirmed(int)));
-		QObject::connect(m_client, SIGNAL(cInitialCard(const QByteArray &)),
-						 this, SLOT(setOpenCard(const QByteArray &)));
-		QObject::connect(m_client, SIGNAL(cOpenCard(const QByteArray &, const QString &)),
-						 this, SLOT(clientOpenCard(const QByteArray &, const QString &)));
+		QObject::connect(m_client, SIGNAL(cInitialCard(QByteArray)),
+						 this, SLOT(setOpenCard(QByteArray)));
+		QObject::connect(m_client, SIGNAL(cOpenCard(QByteArray,QString)),
+						 this, SLOT(clientOpenCard(QByteArray,QString)));
 		QObject::connect(m_client, SIGNAL(ctalonShuffled()), this, SLOT(clientTalonShuffled()));
-		QObject::connect(m_client, SIGNAL(cCardRejected(QString, const QByteArray &)),
-						 this, SLOT(clientCardRejected(QString, const QByteArray &)));
-		QObject::connect(m_client, SIGNAL(cCardAccepted(const QByteArray &)),
-						 this, SLOT(clientCardAccepted(const QByteArray &)));
-		QObject::connect(m_client, SIGNAL(cPlayerSuspends(const QString &)),
-						 this, SLOT(clientPlayerSuspends(const QString &)));
-		QObject::connect(m_client, SIGNAL(cplayerWins(const QString &, std::size_t)),
-						 this, SLOT(clientPlayerWins(const QString &, std::size_t)));
-		QObject::connect(m_client, SIGNAL(cplayerLost(const QString &, std::size_t, std::size_t)),
-						 this, SLOT(clientPlayerLost(const QString &, std::size_t, std::size_t)));
-		QObject::connect(m_client, SIGNAL(cPlayerPicksCard(const QString &, std::size_t)),
-						 this, SLOT(clientPlayerPicksCard(const QString &, std::size_t)));
+		QObject::connect(m_client, SIGNAL(cCardRejected(QString,QByteArray)),
+						 this, SLOT(clientCardRejected(QString,QByteArray)));
+		QObject::connect(m_client, SIGNAL(cCardAccepted(QByteArray)),
+						 this, SLOT(clientCardAccepted(QByteArray)));
+		QObject::connect(m_client, SIGNAL(cPlayerSuspends(QString)),
+						 this, SLOT(clientPlayerSuspends(QString)));
+		QObject::connect(m_client, SIGNAL(cplayerWins(QString,std::size_t)),
+						 this, SLOT(clientPlayerWins(QString,std::size_t)));
+		QObject::connect(m_client, SIGNAL(cplayerLost(QString,std::size_t,std::size_t)),
+						 this, SLOT(clientPlayerLost(QString,std::size_t,std::size_t)));
+		QObject::connect(m_client, SIGNAL(cPlayerPicksCard(QString,std::size_t)),
+						 this, SLOT(clientPlayerPicksCard(QString,std::size_t)));
 		QObject::connect(m_client, SIGNAL(cJackSuit(NetMauMau::Common::ICard::SUIT)),
 						 this, SLOT(clientJackSuit(NetMauMau::Common::ICard::SUIT)));
-		QObject::connect(m_client, SIGNAL(cPlayedCard(QString, const QByteArray &)),
-						 this, SLOT(clientPlayedCard(QString, const QByteArray &)));
-		QObject::connect(m_client, SIGNAL(cNextPlayer(const QString &)),
-						 this, SLOT(clientNextPlayer(const QString &)));
-		QObject::connect(m_client, SIGNAL(cAceRoundStarted(const QString &)),
-						 this, SLOT(clientAceRoundStarted(const QString &)));
-		QObject::connect(m_client, SIGNAL(cAceRoundEnded(const QString &)),
-						 this, SLOT(clientAceRoundEnded(const QString &)));
+		QObject::connect(m_client, SIGNAL(cPlayedCard(QString,QByteArray)),
+						 this, SLOT(clientPlayedCard(QString,QByteArray)));
+		QObject::connect(m_client, SIGNAL(cNextPlayer(QString)),
+						 this, SLOT(clientNextPlayer(QString)));
+		QObject::connect(m_client, SIGNAL(cAceRoundStarted(QString)),
+						 this, SLOT(clientAceRoundStarted(QString)));
+		QObject::connect(m_client, SIGNAL(cAceRoundEnded(QString)),
+						 this, SLOT(clientAceRoundEnded(QString)));
 
 		centralWidget()->setEnabled(true);
 		takeCardsMark(false);
@@ -1531,8 +1531,8 @@ void MainWindow::showPlayerNameSelectMenu(const QPoint &p) {
 		delete m_playerNameMenu;
 		m_playerNameMenu = new QMenu();
 
-		QObject::connect(m_playerNameMenu, SIGNAL(triggered(QAction *)),
-						 this, SLOT(changePlayerName(QAction *)));
+		QObject::connect(m_playerNameMenu, SIGNAL(triggered(QAction*)),
+						 this, SLOT(changePlayerName(QAction*)));
 
 		for(int i = 0; i < altNames.count(); ++i) {
 			m_playerNameMenu->addAction(altNames[i]);

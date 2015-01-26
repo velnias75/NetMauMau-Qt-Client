@@ -37,8 +37,8 @@ AddServerWidget::AddServerWidget(QWidget *p) : QGroupBox(p),
 
 	hostEdit->setValidator(m_hostRexValidator);
 
-	QObject::connect(hostEdit, SIGNAL(textChanged(const QString &)),
-					 this, SLOT(enableAddButton(const QString &)));
+	QObject::connect(hostEdit, SIGNAL(textChanged(QString)),
+					 this, SLOT(enableAddButton(QString)));
 	QObject::connect(addButton, SIGNAL(clicked()), this, SLOT(addServerClicked()));
 }
 

@@ -31,8 +31,7 @@ LicenseDialog::LicenseDialog(QWidget *p) : QDialog(p) {
 	f &= ~Qt::WindowSystemMenuHint;
 	setWindowFlags(f);
 
-	QObject::connect(textBrowser, SIGNAL(anchorClicked(const QUrl &)),
-					 this, SLOT(anchorClicked(const QUrl &)));
+	QObject::connect(textBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(anchorClicked(QUrl)));
 
 	static_cast<QPushButton *>(buttonBox->buttons()[0])->setDefault(true);
 }

@@ -1059,7 +1059,7 @@ Spieldauer: %2</translation>
         <translation>Server löschen…</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="646"/>
+        <location filename="serverdialog.cpp" line="645"/>
         <source>Delete server</source>
         <translation>Server löschen</translation>
     </message>
@@ -1089,52 +1089,52 @@ Spieldauer: %2</translation>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="243"/>
+        <location filename="serverdialog.cpp" line="242"/>
         <source>Choose a player image</source>
         <translation>Wähle ein Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="244"/>
+        <location filename="serverdialog.cpp" line="243"/>
         <source>Images (%1)</source>
         <translation>Bilder (%1)</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="499"/>
+        <location filename="serverdialog.cpp" line="498"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or of an unsupported image format.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="647"/>
+        <location filename="serverdialog.cpp" line="646"/>
         <source>&lt;html&gt;&lt;body&gt;Really delete server
 &lt;b&gt;%1&lt;/b&gt;?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Server &lt;b&gt;%1&lt;/b&gt; wirklich löschen?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="283"/>
-        <location filename="serverdialog.cpp" line="300"/>
+        <location filename="serverdialog.cpp" line="282"/>
+        <location filename="serverdialog.cpp" line="299"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="283"/>
+        <location filename="serverdialog.cpp" line="282"/>
         <source>%1 is already in use!</source>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="300"/>
+        <location filename="serverdialog.cpp" line="299"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="498"/>
-        <location filename="serverdialog.cpp" line="518"/>
+        <location filename="serverdialog.cpp" line="497"/>
+        <location filename="serverdialog.cpp" line="517"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="518"/>
+        <location filename="serverdialog.cpp" line="517"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>

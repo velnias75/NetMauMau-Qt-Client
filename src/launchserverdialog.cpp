@@ -59,7 +59,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	QObject::connect(ultimateCheck, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(aceRound, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(rankCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateOptions()));
-	QObject::connect(aiNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(updateOptions()));
+	QObject::connect(aiNameEdit, SIGNAL(textChanged(QString)), this, SLOT(updateOptions()));
 	QObject::connect(portSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(launchButton, SIGNAL(clicked()), this, SLOT(launch()));
 	QObject::connect(&m_process, SIGNAL(started()), this, SLOT(launched()));

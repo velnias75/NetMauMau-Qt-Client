@@ -42,8 +42,8 @@ AddServerDialog::AddServerDialog(QWidget *p) : QDialog(p), m_okButton(0L) {
 		QObject::connect(m_okButton, SIGNAL(clicked()), this, SLOT(addServerClicked()));
 	}
 
-	QObject::connect(serverAdd->getHostEdit(), SIGNAL(textChanged(const QString &)),
-					 this, SLOT(enableOkButton(const QString &)));
+	QObject::connect(serverAdd->getHostEdit(), SIGNAL(textChanged(QString)),
+					 this, SLOT(enableOkButton(QString)));
 }
 
 void AddServerDialog::enableOkButton(const QString &str) {
