@@ -47,6 +47,7 @@ void ServerInfo::run() {
 	if(!(server && version && ai && players)) return;
 
 	const QString host(server->data(HOST).toString());
+	QString serverTooltip("<html><body><em>" + host + "</em><br /><br />");
 
 	version->setToolTip(QString::null);
 
@@ -100,21 +101,22 @@ void ServerInfo::run() {
 
 		if(Client::parseProtocolVersion(sVer) < Client::getClientProtocolVersion()) {
 			const QString &tooOld(tr("The server is too old for this client"));
-			server->setToolTip(tooOld);
+			server->setToolTip(serverTooltip + tooOld + "</body></html>");
 			version->setToolTip(tooOld);
 			emit online(false, m_row);
 			return;
 		}
 
 		if(curPCnt >= maxPCnt) {
-			server->setToolTip(tr("The server accepts no more players"));
+			server->setToolTip(serverTooltip + tr("The server accepts no more players") +
+							   "</body></html>");
 			emit online(false, m_row);
 			return;
 		}
 
 		if(Client::parseProtocolVersion(sMinClientVer) > Client::getClientProtocolVersion()) {
 			const QString &tooOld(tr("This client is too old for the server"));
-			server->setToolTip(tooOld);
+			server->setToolTip(serverTooltip + tooOld + "</body></html>");
 			version->setToolTip(tooOld);
 			emit online(false, m_row);
 			return;
@@ -122,7 +124,8 @@ void ServerInfo::run() {
 
 	} catch(const NetMauMau::Client::Exception::CapabilitiesException &e) {
 
-		setError(ai, players, version, server, host, tr("Couldn't get capabilities from server"));
+		setError(ai, players, version, server, host, serverTooltip +
+				 tr("Couldn't get capabilities from server") + "</body></html>");
 
 		emit online(false, m_row);
 		return;
@@ -130,7 +133,8 @@ void ServerInfo::run() {
 	} catch(const NetMauMau::Client::Exception::TimeoutException &e) {
 
 		setError(ai, players, version, server, host,
-				 tr("Server timed out while getting capabilities"));
+				 serverTooltip + tr("Server timed out while getting capabilities") +
+				 "</body></html>");
 
 		emit online(false, m_row);
 		return;
@@ -138,16 +142,18 @@ void ServerInfo::run() {
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 
 #ifndef _WIN32
-		setError(ai, players, version, server, host, QString::fromUtf8(e.what()));
+		setError(ai, players, version, server, host, serverTooltip + QString::fromUtf8(e.what()) +
+				 "</body></html>");
 #else
-		setError(ai, players, version, server, host, QString::fromLocal8Bit(e.what()));
+		setError(ai, players, version, server, host, serverTooltip +
+				 QString::fromLocal8Bit(e.what()) + "</body></html>");
 #endif
 
 		emit online(false, m_row);
 		return;
 	}
 
-	server->setToolTip(tr("The server is ready and waiting"));
+	server->setToolTip(serverTooltip + tr("The server is ready and waiting") + "</body></html>");
 
 	emit online(true, m_row);
 }

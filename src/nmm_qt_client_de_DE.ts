@@ -1147,49 +1147,49 @@ Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
         <translation>n.V.</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="74"/>
+        <location filename="serverinfo.cpp" line="75"/>
         <source>Server accepts clients of at least version %1</source>
         <translation>Der Server akzeptiert Klienten von mindestens Version %1</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="79"/>
+        <location filename="serverinfo.cpp" line="80"/>
         <source>You&apos;ll play against AI &quot;%1&quot;</source>
         <translation>Du wirst gegen KI &quot;%1&quot; spielen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="81"/>
+        <location filename="serverinfo.cpp" line="82"/>
         <source>The server has only human players</source>
         <translation>Auf dem Server befinden sich nur menschliche Spieler</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="86"/>
+        <location filename="serverinfo.cpp" line="87"/>
         <source>You&apos;ll play with %1</source>
         <oldsource>You&apos;ll play with ace rounds</oldsource>
         <translation>Du wirst mit %1 spielen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="87"/>
-        <location filename="serverinfo.cpp" line="91"/>
+        <location filename="serverinfo.cpp" line="88"/>
+        <location filename="serverinfo.cpp" line="92"/>
         <source>ace rounds</source>
         <translation>Assrunden</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="88"/>
+        <location filename="serverinfo.cpp" line="89"/>
         <source>queen rounds</source>
         <translation>Damenrunden</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="90"/>
+        <location filename="serverinfo.cpp" line="91"/>
         <source>king rounds</source>
         <translation>Königsrunden</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="98"/>
+        <location filename="serverinfo.cpp" line="99"/>
         <source>%1/%2</source>
         <translation>%1/%2</translation>
     </message>
     <message numerus="yes">
-        <location filename="serverinfo.cpp" line="99"/>
+        <location filename="serverinfo.cpp" line="100"/>
         <source>Waiting for %n more player(s)</source>
         <oldsource>Waiting for %1 more players</oldsource>
         <translation>
@@ -1198,32 +1198,32 @@ Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
         </translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="102"/>
+        <location filename="serverinfo.cpp" line="103"/>
         <source>The server is too old for this client</source>
         <translation>Der Server ist zu alt für diesen Klienten</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="110"/>
+        <location filename="serverinfo.cpp" line="111"/>
         <source>The server accepts no more players</source>
         <translation>Der Server akzeptiert keine weiteren Spieler</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="116"/>
+        <location filename="serverinfo.cpp" line="118"/>
         <source>This client is too old for the server</source>
         <translation>Dieser Klient ist zu alt für den Server</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="125"/>
+        <location filename="serverinfo.cpp" line="128"/>
         <source>Couldn&apos;t get capabilities from server</source>
         <translation>Konnte die Fähigkeiten nicht vom Server beziehen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="133"/>
+        <location filename="serverinfo.cpp" line="136"/>
         <source>Server timed out while getting capabilities</source>
         <translation>Zeitüberschreitung auf dem Server während des Abholen der Fähigkeiten</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="150"/>
+        <location filename="serverinfo.cpp" line="156"/>
         <source>The server is ready and waiting</source>
         <translation>Der Server ist verfügbar und wartet</translation>
     </message>
