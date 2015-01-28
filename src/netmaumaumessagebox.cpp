@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -21,6 +21,8 @@
 
 #include "netmaumaumessagebox.h"
 
+#include "cardpixmap.h"
+
 NetMauMauMessageBox::NetMauMauMessageBox(QWidget *p) : QMessageBox(p) {
 	init();
 }
@@ -32,6 +34,18 @@ NetMauMauMessageBox::NetMauMauMessageBox(const QString &title, const QString &tx
 	setWindowTitle(title);
 	setText(txt);
 	setIconPixmap(pixmap);
+}
+
+NetMauMauMessageBox::NetMauMauMessageBox(const QString &title, const QString &txt,
+										 NetMauMau::Common::ICard::SUIT suit,
+										 NetMauMau::Common::ICard::RANK rank, QWidget *p) :
+	QMessageBox(p) {
+
+	init();
+
+	setWindowTitle(title);
+	setText(txt);
+	setIconPixmap(CardPixmap(QSize(42, 57), suit, rank));
 }
 
 void NetMauMauMessageBox::init() {

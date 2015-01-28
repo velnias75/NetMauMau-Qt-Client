@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -22,6 +22,8 @@
 
 #include <QMessageBox>
 
+#include <icard.h>
+
 class NetMauMauMessageBox : public QMessageBox {
 	Q_OBJECT
 public:
@@ -29,6 +31,10 @@ public:
 
 	explicit NetMauMauMessageBox(const QString &title, const QString &txt,
 								 const QPixmap &pixmap, QWidget *parent = 0);
+
+	explicit NetMauMauMessageBox(const QString &title, const QString &txt,
+								 NetMauMau::Common::ICard::SUIT suit,
+								 NetMauMau::Common::ICard::RANK rank, QWidget *parent = 0);
 
 private:
 	void init();

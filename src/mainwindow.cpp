@@ -714,9 +714,18 @@ void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 		gs->setLastPlayedCard(0L);
 	}
 
-	QMessageBox::critical(this, tr("Card rejected"), tr("You cannot play card %1!")
-						  .arg(Util::cardStyler(QString::fromUtf8(c.constData()),
-												QMessageBox().font())));
+	NetMauMau::Common::ICard::SUIT s;
+	NetMauMau::Common::ICard::RANK r;
+
+	if(NetMauMau::Common::parseCardDesc(c.constData(), &s, &r)) {
+		NetMauMauMessageBox(tr("Card rejected"), tr("You cannot play card %1!")
+							.arg(Util::cardStyler(QString::fromUtf8(c.constData()),
+												  QMessageBox().font())), s, r, this).exec();
+	} else {
+		QMessageBox::critical(this, tr("Card rejected"), tr("You cannot play card %1!")
+							  .arg(Util::cardStyler(QString::fromUtf8(c.constData()),
+													QMessageBox().font())));
+	}
 }
 
 void MainWindow::clientCardAccepted(const QByteArray &) {
@@ -969,10 +978,9 @@ void MainWindow::clientChooseAceRoundRequest() {
 											tr("Continue current %1?").
 											arg(getAceRoundRankString(gs)) : tr("Start %1?")
 											.arg(getAceRoundRankString(gs)),
-										CardPixmap(QSize(42, 57), gs->lastPlayedCard() ?
-													   gs->lastPlayedCard()->getSuit() :
-													   NetMauMau::Common::ICard::HEARTS,
-												   gs->aceRoundRank()), this);
+										gs->lastPlayedCard() ? gs->lastPlayedCard()->getSuit() :
+															   NetMauMau::Common::ICard::HEARTS,
+										gs->aceRoundRank(), this);
 
 		aceRoundBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
 
