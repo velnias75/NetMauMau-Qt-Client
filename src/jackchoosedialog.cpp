@@ -55,13 +55,21 @@ QString JackChooseDialog::suitToolTip(NetMauMau::Common::ICard::SUIT s) {
 void JackChooseDialog::setSuite(NetMauMau::Common::ICard::SUIT s) {
 	switch(s) {
 	case NetMauMau::Common::ICard::HEARTS:
-		heartsSuit->setChecked(true); break;
+		heartsSuit->setChecked(true);
+		heartsSuit->setFocus();
+		break;
 	case NetMauMau::Common::ICard::DIAMONDS:
-		diamondsSuit->setChecked(true); break;
+		diamondsSuit->setChecked(true);
+		diamondsSuit->setFocus();
+		break;
 	case NetMauMau::Common::ICard::CLUBS:
-		clubsSuit->setChecked(true); break;
+		clubsSuit->setChecked(true);
+		clubsSuit->setFocus();
+		break;
 	default:
-		spadesSuit->setChecked(true); break;
+		spadesSuit->setChecked(true);
+		spadesSuit->setFocus();
+		break;
 	}
 }
 
