@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -22,7 +22,7 @@
 
 #include "ui_jackchoosedialog.h"
 
-#include "icard.h"
+#include <icard.h>
 
 class JackChooseDialog : public QDialog, private Ui::JackChooseDialog {
 	Q_OBJECT

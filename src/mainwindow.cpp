@@ -1171,7 +1171,7 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 				cnt->setToolTip(tr("%n card(s)", "", count));
 
 			} else {
-				cnt->setText(QString::number(count));
+				cnt->setText("<b>" + QString::number(count) + "</b>");
 				cnt->setToolTip(tr("%n card(s)", "", count));
 			}
 		}

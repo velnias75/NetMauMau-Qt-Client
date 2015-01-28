@@ -99,14 +99,6 @@ void ServerInfo::run() {
 		players->setText(tr("%1/%2").arg(curPCnt).arg(maxPCnt));
 		players->setToolTip(tr("Waiting for %n more player(s)", "", (maxPCnt - curPCnt)));
 
-		if(Client::parseProtocolVersion(sVer) < Client::getClientProtocolVersion()) {
-			const QString &tooOld(tr("The server is too old for this client"));
-			server->setToolTip(serverTooltip + tooOld + "</body></html>");
-			version->setToolTip(tooOld);
-			emit online(false, m_row);
-			return;
-		}
-
 		if(curPCnt >= maxPCnt) {
 			server->setToolTip(serverTooltip + tr("The server accepts no more players") +
 							   "</body></html>");

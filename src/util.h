@@ -22,11 +22,9 @@
 
 #include <QCoreApplication>
 
-#include <icard.h>
+#include <linkercontrol.h>
 
 class QFont;
-//class QString;
-//class QRegExp;
 
 class Util {
 	Q_DECLARE_TR_FUNCTIONS(Util)
