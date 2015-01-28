@@ -733,9 +733,9 @@ void MainWindow::clientCardAccepted(const QByteArray &ac) {
 		m_ui->myCardsLayout->removeWidget(cw);
 		qApp->processEvents();
 		QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
+		delete cw;
 	}
 
-	delete gs->lastPlayedCard();
 	gs->setLastPlayedCard(0L);
 }
 

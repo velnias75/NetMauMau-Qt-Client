@@ -71,11 +71,22 @@ int main(int argc, char *argv[]) {
 #ifndef _WIN32
 	if(!sharedMemory.create(1)) {
 		NetMauMauMessageBox mb(QApplication::translate("main", "Warning"),
-							   QApplication::translate("main", "NetMauMau is already running!"),
-							   QApplication::style()->standardIcon(QStyle::SP_MessageBoxWarning).
+							   QApplication::translate("main", "NetMauMau is already running!")
+					   #ifndef NDEBUG
+							   + QString("\nUse ipcs and ipcrm to get rid of this message").
+							   arg(sharedMemory.key())
+					   #endif
+							   , QApplication::style()->standardIcon(QStyle::SP_MessageBoxWarning).
 							   pixmap(48));
-		mb.exec();
-		exit(0);
+
+#ifndef NDEBUG
+		mb.setStandardButtons(QMessageBox::Cancel|QMessageBox::Ignore);
+#else
+		mb.setStandardButtons(QMessageBox::Cancel);
+#endif
+
+		if(mb.exec() == QMessageBox::Cancel) exit(0);
+
 	}
 #endif
 
