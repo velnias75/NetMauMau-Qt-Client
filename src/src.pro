@@ -46,6 +46,7 @@ SOURCES += addserverdialog.cpp \
 	cardwidget.cpp \
 	client.cpp \
 	connectionlogdialog.cpp \
+	countmessageitemdelegate.cpp \
 	deleteserversdialog.cpp \
 	filedownloader.cpp \
 	gamestate.cpp \
@@ -78,6 +79,7 @@ HEADERS += addserverdialog.h \
 	cardwidget.h \
 	client.h \
 	connectionlogdialog.h \
+	countmessageitemdelegate.h \
 	deleteserversdialog.h \
 	filedownloader.h \
 	gamestate.h \

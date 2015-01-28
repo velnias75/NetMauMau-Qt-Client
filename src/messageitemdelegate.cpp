@@ -37,10 +37,15 @@ MessageItemDelegate::~MessageItemDelegate() {
 }
 
 QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
-										const QModelIndex &index) const {
-
+										const QModelIndex &txt) const {
 	QStyleOptionViewItemV4 opt(option);
-	initStyleOption(&opt, index);
+	initStyleOption(&opt, txt);
+
+	return doc(opt, txt);
+}
+
+QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItemV4 &opt,
+										const QModelIndex &) const {
 
 	if(m_cardDetect) Util::cardStyler(opt.text, opt.font);
 

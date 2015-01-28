@@ -31,12 +31,12 @@ public:
 	virtual ~MessageItemDelegate();
 
 protected:
-	void paint(QPainter *painter, const QStyleOptionViewItem &option,
-			   const QModelIndex &index) const;
-	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option,
+					   const QModelIndex &index) const;
+	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-private:
-	QTextDocument *doc(const QStyleOptionViewItem &option, const QModelIndex &txt) const;
+	QTextDocument *doc(const QStyleOptionViewItemV4 &option, const QModelIndex &txt) const;
+	virtual QTextDocument *doc(const QStyleOptionViewItem &option, const QModelIndex &txt) const;
 
 private:
 	const bool m_cardDetect;

@@ -43,6 +43,7 @@
 #include "playerimagedelegate.h"
 #include "netmaumaumessagebox.h"
 #include "localserveroutputview.h"
+#include "countmessageitemdelegate.h"
 #include "playerimageprogressdialog.h"
 
 namespace {
@@ -65,7 +66,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_stdBackground(), m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_playerImageDelegate(new PlayerImageDelegate(this)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
-	m_countItemDelegate(new MessageItemDelegate(this, false)),
+	m_countItemDelegate(new CountMessageItemDelegate(this)),
 	m_turnItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this)),
 	m_aboutTxt(QString::fromUtf8("%1 %2\n%3: %4.%5\nCopyright \u00a9 2015 by Heiko Sch\u00e4fer")
@@ -1167,19 +1168,17 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 													 gs->playerCardCounts()[player];
 
 			if(count < 2) {
-				cnt->setText(QString("<span style=\"color:red;\"><b>Mau%1</b></span>")
+				cnt->setText(QString("<span style=\"color:red;\">Mau%1</span>")
 							 .arg(count == 0 ?  QString(" Mau%1").
 												arg(m_model.rowCount() > 2 ?
 														QString(" #") +
 														QString::number(gs->maumauCount())
 													  : QString("")) : ""));
-
-				cnt->setToolTip(tr("%n card(s)", "", count));
-
 			} else {
-				cnt->setText("<b>" + QString::number(count) + "</b>");
-				cnt->setToolTip(tr("%n card(s)", "", count));
+				cnt->setText(QString::number(count));
 			}
+
+			cnt->setToolTip(tr("%n card(s)", "", count));
 		}
 
 		m_ui->remotePlayersView->resizeColumnToContents(CARDS);
