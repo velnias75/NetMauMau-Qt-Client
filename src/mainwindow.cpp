@@ -704,15 +704,7 @@ void MainWindow::clientTalonShuffled() {
 
 void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 
-	GameState *gs = gameState();
-
-	if(gs->lastPlayedCard()) {
-		gs->cards().insert(gs->lastPlayedCardIdx(), gs->lastPlayedCard());
-		m_ui->myCardsLayout->insertWidget(gs->lastPlayedCardIdx(), gs->lastPlayedCard(),
-										  0, Qt::AlignHCenter);
-		gs->lastPlayedCard()->setVisible(true);
-		gs->setLastPlayedCard(0L);
-	}
+	m_ui->localPlayerDock->setEnabled(false);
 
 	NetMauMau::Common::ICard::SUIT s;
 	NetMauMau::Common::ICard::RANK r;
@@ -726,11 +718,25 @@ void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 							  .arg(Util::cardStyler(QString::fromUtf8(c.constData()),
 													QMessageBox().font())));
 	}
+
+	m_ui->localPlayerDock->setEnabled(true);
 }
 
-void MainWindow::clientCardAccepted(const QByteArray &) {
-	delete gameState()->lastPlayedCard();
-	gameState()->setLastPlayedCard(0L);
+void MainWindow::clientCardAccepted(const QByteArray &ac) {
+
+	GameState *gs = gameState();
+
+	if(*gs->lastPlayedCard() == ac) {
+		CardWidget *cw = gs->lastPlayedCard();
+		cw->setVisible(false);
+		gs->cards().removeOne(cw);
+		m_ui->myCardsLayout->removeWidget(cw);
+		qApp->processEvents();
+		QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
+	}
+
+	delete gs->lastPlayedCard();
+	gs->setLastPlayedCard(0L);
 }
 
 void MainWindow::clientPlayerSuspends(const QString &p) {
@@ -1017,14 +1023,14 @@ void MainWindow::cardChosen(CardWidget *c) {
 	const int idx = cards.indexOf(c);
 
 	if(idx >= 0) {
-		gs->setLastPlayedCardIdx(idx);
-		gs->setLastPlayedCard(cards.takeAt(idx));
-		gs->lastPlayedCard()->setVisible(false);
-		m_ui->myCardsLayout->removeWidget(gs->lastPlayedCard());
+		//		gs->setLastPlayedCardIdx(idx);
+		gs->setLastPlayedCard(cards.at(idx));
+		//		gs->lastPlayedCard()->setVisible(false);
+		//		m_ui->myCardsLayout->removeWidget(gs->lastPlayedCard());
 	}
 
 	updatePlayerStats(QString::fromUtf8(m_client->getPlayerName().c_str()));
-	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
+	//	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
 }
 
 void MainWindow::setOpenCard(const QByteArray &d) {

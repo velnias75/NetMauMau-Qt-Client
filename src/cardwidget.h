@@ -41,6 +41,8 @@ public:
 	virtual std::size_t getPoints() const;
 	virtual std::string description(bool = false) const;
 
+	bool operator==(const QByteArray &) const;
+
 	static QString tooltipText(NetMauMau::Common::ICard::SUIT,
 							   NetMauMau::Common::ICard::RANK, bool points = true);
 

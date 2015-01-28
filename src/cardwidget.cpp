@@ -76,6 +76,10 @@ std::string CardWidget::description(bool) const {
 	return property("cardDescription").toByteArray().constData();
 }
 
+bool CardWidget::operator==(const QByteArray &cd) const {
+	return cd == QByteArray(description().c_str());
+}
+
 bool CardWidget::event(QEvent *e) {
 
 	if(e->type() == QEvent::DynamicPropertyChange &&
