@@ -764,7 +764,11 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 								 QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48),
 								 this);
 
-		if(m_model.rowCount() == 2) lost.addButton(tr("Try &again"), QMessageBox::YesRole);
+		if(m_model.rowCount() == 2) {
+			m_timeLabel.hide();
+			lost.addButton(tr("Try &again"), QMessageBox::YesRole);
+		}
+
 		lost.setEscapeButton(lost.addButton(QMessageBox::Ok));
 
 		lost.exec();
@@ -807,7 +811,11 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 		gameOver.setText(tr("You have won!\n%1\nPlaying time: %2").arg(yourScore).
 						 arg(gs->playTime().toString("HH:mm:ss")));
 
-		if(m_model.rowCount() == 2) gameOver.addButton(tr("Try &again"), QMessageBox::YesRole);
+		if(m_model.rowCount() == 2) {
+			m_timeLabel.hide();
+			gameOver.addButton(tr("Try &again"), QMessageBox::YesRole);
+		}
+
 		gameOver.setEscapeButton(gameOver.addButton(QMessageBox::Ok));
 
 		gameOver.exec();
