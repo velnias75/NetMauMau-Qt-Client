@@ -1152,11 +1152,6 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 														QString::number(gs->maumauCount())
 													  : QString("")) : ""));
 
-				if(!isMe(player)) {
-					QApplication::beep();
-					if(count == 0) QApplication::beep();
-				}
-
 				cnt->setToolTip(tr("%n card(s)", "", count));
 
 			} else {
