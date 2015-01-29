@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>544</height>
+    <width>998</width>
+    <height>542</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -124,8 +124,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
-     <height>21</height>
+     <width>998</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -515,8 +515,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>886</width>
-               <height>158</height>
+               <width>878</width>
+               <height>159</height>
               </rect>
              </property>
              <layout class="QHBoxLayout" name="myCardsLayout">
@@ -543,8 +543,11 @@
              <bold>false</bold>
             </font>
            </property>
+           <property name="toolTip">
+            <string>Drag a card and drop it on the card to move it right to it</string>
+           </property>
            <property name="text">
-            <string>My s&amp;ort</string>
+            <string>My &amp;order</string>
            </property>
            <attribute name="buttonGroup">
             <string notr="true">buttonGroup</string>
@@ -558,6 +561,9 @@
              <weight>50</weight>
              <bold>false</bold>
             </font>
+           </property>
+           <property name="toolTip">
+            <string>Order cards by suits first, than ranks</string>
            </property>
            <property name="text">
             <string>S&amp;uit/Rank</string>
@@ -577,6 +583,9 @@
              <weight>50</weight>
              <bold>false</bold>
             </font>
+           </property>
+           <property name="toolTip">
+            <string>Order cards by ranks first, than suits</string>
            </property>
            <property name="text">
             <string>&amp;Rank/Suit</string>

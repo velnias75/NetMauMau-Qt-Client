@@ -60,6 +60,7 @@ protected:
 	virtual void changeEvent(QEvent *e);
 	virtual void resizeEvent(QResizeEvent *e);
 	virtual void dragMoveEvent(QDragMoveEvent *event);
+	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
 
 private:
@@ -76,6 +77,7 @@ signals:
 private:
 	QString m_defaultStyleSheet;
 	bool m_dragable;
+	QPoint m_dragStartPosition;
 };
 
 #endif // CARDWIDGET_H

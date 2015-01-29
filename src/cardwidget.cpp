@@ -25,7 +25,7 @@
 #include "cardpixmap.h"
 
 CardWidget::CardWidget(QWidget *p, const QByteArray &cardDesc, bool d) : QPushButton(p),
-	NetMauMau::Common::ICard(), m_defaultStyleSheet(), m_dragable(d) {
+	NetMauMau::Common::ICard(), m_defaultStyleSheet(), m_dragable(d), m_dragStartPosition() {
 
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -210,7 +210,18 @@ void CardWidget::dragMoveEvent(QDragMoveEvent *e) {
 	}
 }
 
-void CardWidget::mouseMoveEvent(QMouseEvent *) {
+void CardWidget::mousePressEvent(QMouseEvent *e) {
+	if(e->button() == Qt::LeftButton) m_dragStartPosition = e->pos();
+	QPushButton::mousePressEvent(e);
+}
+
+void CardWidget::mouseMoveEvent(QMouseEvent *e) {
+
+	if(!(e->buttons() & Qt::LeftButton)) return;
+
+	if((e->pos() - m_dragStartPosition).manhattanLength() < QApplication::startDragDistance()) {
+		return;
+	}
 
 	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::ACE;
@@ -231,5 +242,7 @@ void CardWidget::mouseMoveEvent(QMouseEvent *) {
 		} else {
 			show();
 		}
+
+		//		e->accept();
 	}
 }

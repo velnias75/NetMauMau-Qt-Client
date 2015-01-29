@@ -310,7 +310,6 @@ void MainWindow::sortRankSuit(bool b) {
 
 void MainWindow::cardsReordered() {
 	m_ui->noSort->setChecked(true);
-	sortMyCards(NO_SORT);
 }
 
 void MainWindow::sortMyCards(SORTMODE mode) {
