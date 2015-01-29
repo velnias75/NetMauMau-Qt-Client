@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>546</height>
+    <height>544</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -510,7 +510,7 @@
             <property name="alignment">
              <set>Qt::AlignCenter</set>
             </property>
-            <widget class="QWidget" name="awidget">
+            <widget class="CardDropWidget" name="awidget">
              <property name="geometry">
               <rect>
                <x>0</x>
@@ -544,7 +544,7 @@
             </font>
            </property>
            <property name="text">
-            <string>No s&amp;ort</string>
+            <string>My s&amp;ort</string>
            </property>
            <attribute name="buttonGroup">
             <string notr="true">buttonGroup</string>
@@ -820,6 +820,12 @@
    <class>SuitLabel</class>
    <extends>QWidget</extends>
    <header>suitlabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CardDropWidget</class>
+   <extends>QWidget</extends>
+   <header>carddropwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>

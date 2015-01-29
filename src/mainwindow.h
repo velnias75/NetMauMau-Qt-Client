@@ -120,6 +120,7 @@ private slots:
 	void sortNoSort(bool);
 	void sortSuitRank(bool);
 	void sortRankSuit(bool);
+	void cardsReordered();
 	void sortMyCards(SORTMODE);
 	void filterMyCards(bool);
 	void setOpenCard(const QByteArray &);

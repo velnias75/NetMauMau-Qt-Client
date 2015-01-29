@@ -42,6 +42,7 @@ CONFIG(debug, debug|release) {
 SOURCES += addserverdialog.cpp \
 	addserverwidget.cpp \
 	base64bridge.cpp \
+	carddropwidget.cpp \
 	cardpixmap.cpp \
 	cardwidget.cpp \
 	client.cpp \
@@ -75,6 +76,7 @@ SOURCES += addserverdialog.cpp \
 HEADERS += addserverdialog.h \
 	addserverwidget.h \
 	base64bridge.h \
+	carddropwidget.h \
 	cardpixmap.h \
 	cardwidget.h \
 	client.h \

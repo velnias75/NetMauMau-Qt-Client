@@ -68,7 +68,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new CountMessageItemDelegate(this)),
 	m_turnItemDelegate(new MessageItemDelegate(this, false)),
-	m_messageItemDelegate(new MessageItemDelegate(this)),
+	m_messageItemDelegate(new MessageItemDelegate(this, true)),
 	m_aboutTxt(QString::fromUtf8("%1 %2\n%3: %4.%5\nCopyright \u00a9 2015 by Heiko Sch\u00e4fer")
 			   .arg(QCoreApplication::applicationName())
 			   .arg(QCoreApplication::applicationVersion())
@@ -193,6 +193,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 					 this, SLOT(reconnectAvailable(QString )));
 	QObject::connect(m_launchDlg, SIGNAL(serverLaunched(bool)),
 					 this, SLOT(localServerLaunched(bool)));
+	QObject::connect(m_ui->awidget, SIGNAL(cardsReordered()), this, SLOT(cardsReordered()));
 
 	setOpenCard(QByteArray());
 
@@ -307,6 +308,11 @@ void MainWindow::sortRankSuit(bool b) {
 	if(b) sortMyCards(RANK_SUIT);
 }
 
+void MainWindow::cardsReordered() {
+	m_ui->noSort->setChecked(true);
+	sortMyCards(NO_SORT);
+}
+
 void MainWindow::sortMyCards(SORTMODE mode) {
 
 	QList<CardWidget *> &cards(gameState()->cards());
@@ -319,7 +325,6 @@ void MainWindow::sortMyCards(SORTMODE mode) {
 
 		qSort(cards.begin(), cards.end(), mode == SUIT_RANK ? NetMauMau::Common::cardLess :
 															  NetMauMau::Common::cardGreater);
-
 		int k = 1;
 		for(QList<CardWidget *>::ConstIterator i(cards.begin()); i != cards.end(); ++i, ++k) {
 			m_ui->myCardsLayout->addWidget(*i, 0, Qt::AlignHCenter);
@@ -329,6 +334,19 @@ void MainWindow::sortMyCards(SORTMODE mode) {
 		}
 
 		m_ui->myCardsScrollArea->ensureWidgetVisible(prevLast);
+
+	} else if(!cards.isEmpty()) {
+
+		for(int j = 0; j < m_ui->myCardsLayout->count(); ++j) {
+
+			CardWidget *cw = static_cast<CardWidget *>(m_ui->myCardsLayout->itemAt(j)->widget());
+
+			if(cw) {
+				addKeyShortcutTooltip(cw, j + 1);
+				cw->installEventFilter(this);
+				cw->setVisible(true);
+			}
+		}
 	}
 }
 
@@ -525,6 +543,8 @@ void MainWindow::serverAccept() {
 		gs->setAceRoundRank(sd->getAceRoundRank());
 		gs->setInGame(true);
 
+		m_ui->awidget->setGameState(gs);
+
 		m_ui->actionServer->setEnabled(false);
 		m_ui->suspendButton->setEnabled(true);
 		m_ui->actionLaunchServer->setEnabled(false);
@@ -627,7 +647,7 @@ void MainWindow::clientCardSet(const Client::CARDS &c) {
 		const NetMauMau::Common::ICard *card = *i;
 
 		if(card) {
-			cards.push_back(new CardWidget(m_ui->awidget, card->description().c_str()));
+			cards.push_back(new CardWidget(m_ui->awidget, card->description().c_str(), true));
 			m_ui->myCardsLayout->addWidget(cards.back(), 0, Qt::AlignHCenter);
 			addKeyShortcutTooltip(cards.back(), k);
 			QObject::connect(cards.back(), SIGNAL(chosen(CardWidget*)),
@@ -1023,15 +1043,9 @@ void MainWindow::cardChosen(CardWidget *c) {
 
 	const int idx = cards.indexOf(c);
 
-	if(idx >= 0) {
-		//		gs->setLastPlayedCardIdx(idx);
-		gs->setLastPlayedCard(cards.at(idx));
-		//		gs->lastPlayedCard()->setVisible(false);
-		//		m_ui->myCardsLayout->removeWidget(gs->lastPlayedCard());
-	}
+	if(idx >= 0) gs->setLastPlayedCard(cards.at(idx));
 
 	updatePlayerStats(QString::fromUtf8(m_client->getPlayerName().c_str()));
-	//	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
 }
 
 void MainWindow::setOpenCard(const QByteArray &d) {
@@ -1097,6 +1111,7 @@ void MainWindow::enableMyCards(bool b) {
 	GameState *gs = gameState();
 
 	m_ui->myCardsDock->setEnabled(b);
+
 	gs->setNoCardPossible(gs->possibleCards().empty());
 
 	if(b) {
@@ -1315,6 +1330,7 @@ void MainWindow::clientDestroyed() {
 
 	delete m_gameState;
 	m_gameState = 0L;
+	m_ui->awidget->setGameState(0L);
 }
 
 void MainWindow::clearStats() {

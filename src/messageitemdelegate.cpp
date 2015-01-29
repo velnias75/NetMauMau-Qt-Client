@@ -41,13 +41,13 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 	QStyleOptionViewItemV4 opt(option);
 	initStyleOption(&opt, txt);
 
+	if(m_cardDetect) Util::cardStyler(opt.text, opt.font);
+
 	return doc(opt, txt);
 }
 
 QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItemV4 &opt,
 										const QModelIndex &) const {
-
-	if(m_cardDetect) Util::cardStyler(opt.text, opt.font);
 
 	QTextOption tOpt(opt.displayAlignment|Qt::AlignVCenter);
 	tOpt.setWrapMode(QTextOption::NoWrap);

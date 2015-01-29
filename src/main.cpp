@@ -73,8 +73,7 @@ int main(int argc, char *argv[]) {
 		NetMauMauMessageBox mb(QApplication::translate("main", "Warning"),
 							   QApplication::translate("main", "NetMauMau is already running!")
 					   #ifndef NDEBUG
-							   + QString("\nUse ipcs and ipcrm to get rid of this message").
-							   arg(sharedMemory.key())
+							   + QString("\nUse ipcs and ipcrm to get rid of this message")
 					   #endif
 							   , QApplication::style()->standardIcon(QStyle::SP_MessageBoxWarning).
 							   pixmap(48));

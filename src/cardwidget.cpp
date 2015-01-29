@@ -24,8 +24,10 @@
 #include "cardwidget.h"
 #include "cardpixmap.h"
 
-CardWidget::CardWidget(QWidget *p, const QByteArray &cardDesc) : QPushButton(p),
-	NetMauMau::Common::ICard(), m_defaultStyleSheet() {
+CardWidget::CardWidget(QWidget *p, const QByteArray &cardDesc, bool d) : QPushButton(p),
+	NetMauMau::Common::ICard(), m_defaultStyleSheet(), m_dragable(d) {
+
+	setAttribute(Qt::WA_AlwaysShowToolTips);
 
 	setupUi(this);
 
@@ -190,4 +192,44 @@ void CardWidget::styleCard() {
 
 	setToolTip(tooltipText());
 	updateGeometry();
+}
+
+void CardWidget::dragMoveEvent(QDragMoveEvent *e) {
+
+	if(m_dragable && e->mimeData()->hasFormat("application/x-dndcardwidget")) {
+
+		if(children().contains(e->source())) {
+			e->setDropAction(Qt::MoveAction);
+			e->accept();
+		} else {
+			e->acceptProposedAction();
+		}
+
+	} else {
+		e->ignore();
+	}
+}
+
+void CardWidget::mouseMoveEvent(QMouseEvent *) {
+
+	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;
+	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::ACE;
+
+	if(m_dragable && NetMauMau::Common::parseCardDesc(description(false), &s, &r)) {
+
+		QMimeData *mimeData = new QMimeData;
+		mimeData->setData("application/x-dndcardwidget", property("cardDescription").toByteArray());
+
+		QDrag *drag = new QDrag(this);
+		drag->setMimeData(mimeData);;
+		drag->setPixmap(CardPixmap(QSize(42, 47), s, r));
+
+		hide();
+
+		if(drag->exec(Qt::MoveAction|Qt::CopyAction, Qt::CopyAction) == Qt::MoveAction) {
+			close();
+		} else {
+			show();
+		}
+	}
 }
