@@ -106,7 +106,9 @@ HEADERS += addserverdialog.h \
 	suitradiobutton.h \
 	util.h
 
-FORMS += cardwidget.ui \
+FORMS += addserverdialog.ui \
+	addserverwidget.ui \
+	cardwidget.ui \
 	connectionlogdialog.ui \
 	deleteserversdialog.ui \
 	jackchoosedialog.ui \
@@ -117,13 +119,12 @@ FORMS += cardwidget.ui \
 	scoresdialog.ui \
 	serverdialog.ui \
 	suitlabel.ui \
-	suitradiobutton.ui \
-	addserverwidget.ui \
-	addserverdialog.ui
+	suitradiobutton.ui
 
 RESOURCES += cards.qrc \
 	icons.qrc \
 	license.qrc \
+    movies.qrc \
 	nuoveXT2.qrc \
 	suit-fallback.qrc
 
@@ -145,3 +146,5 @@ dist-xz.depends = dist
 dist-xz.target = dist-xz
 dist-xz.commands += gzip -dc $$TARGET$$VERSION\\.tar\\.gz | xz -ec9 - > $$DIST_NAME\\.tar\\.xz;
 dist-xz.commands += $(DEL_FILE) -r $$TARGET$$VERSION\\.tar\\.gz
+
+OTHER_FILES +=

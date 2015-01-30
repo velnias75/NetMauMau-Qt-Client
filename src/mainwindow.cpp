@@ -17,9 +17,9 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QMessageBox>
-#include <QSettings>
+#include <QMovie>
 #include <QBuffer>
+#include <QSettings>
 
 #include <cardtools.h>
 #include <scoresexception.h>
@@ -39,7 +39,6 @@
 #include "filedownloader.h"
 #include "jackchoosedialog.h"
 #include "launchserverdialog.h"
-#include "messageitemdelegate.h"
 #include "playerimagedelegate.h"
 #include "netmaumaumessagebox.h"
 #include "localserveroutputview.h"
@@ -82,7 +81,11 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_defaultPlayerImage(QImage::fromData
 						 (QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
 									 NetMauMau::Common::DefaultPlayerImage.length()))),
-	m_playerNameMenu(0L) {
+	m_playerNameMenu(0L), m_animLogo(new QMovie(":/anim-logo.gif")) {
+
+	m_animLogo->setScaledSize(QSize(54, 67));
+	m_animLogo->setCacheMode(QMovie::CacheAll);
+	m_animLogo->setSpeed(50);
 
 	m_ui->setupUi(this);
 
@@ -253,6 +256,7 @@ MainWindow::~MainWindow() {
 	delete m_clientReleaseDownloader;
 	delete m_playerNameMenu;
 	delete m_gameState;
+	delete m_animLogo;
 	delete m_ui;
 }
 
@@ -1057,10 +1061,12 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::RANK_ILLEGAL;
 
 	if(NetMauMau::Common::parseCardDesc(d.constData(), &s, &r)) {
-		m_ui->openCard->setPixmap(CardPixmap(m_ui->openCard->pixmap()->size(), s, r));
+		m_animLogo->stop();
+		m_ui->openCard->setPixmap(CardPixmap(QSize(54, 67), s, r));
 		m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r, false));
 	} else {
-		m_ui->openCard->setPixmap(QPixmap(QString::fromUtf8(":/nmm_qt_client.png")));
+		m_ui->openCard->setMovie(m_animLogo);
+		m_animLogo->start();
 		m_ui->openCard->setToolTip(m_aboutTxt);
 	}
 }

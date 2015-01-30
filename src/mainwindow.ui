@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>998</width>
-    <height>542</height>
+    <height>540</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -250,9 +250,6 @@
               <width>54</width>
               <height>67</height>
              </size>
-            </property>
-            <property name="pixmap">
-             <pixmap resource="icons.qrc">:/nmm_qt_client.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>

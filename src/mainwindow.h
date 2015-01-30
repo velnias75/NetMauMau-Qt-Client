@@ -21,7 +21,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
 #include <QBasicTimer>
 #include <QLabel>
 
@@ -31,6 +30,7 @@ namespace Ui {
 class MainWindow;
 }
 
+class QMovie;
 class GameState;
 class CardWidget;
 class ScoresDialog;
@@ -181,6 +181,7 @@ private:
 	FileDownloader *m_clientReleaseDownloader;
 	const QImage m_defaultPlayerImage;
 	QMenu *m_playerNameMenu;
+	QMovie *m_animLogo;
 };
 
 #endif // MAINWINDOW_H
