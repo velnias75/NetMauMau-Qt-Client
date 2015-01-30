@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>998</width>
+    <width>1000</width>
     <height>540</height>
    </rect>
   </property>
@@ -124,8 +124,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>998</width>
-     <height>22</height>
+     <width>1000</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -512,15 +512,24 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>878</width>
-               <height>159</height>
+               <width>886</width>
+               <height>158</height>
               </rect>
              </property>
              <layout class="QHBoxLayout" name="myCardsLayout">
               <property name="sizeConstraint">
                <enum>QLayout::SetMinAndMaxSize</enum>
               </property>
-              <property name="margin">
+              <property name="leftMargin">
+               <number>14</number>
+              </property>
+              <property name="topMargin">
+               <number>4</number>
+              </property>
+              <property name="rightMargin">
+               <number>14</number>
+              </property>
+              <property name="bottomMargin">
                <number>4</number>
               </property>
              </layout>

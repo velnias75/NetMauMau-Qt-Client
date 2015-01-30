@@ -56,20 +56,19 @@ void CardDropWidget::dropEvent(QDropEvent *e) {
 
 				QWidget *dst = childAt(e->pos());
 
-				if(dst) {
+				const int didx = dst ? l->indexOf(dst) + 1 :
+									   (e->pos().x() < src->mapToGlobal(src->pos()).x() ?
+											0 : l->count());
 
-					if(m_gameState) {
-						m_gameState->cards().insert(l->indexOf(dst) + 1,
-													m_gameState->cards().takeAt(l->indexOf(src)));
-					}
-
-					static_cast<QBoxLayout *>
-							(l)->insertWidget(l->indexOf(dst) + 1,
-											  l->takeAt(l->indexOf(src))->widget());
-					e->acceptProposedAction();
-					emit cardsReordered();
-					return;
+				if(m_gameState) {
+					m_gameState->cards().insert(didx, m_gameState->cards().takeAt(l->indexOf(src)));
 				}
+
+				static_cast<QBoxLayout *>(l)->insertWidget(didx,
+														   l->takeAt(l->indexOf(src))->widget());
+				e->acceptProposedAction();
+				emit cardsReordered();
+				return;
 			}
 		}
 	}

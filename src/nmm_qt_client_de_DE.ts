@@ -469,151 +469,151 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation type="obsolete">Meine &amp;Sortierung</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="544"/>
+        <location filename="mainwindow.ui" line="553"/>
         <source>Drag a card and drop it on the card to move it right to it</source>
         <translation>Ziehe eine Karte und lasse sie auf eine Karte fallen um sie rechts davon zu setzen </translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="547"/>
+        <location filename="mainwindow.ui" line="556"/>
         <source>My &amp;order</source>
         <translation>Meine &amp;Sortierung</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="563"/>
+        <location filename="mainwindow.ui" line="572"/>
         <source>Order cards by suits first, than ranks</source>
         <translation>Ordne die Karten zuerst nach Farben, dann nach Werten</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="566"/>
+        <location filename="mainwindow.ui" line="575"/>
         <source>S&amp;uit/Rank</source>
         <translation>&amp;Farbe/Wert</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="585"/>
+        <location filename="mainwindow.ui" line="594"/>
         <source>Order cards by ranks first, than suits</source>
         <translation>Ordne die Karten zuerst nach Werten, dann nach Farben</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="588"/>
+        <location filename="mainwindow.ui" line="597"/>
         <source>&amp;Rank/Suit</source>
         <translation>&amp;Wert/Farbe</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="604"/>
+        <location filename="mainwindow.ui" line="613"/>
         <source>Disable cards which aren&apos;t possible to play</source>
         <translation>Graue Karten aus, die nicht spielbar sind</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="607"/>
+        <location filename="mainwindow.ui" line="616"/>
         <source>F&amp;ilter</source>
         <translation>&amp;Filtere aus</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="636"/>
+        <location filename="mainwindow.ui" line="645"/>
         <source>Take cards first and choose</source>
         <translation>Ziehe zuerst eine Karte und lege dann</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="639"/>
+        <location filename="mainwindow.ui" line="648"/>
         <source>&amp;Take</source>
         <oldsource>Take</oldsource>
         <translation>&amp;Ziehe</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="652"/>
+        <location filename="mainwindow.ui" line="661"/>
         <source>Suspend your turn and take one card</source>
         <translation>Setze diese Runde aus und ziehe eine Karte</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="655"/>
+        <location filename="mainwindow.ui" line="664"/>
         <source>&amp;Suspend</source>
         <translation>A&amp;ussetzen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="676"/>
+        <location filename="mainwindow.ui" line="685"/>
         <source>&amp;Servers...</source>
         <translation>&amp;Server...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="679"/>
+        <location filename="mainwindow.ui" line="688"/>
         <source>Show available servers</source>
         <translation>Zeige verfügbare Server</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="692"/>
+        <location filename="mainwindow.ui" line="701"/>
         <source>E&amp;xit</source>
         <translation>B&amp;eenden</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="703"/>
+        <location filename="mainwindow.ui" line="712"/>
         <source>About &amp;Qt</source>
         <translation>Über &amp;Qt</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="706"/>
+        <location filename="mainwindow.ui" line="715"/>
         <source>Show the Qt library&apos;s About box</source>
         <translation>Zeige den Über-Dialog von Qt</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="716"/>
+        <location filename="mainwindow.ui" line="725"/>
         <source>&amp;About %1</source>
         <translation>Ü&amp;ber %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="729"/>
+        <location filename="mainwindow.ui" line="738"/>
         <source>Re&amp;connect</source>
         <translation>&amp;Wiederverbinden</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="732"/>
+        <location filename="mainwindow.ui" line="741"/>
         <source>Reconnect to last server</source>
         <translation>Verbinde zum zuletzt genutzen Server</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="743"/>
+        <location filename="mainwindow.ui" line="752"/>
         <source>Connection &amp;log</source>
         <oldsource>Connection &amp;log...</oldsource>
         <translation>&amp;Verbindungslog</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="754"/>
+        <location filename="mainwindow.ui" line="763"/>
         <source>&amp;Launch local server...</source>
         <translation>&amp;Lokalen Server starten...</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="757"/>
+        <location filename="mainwindow.ui" line="766"/>
         <source>Launch a local server</source>
         <translation>Lokalen Server starten</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="771"/>
+        <location filename="mainwindow.ui" line="780"/>
         <source>&amp;NetMauMau server output</source>
         <oldsource>&amp;NetMauMau server output...</oldsource>
         <translation>&amp;NetMauMau Serverausgabe</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="790"/>
+        <location filename="mainwindow.ui" line="799"/>
         <source>&amp;Disconnect</source>
         <translation>&amp;Trennen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="793"/>
+        <location filename="mainwindow.ui" line="802"/>
         <source>Disconnect from server</source>
         <translation>Vom Server trennen</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="801"/>
+        <location filename="mainwindow.ui" line="810"/>
         <source>License</source>
         <translation>Lizenz</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="806"/>
+        <location filename="mainwindow.ui" line="815"/>
         <source>Hall of Fame</source>
         <oldsource>Hall of Fame...</oldsource>
         <translation>Ruhmeshalle</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="817"/>
+        <location filename="mainwindow.ui" line="826"/>
         <source>Show card tooltips</source>
         <translation>Zeige Kartenkurzinfos</translation>
     </message>

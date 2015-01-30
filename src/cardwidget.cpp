@@ -228,12 +228,17 @@ void CardWidget::mouseMoveEvent(QMouseEvent *e) {
 
 	if(m_dragable && NetMauMau::Common::parseCardDesc(description(false), &s, &r)) {
 
+		CardPixmap cpm(QSize(42, 47), s, r);
+
 		QMimeData *mimeData = new QMimeData;
 		mimeData->setData("application/x-dndcardwidget", property("cardDescription").toByteArray());
+		mimeData->setText(QString::fromUtf8(property("cardDescription").toByteArray().constData()));
+		mimeData->setImageData(cpm.toImage());
 
 		QDrag *drag = new QDrag(this);
 		drag->setMimeData(mimeData);;
-		drag->setPixmap(CardPixmap(QSize(42, 47), s, r));
+		drag->setPixmap(cpm);
+		drag->setHotSpot(QPoint(21, 24));
 
 		hide();
 
@@ -242,7 +247,5 @@ void CardWidget::mouseMoveEvent(QMouseEvent *e) {
 		} else {
 			show();
 		}
-
-		//		e->accept();
 	}
 }
