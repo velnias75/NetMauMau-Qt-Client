@@ -124,13 +124,13 @@ FORMS += addserverdialog.ui \
 RESOURCES += cards.qrc \
 	icons.qrc \
 	license.qrc \
-    movies.qrc \
+	movies.qrc \
 	nuoveXT2.qrc \
 	suit-fallback.qrc
 
 RC_FILE += appicon.rc
 
-DISTFILES += COPYING cards/* *.png *.ico nmm_qt_client.desktop lgpl-3.html
+DISTFILES += COPYING cards/* *.png *.ico nmm_qt_client.desktop lgpl-3.html *.gif
 
 #OTHER_FILES += ../README.md
 
