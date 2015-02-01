@@ -634,7 +634,7 @@ void MainWindow::clientMessage(const QString &msg) const {
 
 void MainWindow::clientError(const QString &err) {
 
-	const bool msgBoxDisp = gameState()->isMessageBoxDisplayed();
+	const bool msgBoxDisp = m_gameState ? m_gameState->isMessageBoxDisplayed() : false;
 
 	destroyClient(true);
 	setEnabled(true);
