@@ -33,6 +33,7 @@ class MainWindow;
 class QMovie;
 class GameState;
 class CardWidget;
+class ServerDialog;
 class ScoresDialog;
 class QSplashScreen;
 class FileDownloader;
@@ -159,7 +160,7 @@ private:
 
 	Client *m_client;
 	Ui::MainWindow *m_ui;
-	QDialog *m_serverDlg;
+	ServerDialog *m_serverDlg;
 	LocalServerOutputView *m_lsov;
 	QDialog *m_launchDlg;
 	QStandardItemModel m_model;

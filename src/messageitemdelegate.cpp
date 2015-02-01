@@ -20,7 +20,6 @@
 #include <QPainter>
 #include <QApplication>
 #include <QTextDocument>
-#include <QAbstractTextDocumentLayout>
 
 #include <qmath.h>
 

@@ -76,8 +76,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))),
 	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)),
 	m_licenseDialog(new LicenseDialog(this)), m_aceRoundLabel(), m_gameState(0L),
-	m_scoresDialog(new ScoresDialog(static_cast<ServerDialog *>(m_serverDlg), this)),
-	m_clientReleaseDownloader(0L),
+	m_scoresDialog(new ScoresDialog(m_serverDlg, this)), m_clientReleaseDownloader(0L),
 	m_defaultPlayerImage(QImage::fromData
 						 (QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
 									 NetMauMau::Common::DefaultPlayerImage.length()))),
@@ -265,10 +264,9 @@ GameState *MainWindow::gameState() const {
 }
 
 void MainWindow::forceRefreshServers(bool) {
-	ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
-	sd->blockAutoRefresh(false);
-	sd->setProperty("forceRefresh", true);
-	sd->forceRefresh(true);
+	m_serverDlg->blockAutoRefresh(false);
+	m_serverDlg->setProperty("forceRefresh", true);
+	m_serverDlg->forceRefresh(true);
 }
 
 void MainWindow::localServerLaunched(bool b) {
@@ -428,13 +426,11 @@ throw(NetMauMau::Common::Exception::SocketException) {
 		const Client::SCORES::const_iterator
 				&myScore(std::find_if(scores.begin(), scores.end(),
 									  std::bind2nd(scoresPlayer(),
-												   static_cast<ServerDialog *>
-												   (m_serverDlg)->getPlayerName().toUtf8().
+												   m_serverDlg->getPlayerName().toUtf8().
 												   constData())));
 
 		if(myScore != scores.end()) {
-			gs->playerScores()[static_cast<ServerDialog *>(m_serverDlg)->getPlayerName()] =
-					QString::number(myScore->score);
+			gs->playerScores()[m_serverDlg->getPlayerName()] = QString::number(myScore->score);
 		}
 	}
 }
@@ -443,9 +439,8 @@ void MainWindow::serverAccept() {
 
 	m_ui->actionReconnect->setDisabled(true);
 
-	ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
-	const QString &as(sd->getAcceptedServer());
-	const QString &alias(sd->getAcceptedServerAlias());
+	const QString &as(m_serverDlg->getAcceptedServer());
+	const QString &alias(m_serverDlg->getAcceptedServerAlias());
 	const int p = as.indexOf(':');
 
 	if(as.isEmpty()) {
@@ -457,12 +452,12 @@ void MainWindow::serverAccept() {
 
 	GameState *gs = gameState();
 
-	gs->setMaxPlayerCount(sd->getMaxPlayerCount());
+	gs->setMaxPlayerCount(m_serverDlg->getMaxPlayerCount());
 
-	m_client = new Client(this, m_connectionLogDlg, sd->getPlayerName(),
+	m_client = new Client(this, m_connectionLogDlg, m_serverDlg->getPlayerName(),
 						  std::string(as.left(p).toStdString()),
 						  p != -1 ? as.mid(p + 1).toUInt() : Client::getDefaultPort(),
-						  sd->getPlayerImage());
+						  m_serverDlg->getPlayerImage());
 
 	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(forceRefreshServers(bool)));
 	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(destroyClientOffline(bool)));
@@ -545,7 +540,7 @@ void MainWindow::serverAccept() {
 		centralWidget()->setEnabled(true);
 		takeCardsMark(false);
 
-		gs->setAceRoundRank(sd->getAceRoundRank());
+		gs->setAceRoundRank(m_serverDlg->getAceRoundRank());
 		gs->setInGame(true);
 
 		m_ui->awidget->setGameState(gs);
@@ -563,8 +558,8 @@ void MainWindow::serverAccept() {
 
 		m_client->start(QThread::LowestPriority);
 
-		sd->setLastServer(as);
-		sd->blockAutoRefresh(true);
+		m_serverDlg->setLastServer(as);
+		m_serverDlg->blockAutoRefresh(true);
 
 		m_scoresDialog->setServer(as);
 
@@ -777,7 +772,7 @@ void MainWindow::clientPlayerSuspends(const QString &p) {
 }
 
 QString MainWindow::myself() const {
-	return static_cast<ServerDialog *>(m_serverDlg)->getPlayerName();
+	return m_serverDlg->getPlayerName();
 }
 
 bool MainWindow::isMe(const QString &player) const {
@@ -998,9 +993,11 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t t
 
 void MainWindow::clientChooseJackSuitRequest() {
 
-	m_jackChooseDialog->setSuite(gameState()->lastPlayedCard() ?
-									 gameState()->lastPlayedCard()->getSuit() :
-									 NetMauMau::Common::ICard::CLUBS);
+	CardWidget *lpc = gameState()->lastPlayedCard();
+
+	if(lpc) lpc->hide();
+
+	m_jackChooseDialog->setSuite(lpc ? lpc->getSuit() : NetMauMau::Common::ICard::CLUBS);
 	m_jackChooseDialog->exec();
 
 	const NetMauMau::Common::ICard::SUIT cs = m_jackChooseDialog->getChosenSuit();
@@ -1383,8 +1380,7 @@ QString MainWindow::reconnectToolTip() const {
 
 	QString rtt(tr("Reconnect to "));
 
-	const ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
-	const QString &as(sd->getAcceptedServerAlias());
+	const QString &as(m_serverDlg->getAcceptedServerAlias());
 
 	if(!as.isEmpty()) {
 		rtt.append(as);
@@ -1456,10 +1452,9 @@ void MainWindow::writeSettings() const {
 	settings.setValue("visible", m_connectionLogDlg->isVisible());
 	settings.endGroup();
 
-	const ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
-	const QString &as(sd->getAcceptedServer());
+	const QString &as(m_serverDlg->getAcceptedServer());
 
-	if(!(as.isEmpty() ? as : sd->getLastServer()).isEmpty()) {
+	if(!(as.isEmpty() ? as : m_serverDlg->getLastServer()).isEmpty()) {
 		settings.beginGroup("Servers");
 		settings.setValue("lastServer", as);
 		settings.endGroup();
@@ -1555,12 +1550,11 @@ void MainWindow::dropEvent(QDropEvent *evt) {
 		const QUrl url(evt->mimeData()->urls().first());
 
 		if(url.isLocalFile()) {
-			ServerDialog *sd = static_cast<ServerDialog *>(m_serverDlg);
 			const QString lf(url.toLocalFile());
 
-			sd->setPlayerImagePath(lf, true);
+			m_serverDlg->setPlayerImagePath(lf, true);
 			evt->acceptProposedAction();
-			if(sd->getPlayerImagePath() == lf) {
+			if(m_serverDlg->getPlayerImagePath() == lf) {
 				statusBar()->showMessage(tr("%1 set as player image").arg(lf), 1000);
 			}
 		}
@@ -1569,12 +1563,12 @@ void MainWindow::dropEvent(QDropEvent *evt) {
 
 void MainWindow::changePlayerName(QAction *act) {
 	m_ui->localPlayerDock->setWindowTitle(act->text());
-	static_cast<ServerDialog *>(m_serverDlg)->setPlayerName(act->text());
+	m_serverDlg->setPlayerName(act->text());
 }
 
 void MainWindow::showPlayerNameSelectMenu(const QPoint &p) {
 
-	const QStringList &altNames(static_cast<ServerDialog *>(m_serverDlg)->getPlayerAltNames());
+	const QStringList &altNames(m_serverDlg->getPlayerAltNames());
 
 	if(!gameState()->inGame() && altNames.size() > 1) {
 
