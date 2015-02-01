@@ -3,7 +3,7 @@ QT += svg network
 CONFIG += debug_and_release
 CONFIG += rtti exceptions
 
-VERSION = 0.12
+VERSION = 0.13
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
 
@@ -146,5 +146,3 @@ dist-xz.depends = dist
 dist-xz.target = dist-xz
 dist-xz.commands += gzip -dc $$TARGET$$VERSION\\.tar\\.gz | xz -ec9 - > $$DIST_NAME\\.tar\\.xz;
 dist-xz.commands += $(DEL_FILE) -r $$TARGET$$VERSION\\.tar\\.gz
-
-OTHER_FILES +=

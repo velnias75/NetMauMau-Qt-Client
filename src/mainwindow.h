@@ -132,6 +132,7 @@ private:
 
 	QString myself() const;
 	bool isMe(const QString &player) const;
+	QString yourScore(GameState *gs, const QString &p);
 
 	QList<QStandardItem *> rowForPlayer(const QString &p) const;
 
@@ -142,7 +143,8 @@ private:
 	void clearMyCards(bool del, bool dis = true);
 	void updatePlayerStats(const QString &player, const QString &msg = QString::null,
 						   bool disable = false);
-	void updatePlayerScores(GameState *gs, const Client::PLAYERINFOS &pl);
+	void updatePlayerScores(GameState *gs, const Client::PLAYERINFOS &pl)
+	throw(NetMauMau::Common::Exception::SocketException);
 	void updatePlayerScores(GameState *gs, uint attempts = 3);
 	QString playerToolTip(GameState *gs, const QString &player) const;
 

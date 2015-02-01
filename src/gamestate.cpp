@@ -24,7 +24,7 @@ GameState::GameState() : m_inGame(false), m_cards(), m_lastPlayedCard(0L), m_las
 	m_countWonDisplayed(0), m_lostWonConfirmed(false), m_mmCnt(0), m_pickCardPrepended(false),
 	m_noCardPossible(false), m_turn(1), m_maxPlayerCount(0), m_possibleCards(), m_curReceiving(),
 	m_aceRoundActive(), m_playTime(0, 0, 0), m_lostDisplaying(false),
-	m_aceRoundRank(NetMauMau::Common::ICard::ACE) {}
+	m_aceRoundRank(NetMauMau::Common::ICard::ACE), m_messageBoxDisplayed(false) {}
 
 bool GameState::inGame() const {
 	return m_inGame;
@@ -176,4 +176,12 @@ NetMauMau::Common::ICard::RANK GameState::aceRoundRank() const {
 
 void GameState::setAceRoundRank(NetMauMau::Common::ICard::RANK r) {
 	m_aceRoundRank = r;
+}
+
+bool GameState::isMessageBoxDisplayed() const {
+	return m_messageBoxDisplayed;
+}
+
+void GameState::setMessageBoxDisplayed(bool b) {
+	m_messageBoxDisplayed = b;
 }

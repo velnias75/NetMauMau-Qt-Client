@@ -21,14 +21,18 @@
 
 #include "netmaumaumessagebox.h"
 
+#include "gamestate.h"
 #include "cardpixmap.h"
 
-NetMauMauMessageBox::NetMauMauMessageBox(QWidget *p) : QMessageBox(p) {
+NetMauMauMessageBox::NetMauMauMessageBox(GameState *gs, QWidget *p) : QMessageBox(p),
+	m_gameState(gs) {
 	init();
 }
 
 NetMauMauMessageBox::NetMauMauMessageBox(const QString &title, const QString &txt,
-										 const QPixmap &pixmap, QWidget *p) : QMessageBox(p) {
+										 const QPixmap &pixmap, GameState *gs, QWidget *p) :
+	QMessageBox(p), m_gameState(gs) {
+
 	init();
 
 	setWindowTitle(title);
@@ -38,8 +42,8 @@ NetMauMauMessageBox::NetMauMauMessageBox(const QString &title, const QString &tx
 
 NetMauMauMessageBox::NetMauMauMessageBox(const QString &title, const QString &txt,
 										 NetMauMau::Common::ICard::SUIT suit,
-										 NetMauMau::Common::ICard::RANK rank, QWidget *p) :
-	QMessageBox(p) {
+										 NetMauMau::Common::ICard::RANK rank, GameState *gs,
+										 QWidget *p) : QMessageBox(p), m_gameState(gs) {
 
 	init();
 
@@ -61,4 +65,23 @@ void NetMauMauMessageBox::init() {
 	f &= ~Qt::WindowContextHelpButtonHint;
 	f &= ~Qt::WindowSystemMenuHint;
 	setWindowFlags(f);
+}
+
+NetMauMauMessageBox::~NetMauMauMessageBox() {
+	if(m_gameState) m_gameState->setMessageBoxDisplayed(false);
+}
+
+void NetMauMauMessageBox::showEvent(QShowEvent *e) {
+	if(m_gameState) m_gameState->setMessageBoxDisplayed(true);
+	QMessageBox::showEvent(e);
+}
+
+void NetMauMauMessageBox::hideEvent(QHideEvent *e) {
+	if(m_gameState) m_gameState->setMessageBoxDisplayed(false);
+	QMessageBox::hideEvent(e);
+}
+
+void NetMauMauMessageBox::closeEvent(QCloseEvent *e) {
+	if(m_gameState) m_gameState->setMessageBoxDisplayed(false);
+	QMessageBox::closeEvent(e);
 }

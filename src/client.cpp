@@ -37,7 +37,7 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 									  new Base64Bridge()),
 	m_mainWindow(w), m_disconnectNow(false), m_cardToPlay(0L),
 	m_chosenSuit(NetMauMau::Common::ICard::HEARTS), m_online(false), m_connectionLogDialog(cld),
-	m_aceRoundChoice(false) {
+	m_aceRoundChoice(false), m_server(QString::fromUtf8(server.c_str())), m_port(port) {
 	init();
 }
 
@@ -50,12 +50,11 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 									  new Base64Bridge()),
 	m_mainWindow(w), m_disconnectNow(false), m_cardToPlay(0L),
 	m_chosenSuit(NetMauMau::Common::ICard::HEARTS), m_online(false), m_connectionLogDialog(cld),
-	m_aceRoundChoice(false) {
+	m_aceRoundChoice(false), m_server(QString::fromUtf8(server.c_str())), m_port(port) {
 	init();
 }
 
 Client::~Client() {
-
 	emit offline(true);
 	QThread::disconnect();
 }

@@ -410,9 +410,11 @@ void MainWindow::updatePlayerScores(GameState *gs, uint attempts) {
 	}
 }
 
-void MainWindow::updatePlayerScores(GameState *gs, const Client::PLAYERINFOS &pl) {
+void MainWindow::updatePlayerScores(GameState *gs, const Client::PLAYERINFOS &pl)
+throw(NetMauMau::Common::Exception::SocketException) {
 
-	const Client::SCORES &scores(m_client->getScores(Client::SCORE_TYPE::ABS, 0));
+	const Client::SCORES &scores(Client(0L, 0L, QString::null, m_client->getServer().toStdString(),
+										m_client->getPort()).getScores(Client::SCORE_TYPE::ABS, 0));
 
 	for(Client::PLAYERINFOS::const_iterator i(pl.begin()); i != pl.end(); ++i) {
 
@@ -632,12 +634,18 @@ void MainWindow::clientMessage(const QString &msg) const {
 
 void MainWindow::clientError(const QString &err) {
 
-	destroyClient(true);
+	const bool msgBoxDisp = gameState()->isMessageBoxDisplayed();
 
+	destroyClient(true);
 	setEnabled(true);
 
-	if(QMessageBox::critical(this, tr("Server Error"), err, QMessageBox::Retry|QMessageBox::Cancel,
-							 QMessageBox::Retry) == QMessageBox::Retry) emit serverAccept();
+	if(msgBoxDisp) {
+		statusBar()->showMessage(QString("%1: %2").arg(tr("Server Error")).arg(err), 4000);
+	} else {
+		if(QMessageBox::critical(this, tr("Server Error"), err,
+								 QMessageBox::Retry|QMessageBox::Cancel,
+								 QMessageBox::Retry) == QMessageBox::Retry) emit serverAccept();
+	}
 }
 
 void MainWindow::clientCardSet(const Client::CARDS &c) {
@@ -736,7 +744,8 @@ void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 	if(NetMauMau::Common::parseCardDesc(c.constData(), &s, &r)) {
 		NetMauMauMessageBox(tr("Card rejected"), tr("You cannot play card %1!")
 							.arg(Util::cardStyler(QString::fromUtf8(c.constData()),
-												  QMessageBox().font())), s, r, this).exec();
+												  QMessageBox().font())), s, r, gameState(),
+							this).exec();
 	} else {
 		QMessageBox::critical(this, tr("Card rejected"), tr("You cannot play card %1!")
 							  .arg(Util::cardStyler(QString::fromUtf8(c.constData()),
@@ -779,6 +788,22 @@ QList<QStandardItem *> MainWindow::rowForPlayer(const QString &p) const {
 	return m_model.findItems(".*" + p + ".*", Qt::MatchRegExp, NAME);
 }
 
+QString MainWindow::yourScore(GameState *gs, const QString &p) {
+
+	QString ys;
+
+	if(m_model.rowCount() == 2) {
+
+		updatePlayerScores(gs);
+
+		if(gs->playerScores().contains(p)) {
+			ys = tr("Your score: %1").arg(gs->playerScores()[p]) + "\n";
+		}
+	}
+
+	return ys;
+}
+
 void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t pt) {
 
 	updatePlayerStats(p, tr("<span style=\"color:blue;\">lost</span> in turn %1 " \
@@ -788,20 +813,17 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 		GameState *gs = gameState();
 
-		updatePlayerScores(gs);
-
 		gs->setLostDisplaying(true);
 
 		takeCardsMark(false);
 
 		NetMauMauMessageBox lost(tr("Sorry"),
-								 tr("You have lost!\n%1\n\nPlaying time: %2").
+								 tr("You have lost!\n%1\nPlaying time: %2").
 								 arg(gs->playerScores().contains(p) ?
-										 tr("Your score: %1").arg(gs->playerScores()[p]) :
-										 tr("Your deduction of points: %1").arg(pt)).
-								 arg(gs->playTime().toString("HH:mm:ss")),
+										 yourScore(gs, p) : tr("Your deduction of points: %1").
+										 arg(pt)).arg(gs->playTime().toString("HH:mm:ss")),
 								 QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48),
-								 this);
+								 gs, this);
 
 		if(m_model.rowCount() == 2) {
 			m_timeLabel.hide();
@@ -832,22 +854,14 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 	if(!isMe(p)) statusBar()->showMessage(tr("%1 wins!").arg(p), 10000);
 
-	NetMauMauMessageBox gameOver(this);
+	NetMauMauMessageBox gameOver(gs, this);
 
 	if(isMe(p) && !gs->lostWonConfirmed()) {
-
-		QString yourScore;
-
-		updatePlayerScores(gs);
-
-		if(gs->playerScores().contains(p)) {
-			yourScore = tr("Your score: %1").arg(gs->playerScores()[p]) + "\n";
-		}
 
 		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
 												QIcon(":/smile.png")).pixmap(48, 48));
 		gameOver.setWindowTitle(tr("Congratulations"));
-		gameOver.setText(tr("You have won!\n%1\nPlaying time: %2").arg(yourScore).
+		gameOver.setText(tr("You have won!\n%1\nPlaying time: %2").arg(yourScore(gs, p)).
 						 arg(gs->playTime().toString("HH:mm:ss")));
 
 		if(m_model.rowCount() == 2) {
@@ -867,8 +881,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 			  static_cast<ulong>(m_model.rowCount() - 1) && !gs->lostDisplaying()) {
 
 		gameOver.setWindowTitle(tr("Sorry"));
-		gameOver.setIconPixmap(QIcon::fromTheme("face-plain",
-												QIcon(":/plain.png")).pixmap(48, 48));
+		gameOver.setIconPixmap(QIcon::fromTheme("face-plain", QIcon(":/plain.png")).pixmap(48, 48));
 		gameOver.setText(tr("<font color=\"blue\">%1</font> has won!").arg(p));
 
 		gameOver.exec();
@@ -1010,7 +1023,7 @@ void MainWindow::clientChooseAceRoundRequest() {
 											.arg(getAceRoundRankString(gs)),
 										gs->lastPlayedCard() ? gs->lastPlayedCard()->getSuit() :
 															   NetMauMau::Common::ICard::HEARTS,
-										gs->aceRoundRank(), this);
+										gs->aceRoundRank(), gs, this);
 
 		aceRoundBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
 

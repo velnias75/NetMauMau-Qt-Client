@@ -89,6 +89,9 @@ public:
 	NetMauMau::Common::ICard::RANK aceRoundRank() const _PURE;
 	void setAceRoundRank(NetMauMau::Common::ICard::RANK r);
 
+	bool isMessageBoxDisplayed() const _PURE;
+	void setMessageBoxDisplayed(bool b);
+
 private:
 	bool m_inGame;
 	QList<CardWidget *> m_cards;
@@ -111,6 +114,7 @@ private:
 	QTime m_playTime;
 	bool m_lostDisplaying;
 	NetMauMau::Common::ICard::RANK m_aceRoundRank;
+	bool m_messageBoxDisplayed;
 };
 
 #endif // GAMESTATE_H

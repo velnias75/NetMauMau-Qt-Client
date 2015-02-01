@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -40,6 +40,14 @@ public:
 		   const std::string &server, uint16_t port, const QByteArray &buf);
 
 	virtual ~Client();
+
+	inline QString getServer() const {
+		return m_server;
+	}
+
+	inline uint16_t getPort() const {
+		return m_port;
+	}
 
 protected:
 	using NetMauMau::Client::AbstractClient::playCard;
@@ -146,6 +154,8 @@ private:
 	bool m_online;
 	ConnectionLogDialog *const m_connectionLogDialog;
 	bool m_aceRoundChoice;
+	QString m_server;
+	uint16_t m_port;
 };
 
 #endif // CLIENT_H
