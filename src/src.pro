@@ -10,6 +10,10 @@ DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\
 QMAKE_RESOURCE_FLAGS += -compress 9
 
 CONFIG(debug, debug|release) {
+	 UI_DIR = debug-ui
+	 RCC_DIR = debug-rcc
+	 MOC_DIR = debug-moc
+	 OBJECTS_DIR = debug-obj
 	 TARGET = nmm-qt-client-debug
 	 DEFINES += _GLIBCXX_VISIBILITY=0 _GLIBCXX_CONCEPT_CHECKS QT_NO_CAST_FROM_BYTEARRAY \
 		QT_NO_CAST_TO_ASCII QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION
@@ -24,14 +28,18 @@ CONFIG(debug, debug|release) {
 	 LIBS    += ../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
 		 ../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
+	 UI_DIR = release-ui
+	 RCC_DIR = release-rcc
+	 MOC_DIR = release-moc
+	 OBJECTS_DIR = release-obj
 	 TARGET = nmm-qt-client
 	 win32:CONFIG += static
 	 DEFINES += NDEBUG _GLIBCXX_VISIBILITY=0 QT_NO_DEBUG_OUTPUT QT_NO_CAST_FROM_BYTEARRAY \
 		QT_NO_CAST_TO_ASCII QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION
 	 unix:INCLUDEPATH += "/usr/include/netmaumau"
 	 win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
-	 unix:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing -Wformat \
-	 -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \
+	 devrelease:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing \
+	 -Wformat -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \
 	 -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wdisabled-optimization -Wuninitialized
 	 win32:QMAKE_CXXFLAGS += -O2 -fomit-frame-pointer -fstrict-aliasing
 	 win32:LIBS    += /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
