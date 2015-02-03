@@ -115,6 +115,7 @@ private slots:
 	void clientNextPlayer(const QString &);
 	void clientAceRoundStarted(const QString &);
 	void clientAceRoundEnded(const QString &);
+	void clientDirectionChanged();
 
 	void clearStats();
 	void resizeColumns() const;

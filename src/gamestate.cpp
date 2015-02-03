@@ -24,7 +24,8 @@ GameState::GameState() : m_inGame(false), m_cards(), m_lastPlayedCard(0L), m_las
 	m_countWonDisplayed(0), m_lostWonConfirmed(false), m_mmCnt(0), m_pickCardPrepended(false),
 	m_noCardPossible(false), m_turn(1), m_maxPlayerCount(0), m_possibleCards(), m_curReceiving(),
 	m_aceRoundActive(), m_playTime(0, 0, 0), m_lostDisplaying(false),
-	m_aceRoundRank(NetMauMau::Common::ICard::ACE), m_messageBoxDisplayed(false) {}
+	m_aceRoundRank(NetMauMau::Common::ICard::ACE), m_messageBoxDisplayed(false), m_direction(NONE)
+{}
 
 bool GameState::inGame() const {
 	return m_inGame;
@@ -184,4 +185,16 @@ bool GameState::isMessageBoxDisplayed() const {
 
 void GameState::setMessageBoxDisplayed(bool b) {
 	m_messageBoxDisplayed = b;
+}
+
+GameState::DIR GameState::getDirection() const {
+	return m_direction;
+}
+
+void GameState::setDirection(DIR d) {
+	m_direction = d;
+}
+
+void GameState::changeDirection() {
+	m_direction = m_direction != NONE ? (m_direction == CW ? CCW : CW): NONE;
 }

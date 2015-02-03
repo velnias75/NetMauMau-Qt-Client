@@ -93,6 +93,13 @@ void ServerInfo::run() {
 			ai->setData(QString::fromStdString(f->second), ACEROUNDRANK);
 		}
 
+		const Client::CAPABILITIES::const_iterator &dc(caps.find("DIRCHANGE"));
+		const bool hasDirChange = dc != caps.end() && dc->second != "false";
+
+		server->setData(hasDirChange, DIRCHANGE);
+
+		if(hasDirChange) ai->setToolTip(ai->toolTip() + "\n" + tr("You can change directions"));
+
 		const Client::CAPABILITIES::const_iterator &hs(caps.find("HAVE_SCORES"));
 		server->setData(hs != caps.end() && hs->second != "false", HAVESCORES);
 

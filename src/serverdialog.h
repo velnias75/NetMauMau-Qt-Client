@@ -26,6 +26,7 @@
 
 #include <icard.h>
 
+#include "gamestate.h"
 #include "ui_serverdialog.h"
 
 class DeleteServersDialog;
@@ -53,6 +54,8 @@ public:
 
 	void setLastServer(const QString &ls);
 	QString getLastServer() const;
+
+	GameState::DIR getDirection() const _PURE;
 
 	QStandardItemModel *getModel() _CONST;
 
@@ -111,6 +114,7 @@ private:
 	AddServerDialog *m_addServerDialog;
 	QMenu *m_ctxPopup;
 	QPoint m_ctxPoint;
+	mutable GameState::DIR m_direction;
 };
 
 #endif // SERVERDIALOG_H

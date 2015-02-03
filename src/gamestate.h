@@ -30,6 +30,9 @@ class CardWidget;
 
 class GameState {
 public:
+
+	typedef enum { NONE, CW, CCW } DIR;
+
 	GameState();
 
 	bool inGame() const _PURE;
@@ -92,6 +95,10 @@ public:
 	bool isMessageBoxDisplayed() const _PURE;
 	void setMessageBoxDisplayed(bool b);
 
+	DIR getDirection() const _PURE;
+	void setDirection(DIR d);
+	void changeDirection();
+
 private:
 	bool m_inGame;
 	QList<CardWidget *> m_cards;
@@ -115,6 +122,7 @@ private:
 	bool m_lostDisplaying;
 	NetMauMau::Common::ICard::RANK m_aceRoundRank;
 	bool m_messageBoxDisplayed;
+	DIR m_direction;
 };
 
 #endif // GAMESTATE_H

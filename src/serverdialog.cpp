@@ -44,7 +44,7 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
 	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null),
 	m_imageFormats(), m_addServerDialog(new AddServerDialog(this)), m_ctxPopup(new QMenu(this)),
-	m_ctxPoint() {
+	m_ctxPoint(), m_direction(GameState::NONE) {
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -324,13 +324,20 @@ void ServerDialog::savePlayer() {
 	settings.endGroup();
 }
 
+GameState::DIR ServerDialog::getDirection() const {
+	return m_direction;
+}
+
 QString ServerDialog::getAcceptedServer() const {
 
 	const QModelIndexList &l(availServerView->selectionModel()->selection().indexes());
 
 	if(!l.isEmpty()) {
-		return m_model.itemFromIndex(l.first())->data(ServerInfo::HOST).toString();
+		QStandardItem *i = m_model.itemFromIndex(l.first());
+		m_direction = i->data(ServerInfo::DIRCHANGE).toBool() ? GameState::CW : GameState::NONE;
+		return i->data(ServerInfo::HOST).toString();
 	} else {
+		m_direction = GameState::NONE;
 		return QString::null;
 	}
 }

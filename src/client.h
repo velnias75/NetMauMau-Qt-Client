@@ -66,6 +66,7 @@ protected:
 	virtual void turn(std::size_t turn) const;
 	virtual void stats(const STATS &stats) const;
 	virtual void gameOver() const;
+	virtual void directionChanged() const;
 	virtual void playerJoined(const std::string &player, const unsigned char *pngData,
 							  std::size_t pngDataLen) const;
 	virtual void playerRejected(const std::string &player) const;
@@ -111,6 +112,7 @@ signals:
 	void cTurn(std::size_t) const;
 	void cStats(const Client::STATS &stats) const;
 	void cGameOver() const;
+	void cDirectionChanged() const;
 	void cPlayerJoined(const QString&, const QImage &) const;
 	void cPlayerSuspends(const QString &) const;
 	void cPlayedCard(const QString &, const QByteArray &) const;

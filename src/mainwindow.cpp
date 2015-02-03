@@ -452,6 +452,7 @@ void MainWindow::serverAccept() {
 
 	GameState *gs = gameState();
 
+	gs->setDirection(m_serverDlg->getDirection());
 	gs->setMaxPlayerCount(m_serverDlg->getMaxPlayerCount());
 
 	m_client = new Client(this, m_connectionLogDlg, m_serverDlg->getPlayerName(),
@@ -536,12 +537,19 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientAceRoundStarted(QString)));
 		QObject::connect(m_client, SIGNAL(cAceRoundEnded(QString)),
 						 this, SLOT(clientAceRoundEnded(QString)));
+		QObject::connect(m_client, SIGNAL(cDirectionChanged()),
+						 this, SLOT(clientDirectionChanged()));
 
 		centralWidget()->setEnabled(true);
 		takeCardsMark(false);
 
 		gs->setAceRoundRank(m_serverDlg->getAceRoundRank());
 		gs->setInGame(true);
+
+		if(gs->getDirection() != GameState::NONE) {
+			m_model.horizontalHeaderItem(PLAYERPIC)->setIcon(QApplication::style()->
+															 standardIcon(QStyle::SP_ArrowDown));
+		}
 
 		m_ui->awidget->setGameState(gs);
 
@@ -1332,6 +1340,8 @@ void MainWindow::clientDestroyed() {
 	takeCardsMark(false);
 	centralWidget()->setEnabled(false);
 
+	m_model.horizontalHeaderItem(PLAYERPIC)->setIcon(QIcon());
+
 	m_ui->remoteGroup->setTitle(tr("Players"));
 	m_ui->actionServer->setEnabled(true);
 	m_ui->actionLaunchServer->setEnabled(true);
@@ -1425,6 +1435,17 @@ void MainWindow::clientAceRoundEnded(const QString &p) {
 						  .arg(tr("ends a %1").arg(getAceRoundRankString(gs))));
 
 	gs->setAceRoundActive(QString::null);
+}
+
+void MainWindow::clientDirectionChanged() {
+	GameState *gs = gameState();
+
+	gs->changeDirection();
+
+	m_model.horizontalHeaderItem(PLAYERPIC)->setIcon(QApplication::style()->
+													 standardIcon(gs->getDirection() == GameState::CW ?
+																	  QStyle::SP_ArrowDown :
+																	  QStyle::SP_ArrowUp));
 }
 
 void MainWindow::writeSettings() const {

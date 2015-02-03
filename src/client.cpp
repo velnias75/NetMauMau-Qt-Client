@@ -30,14 +30,15 @@
 #include "mainwindow.h"
 #include "base64bridge.h"
 
+#define CLIENTVERSION 13
+
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port) : QThread(),
 	NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server, port,
-									  /*parseProtocolVersion(PACKAGE_VERSION)*/ 11,
-									  new Base64Bridge()),
-	m_mainWindow(w), m_disconnectNow(false), m_cardToPlay(0L),
-	m_chosenSuit(NetMauMau::Common::ICard::HEARTS), m_online(false), m_connectionLogDialog(cld),
-	m_aceRoundChoice(false), m_server(QString::fromUtf8(server.c_str())), m_port(port) {
+									  CLIENTVERSION, new Base64Bridge()), m_mainWindow(w),
+	m_disconnectNow(false), m_cardToPlay(0L), m_chosenSuit(NetMauMau::Common::ICard::HEARTS),
+	m_online(false), m_connectionLogDialog(cld), m_aceRoundChoice(false),
+	m_server(QString::fromUtf8(server.c_str())), m_port(port) {
 	init();
 }
 
@@ -45,9 +46,7 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 			   const std::string &server, uint16_t port, const QByteArray &buf) : QThread(),
 	NetMauMau::Client::AbstractClient(player.toUtf8().constData(),
 									  reinterpret_cast<const unsigned char *>(buf.constData()),
-									  buf.size(), server, port,
-									  /*parseProtocolVersion(PACKAGE_VERSION)*/ 11,
-									  new Base64Bridge()),
+									  buf.size(), server, port, CLIENTVERSION, new Base64Bridge()),
 	m_mainWindow(w), m_disconnectNow(false), m_cardToPlay(0L),
 	m_chosenSuit(NetMauMau::Common::ICard::HEARTS), m_online(false), m_connectionLogDialog(cld),
 	m_aceRoundChoice(false), m_server(QString::fromUtf8(server.c_str())), m_port(port) {
@@ -238,6 +237,11 @@ void Client::stats(const STATS &s) const {
 void Client::gameOver() const {
 	log("gameOver");
 	emit cGameOver();
+}
+
+void Client::directionChanged() const {
+	log("directionChanged");
+	emit cDirectionChanged();
 }
 
 void Client::playerJoined(const std::string &player, const unsigned char *b,
