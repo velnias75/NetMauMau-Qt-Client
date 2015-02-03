@@ -88,7 +88,7 @@ Don't close the client while a game is running, because it will disconnect the r
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
          <string>Ace &amp;round:</string>
@@ -98,7 +98,7 @@ Don't close the client while a game is running, because it will disconnect the r
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QCheckBox" name="aceRound">
@@ -134,7 +134,7 @@ Don't close the client while a game is running, because it will disconnect the r
         </item>
        </layout>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>&amp;AI name:</string>
@@ -144,7 +144,7 @@ Don't close the client while a game is running, because it will disconnect the r
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="QLineEdit" name="aiNameEdit">
         <property name="toolTip">
          <string>The name of the AI player</string>
@@ -154,7 +154,7 @@ Don't close the client while a game is running, because it will disconnect the r
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>P&amp;ort:</string>
@@ -164,7 +164,7 @@ Don't close the client while a game is running, because it will disconnect the r
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="5" column="1">
        <widget class="PortSpin" name="portSpin">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -174,6 +174,26 @@ Don't close the client while a game is running, because it will disconnect the r
         </property>
         <property name="toolTip">
          <string>The port to run the server on</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>&amp;Direction change:</string>
+        </property>
+        <property name="buddy">
+         <cstring>dirChangecheck</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="dirChangecheck">
+        <property name="toolTip">
+         <string>if checked than playing a &lt;i&gt;nine&lt;/i&gt; will cause a change of direction</string>
+        </property>
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>
@@ -339,6 +359,7 @@ Don't close the client while a game is running, because it will disconnect the r
  <tabstops>
   <tabstop>playersSpin</tabstop>
   <tabstop>ultimateCheck</tabstop>
+  <tabstop>dirChangecheck</tabstop>
   <tabstop>aceRound</tabstop>
   <tabstop>rankCombo</tabstop>
   <tabstop>aiNameEdit</tabstop>

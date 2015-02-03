@@ -300,73 +300,83 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>König</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="192"/>
+        <location filename="launchserverdialog.ui" line="183"/>
+        <source>&amp;Direction change:</source>
+        <translation>&amp;Richtungswechsel:</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="193"/>
+        <source>if checked than playing a &lt;i&gt;nine&lt;/i&gt; will cause a change of direction</source>
+        <translation>Wenn ausgewählt, löst das Spielen einer &lt;i&gt;Neun&lt;/i&gt; einen Richtungswechsel aus</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="212"/>
         <source>Executable</source>
         <translation>Ausführbare Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="201"/>
+        <location filename="launchserverdialog.ui" line="221"/>
         <source>Pat&amp;h:</source>
         <translation>&amp;Pfad:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="216"/>
+        <location filename="launchserverdialog.ui" line="236"/>
         <source>Path to the server executable</source>
         <translation>Pfad zu der auführbaren Datei des Servers</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="238"/>
+        <location filename="launchserverdialog.ui" line="258"/>
         <source>Browse for a path to the server executable</source>
         <translation>Suche nach einen Pfad zu der ausführbaren Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="253"/>
+        <location filename="launchserverdialog.ui" line="273"/>
         <source>Op&amp;tions:</source>
         <translation>&amp;Optionen:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="263"/>
+        <location filename="launchserverdialog.ui" line="283"/>
         <source>The options the server will be started with</source>
         <translation>Die Optionen mit denen der Server gestartet wird</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="273"/>
+        <location filename="launchserverdialog.ui" line="293"/>
         <source>On &amp;startup:</source>
         <translation>&amp;Beim Start:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="283"/>
+        <location filename="launchserverdialog.ui" line="303"/>
         <source>The local server will get started automatically</source>
         <translation>Der lokale Server wird automatisch gestartet</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="311"/>
+        <location filename="launchserverdialog.ui" line="331"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbruch</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="318"/>
+        <location filename="launchserverdialog.ui" line="338"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to launch the server.&lt;/p&gt;&lt;p&gt;The server will be available at &lt;tt&gt;localhost&lt;/tt&gt; and the given port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Versucht den Server zu starten.&lt;/p&gt;&lt;p&gt;Der Server wird unter &lt;tt&gt;localhost&lt;/tt&gt; und dem angegeben Port verfügbar sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="321"/>
+        <location filename="launchserverdialog.ui" line="341"/>
         <source>&amp;Launch</source>
         <translation>&amp;Starten</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="145"/>
+        <location filename="launchserverdialog.cpp" line="150"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="145"/>
-        <location filename="launchserverdialog.cpp" line="217"/>
+        <location filename="launchserverdialog.cpp" line="150"/>
+        <location filename="launchserverdialog.cpp" line="224"/>
         <source>Failed to start %1</source>
         <translation>Starten von %1 gescheitert</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="231"/>
+        <location filename="launchserverdialog.cpp" line="238"/>
         <source>Find NetMauMau server executable</source>
         <translation>Finde die ausführbare Datei von NetMauMau</translation>
     </message>

@@ -44,6 +44,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	launchStartup->setChecked(settings.value("onStartup", false).toBool());
 	playersSpin->setValue(settings.value("playersSpin", 1).toInt());
 	ultimateCheck->setChecked(settings.value("ultimate", true).toBool());
+	dirChangecheck->setChecked(settings.value("dirChange", false).toBool());
 	aceRound->setChecked(settings.value("ace-round", false).toBool());
 	rankCombo->setCurrentIndex(settings.value("ace-round-rank", 0).toInt());
 	aiNameEdit->setText(settings.value("aiName",
@@ -57,6 +58,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	QObject::connect(execChooseButton, SIGNAL(clicked()), this, SLOT(browse()));
 	QObject::connect(playersSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(ultimateCheck, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
+	QObject::connect(dirChangecheck, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(aceRound, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(rankCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(aiNameEdit, SIGNAL(textChanged(QString)), this, SLOT(updateOptions()));
@@ -80,6 +82,7 @@ LaunchServerDialog::~LaunchServerDialog() {
 	settings.setValue("onStartup", launchStartup->isChecked());
 	settings.setValue("playersSpin", playersSpin->value());
 	settings.setValue("ultimate", ultimateCheck->isChecked());
+	settings.setValue("dirChange", dirChangecheck->isChecked());
 	settings.setValue("ace-round", aceRound->isChecked());
 	settings.setValue("ace-round-rank", rankCombo->currentIndex());
 	settings.setValue("aiName", aiNameEdit->text());
@@ -131,7 +134,9 @@ void LaunchServerDialog::updateOptions(int) {
 		opt.append("-A\"").append(aiNameEdit->text()).append("\" ");
 	}
 
-	if(ultimateCheck->isChecked()) opt.append("-u");
+	if(ultimateCheck->isChecked()) opt.append("-u").append(" ");
+
+	if(dirChangecheck->isChecked()) opt.append("-d").append(" ");;
 
 	if(aceRound->isChecked()) opt.append("-a").
 			append(rankCombo->currentIndex() == 0 ? 'a' :
@@ -193,6 +198,8 @@ void LaunchServerDialog::launch() {
 	}
 
 	if(ultimateCheck->isChecked()) args << "-u";
+
+	if(dirChangecheck->isChecked()) args << "-d";
 
 	if(aceRound->isChecked()) {
 		args << QString("-a").
