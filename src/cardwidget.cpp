@@ -236,7 +236,7 @@ void CardWidget::mouseMoveEvent(QMouseEvent *e) {
 		mimeData->setImageData(cpm.toImage());
 
 		QDrag *drag = new QDrag(this);
-		drag->setMimeData(mimeData);;
+		drag->setMimeData(mimeData);
 		drag->setPixmap(cpm);
 		drag->setHotSpot(QPoint(21, 24));
 

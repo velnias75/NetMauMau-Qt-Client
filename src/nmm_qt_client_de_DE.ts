@@ -365,18 +365,18 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>&amp;Starten</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="150"/>
+        <location filename="launchserverdialog.cpp" line="152"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="150"/>
-        <location filename="launchserverdialog.cpp" line="224"/>
+        <location filename="launchserverdialog.cpp" line="152"/>
+        <location filename="launchserverdialog.cpp" line="226"/>
         <source>Failed to start %1</source>
         <translation>Starten von %1 gescheitert</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="238"/>
+        <location filename="launchserverdialog.cpp" line="240"/>
         <source>Find NetMauMau server executable</source>
         <translation>Finde die ausführbare Datei von NetMauMau</translation>
     </message>

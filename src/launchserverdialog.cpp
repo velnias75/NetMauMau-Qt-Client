@@ -138,7 +138,7 @@ void LaunchServerDialog::updateOptions(int) {
 
 	if(ultimateCheck->isChecked()) opt.append("-u").append(" ");
 
-	if(dirChangecheck->isChecked()) opt.append("-d").append(" ");;
+	if(dirChangecheck->isChecked()) opt.append("-d").append(" ");
 
 	if(aceRound->isChecked()) opt.append("-a").
 			append(rankCombo->currentIndex() == 0 ? 'a' :
