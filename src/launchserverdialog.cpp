@@ -41,20 +41,6 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	QSettings settings;
 	settings.beginGroup("Launcher");
 
-	launchStartup->setChecked(settings.value("onStartup", false).toBool());
-	playersSpin->setValue(settings.value("playersSpin", 1).toInt());
-	ultimateCheck->setChecked(settings.value("ultimate", true).toBool());
-	dirChangecheck->setChecked(settings.value("dirChange", false).toBool());
-	aceRound->setChecked(settings.value("ace-round", false).toBool());
-	rankCombo->setCurrentIndex(settings.value("ace-round-rank", 0).toInt());
-	aiNameEdit->setText(settings.value("aiName",
-									   QString::fromUtf8(Client::getDefaultAIName())).toString());
-	portSpin->setValue(settings.value("port", Client::getDefaultPort()).toInt());
-	pathEdit->setText(settings.value("serverExe",
-									 QString::fromUtf8(NetMauMau::Common::getServerExe()))
-					  .toString());
-	settings.endGroup();
-
 	QObject::connect(execChooseButton, SIGNAL(clicked()), this, SLOT(browse()));
 	QObject::connect(playersSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(ultimateCheck, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
@@ -69,6 +55,20 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 					 this, SLOT(error(QProcess::ProcessError)));
 	QObject::connect(&m_process, SIGNAL(finished(int)), this, SLOT(finished(int)));
 	QObject::connect(&m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateViewer()));
+
+	launchStartup->setChecked(settings.value("onStartup", false).toBool());
+	playersSpin->setValue(settings.value("playersSpin", 1).toInt());
+	ultimateCheck->setChecked(settings.value("ultimate", true).toBool());
+	dirChangecheck->setChecked(settings.value("dirChange", false).toBool());
+	aceRound->setChecked(settings.value("ace-round", false).toBool());
+	rankCombo->setCurrentIndex(settings.value("ace-round-rank", 0).toInt());
+	aiNameEdit->setText(settings.value("aiName",
+									   QString::fromUtf8(Client::getDefaultAIName())).toString());
+	portSpin->setValue(settings.value("port", Client::getDefaultPort()).toInt());
+	pathEdit->setText(settings.value("serverExe",
+									 QString::fromUtf8(NetMauMau::Common::getServerExe()))
+					  .toString());
+	settings.endGroup();
 
 	m_process.setProcessChannelMode(QProcess::MergedChannels);
 
@@ -123,16 +123,18 @@ void LaunchServerDialog::updateOptions(int) {
 	QString opt;
 
 	if(portSpin->value() != Client::getDefaultPort()) {
-		opt.append("-P").append(QString::number(portSpin->value())).append(" ");
+		opt.append("--port=").append(QString::number(portSpin->value())).append(" ");
 	}
 
 	if(playersSpin->value() != 1) {
 		opt.append("-p").append(QString::number(playersSpin->value())).append(" ");
 	}
 
-	if(!aiNameEdit->text().isEmpty()) {
+	if(playersSpin->value() == 1 && !aiNameEdit->text().isEmpty()) {
 		opt.append("-A\"").append(aiNameEdit->text()).append("\" ");
 	}
+
+	aiNameEdit->setEnabled(playersSpin->value() == 1);
 
 	if(ultimateCheck->isChecked()) opt.append("-u").append(" ");
 
@@ -186,14 +188,14 @@ void LaunchServerDialog::launch() {
 	QStringList args;
 
 	if(portSpin->value() != Client::getDefaultPort()) {
-		args << QString("-P").append(QString::number(portSpin->value()));
+		args << QString("--port=").append(QString::number(portSpin->value()));
 	}
 
 	if(playersSpin->value() != 1) {
 		args << QString("-p").append(QString::number(playersSpin->value()));
 	}
 
-	if(!aiNameEdit->text().isEmpty()) {
+	if(playersSpin->value() == 1 && !aiNameEdit->text().isEmpty()) {
 		args << QString("-A").append(aiNameEdit->text());
 	}
 
