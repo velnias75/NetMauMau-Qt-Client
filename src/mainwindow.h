@@ -153,6 +153,8 @@ private:
 	QString getAceRoundRankString(const GameState *gs, bool capitalize = false) const;
 	QString reconnectToolTip() const;
 
+	QString winnerRank(GameState *gs) const;
+
 	void writeSettings() const;
 	void readSettings();
 

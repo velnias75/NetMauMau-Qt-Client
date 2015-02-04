@@ -99,6 +99,8 @@ public:
 	void setDirection(DIR d);
 	void changeDirection();
 
+	QList<QString> &winningOrder();
+
 private:
 	bool m_inGame;
 	QList<CardWidget *> m_cards;
@@ -123,6 +125,7 @@ private:
 	NetMauMau::Common::ICard::RANK m_aceRoundRank;
 	bool m_messageBoxDisplayed;
 	DIR m_direction;
+	QList<QString> m_winningOrder;
 };
 
 #endif // GAMESTATE_H

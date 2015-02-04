@@ -29,7 +29,6 @@
 #include "mainwindow.h"
 
 #include "util.h"
-#include "gamestate.h"
 #include "cardwidget.h"
 #include "cardpixmap.h"
 #include "scoresdialog.h"
@@ -396,14 +395,16 @@ void MainWindow::showReceiveProgress() const {
 
 void MainWindow::updatePlayerScores(GameState *gs, uint attempts) {
 
-	gs->playerScores().clear();
+	if(gs) {
+		gs->playerScores().clear();
 
-	for(uint i = 0; i < attempts; ++i) {
-		try {
-			updatePlayerScores(gs, m_client->playerList(false));
-			break;
-		} catch(const NetMauMau::Common::Exception::SocketException &e) {
-			qDebug("Retrieving scores failed in attempt %u: %s", (i + 1), e.what());
+		for(uint i = 0; i < attempts; ++i) {
+			try {
+				updatePlayerScores(gs, m_client->playerList(false));
+				break;
+			} catch(const NetMauMau::Common::Exception::SocketException &e) {
+				qDebug("Retrieving scores failed in attempt %u: %s", (i + 1), e.what());
+			}
 		}
 	}
 }
@@ -421,7 +422,7 @@ throw(NetMauMau::Common::Exception::SocketException) {
 															  std::bind2nd(scoresPlayer(),
 																		   i->name)));
 
-		if(ps != scores.end()) gs->playerScores()[pName] = QString::number(ps->score);
+		if(gs && ps != scores.end()) gs->playerScores()[pName] = QString::number(ps->score);
 
 		const Client::SCORES::const_iterator
 				&myScore(std::find_if(scores.begin(), scores.end(),
@@ -429,7 +430,7 @@ throw(NetMauMau::Common::Exception::SocketException) {
 												   m_serverDlg->getPlayerName().toUtf8().
 												   constData())));
 
-		if(myScore != scores.end()) {
+		if(gs && myScore != scores.end()) {
 			gs->playerScores()[m_serverDlg->getPlayerName()] = QString::number(myScore->score);
 		}
 	}
@@ -795,7 +796,7 @@ QString MainWindow::yourScore(GameState *gs, const QString &p) {
 
 	QString ys;
 
-	if(m_model.rowCount() == 2) {
+	if(gs && m_model.rowCount() == 2) {
 
 		updatePlayerScores(gs);
 
@@ -851,6 +852,7 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 	GameState *gs = gameState();
 
 	gs->playerCardCounts()[p] = 0;
+	gs->winningOrder().append(p);
 	gs->setMaumauCount(gs->maumauCount() + 1);
 
 	updatePlayerStats(p, tr("<span style=\"color:blue;\">wins</span> in turn %1").arg(t), true);
@@ -863,7 +865,8 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
 												QIcon(":/smile.png")).pixmap(48, 48));
-		gameOver.setWindowTitle(tr("Congratulations"));
+		gameOver.setWindowTitle(gs->winningOrder().indexOf(myself()) == 0 ? tr("Congratulations") :
+																			winnerRank(gs));
 		gameOver.setText(tr("You have won!\n%1\nPlaying time: %2").arg(yourScore(gs, p)).
 						 arg(gs->playTime().toString("HH:mm:ss")));
 
@@ -883,7 +886,8 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 	} else if(m_model.rowCount() > 2 && gs->maumauCount() ==
 			  static_cast<ulong>(m_model.rowCount() - 1) && !gs->lostDisplaying()) {
 
-		gameOver.setWindowTitle(tr("Sorry"));
+		gameOver.setWindowTitle(gs->winningOrder().indexOf(myself()) > gs->winningOrder().indexOf(p)
+								? tr("Sorry") : winnerRank(gs));
 		gameOver.setIconPixmap(QIcon::fromTheme("face-plain", QIcon(":/plain.png")).pixmap(48, 48));
 		gameOver.setText(tr("<font color=\"blue\">%1</font> has won!").arg(p));
 
@@ -892,6 +896,21 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 		gs->incCountWonDisplayed();
 
 		emit confirmLostWon(QMessageBox::AcceptRole);
+	}
+}
+
+QString MainWindow::winnerRank(GameState *gs) const {
+
+	if(gs) {
+		switch(gs->maumauCount()) {
+		case 1: return tr("First rank");
+		case 2: return tr("Second rank");
+		case 3: return tr("Third rank");
+		case 4: return tr("Fourth rank");
+		default: return tr("Fifth rank");
+		}
+	} else {
+		return tr("Sorry");
 	}
 }
 
@@ -1256,7 +1275,7 @@ QString MainWindow::playerToolTip(GameState *gs, const QString &player) const {
 	QString ptt("<html><body>");
 	ptt.append(player);
 
-	if(gs->playerScores().contains(player)) {
+	if(gs && gs->playerScores().contains(player)) {
 		ptt.append("<br /><span style=\"font-size:small;\">").
 				append(tr("Current score: %1").arg(gs->playerScores()[player])).
 				append("</span>");
@@ -1376,12 +1395,18 @@ void MainWindow::clearStats() {
 }
 
 QString MainWindow::getAceRoundRankString(const GameState *gs, bool capitalize) const {
-	switch(gs->aceRoundRank()) {
-	case NetMauMau::Common::ICard::QUEEN:
-		return capitalize ? tr("Queen round") : tr("queen round");
-	case NetMauMau::Common::ICard::KING:
-		return capitalize ? tr("King round") : tr("king round");
-	default:
+
+	if(gs) {
+
+		switch(gs->aceRoundRank()) {
+		case NetMauMau::Common::ICard::QUEEN:
+			return capitalize ? tr("Queen round") : tr("queen round");
+		case NetMauMau::Common::ICard::KING:
+			return capitalize ? tr("King round") : tr("king round");
+		default:
+			return capitalize ? tr("Ace round") : tr("ace round");
+		}
+	} else {
 		return capitalize ? tr("Ace round") : tr("ace round");
 	}
 }
@@ -1438,12 +1463,14 @@ void MainWindow::clientAceRoundEnded(const QString &p) {
 }
 
 void MainWindow::clientDirectionChanged() {
+
 	GameState *gs = gameState();
 
 	gs->changeDirection();
 
 	m_model.horizontalHeaderItem(PLAYERPIC)->setIcon(QApplication::style()->
-													 standardIcon(gs->getDirection() == GameState::CW ?
+													 standardIcon(gs->getDirection() ==
+																  GameState::CW ?
 																	  QStyle::SP_ArrowDown :
 																	  QStyle::SP_ArrowUp));
 }
