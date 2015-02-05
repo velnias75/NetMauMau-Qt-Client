@@ -12,9 +12,9 @@ Building
 
 It depends on the NetMauMau sources, which can be found at
 [https://github.com/velnias75/NetMauMau](https://github.com/velnias75/NetMauMau) 
-and need to be checked out at the same directory level.
 
-To build, invoke `qmake && make all`
+To build and install with *previously installed NetMauMau*,
+invoke `qmake CONFIG+=release && make && sudo make install`
 
 Requirements
 ------------

@@ -40,7 +40,11 @@ CONFIG(debug, debug|release) {
 	unix:qmfiles.depends = translations
 	unix:qmfiles.files = *.qm
 	unix:qmfiles.path = /usr/share/nmm-qt-client
-	unix:INSTALLS += qmfiles target
+	unix:desktop.path = /usr/share/applications
+	unix:desktop.files = nmm_qt_client.desktop
+	unix:icon.path = /usr/share/icons/hicolor/256x256/apps
+	unix:icon.files = nmm_qt_client.png
+	unix:INSTALLS += qmfiles desktop icon target
 	unix:INCLUDEPATH += "/usr/include/netmaumau"
 	win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
 	devrelease:DEFINES -= NDEBUG QT_NO_DEBUG_OUTPUT
