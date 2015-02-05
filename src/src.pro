@@ -38,6 +38,7 @@ CONFIG(debug, debug|release) {
 		QT_NO_CAST_TO_ASCII QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION
 	 unix:INCLUDEPATH += "/usr/include/netmaumau"
 	 win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
+	 devrelease:DEFINES -= NDEBUG QT_NO_DEBUG_OUTPUT
 	 devrelease:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing \
 	 -Wformat -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \
 	 -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wdisabled-optimization -Wuninitialized

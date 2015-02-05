@@ -99,7 +99,7 @@ public:
 	void setDirection(DIR d);
 	void changeDirection();
 
-	QList<QString> &winningOrder();
+	QList<QString> &winningOrder() _CONST;
 
 private:
 	bool m_inGame;

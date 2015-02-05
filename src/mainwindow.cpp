@@ -1333,7 +1333,8 @@ void MainWindow::destroyClient(bool force) {
 			if(!m_client->wait(waitTime)) {
 #ifndef _WIN32
 				qWarning("Client thread didn't stopped within 1 second. Forcing termination...");
-				QObject::connect(m_client, SIGNAL(terminated()), this, SLOT(clientDestroyed()));
+				if(m_client) QObject::connect(m_client, SIGNAL(terminated()),
+											  this, SLOT(clientDestroyed()));
 				m_client->terminate();
 #else
 				qWarning("Client thread didn't stopped within 2 seconds.");
