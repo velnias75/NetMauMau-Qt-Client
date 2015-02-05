@@ -763,7 +763,7 @@ void MainWindow::clientCardAccepted(const QByteArray &ac) {
 
 	GameState *gs = gameState();
 
-	if(*gs->lastPlayedCard() == ac) {
+	if(gs->lastPlayedCard() && *gs->lastPlayedCard() == ac) {
 		CardWidget *cw = gs->lastPlayedCard();
 		cw->setVisible(false);
 		gs->cards().removeOne(cw);
@@ -771,6 +771,8 @@ void MainWindow::clientCardAccepted(const QByteArray &ac) {
 		qApp->processEvents();
 		QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
 		delete cw;
+	} else if(!gs->lastPlayedCard()) {
+		qWarning("las played card is NULL");
 	}
 
 	gs->setLastPlayedCard(0L);
@@ -889,7 +891,11 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 		gameOver.setWindowTitle(gs->winningOrder().indexOf(myself()) > gs->winningOrder().indexOf(p)
 								? tr("Sorry") : winnerRank(gs));
 		gameOver.setIconPixmap(QIcon::fromTheme("face-plain", QIcon(":/plain.png")).pixmap(48, 48));
-		gameOver.setText(tr("<font color=\"blue\">%1</font> has won!").arg(p));
+		gameOver.setText("<html><body>" + tr("<font color=\"blue\">%1</font> has won!" \
+											 "<br /><br />Playing time: %2").arg(p).
+						 arg(gs->playTime().toString("HH:mm:ss")) + "</body></html>");
+
+		m_timeLabel.hide();
 
 		gameOver.exec();
 
