@@ -10,42 +10,47 @@ DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\
 QMAKE_RESOURCE_FLAGS += -compress 9
 
 CONFIG(debug, debug|release) {
-	 UI_DIR = debug-ui
-	 RCC_DIR = debug-rcc
-	 MOC_DIR = debug-moc
-	 OBJECTS_DIR = debug-obj
-	 TARGET = nmm-qt-client-debug
-	 DEFINES += _GLIBCXX_VISIBILITY=0 _GLIBCXX_CONCEPT_CHECKS QT_NO_CAST_FROM_BYTEARRAY \
+	UI_DIR = debug-ui
+	RCC_DIR = debug-rcc
+	MOC_DIR = debug-moc
+	OBJECTS_DIR = debug-obj
+	TARGET = nmm-qt-client-debug
+	DEFINES += _GLIBCXX_VISIBILITY=0 _GLIBCXX_CONCEPT_CHECKS QT_NO_CAST_FROM_BYTEARRAY \
 		QT_NO_CAST_TO_ASCII QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION
-	 INCLUDEPATH += "../../netmaumau/src/include"
-	 QMAKE_CXXFLAGS += -g3 -O0 -fstrict-aliasing -ftrapv -fno-inline -W -Wextra -Wall -Wnoexcept \
+	INCLUDEPATH += "../../netmaumau/src/include"
+	QMAKE_CXXFLAGS += -g3 -O0 -fstrict-aliasing -ftrapv -fno-inline -W -Wextra -Wall -Wnoexcept \
 	-Woverloaded-virtual -Wno-packed-bitfield-compat -Wmissing-noreturn -Wunused -Wtrampolines \
 	-Wdouble-promotion -Wnon-virtual-dtor -Wold-style-cast -Winit-self -Wctor-dtor-privacy \
 	-Wunreachable-code -Wcast-align -Wcast-qual -Wdisabled-optimization -Wformat=2 \
 	-Wimport -Wmissing-format-attribute -Wmissing-include-dirs -Wredundant-decls -Winline \
 	-Wuninitialized -Wvariadic-macros -Wlogical-op -Wnoexcept -Wmissing-noreturn -Wpointer-arith \
 	-Wstrict-null-sentinel -Wstrict-overflow -Wshadow -Werror=strict-aliasing
-	 LIBS    += ../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
+	LIBS    += ../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
 		 ../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
-	 UI_DIR = release-ui
-	 RCC_DIR = release-rcc
-	 MOC_DIR = release-moc
-	 OBJECTS_DIR = release-obj
-	 TARGET = nmm-qt-client
-	 win32:CONFIG += static
-	 DEFINES += NDEBUG _GLIBCXX_VISIBILITY=0 QT_NO_DEBUG_OUTPUT QT_NO_CAST_FROM_BYTEARRAY \
+	UI_DIR = release-ui
+	RCC_DIR = release-rcc
+	MOC_DIR = release-moc
+	OBJECTS_DIR = release-obj
+	TARGET = nmm-qt-client
+	win32:CONFIG += static
+	DEFINES += NDEBUG _GLIBCXX_VISIBILITY=0 QT_NO_DEBUG_OUTPUT QT_NO_CAST_FROM_BYTEARRAY \
 		QT_NO_CAST_TO_ASCII QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION
-	 unix:INCLUDEPATH += "/usr/include/netmaumau"
-	 win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
-	 devrelease:DEFINES -= NDEBUG QT_NO_DEBUG_OUTPUT
-	 devrelease:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing \
-	 -Wformat -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \
-	 -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wdisabled-optimization -Wuninitialized
-	 win32:QMAKE_CXXFLAGS += -O2 -fomit-frame-pointer -fstrict-aliasing
-	 win32:LIBS    += /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
+	unix:target.path = /usr/bin
+	unix:qmfiles.depends = translations
+	unix:qmfiles.files = *.qm
+	unix:qmfiles.path = /usr/share/nmm-qt-client
+	unix:INSTALLS += qmfiles target
+	unix:INCLUDEPATH += "/usr/include/netmaumau"
+	win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
+	devrelease:DEFINES -= NDEBUG QT_NO_DEBUG_OUTPUT
+	devrelease:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing \
+	-Wformat -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \
+	-Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wdisabled-optimization -Wuninitialized
+	win32:QMAKE_CXXFLAGS += -O2 -fomit-frame-pointer -fstrict-aliasing
+	win32:LIBS    += /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
 				/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
-	 unix:LIBS += -lnetmaumaucommon -lnetmaumauclient
+	unix:LIBS += -lnetmaumaucommon -lnetmaumauclient
 }
 
 SOURCES += addserverdialog.cpp \
@@ -141,8 +146,6 @@ RC_FILE += appicon.rc
 
 DISTFILES += COPYING cards/* *.png *.ico nmm_qt_client.desktop lgpl-3.html *.gif
 
-#OTHER_FILES += ../README.md
-
 CODECFORTR = UTF-8
 
 TRANSLATIONS += nmm_qt_client_de_DE.ts
@@ -155,3 +158,7 @@ dist-xz.depends = dist
 dist-xz.target = dist-xz
 dist-xz.commands += gzip -dc $$TARGET$$VERSION\\.tar\\.gz | xz -ec9 - > $$DIST_NAME\\.tar\\.xz;
 dist-xz.commands += $(DEL_FILE) -r $$TARGET$$VERSION\\.tar\\.gz
+
+QMAKE_EXTRA_TARGETS += translations
+translations.commands = lrelease src.pro
+translations.target = translations
