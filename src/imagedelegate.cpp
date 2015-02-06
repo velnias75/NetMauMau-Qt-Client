@@ -39,13 +39,12 @@ void ImageDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
 	const QPixmap &pm(pixmap(index));
-	const QPoint off(opt.rect.center().x() - pm.size().width()/2, opt.rect.top());
+	QRect drawingRect;
 
-	painter->save();
-	painter->translate(off);
-	painter->drawPixmap(QRect(QPoint(0,0), pm.size()), pm);
-	painter->translate(-off);
-	painter->restore();
+	drawingRect.setSize(pm.size());
+	drawingRect.moveCenter(opt.rect.center());
+
+	painter->drawPixmap(drawingRect, pm);
 }
 
 QSize ImageDelegate::sizeHint(const QStyleOptionViewItem &, const QModelIndex &index) const {

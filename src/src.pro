@@ -9,6 +9,11 @@ DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\
 
 QMAKE_RESOURCE_FLAGS += -compress 9
 
+isEmpty(QMAKE_LRELEASE) {
+	win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe
+	else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+}
+
 CONFIG(debug, debug|release) {
 	UI_DIR = debug-ui
 	RCC_DIR = debug-rcc
@@ -37,9 +42,9 @@ CONFIG(debug, debug|release) {
 	DEFINES += NDEBUG _GLIBCXX_VISIBILITY=0 QT_NO_DEBUG_OUTPUT QT_NO_CAST_FROM_BYTEARRAY \
 		QT_NO_CAST_TO_ASCII QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION
 	unix:target.path = /usr/bin
-	unix:qmfiles.depends = translations
-	unix:qmfiles.files = *.qm
-	unix:qmfiles.path = /usr/share/nmm-qt-client
+	qmfiles.commands = $$QMAKE_LRELEASE src.pro
+	qmfiles.path = /usr/share/nmm-qt-client
+	qmfiles.files = *.qm
 	unix:desktop.path = /usr/share/applications
 	unix:desktop.files = nmm_qt_client.desktop
 	unix:icon.path = /usr/share/icons/hicolor/256x256/apps
@@ -63,6 +68,7 @@ SOURCES += addserverdialog.cpp \
 	carddropwidget.cpp \
 	cardpixmap.cpp \
 	cardwidget.cpp \
+	centeredimageheaderview.cpp \
 	client.cpp \
 	connectionlogdialog.cpp \
 	countmessageitemdelegate.cpp \
@@ -90,8 +96,7 @@ SOURCES += addserverdialog.cpp \
 	suitfontchecker.cpp \
 	suitlabel.cpp \
 	suitradiobutton.cpp \
-	util.cpp \
-    centeredimageheaderview.cpp
+	util.cpp
 
 HEADERS += addserverdialog.h \
 	addserverwidget.h \
@@ -99,6 +104,7 @@ HEADERS += addserverdialog.h \
 	carddropwidget.h \
 	cardpixmap.h \
 	cardwidget.h \
+	centeredimageheaderview.h \
 	client.h \
 	connectionlogdialog.h \
 	countmessageitemdelegate.h \
@@ -125,8 +131,7 @@ HEADERS += addserverdialog.h \
 	suitfontchecker.h \
 	suitlabel.h \
 	suitradiobutton.h \
-	util.h \
-    centeredimageheaderview.h
+	util.h
 
 FORMS += addserverdialog.ui \
 	addserverwidget.ui \
@@ -166,7 +171,3 @@ dist-xz.depends = dist
 dist-xz.target = dist-xz
 dist-xz.commands += gzip -dc $$TARGET$$VERSION\\.tar\\.gz | xz -ec9 - > $$DIST_NAME\\.tar\\.xz;
 dist-xz.commands += $(DEL_FILE) -r $$TARGET$$VERSION\\.tar\\.gz
-
-QMAKE_EXTRA_TARGETS += translations
-translations.commands = lrelease src.pro
-translations.target = translations

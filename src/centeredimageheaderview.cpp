@@ -17,6 +17,7 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QApplication>
 #include <QPainter>
 
 #include "centeredimageheaderview.h"
@@ -29,19 +30,21 @@ CenteredImageHeaderView::CenteredImageHeaderView(QWidget *p) : QHeaderView(Qt::H
 
 void CenteredImageHeaderView::paintSection(QPainter *painter, const QRect &r, int idx) const {
 
+	painter->save();
 	QHeaderView::paintSection(painter, r, idx);
+	painter->restore();
 
 	if(idx == 0) {
 
 		const QIcon i(getIcon());
-		const QSize s = i.actualSize(QSize(r.width() - 2, r.height() - 2));
-		const QPoint off(r.center().x() - s.width()/2, r.top());
+		const QSize s = i.actualSize(QSize(r.height(), r.height()));
 
-		painter->save();
-		painter->translate(off);
-		painter->drawPixmap(QRect(QPoint(0,0), s), i.pixmap(s));
-		painter->translate(-off);
-		painter->restore();
+		QRect drawingRect;
+
+		drawingRect.setSize(s);
+		drawingRect.moveCenter(r.center());
+
+		painter->drawPixmap(drawingRect, i.pixmap(s));
 	}
 }
 
