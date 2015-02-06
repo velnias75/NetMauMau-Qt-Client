@@ -69,6 +69,7 @@ SOURCES += addserverdialog.cpp \
 	deleteserversdialog.cpp \
 	filedownloader.cpp \
 	gamestate.cpp \
+	imagedelegate.cpp \
 	jackchoosedialog.cpp \
 	launchdialogbase.cpp \
 	launchserverdialog.cpp \
@@ -89,7 +90,8 @@ SOURCES += addserverdialog.cpp \
 	suitfontchecker.cpp \
 	suitlabel.cpp \
 	suitradiobutton.cpp \
-	util.cpp
+	util.cpp \
+    centeredimageheaderview.cpp
 
 HEADERS += addserverdialog.h \
 	addserverwidget.h \
@@ -103,6 +105,7 @@ HEADERS += addserverdialog.h \
 	deleteserversdialog.h \
 	filedownloader.h \
 	gamestate.h \
+	imagedelegate.h \
 	jackchoosedialog.h \
 	launchdialogbase.h \
 	launchserverdialog.h \
@@ -122,7 +125,8 @@ HEADERS += addserverdialog.h \
 	suitfontchecker.h \
 	suitlabel.h \
 	suitradiobutton.h \
-	util.h
+	util.h \
+    centeredimageheaderview.h
 
 FORMS += addserverdialog.ui \
 	addserverwidget.ui \

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,18 +17,23 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLAYERIMAGEDELEGATE_H
-#define PLAYERIMAGEDELEGATE_H
+#ifndef IMAGEDELEGATE_H
+#define IMAGEDELEGATE_H
 
-#include "imagedelegate.h"
+#include <QStyledItemDelegate>
 
-class PlayerImageDelegate : public ImageDelegate {
+class ImageDelegate : public QStyledItemDelegate {
 	Q_OBJECT
-public:
-	explicit PlayerImageDelegate(QObject *parent = 0);
-
 protected:
-	virtual QPixmap pixmap(const QModelIndex &index) const;
+	explicit ImageDelegate(QObject *parent = 0);
+
+	virtual ~ImageDelegate();
+
+	virtual QPixmap pixmap(const QModelIndex &index) const = 0;
+
+	void paint(QPainter *painter, const QStyleOptionViewItem &option,
+			   const QModelIndex &index) const;
+	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-#endif // PLAYERIMAGEDELEGATE_H
+#endif // IMAGEDELEGATE_H

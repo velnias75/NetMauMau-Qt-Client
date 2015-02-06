@@ -171,6 +171,7 @@ private:
 	QBrush m_stdForeground;
 	QBrush m_stdBackground;
 	ConnectionLogDialog *m_connectionLogDlg;
+	QHeaderView *m_remotePlayersHeader;
 	QAbstractItemDelegate *m_playerImageDelegate;
 	QAbstractItemDelegate *m_nameItemDelegate;
 	QAbstractItemDelegate *m_countItemDelegate;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,18 +17,21 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLAYERIMAGEDELEGATE_H
-#define PLAYERIMAGEDELEGATE_H
+#ifndef CENTEREDIMAGEHEADERVIEW_H
+#define CENTEREDIMAGEHEADERVIEW_H
 
-#include "imagedelegate.h"
+#include <QHeaderView>
 
-class PlayerImageDelegate : public ImageDelegate {
+class CenteredImageHeaderView : public QHeaderView {
 	Q_OBJECT
 public:
-	explicit PlayerImageDelegate(QObject *parent = 0);
+	explicit CenteredImageHeaderView(QWidget *parent = 0);
 
 protected:
-	virtual QPixmap pixmap(const QModelIndex &index) const;
+	virtual void paintSection(QPainter *painter, const QRect &rect, int logicalIndex) const;
+
+private:
+	QIcon getIcon() const;
 };
 
-#endif // PLAYERIMAGEDELEGATE_H
+#endif // CENTEREDIMAGEHEADERVIEW_H

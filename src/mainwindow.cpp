@@ -41,6 +41,7 @@
 #include "playerimagedelegate.h"
 #include "netmaumaumessagebox.h"
 #include "localserveroutputview.h"
+#include "centeredimageheaderview.h"
 #include "countmessageitemdelegate.h"
 #include "playerimageprogressdialog.h"
 
@@ -62,6 +63,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_lsov(new LocalServerOutputView()), m_launchDlg(new LaunchServerDialog(m_lsov, this)),
 	m_model(0, 5), m_jackChooseDialog(new JackChooseDialog(this)), m_stdForeground(),
 	m_stdBackground(), m_connectionLogDlg(new ConnectionLogDialog(0L)),
+	m_remotePlayersHeader(0L),
 	m_playerImageDelegate(new PlayerImageDelegate(this)),
 	m_nameItemDelegate(new MessageItemDelegate(this, false)),
 	m_countItemDelegate(new CountMessageItemDelegate(this)),
@@ -167,6 +169,9 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_model.setHorizontalHeaderItem(3, new QStandardItem(tr("Turn")));
 	m_model.setHorizontalHeaderItem(4, new QStandardItem(tr("Message")));
 
+	m_remotePlayersHeader = new CenteredImageHeaderView(m_ui->remotePlayersView);
+	m_ui->remotePlayersView->setHorizontalHeader(m_remotePlayersHeader);
+
 	m_ui->remotePlayersView->setItemDelegateForColumn(PLAYERPIC, m_playerImageDelegate);
 	m_ui->remotePlayersView->setItemDelegateForColumn(NAME, m_nameItemDelegate);
 	m_ui->remotePlayersView->setItemDelegateForColumn(CARDS, m_countItemDelegate);
@@ -245,6 +250,7 @@ MainWindow::~MainWindow() {
 	delete m_licenseDialog;
 	delete m_jackChooseDialog;
 	delete m_connectionLogDlg;
+	delete m_remotePlayersHeader;
 	delete m_playerImageDelegate;
 	delete m_nameItemDelegate;
 	delete m_countItemDelegate;
@@ -548,8 +554,9 @@ void MainWindow::serverAccept() {
 		gs->setInGame(true);
 
 		if(gs->getDirection() != GameState::NONE) {
-			m_model.horizontalHeaderItem(PLAYERPIC)->setIcon(QApplication::style()->
-															 standardIcon(QStyle::SP_ArrowDown));
+			m_model.horizontalHeaderItem(PLAYERPIC)->setData(QApplication::style()->
+															 standardIcon(QStyle::SP_ArrowDown),
+															 Qt::DisplayRole);
 		}
 
 		m_ui->awidget->setGameState(gs);
@@ -1366,7 +1373,7 @@ void MainWindow::clientDestroyed() {
 	takeCardsMark(false);
 	centralWidget()->setEnabled(false);
 
-	m_model.horizontalHeaderItem(PLAYERPIC)->setIcon(QIcon());
+	m_model.horizontalHeaderItem(PLAYERPIC)->setData(QIcon(), Qt::DisplayRole);
 
 	m_ui->remoteGroup->setTitle(tr("Players"));
 	m_ui->actionServer->setEnabled(true);
@@ -1475,11 +1482,12 @@ void MainWindow::clientDirectionChanged() {
 
 	gs->changeDirection();
 
-	m_model.horizontalHeaderItem(PLAYERPIC)->setIcon(QApplication::style()->
+	m_model.horizontalHeaderItem(PLAYERPIC)->setData(QApplication::style()->
 													 standardIcon(gs->getDirection() ==
 																  GameState::CW ?
 																	  QStyle::SP_ArrowDown :
-																	  QStyle::SP_ArrowUp));
+																	  QStyle::SP_ArrowUp),
+													 Qt::DisplayRole);
 }
 
 void MainWindow::writeSettings() const {

@@ -17,35 +17,10 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
-#include <QPainter>
-
 #include "playerimagedelegate.h"
 
-PlayerImageDelegate::PlayerImageDelegate(QObject *p) : QStyledItemDelegate(p) {}
+PlayerImageDelegate::PlayerImageDelegate(QObject *p) : ImageDelegate(p) {}
 
-void PlayerImageDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
-								const QModelIndex &index) const {
-
-	QStyleOptionViewItemV4 opt(option);
-	initStyleOption(&opt, index);
-
-	const QStyle *style = opt.widget ? opt.widget->style() : qApp->style();
-
-	opt.state &= ~QStyle::State_MouseOver;
-
-	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
-
-	const QPixmap &pm(qvariant_cast<QPixmap>(index.data(Qt::DisplayRole)));
-	const QPoint off(opt.rect.center().x() - pm.size().width()/2, opt.rect.top());
-
-	painter->save();
-	painter->translate(off);
-	painter->drawPixmap(QRect(QPoint(0,0), pm.size()), pm);
-	painter->translate(-off);
-	painter->restore();
-}
-
-QSize PlayerImageDelegate::sizeHint(const QStyleOptionViewItem &, const QModelIndex &index) const {
-	return qvariant_cast<QPixmap>(index.data(Qt::DisplayRole)).size();
+QPixmap PlayerImageDelegate::pixmap(const QModelIndex &index) const {
+	return qvariant_cast<QPixmap>(index.data(Qt::DisplayRole));
 }
