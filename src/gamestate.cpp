@@ -115,7 +115,7 @@ QMap<QString, QString> &GameState::playerScores() {
 	return m_playerScores;
 }
 
-QMap<QString, std::size_t> &GameState::playerCardCounts() {
+QMap<QString, QPair<std::size_t, std::size_t> > &GameState::playerCardCounts() {
 	return m_playerCardCounts;
 }
 

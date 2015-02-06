@@ -67,7 +67,7 @@ public:
 
 	QMap<QString, QStringList> &playerStatMsg() _CONST;
 	QMap<QString, QString> &playerScores() _CONST;
-	QMap<QString, std::size_t> &playerCardCounts() _CONST;
+	QMap<QString, QPair<std::size_t, std::size_t> > &playerCardCounts() _CONST;
 
 	QList<CardWidget *> &cards() _CONST;
 	const QList<CardWidget *> &cards() const _CONST;
@@ -108,7 +108,7 @@ private:
 	int m_lastPlayedCardIdx;
 	QMap<QString, QStringList> m_playerStatMsg;
 	QMap<QString, QString> m_playerScores;
-	QMap<QString, std::size_t> m_playerCardCounts;
+	QMap<QString, QPair<std::size_t, std::size_t> > m_playerCardCounts;
 	bool m_clientDestroyRequested;
 	int m_countWonDisplayed;
 	bool m_lostWonConfirmed;

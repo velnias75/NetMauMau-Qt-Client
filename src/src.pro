@@ -10,8 +10,14 @@ DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\
 QMAKE_RESOURCE_FLAGS += -compress 9
 
 isEmpty(QMAKE_LRELEASE) {
-	win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe
+	win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
 	else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+}
+
+CONFIG(espeak) {
+	DEFINES += USE_ESPEAK
+	INCLUDEPATH += /usr/include/espeak
+	LIBS += -lespeak
 }
 
 CONFIG(debug, debug|release) {
@@ -98,6 +104,8 @@ SOURCES += addserverdialog.cpp \
 	suitradiobutton.cpp \
 	util.cpp
 
+espeak:SOURCES += espeak.cpp
+
 HEADERS += addserverdialog.h \
 	addserverwidget.h \
 	base64bridge.h \
@@ -132,6 +140,8 @@ HEADERS += addserverdialog.h \
 	suitlabel.h \
 	suitradiobutton.h \
 	util.h
+
+espeak:HEADERS += espeak.h
 
 FORMS += addserverdialog.ui \
 	addserverwidget.ui \

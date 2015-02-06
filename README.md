@@ -7,19 +7,21 @@ the NetMauMau server and client API.
 It is not a sophisticated client with a nice GUI, but it can serve as
 base for potential client developers as well.
 
+Requirements
+------------
+
+It requires Qt in at least version 4.8.2
+
+For the **experimental** speech support you need [eSpeak](http://espeak.sourceforge.net)
+
 Building
 --------
 
 It depends on the NetMauMau sources, which can be found at
 [https://github.com/velnias75/NetMauMau](https://github.com/velnias75/NetMauMau) 
 
-To build and install with *previously installed NetMauMau*,
-invoke `qmake CONFIG+=release && make && sudo make install`
-
-Requirements
-------------
-
-It requires Qt in at least version 4.8.2
+* to build and install with *previously installed NetMauMau*, invoke `qmake CONFIG+=release && make && sudo make install`
+* to build and install with *previously installed NetMauMau* **and** *eSpeak*, invoke `qmake CONFIG+=release CONFIG+=espeak && make && sudo make install`
 
 Help translating
 ----------------

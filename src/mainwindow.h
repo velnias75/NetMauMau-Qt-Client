@@ -30,6 +30,10 @@ namespace Ui {
 class MainWindow;
 }
 
+#ifdef USE_ESPEAK
+class ESpeak;
+#endif
+
 class QMovie;
 class GameState;
 class CardWidget;
@@ -189,6 +193,9 @@ private:
 	const QImage m_defaultPlayerImage;
 	QMenu *m_playerNameMenu;
 	QMovie *m_animLogo;
+#ifdef USE_ESPEAK
+	class ESpeak *m_espeak;
+#endif
 };
 
 #endif // MAINWINDOW_H
