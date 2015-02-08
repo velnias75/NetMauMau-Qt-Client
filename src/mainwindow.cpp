@@ -636,7 +636,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
 	case Qt::Key_9: clickCard(8, e); break;
 	case Qt::Key_0: clickCard(9, e); break;
 #if defined(USE_ESPEAK) && !defined(NDEBUG)
-	case Qt::Key_F11: m_espeak->speak(QString::fromUtf8("N\u00e4t MauMau")); break;
+	case Qt::Key_F11: m_espeak->speak(QString::fromUtf8("N\u00e4t MauMau"), "de"); break;
 #endif
 	default: QMainWindow::keyReleaseEvent(e); break;
 	}
@@ -744,7 +744,6 @@ void MainWindow::clientStats(const Client::STATS &s) {
 
 #ifdef USE_ESPEAK
 	bool mau = false;
-	bool maumau = false;
 #endif
 
 	for(Client::STATS::const_iterator i(s.begin()); i != s.end(); ++i) {
@@ -761,19 +760,16 @@ void MainWindow::clientStats(const Client::STATS &s) {
 		updatePlayerStats(pName);
 
 #ifdef USE_ESPEAK
-		if(!mau) mau = i->cardCount == 1 && (gameState()->playerCardCounts()[pName].first !=
-				gameState()->playerCardCounts()[pName].second);
-		if(!maumau) maumau = i->cardCount == 0 && (gameState()->playerCardCounts()[pName].first !=
+		if(!(mau)) mau = i->cardCount == 1 &&
+						 (gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
 
 	}
 
 #ifdef USE_ESPEAK
-	if(maumau) {
-		m_espeak->speak("Mau Mau");
-	} else if(mau) {
-		m_espeak->speak("Mau");
+	if(mau) {
+		m_espeak->speak("Mau", "de");
 	}
 #endif
 
@@ -918,10 +914,18 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 	if(isMe(p) && !gs->lostWonConfirmed()) {
 
+		const bool first = gs->winningOrder().indexOf(myself()) == 0;
+
+#ifdef USE_ESPEAK
+		if(first) m_espeak->speak(tr("Congratulations! You have won!"),
+								  tr("Congratulations! You have won!") ==
+								  QLatin1String("Congratulations! You have won!") ? QString("en") :
+																					QString::null);
+#endif
+
 		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
 												QIcon(":/smile.png")).pixmap(48, 48));
-		gameOver.setWindowTitle(gs->winningOrder().indexOf(myself()) == 0 ? tr("Congratulations") :
-																			winnerRank(gs));
+		gameOver.setWindowTitle(first ? tr("Congratulations") : winnerRank(gs));
 		gameOver.setText(tr("You have won!\n%1\nPlaying time: %2").arg(yourScore(gs, p)).
 						 arg(gs->playTime().toString("HH:mm:ss")));
 
@@ -1280,16 +1284,23 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 
 		if(isMe(player) || gs->playerCardCounts().contains(player)) {
 
+			const std::size_t prev = isMe(player) ? gs->cards().count() :
+													gs->playerCardCounts()[player].first;
+
 			const std::size_t count = isMe(player) ? gs->cards().count() :
 													 gs->playerCardCounts()[player].second;
 
-			if(count < 2) {
+			if(((isMe(player) || count != prev) && count < 2) || count == 0) {
 				cnt->setText(QString("<span style=\"color:red;\">Mau%1</span>")
 							 .arg(count == 0 ?  QString(" Mau%1").
 												arg(m_model.rowCount() > 2 ?
 														QString(" #") +
 														QString::number(gs->maumauCount())
 													  : QString("")) : ""));
+#ifdef USE_ESPEAK
+				if(isMe(player) && count == 1) m_espeak->speak("Mau", "de");
+#endif
+
 			} else {
 				cnt->setText(QString::number(count));
 			}

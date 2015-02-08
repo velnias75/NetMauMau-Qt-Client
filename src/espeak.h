@@ -28,13 +28,15 @@ public:
 	explicit ESpeak(QObject *parent = 0);
 	~ESpeak();
 
-	void speak(const QString &text);
+	void speak(const QString &text, QString lang = QString::null);
 
 private slots:
 	void speakNow();
 
 private:
 	QString m_speakTxt;
+	QString m_lang;
+	const QString m_systemLang;
 };
 
 #endif // ESPEAK_H

@@ -18,6 +18,7 @@
  */
 
 #include <QTimer>
+#include <QLocale>
 
 #include <cstring>
 
@@ -25,21 +26,13 @@
 
 #include "espeak.h"
 
-ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt() {
+ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt(), m_lang("de"),
+	m_systemLang(QLocale::system().name().leftRef(QLocale::system().name().indexOf('_')).
+				 toLatin1().constData()) {
 
 	espeak_Initialize(AUDIO_OUTPUT_PLAYBACK, 0, NULL, espeakINITIALIZE_DONT_EXIT);
 
-	espeak_VOICE voice;
-	std::memset(&voice, 0, sizeof(espeak_VOICE));
-
-	voice.languages = "de";
-	voice.gender = 2;
-	voice.age = 8;
-	voice.variant = 2;
-
-	espeak_SetVoiceByProperties(&voice);
-
-	espeak_SetParameter(espeakRATE, 225, 0);
+	espeak_SetParameter(espeakRATE, 200, 0);
 	espeak_SetParameter(espeakVOLUME, 100, 0);
 	espeak_SetParameter(espeakCAPITALS, 3, 0);
 }
@@ -48,9 +41,10 @@ ESpeak::~ESpeak() {
 	espeak_Terminate();
 }
 
-void ESpeak::speak(const QString &text) {
+void ESpeak::speak(const QString &text, const QString lang) {
 
 	m_speakTxt = text;
+	m_lang = lang.isNull() ? m_systemLang : lang;
 
 	if(espeak_IsPlaying()) {
 		QTimer::singleShot(750, this, SLOT(speakNow()));
@@ -68,6 +62,16 @@ void ESpeak::speakNow() {
 	void *udata = NULL;
 
 	QByteArray txt = m_speakTxt.toUtf8();
+
+	espeak_VOICE voice;
+	std::memset(&voice, 0, sizeof(espeak_VOICE));
+
+	voice.languages = m_lang.toAscii().constData();
+	voice.gender = 2;
+	voice.age = 8;
+	voice.variant = 2;
+
+	espeak_SetVoiceByProperties(&voice);
 
 	espeak_Synth(txt.constData(), txt.size() * 2, 0, POS_SENTENCE, 0, espeakCHARS_AUTO,
 				 &uid, udata);
