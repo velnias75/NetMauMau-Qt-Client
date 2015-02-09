@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -26,6 +26,7 @@
 class LocalServerOutputView : public QWidget, public LaunchDialogBase,
 		private Ui::LocalServerOutputView {
 	Q_OBJECT
+	Q_DISABLE_COPY(LocalServerOutputView)
 public:
 	explicit LocalServerOutputView(QWidget *parent = 0);
 	virtual ~LocalServerOutputView();

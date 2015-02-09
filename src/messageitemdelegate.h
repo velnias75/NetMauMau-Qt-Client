@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -26,6 +26,7 @@ class QTextDocument;
 
 class MessageItemDelegate : public QStyledItemDelegate {
 	Q_OBJECT
+	Q_DISABLE_COPY(MessageItemDelegate)
 public:
 	explicit MessageItemDelegate(QObject *parent = 0, bool cardDetect = true);
 	virtual ~MessageItemDelegate();

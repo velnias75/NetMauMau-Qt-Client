@@ -30,6 +30,7 @@ class LocalServerOutputView;
 class LaunchServerDialog : public QDialog, public LaunchDialogBase,
 		private Ui::LaunchServerDialog {
 	Q_OBJECT
+	Q_DISABLE_COPY(LaunchServerDialog)
 public:
 	explicit LaunchServerDialog(LocalServerOutputView *lsov, QWidget *parent = 0);
 	virtual ~LaunchServerDialog();

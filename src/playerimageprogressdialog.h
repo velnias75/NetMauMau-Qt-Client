@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -24,6 +24,7 @@
 
 class PlayerImageProgressDialog : public QProgressDialog {
 	Q_OBJECT
+	Q_DISABLE_COPY(PlayerImageProgressDialog)
 public:
 	PlayerImageProgressDialog(QWidget *parent);
 	virtual ~PlayerImageProgressDialog();

@@ -26,6 +26,7 @@
 
 class CardWidget : public QPushButton, public NetMauMau::Common::ICard, private Ui::CardWidget {
 	Q_OBJECT
+	Q_DISABLE_COPY(CardWidget)
 	Q_PROPERTY(bool dragable READ dragable WRITE setDragable NOTIFY dragableChanged)
 public:
 	explicit CardWidget(QWidget *parent = 0, const QByteArray &cardDesc = QByteArray(),

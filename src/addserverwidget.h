@@ -26,7 +26,7 @@
 
 class AddServerWidget : public QGroupBox, private Ui::AddServerWidget {
 	Q_OBJECT
-
+	Q_DISABLE_COPY(AddServerWidget)
 public:
 	explicit AddServerWidget(QWidget *parent = 0);
 	virtual ~AddServerWidget();

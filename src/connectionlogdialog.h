@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -28,7 +28,7 @@ class QMenu;
 
 class ConnectionLogDialog : public QDialog, private Ui::ConnectionLogDialog {
 	Q_OBJECT
-
+	Q_DISABLE_COPY(ConnectionLogDialog)
 public:
 	typedef enum { FROM_CLIENT, TO_CLIENT, FROM_SERVER, TO_SERVER } DIRECTION;
 

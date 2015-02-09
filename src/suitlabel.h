@@ -24,7 +24,7 @@
 
 class SuitLabel : public QLabel, private Ui::SuitLabel {
 	Q_OBJECT
-
+	Q_DISABLE_COPY(SuitLabel)
 public:
 	explicit SuitLabel(QWidget *parent = 0, const QByteArray &suiteDesc = QByteArray());
 

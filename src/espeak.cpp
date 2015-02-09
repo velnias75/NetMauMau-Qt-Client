@@ -20,6 +20,10 @@
 #include <QTimer>
 #include <QLocale>
 
+#ifdef _WIN32
+#include <QCoreApplication>
+#endif
+
 #include <cstring>
 
 #include <speak_lib.h>
@@ -28,9 +32,15 @@
 
 ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt(), m_lang("de"),
 	m_systemLang(QLocale::system().name().leftRef(QLocale::system().name().indexOf('_')).
-				 toLatin1().constData()) {
+				 toLatin1().constData()),
+	#ifdef _WIN32
+	m_path(strdup(QCoreApplication::applicationDirPath().toLocal8Bit().constData()))
+  #else
+	m_path(NULL)
+  #endif
+{
 
-	espeak_Initialize(AUDIO_OUTPUT_PLAYBACK, 0, NULL, espeakINITIALIZE_DONT_EXIT);
+	espeak_Initialize(AUDIO_OUTPUT_PLAYBACK, 0, m_path, espeakINITIALIZE_DONT_EXIT);
 
 	espeak_SetParameter(espeakRATE, 200, 0);
 	espeak_SetParameter(espeakVOLUME, 100, 0);
@@ -38,7 +48,10 @@ ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt(), m_lang("de"),
 }
 
 ESpeak::~ESpeak() {
+	espeak_Cancel();
 	espeak_Terminate();
+
+	free(m_path);
 }
 
 void ESpeak::speak(const QString &text, const QString lang) {

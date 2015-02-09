@@ -30,6 +30,7 @@
 
 class FileDownloader : public QObject {
 	Q_OBJECT
+	Q_DISABLE_COPY(FileDownloader)
 public:
 	explicit FileDownloader(const QUrl &url, QObject *parent = 0L);
 	virtual ~FileDownloader();

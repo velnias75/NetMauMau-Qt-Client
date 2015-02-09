@@ -24,6 +24,7 @@
 
 class PlayerImageLineEdit : public QLineEdit {
 	Q_OBJECT
+	Q_DISABLE_COPY(PlayerImageLineEdit)
 public:
 	explicit PlayerImageLineEdit(QWidget *parent = 0);
 

@@ -24,6 +24,7 @@
 
 class AddServerDialog : public QDialog, private Ui::AddServerDialog {
 	Q_OBJECT
+	Q_DISABLE_COPY(AddServerDialog)
 public:
 	explicit AddServerDialog(QWidget *parent = 0);
 

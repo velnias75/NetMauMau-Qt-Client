@@ -24,7 +24,7 @@
 
 class SuitRadioButton : public QRadioButton, private Ui::SuitRadioButton {
 	Q_OBJECT
-
+	Q_DISABLE_COPY(SuitRadioButton)
 public:
 	explicit SuitRadioButton(QWidget *parent = 0, const QByteArray &suiteDesc = QByteArray());
 

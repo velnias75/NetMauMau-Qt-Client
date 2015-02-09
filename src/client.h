@@ -30,8 +30,8 @@ class MainWindow;
 
 class Client : public QThread, public NetMauMau::Client::AbstractClient {
 	Q_OBJECT
+	Q_DISABLE_COPY(Client)
 	Q_PROPERTY(bool online READ isOnline NOTIFY offline)
-
 public:
 	Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 		   const std::string &server, uint16_t port);

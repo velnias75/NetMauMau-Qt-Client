@@ -48,6 +48,7 @@ class LocalServerOutputView;
 
 class MainWindow : public QMainWindow {
 	Q_OBJECT
+	Q_DISABLE_COPY(MainWindow)
 
 	typedef enum { NO_SORT, SUIT_RANK, RANK_SUIT } SORTMODE;
 

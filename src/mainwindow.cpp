@@ -761,7 +761,7 @@ void MainWindow::clientStats(const Client::STATS &s) {
 
 #ifdef USE_ESPEAK
 		if(!(mau)) mau = i->cardCount == 1 &&
-						 (gameState()->playerCardCounts()[pName].first !=
+				(gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
 

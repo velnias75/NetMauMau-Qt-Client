@@ -27,9 +27,10 @@
 class QFont;
 
 class Util {
+	DISALLOW_COPY_AND_ASSIGN(Util)
 	Q_DECLARE_TR_FUNCTIONS(Util)
-public:
-	static QString &cardStyler(QString &c, const QFont &f, bool color = true);
+	public:
+		static QString &cardStyler(QString &c, const QFont &f, bool color = true);
 	static QString cardStyler(const QString &c, const QFont &f, bool color = true);
 
 private:

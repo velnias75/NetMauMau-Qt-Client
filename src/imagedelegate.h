@@ -24,6 +24,7 @@
 
 class ImageDelegate : public QStyledItemDelegate {
 	Q_OBJECT
+	Q_DISABLE_COPY(ImageDelegate)
 protected:
 	explicit ImageDelegate(QObject *parent = 0);
 

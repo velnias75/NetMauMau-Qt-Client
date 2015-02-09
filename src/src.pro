@@ -16,8 +16,10 @@ isEmpty(QMAKE_LRELEASE) {
 
 CONFIG(espeak) {
 	DEFINES += USE_ESPEAK
-	INCLUDEPATH += /usr/include/espeak
-	LIBS += -lespeak
+	unix:INCLUDEPATH += /usr/include/espeak
+	win32:INCLUDEPATH += /usr/i686-pc-mingw32/usr/include
+	unix:LIBS += -lespeak
+	win32:LIBS += /usr/i686-pc-mingw32/usr/bin/libespeak.dll
 }
 
 CONFIG(debug, debug|release) {

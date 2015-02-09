@@ -24,7 +24,7 @@
 
 class LicenseDialog : public QDialog, private Ui::LicenseDialog {
 	Q_OBJECT
-
+	Q_DISABLE_COPY(LicenseDialog)
 public:
 	explicit LicenseDialog(QWidget *parent = 0);
 

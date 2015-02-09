@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -24,6 +24,7 @@
 
 class PortSpin : public QSpinBox {
 	Q_OBJECT
+	Q_DISABLE_COPY(PortSpin)
 public:
 	explicit PortSpin(QWidget *parent = 0);
 };

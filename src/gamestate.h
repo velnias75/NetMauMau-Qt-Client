@@ -29,9 +29,10 @@
 class CardWidget;
 
 class GameState {
-public:
+	DISALLOW_COPY_AND_ASSIGN(GameState)
+	public:
 
-	typedef enum { NONE, CW, CCW } DIR;
+		typedef enum { NONE, CW, CCW } DIR;
 
 	GameState();
 

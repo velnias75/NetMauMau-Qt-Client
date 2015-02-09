@@ -24,6 +24,7 @@
 
 class CenteredImageHeaderView : public QHeaderView {
 	Q_OBJECT
+	Q_DISABLE_COPY(CenteredImageHeaderView)
 public:
 	explicit CenteredImageHeaderView(QWidget *parent = 0);
 

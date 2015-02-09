@@ -28,6 +28,7 @@ class GameState;
 
 class NetMauMauMessageBox : public QMessageBox {
 	Q_OBJECT
+	Q_DISABLE_COPY(NetMauMauMessageBox)
 public:
 	explicit NetMauMauMessageBox(GameState *gs = 0L, QWidget *parent = 0);
 

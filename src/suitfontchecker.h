@@ -25,8 +25,9 @@
 class QFont;
 
 class SuitFontChecker {
-public:
-	static bool suitsInFont(const QFont &f);
+	DISALLOW_COPY_AND_ASSIGN(SuitFontChecker)
+	public:
+		static bool suitsInFont(const QFont &f);
 
 private:
 	SuitFontChecker() _CONST;

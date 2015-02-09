@@ -24,6 +24,7 @@
 
 class ESpeak : public QObject {
 	Q_OBJECT
+	Q_DISABLE_COPY(ESpeak)
 public:
 	explicit ESpeak(QObject *parent = 0);
 	~ESpeak();
@@ -34,9 +35,13 @@ private slots:
 	void speakNow();
 
 private:
+	bool isSpeaking() const;
+
+private:
 	QString m_speakTxt;
 	QString m_lang;
 	const QString m_systemLang;
+	char *m_path;
 };
 
 #endif // ESPEAK_H

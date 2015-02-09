@@ -28,6 +28,7 @@ class ServerDialog;
 
 class ScoresDialog : public QDialog, private Ui::ScoresDialog {
 	Q_OBJECT
+	Q_DISABLE_COPY(ScoresDialog)
 public:
 	explicit ScoresDialog(ServerDialog *sd, QWidget *parent = 0);
 

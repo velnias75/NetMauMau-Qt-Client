@@ -26,6 +26,7 @@ class GameState;
 
 class CardDropWidget : public QWidget {
 	Q_OBJECT
+	Q_DISABLE_COPY(CardDropWidget)
 public:
 	explicit CardDropWidget(QWidget *parent = 0);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -25,8 +25,9 @@
 #include "linkercontrol.h"
 
 class LaunchDialogBase {
-public:
-	virtual ~LaunchDialogBase();
+	DISALLOW_COPY_AND_ASSIGN(LaunchDialogBase)
+	public:
+		virtual ~LaunchDialogBase();
 
 	void setTriggerAction(QAction *act);
 

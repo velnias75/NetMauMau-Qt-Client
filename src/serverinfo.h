@@ -27,6 +27,7 @@ class QStandardItemModel;
 
 class ServerInfo : public QThread {
 	Q_OBJECT
+	Q_DISABLE_COPY(ServerInfo)
 public:
 	typedef enum { SERVER = 0, VERSION, AI, PLAYERS } COLS;
 	typedef enum { ACEROUNDRANK = Qt::UserRole + 1, HAVESCORES, HOST, DIRCHANGE } DATAROLES;

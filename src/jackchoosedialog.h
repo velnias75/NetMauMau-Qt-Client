@@ -26,6 +26,7 @@
 
 class JackChooseDialog : public QDialog, private Ui::JackChooseDialog {
 	Q_OBJECT
+	Q_DISABLE_COPY(JackChooseDialog)
 public:
 	explicit JackChooseDialog(QWidget *parent = 0);
 	virtual ~JackChooseDialog();
