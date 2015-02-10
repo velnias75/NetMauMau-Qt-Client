@@ -38,23 +38,32 @@ ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt(), m_lang("de"),
   #else
 	m_path(NULL)
   #endif
+  , m_enabled(false)
 {
 
-	espeak_Initialize(AUDIO_OUTPUT_PLAYBACK, 0, m_path, espeakINITIALIZE_DONT_EXIT);
+	m_enabled = espeak_Initialize(AUDIO_OUTPUT_PLAYBACK, 0, m_path, espeakINITIALIZE_DONT_EXIT) !=
+			EE_INTERNAL_ERROR;
 
-	espeak_SetParameter(espeakRATE, 200, 0);
-	espeak_SetParameter(espeakVOLUME, 100, 0);
-	espeak_SetParameter(espeakCAPITALS, 3, 0);
+	if(m_enabled) {
+		espeak_SetParameter(espeakRATE, 200, 0);
+		espeak_SetParameter(espeakVOLUME, 100, 0);
+		espeak_SetParameter(espeakCAPITALS, 3, 0);
+	}
 }
 
 ESpeak::~ESpeak() {
-	espeak_Cancel();
-	espeak_Terminate();
+
+	if(m_enabled) {
+		espeak_Cancel();
+		espeak_Terminate();
+	}
 
 	free(m_path);
 }
 
 void ESpeak::speak(const QString &text, const QString lang) {
+
+	if(!m_enabled) return;
 
 	m_speakTxt = text;
 	m_lang = lang.isNull() ? m_systemLang : lang;
@@ -69,7 +78,7 @@ void ESpeak::speak(const QString &text, const QString lang) {
 
 void ESpeak::speakNow() {
 
-	if(m_speakTxt.isEmpty() || espeak_IsPlaying()) return;
+	if(!m_enabled || m_speakTxt.isEmpty() || espeak_IsPlaying()) return;
 
 	unsigned int uid;
 	void *udata = NULL;
@@ -84,10 +93,10 @@ void ESpeak::speakNow() {
 	voice.age = 8;
 	voice.variant = 2;
 
-	espeak_SetVoiceByProperties(&voice);
-
-	espeak_Synth(txt.constData(), txt.size() * 2, 0, POS_SENTENCE, 0, espeakCHARS_AUTO,
-				 &uid, udata);
+	if(espeak_SetVoiceByProperties(&voice) == EE_OK) {
+		espeak_Synth(txt.constData(), txt.size() * 2, 0, POS_SENTENCE, 0, espeakCHARS_AUTO,
+					 &uid, udata);
+	}
 
 	m_speakTxt = QString::null;
 }

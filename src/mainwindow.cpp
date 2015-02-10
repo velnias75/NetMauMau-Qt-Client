@@ -51,6 +51,8 @@
 
 namespace {
 
+QMutex mutex;
+
 const QString PASTSPAN("<span style=\"font-variant:small-caps;\">%1</span>");
 const char *TAGNAME = "\"tag_name\":";
 
@@ -1277,7 +1279,7 @@ void MainWindow::unmau() {
 	GameState *gs = gameState();
 
 	for(std::set<QStandardItem *>::const_iterator i(gs->unmau().begin()); i != gs->unmau().end();
-		++i) if((*i)->text().contains(QRegExp(".*\\>Mau\\<.*"))) (*i)->setText("1");
+		++i) if(*i && (*i)->text().contains(QRegExp(".*\\>Mau\\<.*"))) (*i)->setText("1");
 
 	gs->unmau().clear();
 }

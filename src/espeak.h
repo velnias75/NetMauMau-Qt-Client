@@ -42,6 +42,7 @@ private:
 	QString m_lang;
 	const QString m_systemLang;
 	char *m_path;
+	bool m_enabled;
 };
 
 #endif // ESPEAK_H
