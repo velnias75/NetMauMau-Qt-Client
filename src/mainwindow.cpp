@@ -153,7 +153,18 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	QObject::connect(m_ui->actionHallOfFame, SIGNAL(triggered()), m_scoresDialog, SLOT(exec()));
 
 #ifdef USE_ESPEAK
+#ifdef _WIN32
+	QSettings useEspeak("HKEY_LOCAL_MACHINE\\SOFTWARE\\RANGUN\\NetMauMau", QSettings::NativeFormat);
+	if(useEspeak.value("USE_ESPEAK").toInt()) {
+		QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)),
+						 m_espeak, SLOT(setDisabled(bool)));
+	} else {
+		m_ui->menu_View->removeAction(m_ui->actionMute);
+	}
+
+#else
 	QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)), m_espeak, SLOT(setDisabled(bool)));
+#endif
 #else
 	m_ui->menu_View->removeAction(m_ui->actionMute);
 #endif
@@ -769,7 +780,7 @@ void MainWindow::clientStats(const Client::STATS &s) {
 
 #ifdef USE_ESPEAK
 		if(!(mau)) mau = i->cardCount == 1 &&
-						 (gameState()->playerCardCounts()[pName].first !=
+				(gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
 
