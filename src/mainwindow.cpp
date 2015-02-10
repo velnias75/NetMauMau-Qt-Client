@@ -152,6 +152,12 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	QObject::connect(m_ui->actionLicense, SIGNAL(triggered()), m_licenseDialog, SLOT(exec()));
 	QObject::connect(m_ui->actionHallOfFame, SIGNAL(triggered()), m_scoresDialog, SLOT(exec()));
 
+#ifdef USE_ESPEAK
+	QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)), m_espeak, SLOT(setDisabled(bool)));
+#else
+	m_ui->menu_View->removeAction(m_ui->actionMute);
+#endif
+
 	QFont fnt("Monospace");
 	fnt.setStyleHint(QFont::TypeWriter);
 	fnt.setPointSize(11);
@@ -1197,11 +1203,22 @@ void MainWindow::takeCardsMark(std::size_t count) const {
 
 		if(name && normal) {
 			name->setText(QString("<span style=\"color:blue;\">%1</span>").arg(me));
-			name->setToolTip(tr("You can play another <i>Seven</i> or take %n card(s)", "", count));
+			name->setToolTip(tr("You can play another <i>Seven</i> or take %n card(s)", "",
+								count));
+#ifdef USE_ESPEAK
+			m_espeak->speak(tr("Take cards. Or play another SEVEN"),
+							tr("Take cards. Or play another SEVEN")
+							== QLatin1String("Take cards. Or play another SEVEN") ? QString("en") :
+																					QString::null);
+#endif
 		} else if(name) {
 			name->setText(QString("<span style=\"color:red;\">%1</span>").arg(me));
 			name->setToolTip(tr("You have no <i>Seven</i> to play over. You must take %n card(s)",
 								"", count));
+#ifdef USE_ESPEAK
+			m_espeak->speak(tr("Take cards"), tr("Take cards") ==
+							QLatin1String("Take cards") ? QString("en") : QString::null);
+#endif
 		}
 
 		m_ui->takeCardsButton->setStyleSheet(normal ? QString::null :
@@ -1585,6 +1602,7 @@ void MainWindow::writeSettings() const {
 		settings.setValue("sortMode", static_cast<uint>(NO_SORT));
 	}
 
+	settings.setValue("mute", m_ui->actionMute->isChecked());
 	settings.setValue("filterCards", m_ui->filterCards->isChecked());
 	settings.setValue("cardTooltips", m_ui->actionShowCardTooltips->isChecked());
 	settings.endGroup();
@@ -1629,6 +1647,7 @@ void MainWindow::readSettings() {
 		m_ui->noSort->setChecked(true); break;
 	}
 
+	m_ui->actionMute->setChecked(settings.value("mute", QVariant(false)).toBool());
 	m_ui->filterCards->setChecked(settings.value("filterCards", QVariant(false)).toBool());
 	m_ui->actionShowCardTooltips->setChecked(settings.value("cardTooltips",
 															QVariant(true)).toBool());

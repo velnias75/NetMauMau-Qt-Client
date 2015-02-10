@@ -31,6 +31,9 @@ public:
 
 	void speak(const QString &text, QString lang = QString::null);
 
+public slots:
+	void setDisabled(bool b);
+
 private slots:
 	void speakNow();
 

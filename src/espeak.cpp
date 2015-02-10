@@ -45,7 +45,7 @@ ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt(), m_lang("de"),
 			EE_INTERNAL_ERROR;
 
 	if(m_enabled) {
-		espeak_SetParameter(espeakRATE, 200, 0);
+		espeak_SetParameter(espeakRATE, 175, 0);
 		espeak_SetParameter(espeakVOLUME, 100, 0);
 		espeak_SetParameter(espeakCAPITALS, 3, 0);
 	}
@@ -59,6 +59,10 @@ ESpeak::~ESpeak() {
 	}
 
 	free(m_path);
+}
+
+void ESpeak::setDisabled(bool b) {
+	m_enabled = !b;
 }
 
 void ESpeak::speak(const QString &text, const QString lang) {

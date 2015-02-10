@@ -159,6 +159,7 @@
     <addaction name="actionNetMauMauServerOutput"/>
     <addaction name="separator"/>
     <addaction name="actionShowCardTooltips"/>
+    <addaction name="actionMute"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
@@ -827,6 +828,20 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionMute">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Mute</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+M</string>
    </property>
   </action>
  </widget>
