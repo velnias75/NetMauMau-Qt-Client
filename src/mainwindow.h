@@ -81,8 +81,9 @@ private slots:
 	void receivingPlayerImage(const QString &);
 	void receivedPlayerImage(const QString &);
 	void showReceiveProgress() const;
-
+	void itemChanged(QStandardItem *);
 	void notifyClientUpdate();
+	void unmau();
 
 	void serverAccept();
 	void serverDisconnect();

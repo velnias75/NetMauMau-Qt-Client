@@ -761,7 +761,7 @@ void MainWindow::clientStats(const Client::STATS &s) {
 
 #ifdef USE_ESPEAK
 		if(!(mau)) mau = i->cardCount == 1 &&
-				(gameState()->playerCardCounts()[pName].first !=
+						 (gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
 
@@ -1033,6 +1033,9 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 
 	m_model.appendRow(si);
 
+	QObject::connect(&m_model, SIGNAL(itemChanged(QStandardItem*)),
+					 this, SLOT(itemChanged(QStandardItem*)));
+
 	const long np = static_cast<long>(gameState()->maxPlayerCount()) - m_model.rowCount();
 
 	if(np > 0L) {
@@ -1261,6 +1264,24 @@ void MainWindow::addKeyShortcutTooltip(CardWidget *c, int num) {
 									 .arg(tr("Shortcut")).arg(num < 10 ? num : 0));
 }
 
+void MainWindow::itemChanged(QStandardItem *i) {
+	const QModelIndex &idx(m_model.indexFromItem(i));
+
+	if(idx.column() == CARDS && i->text().contains(QRegExp(".*\\>Mau\\<.*"))) {
+		if(gameState()->unmau().insert(i).second) QTimer::singleShot(2500, this, SLOT(unmau()));
+	}
+}
+
+void MainWindow::unmau() {
+
+	GameState *gs = gameState();
+
+	for(std::set<QStandardItem *>::const_iterator i(gs->unmau().begin()); i != gs->unmau().end();
+		++i) if((*i)->text().contains(QRegExp(".*\\>Mau\\<.*"))) (*i)->setText("1");
+
+	gs->unmau().clear();
+}
+
 void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, bool disable) {
 
 	GameState *gs = gameState();
@@ -1284,19 +1305,17 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 
 		if(isMe(player) || gs->playerCardCounts().contains(player)) {
 
-			const std::size_t prev = isMe(player) ? gs->cards().count() :
-													gs->playerCardCounts()[player].first;
-
 			const std::size_t count = isMe(player) ? gs->cards().count() :
 													 gs->playerCardCounts()[player].second;
 
-			if(((isMe(player) || count != prev) && count < 2) || count == 0) {
+			if(count < 2 && (count == 0 || cnt->text().toInt() != 1)) {
 				cnt->setText(QString("<span style=\"color:red;\">Mau%1</span>")
 							 .arg(count == 0 ?  QString(" Mau%1").
 												arg(m_model.rowCount() > 2 ?
 														QString(" #") +
 														QString::number(gs->maumauCount())
 													  : QString("")) : ""));
+
 #ifdef USE_ESPEAK
 				if(isMe(player) && count == 1) m_espeak->speak("Mau", "de");
 #endif

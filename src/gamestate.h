@@ -20,6 +20,8 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#include <set>
+
 #include <QMap>
 #include <QTime>
 #include <QStringList>
@@ -101,6 +103,7 @@ class GameState {
 	void changeDirection();
 
 	QList<QString> &winningOrder() _CONST;
+	std::set<QStandardItem *> &unmau() _CONST;
 
 private:
 	bool m_inGame;
@@ -127,6 +130,7 @@ private:
 	bool m_messageBoxDisplayed;
 	DIR m_direction;
 	QList<QString> m_winningOrder;
+	std::set<QStandardItem *> m_unmau;
 };
 
 #endif // GAMESTATE_H
