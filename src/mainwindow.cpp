@@ -153,7 +153,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	QSettings useEspeak("HKEY_LOCAL_MACHINE\\SOFTWARE\\RANGUN\\NetMauMau", QSettings::NativeFormat);
 	if(useEspeak.value("USE_ESPEAK").toInt()) {
 		QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)),
-						 m_espeak, SLOT(setDisabled(bool)));
+						 &ESpeak::getInstance(), SLOT(setDisabled(bool)));
 	} else {
 		m_ui->menu_View->removeAction(m_ui->actionMute);
 	}
