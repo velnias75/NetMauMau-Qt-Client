@@ -26,8 +26,9 @@ class ESpeak : public QObject {
 	Q_OBJECT
 	Q_DISABLE_COPY(ESpeak)
 public:
-	explicit ESpeak(QObject *parent = 0);
 	~ESpeak();
+
+	static ESpeak &getInstance();
 
 	void speak(const QString &text, QString lang = QString::null);
 
@@ -38,6 +39,8 @@ private slots:
 	void speakNow();
 
 private:
+	explicit ESpeak(QObject *parent = 0);
+
 	bool isSpeaking() const;
 
 private:

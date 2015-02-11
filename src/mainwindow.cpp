@@ -87,11 +87,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_defaultPlayerImage(QImage::fromData
 						 (QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
 									 NetMauMau::Common::DefaultPlayerImage.length()))),
-	m_playerNameMenu(0L), m_animLogo(new QMovie(":/anim-logo.gif"))
-  #ifdef USE_ESPEAK
-  , m_espeak(new ESpeak())
-  #endif
-{
+	m_playerNameMenu(0L), m_animLogo(new QMovie(":/anim-logo.gif")) {
 
 	m_animLogo->setScaledSize(QSize(54, 67));
 	m_animLogo->setCacheMode(QMovie::CacheAll);
@@ -163,7 +159,8 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	}
 
 #else
-	QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)), m_espeak, SLOT(setDisabled(bool)));
+	QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)), &ESpeak::getInstance(),
+					 SLOT(setDisabled(bool)));
 #endif
 #else
 	m_ui->menu_View->removeAction(m_ui->actionMute);
@@ -269,10 +266,6 @@ MainWindow::~MainWindow() {
 	m_ui->actionNetMauMauServerOutput->disconnect();
 
 	disconnect();
-
-#ifdef USE_ESPEAK
-	delete m_espeak;
-#endif
 
 	delete m_lsov;
 	delete m_scoresDialog;
@@ -655,7 +648,8 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
 	case Qt::Key_9: clickCard(8, e); break;
 	case Qt::Key_0: clickCard(9, e); break;
 #if defined(USE_ESPEAK) && !defined(NDEBUG)
-	case Qt::Key_F11: m_espeak->speak(QString::fromUtf8("N\u00e4t MauMau"), "de"); break;
+	case Qt::Key_F11:
+		ESpeak::getInstance().speak(QString::fromUtf8("N\u00e4t MauMau"), "de"); break;
 #endif
 	default: QMainWindow::keyReleaseEvent(e); break;
 	}
@@ -780,16 +774,14 @@ void MainWindow::clientStats(const Client::STATS &s) {
 
 #ifdef USE_ESPEAK
 		if(!(mau)) mau = i->cardCount == 1 &&
-				(gameState()->playerCardCounts()[pName].first !=
+						 (gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
 
 	}
 
 #ifdef USE_ESPEAK
-	if(mau) {
-		m_espeak->speak("Mau", "de");
-	}
+	if(mau) ESpeak::getInstance().speak("Mau", "de");
 #endif
 
 }
@@ -936,10 +928,11 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 		const bool first = gs->winningOrder().indexOf(myself()) == 0;
 
 #ifdef USE_ESPEAK
-		if(first) m_espeak->speak(tr("Congratulations! You have won!"),
-								  tr("Congratulations! You have won!") ==
-								  QLatin1String("Congratulations! You have won!") ? QString("en") :
-																					QString::null);
+		if(first) ESpeak::getInstance().speak(tr("Congratulations! You have won!"),
+											  tr("Congratulations! You have won!") ==
+											  QLatin1String("Congratulations! You have won!") ?
+												  QString("en") :
+												  QString::null);
 #endif
 
 		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
@@ -1217,18 +1210,20 @@ void MainWindow::takeCardsMark(std::size_t count) const {
 			name->setToolTip(tr("You can play another <i>Seven</i> or take %n card(s)", "",
 								count));
 #ifdef USE_ESPEAK
-			m_espeak->speak(tr("Take cards. Or play another SEVEN"),
-							tr("Take cards. Or play another SEVEN")
-							== QLatin1String("Take cards. Or play another SEVEN") ? QString("en") :
-																					QString::null);
+			ESpeak::getInstance().speak(tr("Take cards. Or play another SEVEN"),
+										tr("Take cards. Or play another SEVEN")
+										== QLatin1String("Take cards. Or play another SEVEN") ?
+											QString("en") :
+											QString::null);
 #endif
 		} else if(name) {
 			name->setText(QString("<span style=\"color:red;\">%1</span>").arg(me));
 			name->setToolTip(tr("You have no <i>Seven</i> to play over. You must take %n card(s)",
 								"", count));
 #ifdef USE_ESPEAK
-			m_espeak->speak(tr("Take cards"), tr("Take cards") ==
-							QLatin1String("Take cards") ? QString("en") : QString::null);
+			ESpeak::getInstance().speak(tr("Take cards"), tr("Take cards") ==
+										QLatin1String("Take cards") ? QString("en") :
+																	  QString::null);
 #endif
 		}
 
@@ -1347,7 +1342,7 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 													  : QString("")) : ""));
 
 #ifdef USE_ESPEAK
-				if(isMe(player) && count == 1) m_espeak->speak("Mau", "de");
+				if(isMe(player) && count == 1) ESpeak::getInstance().speak("Mau", "de");
 #endif
 
 			} else {

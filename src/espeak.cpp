@@ -61,6 +61,11 @@ ESpeak::~ESpeak() {
 	free(m_path);
 }
 
+ESpeak &ESpeak::getInstance() {
+	static ESpeak instance;
+	return instance;
+}
+
 void ESpeak::setDisabled(bool b) {
 	m_enabled = !b;
 }
