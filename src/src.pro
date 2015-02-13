@@ -2,6 +2,7 @@ QT += svg network
 
 CONFIG += debug_and_release
 CONFIG += rtti exceptions
+unix:CONFIG += link_pkgconfig
 
 VERSION = 0.14
 
@@ -41,6 +42,7 @@ CONFIG(debug, debug|release) {
 	LIBS    += ../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
 		 ../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
+	unix:PKGCONFIG += netmaumau
 	UI_DIR = release-ui
 	RCC_DIR = release-rcc
 	MOC_DIR = release-moc
@@ -58,7 +60,6 @@ CONFIG(debug, debug|release) {
 	unix:icon.path = /usr/share/icons/hicolor/256x256/apps
 	unix:icon.files = nmm_qt_client.png
 	unix:INSTALLS += qmfiles desktop icon target
-	unix:INCLUDEPATH += "/usr/include/netmaumau"
 	win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
 	devrelease:DEFINES -= NDEBUG QT_NO_DEBUG_OUTPUT
 	devrelease:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing \
@@ -67,7 +68,6 @@ CONFIG(debug, debug|release) {
 	win32:QMAKE_CXXFLAGS += -O2 -fomit-frame-pointer -fstrict-aliasing
 	win32:LIBS    += /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
 				/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
-	unix:LIBS += -lnetmaumaucommon -lnetmaumauclient
 }
 
 SOURCES += addserverdialog.cpp \
