@@ -219,6 +219,12 @@ Don't close the client while a game is running, because it will disconnect the r
       </item>
       <item row="1" column="1">
        <widget class="QSpinBox" name="initCardSpin">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="toolTip">
          <string>The amount of initial cards a player gets at game start</string>
         </property>
@@ -235,6 +241,12 @@ Don't close the client while a game is running, because it will disconnect the r
       </item>
       <item row="2" column="1">
        <widget class="QSpinBox" name="cardDecksSpin">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="toolTip">
          <string>The amount of card decks to use</string>
         </property>
