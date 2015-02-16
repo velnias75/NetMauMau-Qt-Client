@@ -373,6 +373,17 @@ NetMauMau::Common::ICard::RANK ServerDialog::getAceRoundRank() const {
 	}
 }
 
+uint ServerDialog::getInitialCardCount() const {
+
+	const QModelIndexList &l(availServerView->selectionModel()->selection().indexes());
+
+	if(!l.isEmpty()) {
+		return m_model.item(l.first().row(), ServerInfo::SERVER)->data(ServerInfo::INIT).toUInt();
+	}
+
+	return 5;
+}
+
 void ServerDialog::setLastServer(const QString &ls) {
 	availServerView->clearSelection();
 	m_lastServer = ls;

@@ -44,7 +44,6 @@ public:
 
 	QString getAcceptedServer() const;
 	QString getAcceptedServerAlias() const;
-	NetMauMau::Common::ICard::RANK getAceRoundRank() const;
 	QString getPlayerName() const;
 	void setPlayerName(const QString &name);
 	QStringList getPlayerAltNames() const;
@@ -55,7 +54,9 @@ public:
 	void setLastServer(const QString &ls);
 	QString getLastServer() const;
 
+	NetMauMau::Common::ICard::RANK getAceRoundRank() const;
 	GameState::DIR getDirection() const _PURE;
+	uint getInitialCardCount() const;
 
 	QStandardItemModel *getModel() _CONST;
 

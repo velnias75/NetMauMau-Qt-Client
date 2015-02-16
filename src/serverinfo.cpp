@@ -93,6 +93,15 @@ void ServerInfo::run() {
 			ai->setData(QString::fromStdString(f->second), ACEROUNDRANK);
 		}
 
+		const Client::CAPABILITIES::const_iterator &ic(caps.find("INITIAL_CARDS"));
+		const uint initialCards = ic != caps.end() ?
+											QString::fromStdString(ic->second).toUInt() : 5;
+
+		server->setData(initialCards, INIT);
+
+		if(ic != caps.end()) ai->setToolTip(ai->toolTip() + "\n" +
+											tr("You'll start with %n card(s)", "", initialCards));
+
 		const Client::CAPABILITIES::const_iterator &dc(caps.find("DIRCHANGE"));
 		const bool hasDirChange = dc != caps.end() && dc->second != "false";
 

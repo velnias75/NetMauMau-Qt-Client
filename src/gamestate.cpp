@@ -25,7 +25,7 @@ GameState::GameState() : m_inGame(false), m_cards(), m_lastPlayedCard(0L), m_las
 	m_noCardPossible(false), m_turn(1), m_maxPlayerCount(0), m_possibleCards(), m_curReceiving(),
 	m_aceRoundActive(), m_playTime(0, 0, 0), m_lostDisplaying(false),
 	m_aceRoundRank(NetMauMau::Common::ICard::ACE), m_messageBoxDisplayed(false),
-	m_direction(NONE), m_winningOrder(), m_unmau() {}
+	m_direction(NONE), m_winningOrder(), m_unmau(), m_initialCardCount("5") {}
 
 bool GameState::inGame() const {
 	return m_inGame;
@@ -205,4 +205,12 @@ QList<QString> &GameState::winningOrder() {
 
 std::set<QStandardItem *> &GameState::unmau() {
 	return m_unmau;
+}
+
+QString GameState::initialCardCount() const {
+	return m_initialCardCount;
+}
+
+void GameState::setInitialCardCount(uint icc) {
+	m_initialCardCount = QString::number(icc);
 }

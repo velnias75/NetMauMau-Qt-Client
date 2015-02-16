@@ -485,6 +485,7 @@ void MainWindow::serverAccept() {
 
 	gs->setDirection(m_serverDlg->getDirection());
 	gs->setMaxPlayerCount(m_serverDlg->getMaxPlayerCount());
+	gs->setInitialCardCount(m_serverDlg->getInitialCardCount());
 
 	m_client = new Client(this, m_connectionLogDlg, m_serverDlg->getPlayerName(),
 						  std::string(as.left(p).toStdString()),
@@ -1026,14 +1027,14 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 		ServerDialog::scalePlayerPic(myImg).save(&buf, "PNG");
 
 		si.back()->setToolTip(QString("<p align=\"center\">" \
-									  "<img src=\"data:image/png;base64,%1\"><br />%2</p>")
-							  .arg(ba.toBase64().constData()).arg(p));
+									  "<img src=\"data:image/png;base64,%1\"><br />%2</p>").
+							  arg(ba.toBase64().constData()).arg(p));
 	}
 
 	QTimer::singleShot(500, m_receivingPlayerImageProgress, SLOT(hide()));
 
 	si.push_back(new QStandardItem(p));
-	si.push_back(new QStandardItem("5"));
+	si.push_back(new QStandardItem(gameState()->initialCardCount()));
 	si.back()->setTextAlignment(Qt::AlignCenter);
 	si.push_back(new QStandardItem("1"));
 	si.back()->setTextAlignment(Qt::AlignCenter);

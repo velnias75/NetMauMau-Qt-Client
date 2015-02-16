@@ -43,6 +43,8 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 
 	QObject::connect(execChooseButton, SIGNAL(clicked()), this, SLOT(browse()));
 	QObject::connect(playersSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
+	QObject::connect(cardDecksSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
+	QObject::connect(initCardSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(ultimateCheck, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(dirChangecheck, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(aceRound, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
@@ -58,6 +60,8 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 
 	launchStartup->setChecked(settings.value("onStartup", false).toBool());
 	playersSpin->setValue(settings.value("playersSpin", 1).toInt());
+	cardDecksSpin->setValue(settings.value("cardDecks", 1).toInt());
+	initCardSpin->setValue(settings.value("initialCards", 5).toInt());
 	ultimateCheck->setChecked(settings.value("ultimate", true).toBool());
 	dirChangecheck->setChecked(settings.value("dirChange", false).toBool());
 	aceRound->setChecked(settings.value("ace-round", false).toBool());
@@ -81,6 +85,8 @@ LaunchServerDialog::~LaunchServerDialog() {
 	settings.beginGroup("Launcher");
 	settings.setValue("onStartup", launchStartup->isChecked());
 	settings.setValue("playersSpin", playersSpin->value());
+	settings.setValue("cardDecks", cardDecksSpin->value());
+	settings.setValue("initialCards", initCardSpin->value());
 	settings.setValue("ultimate", ultimateCheck->isChecked());
 	settings.setValue("dirChange", dirChangecheck->isChecked());
 	settings.setValue("ace-round", aceRound->isChecked());
@@ -128,6 +134,14 @@ void LaunchServerDialog::updateOptions(int) {
 
 	if(playersSpin->value() != 1) {
 		opt.append("-p").append(QString::number(playersSpin->value())).append(" ");
+	}
+
+	if(cardDecksSpin->value() != 1) {
+		opt.append("--decks=").append(QString::number(cardDecksSpin->value())).append(" ");
+	}
+
+	if(initCardSpin->value() != 5) {
+		opt.append("-c").append(QString::number(initCardSpin->value())).append(" ");
 	}
 
 	if(playersSpin->value() == 1 && !aiNameEdit->text().isEmpty()) {
@@ -197,6 +211,14 @@ void LaunchServerDialog::launch() {
 
 	if(playersSpin->value() == 1 && !aiNameEdit->text().isEmpty()) {
 		args << QString("-A").append(aiNameEdit->text());
+	}
+
+	if(cardDecksSpin->value() != 1) {
+		args << QString("--decks=").append(QString::number(cardDecksSpin->value()));
+	}
+
+	if(initCardSpin->value() != 5) {
+		args << QString("-c").append(QString::number(initCardSpin->value()));
 	}
 
 	if(ultimateCheck->isChecked()) args << "-u";
