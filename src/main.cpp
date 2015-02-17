@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 #else
 	QSharedMemory sharedMemory;
-	sharedMemory.setKey(QCoreApplication::applicationName());
+	sharedMemory.setKey(QCoreApplication::applicationName() + qgetenv("USER"));
 #endif
 
 	NetMauMauApplication a(argc, argv);
