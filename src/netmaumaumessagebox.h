@@ -24,23 +24,22 @@
 
 #include <icard.h>
 
-class GameState;
-
 class NetMauMauMessageBox : public QMessageBox {
 	Q_OBJECT
 	Q_DISABLE_COPY(NetMauMauMessageBox)
 public:
-	explicit NetMauMauMessageBox(GameState *gs = 0L, QWidget *parent = 0);
+	explicit NetMauMauMessageBox(QWidget *parent = 0);
 
 	explicit NetMauMauMessageBox(const QString &title, const QString &txt,
-								 const QPixmap &pixmap, GameState *gs = 0L, QWidget *parent = 0);
+								 const QPixmap &pixmap, QWidget *parent = 0);
 
 	explicit NetMauMauMessageBox(const QString &title, const QString &txt,
 								 NetMauMau::Common::ICard::SUIT suit,
-								 NetMauMau::Common::ICard::RANK rank, GameState *gs = 0L,
-								 QWidget *parent = 0);
+								 NetMauMau::Common::ICard::RANK rank, QWidget *parent = 0);
 
 	virtual ~NetMauMauMessageBox();
+
+	static bool isDisplayed();
 
 protected:
 	virtual void showEvent(QShowEvent *event);
@@ -51,7 +50,7 @@ private:
 	void init();
 
 private:
-	GameState *m_gameState;
+	static NetMauMauMessageBox *m_onDisplay;
 };
 
 #endif // NETMAUMAUMESSAGEBOX_H

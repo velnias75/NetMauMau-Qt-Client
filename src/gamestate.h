@@ -95,9 +95,6 @@ class GameState {
 	NetMauMau::Common::ICard::RANK aceRoundRank() const _PURE;
 	void setAceRoundRank(NetMauMau::Common::ICard::RANK r);
 
-	bool isMessageBoxDisplayed() const _PURE;
-	void setMessageBoxDisplayed(bool b);
-
 	DIR getDirection() const _PURE;
 	void setDirection(DIR d);
 	void changeDirection();
@@ -130,7 +127,6 @@ private:
 	QTime m_playTime;
 	bool m_lostDisplaying;
 	NetMauMau::Common::ICard::RANK m_aceRoundRank;
-	bool m_messageBoxDisplayed;
 	DIR m_direction;
 	QList<QString> m_winningOrder;
 	std::set<QStandardItem *> m_unmau;

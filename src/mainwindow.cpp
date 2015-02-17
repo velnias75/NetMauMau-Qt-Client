@@ -674,12 +674,10 @@ void MainWindow::clientMessage(const QString &msg) const {
 
 void MainWindow::clientError(const QString &err) {
 
-	const bool msgBoxDisp = m_gameState ? m_gameState->isMessageBoxDisplayed() : false;
-
 	destroyClient(true);
 	setEnabled(true);
 
-	if(msgBoxDisp) {
+	if(NetMauMauMessageBox::isDisplayed()) {
 		statusBar()->showMessage(QString("%1: %2").arg(tr("Server Error")).arg(err), 4000);
 	} else {
 		if(QMessageBox::critical(this, tr("Server Error"), err,
@@ -809,8 +807,7 @@ void MainWindow::clientCardRejected(const QString &, const QByteArray &c) {
 	if(NetMauMau::Common::parseCardDesc(c.constData(), &s, &r)) {
 		NetMauMauMessageBox(tr("Card rejected"), tr("You cannot play card %1!")
 							.arg(Util::cardStyler(QString::fromUtf8(c.constData()),
-												  QMessageBox().font())), s, r, gameState(),
-							this).exec();
+												  QMessageBox().font())), s, r, this).exec();
 	} else {
 		QMessageBox::critical(this, tr("Card rejected"), tr("You cannot play card %1!")
 							  .arg(Util::cardStyler(QString::fromUtf8(c.constData()),
@@ -876,7 +873,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 	updatePlayerStats(p, tr("<span style=\"color:blue;\">lost</span> in turn %1 " \
 							"with %n point(s) at hand", "", pt).arg(t), true);
 
-	if(isMe(p)) {
+	if(isMe(p) && !NetMauMauMessageBox::isDisplayed()) {
 
 		GameState *gs = gameState();
 
@@ -890,7 +887,7 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 										 yourScore(gs, p) : tr("Your deduction of points: %1").
 										 arg(pt)).arg(gs->playTime().toString("HH:mm:ss")),
 								 QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48),
-								 gs, this);
+								 this);
 
 		if(m_model.rowCount() == 2) {
 			m_timeLabel.hide();
@@ -922,7 +919,9 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 	if(!isMe(p)) statusBar()->showMessage(tr("%1 wins!").arg(p), 10000);
 
-	NetMauMauMessageBox gameOver(gs, this);
+	if(NetMauMauMessageBox::isDisplayed()) return;
+
+	NetMauMauMessageBox gameOver(this);
 
 	if(isMe(p) && !gs->lostWonConfirmed()) {
 
@@ -1126,7 +1125,7 @@ void MainWindow::clientChooseAceRoundRequest() {
 											.arg(getAceRoundRankString(gs)),
 										gs->lastPlayedCard() ? gs->lastPlayedCard()->getSuit() :
 															   NetMauMau::Common::ICard::HEARTS,
-										gs->aceRoundRank(), gs, this);
+										gs->aceRoundRank(), this);
 
 		aceRoundBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
 
@@ -1211,20 +1210,21 @@ void MainWindow::takeCardsMark(std::size_t count) const {
 			name->setToolTip(tr("You can play another <i>Seven</i> or take %n card(s)", "",
 								count));
 #ifdef USE_ESPEAK
-			ESpeak::getInstance().speak(tr("Take cards. Or play another SEVEN"),
-										tr("Take cards. Or play another SEVEN")
-										== QLatin1String("Take cards. Or play another SEVEN") ?
-											QString("en") :
-											QString::null);
+			ESpeak::getInstance().speak(tr("Take %n cards. Or play another SEVEN", "", count),
+										tr("Take %n cards. Or play another SEVEN", "", count)
+										== QString("Take %1 cards. Or play another SEVEN").
+										arg(QString::number(count)) ? QString("en") :
+																	  QString::null);
 #endif
 		} else if(name) {
 			name->setText(QString("<span style=\"color:red;\">%1</span>").arg(me));
 			name->setToolTip(tr("You have no <i>Seven</i> to play over. You must take %n card(s)",
 								"", count));
 #ifdef USE_ESPEAK
-			ESpeak::getInstance().speak(tr("Take cards"), tr("Take cards") ==
-										QLatin1String("Take cards") ? QString("en") :
-																	  QString::null);
+			ESpeak::getInstance().speak(tr("Take %n cards", "", count),
+										tr("Take %n cards", "", count) ==
+										QString("Take %1 cards").arg(QString::number(count))
+										? QString("en") : QString::null);
 #endif
 		}
 
@@ -1510,14 +1510,35 @@ void MainWindow::clearStats() {
 	resizeColumns();
 }
 
-QString MainWindow::getAceRoundRankString(const GameState *gs, bool capitalize) const {
+QString MainWindow::getAceRoundRankString(const GameState *gs, bool capitalize,
+										  QString *lang) const {
+
+	if(lang) {
+		*lang = ((capitalize ? tr("Ace round") : tr("ace round")) ==
+				 QLatin1String(capitalize ? "Ace round" : "ace round"))
+				? QString("en") : QString::null;
+	}
 
 	if(gs) {
 
 		switch(gs->aceRoundRank()) {
 		case NetMauMau::Common::ICard::QUEEN:
+
+			if(lang) {
+				*lang = ((capitalize ? tr("Queen round") : tr("queen round")) ==
+						 QLatin1String(capitalize ? "Queen round" : "queen round"))
+						? QString("en") : QString::null;
+			}
+
 			return capitalize ? tr("Queen round") : tr("queen round");
 		case NetMauMau::Common::ICard::KING:
+
+			if(lang) {
+				*lang = ((capitalize ? tr("King round") : tr("king round")) ==
+						 QLatin1String(capitalize ? "King round" : "king round"))
+						? QString("en") : QString::null;
+			}
+
 			return capitalize ? tr("King round") : tr("king round");
 		default:
 			return capitalize ? tr("Ace round") : tr("ace round");
@@ -1546,9 +1567,17 @@ void MainWindow::clientAceRoundStarted(const QString &p) {
 
 	GameState *gs = gameState();
 
-	if(gs->aceRoundActive() != p)
+	QString lang;
+	const QString &ars(getAceRoundRankString(gs, false, &lang));
+
+	if(gs->aceRoundActive() != p) {
 		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
-						  .arg(tr("starts a %1").arg(getAceRoundRankString(gs))));
+						  .arg(tr("starts a %1").arg(ars)));
+#if USE_ESPEAK
+		ESpeak::getInstance().speak(ars, lang);
+#endif
+	}
+
 	statusBar()->addPermanentWidget(&m_aceRoundLabel);
 
 	QByteArray ba;
@@ -1571,9 +1600,19 @@ void MainWindow::clientAceRoundEnded(const QString &p) {
 
 	statusBar()->removeWidget(&m_aceRoundLabel);
 
-	if(!p.isNull() && gs->aceRoundActive() == p)
+	QString lang;
+	const QString &ars(getAceRoundRankString(gs, false, &lang));
+
+	if(!p.isNull() && gs->aceRoundActive() == p) {
 		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
-						  .arg(tr("ends a %1").arg(getAceRoundRankString(gs))));
+						  .arg(tr("ends a %1").arg(ars)));
+
+#if USE_ESPEAK
+		ESpeak::getInstance().speak(tr("%1 finished").arg(ars),
+									tr("%1 finished").arg(ars) == QString("%1 finished").arg(ars)
+									? QString("en") : QString::null);
+#endif
+	}
 
 	gs->setAceRoundActive(QString::null);
 }

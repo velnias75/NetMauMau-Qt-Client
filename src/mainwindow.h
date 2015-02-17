@@ -152,7 +152,8 @@ private:
 	void updatePlayerScores(GameState *gs, uint attempts = 3);
 	QString playerToolTip(GameState *gs, const QString &player) const;
 
-	QString getAceRoundRankString(const GameState *gs, bool capitalize = false) const;
+	QString getAceRoundRankString(const GameState *gs, bool capitalize = false,
+								  QString *lang = 0L) const;
 	QString reconnectToolTip() const;
 
 	QString winnerRank(GameState *gs) const;

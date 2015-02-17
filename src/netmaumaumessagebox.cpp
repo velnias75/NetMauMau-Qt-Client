@@ -18,20 +18,21 @@
  */
 
 #include <QIcon>
+#include <QShowEvent>
 
 #include "netmaumaumessagebox.h"
 
-#include "gamestate.h"
 #include "cardpixmap.h"
 
-NetMauMauMessageBox::NetMauMauMessageBox(GameState *gs, QWidget *p) : QMessageBox(p),
-	m_gameState(gs) {
+NetMauMauMessageBox *NetMauMauMessageBox::m_onDisplay = 0L;
+
+NetMauMauMessageBox::NetMauMauMessageBox(QWidget *p) : QMessageBox(p) {
 	init();
 }
 
 NetMauMauMessageBox::NetMauMauMessageBox(const QString &title, const QString &txt,
-										 const QPixmap &pixmap, GameState *gs, QWidget *p) :
-	QMessageBox(p), m_gameState(gs) {
+										 const QPixmap &pixmap, QWidget *p) :
+	QMessageBox(p) {
 
 	init();
 
@@ -42,8 +43,8 @@ NetMauMauMessageBox::NetMauMauMessageBox(const QString &title, const QString &tx
 
 NetMauMauMessageBox::NetMauMauMessageBox(const QString &title, const QString &txt,
 										 NetMauMau::Common::ICard::SUIT suit,
-										 NetMauMau::Common::ICard::RANK rank, GameState *gs,
-										 QWidget *p) : QMessageBox(p), m_gameState(gs) {
+										 NetMauMau::Common::ICard::RANK rank, QWidget *p) :
+	QMessageBox(p) {
 
 	init();
 
@@ -65,23 +66,33 @@ void NetMauMauMessageBox::init() {
 	f &= ~Qt::WindowContextHelpButtonHint;
 	f &= ~Qt::WindowSystemMenuHint;
 	setWindowFlags(f);
+
+	if(m_onDisplay) setVisible(false);
 }
 
 NetMauMauMessageBox::~NetMauMauMessageBox() {
-	if(m_gameState) m_gameState->setMessageBoxDisplayed(false);
+	m_onDisplay = 0L;
+}
+
+bool NetMauMauMessageBox::isDisplayed() {
+	return m_onDisplay;
 }
 
 void NetMauMauMessageBox::showEvent(QShowEvent *e) {
-	if(m_gameState) m_gameState->setMessageBoxDisplayed(true);
+
 	QMessageBox::showEvent(e);
+
+	if(!m_onDisplay) {
+		m_onDisplay = this;
+	}
 }
 
 void NetMauMauMessageBox::hideEvent(QHideEvent *e) {
-	if(m_gameState) m_gameState->setMessageBoxDisplayed(false);
+	m_onDisplay = 0L;
 	QMessageBox::hideEvent(e);
 }
 
 void NetMauMauMessageBox::closeEvent(QCloseEvent *e) {
-	if(m_gameState) m_gameState->setMessageBoxDisplayed(false);
+	m_onDisplay = 0L;
 	QMessageBox::closeEvent(e);
 }
