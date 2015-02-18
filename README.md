@@ -1,11 +1,7 @@
-Proof of concept Qt client for NetMauMau
-========================================
+Qt client for NetMauMau
+=======================
 
-A proof of concept Qt client for NetMauMau, which serves for testing
-the NetMauMau server and client API.
-
-It is not a sophisticated client with a nice GUI, but it can serve as
-base for potential client developers as well.
+A Qt client for the [NetMauMau server](https://github.com/velnias75/NetMauMau).
 
 Requirements
 ------------

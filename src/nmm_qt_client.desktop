@@ -1,9 +1,9 @@
 [Desktop Entry]
 Name=NetMauMau Qt Client
-GenericName=Client for NetMauMau
-GenericName[de]=Klient für NetMauMau
-Comment=A proof of concept client for NetMauMau
-Comment[de]=Machbarkeitsstudienklient für NetMauMau
+GenericName=Play the popular card game Mau Mau
+GenericName[de]=Spiele das populäre Kartenspiel Mau Mau
+Comment=A client for the NetMauMau server
+Comment[de]=Ein Klient für den NetMauMau Server
 Exec=nmm-qt-client
 Terminal=false
 Icon=nmm_qt_client
