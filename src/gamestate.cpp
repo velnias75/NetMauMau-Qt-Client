@@ -25,7 +25,7 @@ GameState::GameState() : m_inGame(false), m_cards(), m_lastPlayedCard(0L), m_las
 	m_noCardPossible(false), m_turn(1), m_maxPlayerCount(0), m_possibleCards(), m_curReceiving(),
 	m_aceRoundActive(), m_playTime(0, 0, 0), m_lostDisplaying(false),
 	m_aceRoundRank(NetMauMau::Common::ICard::ACE), m_direction(NONE), m_winningOrder(), m_unmau(),
-	m_initialCardCount("5") {}
+	m_initialCardCount("5"), m_drawn(false) {}
 
 bool GameState::inGame() const {
 	return m_inGame;
@@ -205,4 +205,12 @@ QString GameState::initialCardCount() const {
 
 void GameState::setInitialCardCount(uint icc) {
 	m_initialCardCount = QString::number(icc);
+}
+
+bool GameState::isDrawn() const {
+	return m_drawn;
+}
+
+void GameState::setDrawn(bool b) {
+	m_drawn = b;
 }

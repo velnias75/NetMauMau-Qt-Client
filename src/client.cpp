@@ -20,6 +20,7 @@
 #include <cardtools.h>
 #include <timeoutexception.h>
 #include <shutdownexception.h>
+#include <playerlistexception.h>
 #include <protocolerrorexception.h>
 #include <versionmismatchexception.h>
 #include <nonetmaumauserverexception.h>
@@ -38,7 +39,7 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 									  CLIENTVERSION, new Base64Bridge()), m_mainWindow(w),
 	m_disconnectNow(false), m_cardToPlay(0L), m_chosenSuit(NetMauMau::Common::ICard::HEARTS),
 	m_online(false), m_connectionLogDialog(cld), m_aceRoundChoice(false),
-	m_server(QString::fromUtf8(server.c_str())), m_port(port) {
+	m_server(QString::fromUtf8(server.c_str())), m_port(port), m_noCardReason("SUSPEND") {
 	init();
 }
 
@@ -49,7 +50,8 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 									  buf.size(), server, port, CLIENTVERSION, new Base64Bridge()),
 	m_mainWindow(w), m_disconnectNow(false), m_cardToPlay(0L),
 	m_chosenSuit(NetMauMau::Common::ICard::HEARTS), m_online(false), m_connectionLogDialog(cld),
-	m_aceRoundChoice(false), m_server(QString::fromUtf8(server.c_str())), m_port(port) {
+	m_aceRoundChoice(false), m_server(QString::fromUtf8(server.c_str())), m_port(port),
+	m_noCardReason("SUSPEND") {
 	init();
 }
 
@@ -73,6 +75,8 @@ void Client::init() const {
 						 this, SLOT(chosenSuite(NetMauMau::Common::ICard::SUIT)));
 		QObject::connect(m_mainWindow, SIGNAL(chosenAceRound(bool)),
 						 this, SLOT(chosenAceRound(bool)));
+		QObject::connect(m_mainWindow, SIGNAL(noCardReason(QString)),
+						 this, SLOT(noCardReason(QString)));
 	}
 }
 
@@ -89,6 +93,8 @@ void Client::run() {
 		play();
 		emit offline(true);
 
+	} catch(const NetMauMau::Client::Exception::PlayerlistException &e) {
+		emit cError(tr("Player name %1 is already in use").arg(QString::fromUtf8(e.what())), false);
 	} catch(const NetMauMau::Client::Exception::TimeoutException &e) {
 		emit cError(tr("A timeout occured while connection to the server"));
 	} catch(const NetMauMau::Client::Exception::ProtocolErrorException &e) {
@@ -214,6 +220,13 @@ void Client::chosenAceRound(bool c) {
 	emit aceRoundChoiceAvailable();
 }
 
+void Client::noCardReason(const QString &reason) {
+	log(QString("noCardReason(%1)"). arg(reason), ConnectionLogDialog::FROM_CLIENT);
+
+	m_noCardReason = reason;
+	emit noCardReasonAvailable();
+}
+
 void Client::message(const std::string &msg) const {
 	log(QString("message(%1)").arg(QString::fromUtf8(msg.c_str())));
 	emit cMessage(QString::fromUtf8(msg.c_str()));
@@ -244,6 +257,23 @@ void Client::directionChanged() const {
 	emit cDirectionChanged();
 }
 
+std::string Client::noCardReason() const {
+
+	log("noCardReason REQUEST");
+	emit cGetNoCardReason();
+
+	QEventLoop waitForNoCardReason;
+
+	QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), &waitForNoCardReason, SLOT(quit()));
+	QObject::connect(this, SIGNAL(noCardReasonAvailable()), &waitForNoCardReason, SLOT(quit()));
+
+	waitForNoCardReason.exec(QEventLoop::ExcludeUserInputEvents);
+
+	log(QString("noCardReason(%1)").arg(m_noCardReason), ConnectionLogDialog::TO_SERVER);
+
+	return m_noCardReason.toStdString();
+}
+
 void Client::playerJoined(const std::string &player, const unsigned char *b,
 						  std::size_t l) const {
 	log(QString("playerJoined(%1, %2, %3)").arg(QString::fromUtf8(player.c_str()))
@@ -263,8 +293,7 @@ void Client::playerSuspends(const std::string &player) const {
 
 void Client::playedCard(const std::string &player, const NetMauMau::Common::ICard *card) const {
 	log(QString("playedCard(%1, %2)").arg(QString::fromUtf8(player.c_str())).
-		arg(QString::fromUtf8(card->description()
-							  .c_str())));
+		arg(QString::fromUtf8(card->description().c_str())));
 	emit cPlayedCard(QString::fromUtf8(player.c_str()), card->description().c_str());
 }
 
@@ -280,8 +309,10 @@ void Client::playerLost(const std::string &player, std::size_t t, std::size_t p)
 
 void Client::playerPicksCard(const std::string &player,
 							 const NetMauMau::Common::ICard *card) const {
-	log(QString("playerPicksCard(%1, %2)").arg(player.c_str()).
-		arg(card ? card->description().c_str() : "[NULL]"));
+	log(QString("playerPicksCard(%1, %2)").arg(player.c_str()).arg(card
+																   ? card->description().c_str() :
+																	 "[NULL]"));
+	emit cPlayerPicksCard(QString::fromUtf8(player.c_str()));
 }
 
 void Client::playerPicksCard(const std::string &player, std::size_t count) const {

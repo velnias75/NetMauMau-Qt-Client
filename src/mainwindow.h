@@ -67,6 +67,7 @@ signals:
 	void cardToPlay(NetMauMau::Common::ICard *) const;
 	void chosenSuite(NetMauMau::Common::ICard::SUIT) const;
 	void chosenAceRound(bool) const;
+	void noCardReason(const QString &) const;
 
 private slots:
 	void about();
@@ -98,7 +99,7 @@ private slots:
 	void clientChooseJackSuitRequest();
 	void clientChooseAceRoundRequest();
 
-	void clientError(const QString &);
+	void clientError(const QString &, bool = true);
 	void clientMessage(const QString &) const;
 	void clientCardSet(const Client::CARDS &);
 	void clientTurn(std::size_t);
@@ -112,12 +113,14 @@ private slots:
 	void clientPlayerWins(const QString &, std::size_t);
 	void clientPlayerLost(const QString &, std::size_t, std::size_t);
 	void clientPlayerPicksCard(const QString &, std::size_t);
+	void clientPlayerPicksCard(const QString &);
 	void clientPlayedCard(const QString &, const QByteArray &);
 	void clientJackSuit(NetMauMau::Common::ICard::SUIT) const;
 	void clientNextPlayer(const QString &);
 	void clientAceRoundStarted(const QString &);
 	void clientAceRoundEnded(const QString &);
 	void clientDirectionChanged();
+	void clientGetNoCardReason();
 
 	void clearStats();
 	void resizeColumns() const;

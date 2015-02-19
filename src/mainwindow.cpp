@@ -527,8 +527,8 @@ void MainWindow::serverAccept() {
 		QObject::connect(m_client, SIGNAL(cGetAceRoundChoice()),
 						 this, SLOT(clientChooseAceRoundRequest()));
 
-		QObject::connect(m_client, SIGNAL(cError(QString)),
-						 this, SLOT(clientError(QString)));
+		QObject::connect(m_client, SIGNAL(cError(QString,bool)),
+						 this, SLOT(clientError(QString,bool)));
 		QObject::connect(m_client, SIGNAL(cMessage(QString)),
 						 this, SLOT(clientMessage(QString)));
 		QObject::connect(m_client, SIGNAL(cCardSet(Client::CARDS)),
@@ -559,6 +559,8 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientPlayerLost(QString,std::size_t,std::size_t)));
 		QObject::connect(m_client, SIGNAL(cPlayerPicksCard(QString,std::size_t)),
 						 this, SLOT(clientPlayerPicksCard(QString,std::size_t)));
+		QObject::connect(m_client, SIGNAL(cPlayerPicksCard(QString)),
+						 this, SLOT(clientPlayerPicksCard(QString)));
 		QObject::connect(m_client, SIGNAL(cJackSuit(NetMauMau::Common::ICard::SUIT)),
 						 this, SLOT(clientJackSuit(NetMauMau::Common::ICard::SUIT)));
 		QObject::connect(m_client, SIGNAL(cPlayedCard(QString,QByteArray)),
@@ -571,6 +573,8 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientAceRoundEnded(QString)));
 		QObject::connect(m_client, SIGNAL(cDirectionChanged()),
 						 this, SLOT(clientDirectionChanged()));
+		QObject::connect(m_client, SIGNAL(cGetNoCardReason()),
+						 this, SLOT(clientGetNoCardReason()));
 
 		centralWidget()->setEnabled(true);
 		takeCardsMark(false);
@@ -672,7 +676,7 @@ void MainWindow::clientMessage(const QString &msg) const {
 	statusBar()->showMessage(msg);
 }
 
-void MainWindow::clientError(const QString &err) {
+void MainWindow::clientError(const QString &err, bool retry) {
 
 	destroyClient(true);
 	setEnabled(true);
@@ -680,9 +684,13 @@ void MainWindow::clientError(const QString &err) {
 	if(NetMauMauMessageBox::isDisplayed()) {
 		statusBar()->showMessage(QString("%1: %2").arg(tr("Server Error")).arg(err), 4000);
 	} else {
-		if(QMessageBox::critical(this, tr("Server Error"), err,
-								 QMessageBox::Retry|QMessageBox::Cancel,
-								 QMessageBox::Retry) == QMessageBox::Retry) emit serverAccept();
+		if(retry) {
+			if(QMessageBox::critical(this, tr("Server Error"), err,
+									 QMessageBox::Retry|QMessageBox::Cancel, QMessageBox::Retry)
+					== QMessageBox::Retry) emit serverAccept();
+		} else {
+			QMessageBox::critical(this, tr("Server Error"), err, QMessageBox::Cancel);
+		}
 	}
 }
 
@@ -749,7 +757,11 @@ void MainWindow::clearMyCards(bool del, bool dis) {
 
 void MainWindow::clientTurn(std::size_t t) {
 	m_ui->turnLabel->setText(QString::number(t));
-	gameState()->setTurn(t);
+
+	GameState *gs = gameState();
+
+	gs->setTurn(t);
+	gs->setDrawn(false);
 }
 
 void MainWindow::clientStats(const Client::STATS &s) {
@@ -989,6 +1001,10 @@ QString MainWindow::winnerRank(GameState *gs) const {
 	}
 }
 
+void MainWindow::clientPlayerPicksCard(const QString &p) {
+	if(!isMe(p)) updatePlayerStats(p, tr("picks up a card"));
+}
+
 void MainWindow::clientPlayerPicksCard(const QString &p, std::size_t c) {
 
 	const QString &pickStr(tr("picks up %n card(s)", "", c));
@@ -1091,9 +1107,20 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t t
 
 	takeCardsMark(takeCount);
 
+	m_ui->suspendButton->setText(cards.empty() && !gs->isDrawn() ? tr("Dra&w") : tr("&Suspend"));
+
 	enableMyCards(true);
 	gs->setPickCardPrepended(false);
 
+}
+
+void MainWindow::suspend() {
+
+	GameState *gs = gameState();
+
+	enableMyCards(false);
+	gs->setDrawn(true);
+	emit cardToPlay(0L);
 }
 
 void MainWindow::clientChooseJackSuitRequest() {
@@ -1136,9 +1163,8 @@ void MainWindow::clientChooseAceRoundRequest() {
 	}
 }
 
-void MainWindow::suspend() {
-	enableMyCards(false);
-	emit cardToPlay(0L);
+void MainWindow::clientGetNoCardReason() {
+	emit noCardReason(gameState()->possibleCards().empty() ? "NOMATCH" : "SUSPEND");
 }
 
 void MainWindow::takeCards() {
