@@ -105,7 +105,7 @@ class GameState {
 	QString initialCardCount() const;
 	void setInitialCardCount(uint icc);
 
-	bool isDrawn() const;
+	bool isDrawn() const _PURE;
 	void setDrawn(bool b);
 
 private:

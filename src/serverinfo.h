@@ -20,12 +20,13 @@
 #ifndef SERVERINFO_H
 #define SERVERINFO_H
 
-#include <QThread>
+#include <QObject>
+#include <QRunnable>
 
 class QStandardItem;
 class QStandardItemModel;
 
-class ServerInfo : public QThread {
+class ServerInfo : public QObject, public QRunnable {
 	Q_OBJECT
 	Q_DISABLE_COPY(ServerInfo)
 public:
@@ -35,7 +36,6 @@ public:
 	explicit ServerInfo(const QStandardItemModel *model, int row, QObject *parent = 0);
 	virtual ~ServerInfo();
 
-protected:
 	virtual void run();
 
 signals:

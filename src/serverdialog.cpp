@@ -19,6 +19,7 @@
 
 #include <QSplashScreen>
 #include <QImageReader>
+#include <QThreadPool>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QSettings>
@@ -45,6 +46,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null),
 	m_imageFormats(), m_addServerDialog(new AddServerDialog(this)), m_ctxPopup(new QMenu(this)),
 	m_ctxPoint(), m_direction(GameState::NONE) {
+
+	QThreadPool::globalInstance()->setExpiryTimeout(-1);
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;
@@ -90,8 +93,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 	QStringList servers = settings.value("list", QStringList("localhost")).toStringList();
 	QStringList aliases = settings.value("alias", servers.count() == 1 && servers[0] ==
-						  QLatin1String("localhost")
-						  && !localhost.isEmpty() ? QStringList(localhost) : servers).toStringList();
+			QLatin1String("localhost")
+			&& !localhost.isEmpty() ? QStringList(localhost) : servers).toStringList();
 	setLastServer(settings.value("lastServer", QVariant("localhost")).toString());
 	settings.endGroup();
 
@@ -210,12 +213,14 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 ServerDialog::~ServerDialog() {
 
+	QThreadPool::globalInstance()->waitForDone(3100UL);
+
 	for(QList<ServerInfo *>::Iterator r(m_serverInfoThreads.begin());
 		r != m_serverInfoThreads.end(); ++r) {
 
 		ServerInfo *si = *r;
 
-		if(si->isRunning()) si->wait(3100UL);
+		//		if(si->isRunning()) si->wait(3100UL);
 
 		si->disconnect();
 		delete si;
@@ -562,9 +567,7 @@ void ServerDialog::checkOnline() {
 		m_forceRefresh = false;
 
 		for(int r = 0; r < m_serverInfoThreads.count(); ++r) {
-			if(!m_serverInfoThreads[r]->isRunning()) {
-				m_serverInfoThreads[r]->start();
-			}
+			QThreadPool::globalInstance()->start(m_serverInfoThreads[r]);
 		}
 	}
 }

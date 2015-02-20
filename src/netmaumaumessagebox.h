@@ -39,7 +39,7 @@ public:
 
 	virtual ~NetMauMauMessageBox();
 
-	static bool isDisplayed();
+	static bool isDisplayed() _PURE;
 
 protected:
 	virtual void showEvent(QShowEvent *event);

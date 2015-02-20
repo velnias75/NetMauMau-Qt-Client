@@ -30,8 +30,10 @@ namespace {
 const char *NA = QT_TRANSLATE_NOOP("ServerInfo", "n/a");
 }
 
-ServerInfo::ServerInfo(const QStandardItemModel *model, int row, QObject *p) : QThread(p),
-	m_model(model), m_row(row) {}
+ServerInfo::ServerInfo(const QStandardItemModel *model, int row, QObject *p) : QObject(p),
+	QRunnable(), m_model(model), m_row(row) {
+	setAutoDelete(false);
+}
 
 ServerInfo::~ServerInfo() {
 	disconnect();
