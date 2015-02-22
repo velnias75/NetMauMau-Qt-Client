@@ -36,6 +36,8 @@ public:
 	explicit ServerInfo(const QStandardItemModel *model, int row, QObject *parent = 0);
 	virtual ~ServerInfo();
 
+	void disarm();
+
 	virtual void run();
 
 signals:

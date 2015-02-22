@@ -213,18 +213,25 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 ServerDialog::~ServerDialog() {
 
+	for(QList<ServerInfo *>::Iterator r(m_serverInfoThreads.begin());
+		r != m_serverInfoThreads.end(); ++r) {
+
+		ServerInfo *si = *r;
+		si->disarm();
+	}
+
+	m_autoRefresh.stop();
+
+	QObject::disconnect(this, SLOT(checkOnline()));
+
 	QThreadPool::globalInstance()->waitForDone(3100UL);
 
 	for(QList<ServerInfo *>::Iterator r(m_serverInfoThreads.begin());
 		r != m_serverInfoThreads.end(); ++r) {
 
 		ServerInfo *si = *r;
-
-		//		if(si->isRunning()) si->wait(3100UL);
-
 		si->disconnect();
 		delete si;
-
 	}
 
 	savePlayer();
@@ -561,7 +568,7 @@ void ServerDialog::resizeColumns() {
 
 void ServerDialog::checkOnline() {
 
-	QMutexLocker locker(&m_mutex);
+	//	QMutexLocker locker(&m_mutex);
 
 	if(!m_blockAutoRefresh) {
 		m_forceRefresh = false;

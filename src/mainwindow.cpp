@@ -573,8 +573,6 @@ void MainWindow::serverAccept() {
 						 this, SLOT(clientAceRoundEnded(QString)));
 		QObject::connect(m_client, SIGNAL(cDirectionChanged()),
 						 this, SLOT(clientDirectionChanged()));
-		QObject::connect(m_client, SIGNAL(cGetNoCardReason()),
-						 this, SLOT(clientGetNoCardReason()));
 
 		centralWidget()->setEnabled(true);
 		takeCardsMark(false);
@@ -785,7 +783,7 @@ void MainWindow::clientStats(const Client::STATS &s) {
 
 #ifdef USE_ESPEAK
 		if(!(mau)) mau = i->cardCount == 1 &&
-						 (gameState()->playerCardCounts()[pName].first !=
+				(gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
 
@@ -1161,10 +1159,6 @@ void MainWindow::clientChooseAceRoundRequest() {
 	} else {
 		emit chosenAceRound(false);
 	}
-}
-
-void MainWindow::clientGetNoCardReason() {
-	emit noCardReason(gameState()->possibleCards().empty() ? "NOMATCH" : "SUSPEND");
 }
 
 void MainWindow::takeCards() {

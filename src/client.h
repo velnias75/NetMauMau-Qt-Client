@@ -67,7 +67,6 @@ protected:
 	virtual void stats(const STATS &stats) const;
 	virtual void gameOver() const;
 	virtual void directionChanged() const;
-	virtual std::string noCardReason() const;
 	virtual void playerJoined(const std::string &player, const unsigned char *pngData,
 							  std::size_t pngDataLen) const;
 	virtual void playerRejected(const std::string &player) const;
@@ -98,13 +97,11 @@ public slots:
 	void cardToPlay(NetMauMau::Common::ICard *) const;
 	void chosenSuite(NetMauMau::Common::ICard::SUIT);
 	void chosenAceRound(bool);
-	void noCardReason(const QString &);
 	void disconnectNow();
 
 signals:
 	void jackSuitChoiceAvailable() const;
 	void aceRoundChoiceAvailable() const;
-	void noCardReasonAvailable() const;
 
 	void cPlayCard(const Client::CARDS &, std::size_t) const;
 	void cGetJackSuitChoice() const;
@@ -115,7 +112,6 @@ signals:
 	void cTurn(std::size_t) const;
 	void cStats(const Client::STATS &stats) const;
 	void cGameOver() const;
-	void cGetNoCardReason() const;
 	void cDirectionChanged() const;
 	void cPlayerJoined(const QString&, const QImage &) const;
 	void cPlayerSuspends(const QString &) const;
@@ -163,7 +159,6 @@ private:
 	bool m_aceRoundChoice;
 	QString m_server;
 	uint16_t m_port;
-	QString m_noCardReason;
 };
 
 #endif // CLIENT_H

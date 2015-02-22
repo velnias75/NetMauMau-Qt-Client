@@ -67,7 +67,6 @@ signals:
 	void cardToPlay(NetMauMau::Common::ICard *) const;
 	void chosenSuite(NetMauMau::Common::ICard::SUIT) const;
 	void chosenAceRound(bool) const;
-	void noCardReason(const QString &) const;
 
 private slots:
 	void about();
@@ -120,7 +119,6 @@ private slots:
 	void clientAceRoundStarted(const QString &);
 	void clientAceRoundEnded(const QString &);
 	void clientDirectionChanged();
-	void clientGetNoCardReason();
 
 	void clearStats();
 	void resizeColumns() const;

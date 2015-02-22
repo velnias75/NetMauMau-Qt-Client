@@ -39,133 +39,144 @@ ServerInfo::~ServerInfo() {
 	disconnect();
 }
 
+void ServerInfo::disarm() {
+	m_model = 0L;
+}
+
 void ServerInfo::run() {
 
-	QStandardItem *server = m_model->item(m_row, SERVER);
-	QStandardItem *version = m_model->item(m_row, VERSION);
-	QStandardItem *ai = m_model->item(m_row, AI);
-	QStandardItem *players = m_model->item(m_row, PLAYERS);
+	if(m_model) {
 
-	if(!(server && version && ai && players)) return;
+		QStandardItem *server = m_model->item(m_row, SERVER);
+		QStandardItem *version = m_model->item(m_row, VERSION);
+		QStandardItem *ai = m_model->item(m_row, AI);
+		QStandardItem *players = m_model->item(m_row, PLAYERS);
 
-	const QString host(server->data(HOST).toString());
-	QString serverTooltip("<html><body><em>" + host + "</em><br /><br />");
+		if(!(server && version && ai && players)) return;
 
-	version->setToolTip(QString::null);
+		const QString host(server->data(HOST).toString());
+		QString serverTooltip("<html><body><em>" + host + "</em><br /><br />");
 
-	int idx = host.indexOf(':');
+		version->setToolTip(QString::null);
 
-	const QString srv(host.left(idx != -1 ? idx : host.length()));
-	uint port = (QString(idx != -1 ? host.mid(idx + 1) :
-									 QString::number(Client::getDefaultPort()))).toUInt();
+		int idx = host.indexOf(':');
 
-	try {
+		const QString srv(host.left(idx != -1 ? idx : host.length()));
+		uint port = (QString(idx != -1 ? host.mid(idx + 1) :
+										 QString::number(Client::getDefaultPort()))).toUInt();
 
-		timeval tv = { 3L, 0L };
+		try {
 
-		const Client::CAPABILITIES &caps((Client(0L, 0L, QString::null,
-												 std::string(srv.toStdString()),
-												 static_cast<uint16_t>(port))).capabilities(&tv));
+			timeval tv = { 3L, 0L };
 
-		ulong curPCnt = (QString::fromStdString(caps.find("CUR_PLAYERS")->second)).toULong();
-		ulong maxPCnt = (QString::fromStdString(caps.find("MAX_PLAYERS")->second)).toULong();
+			const Client::CAPABILITIES &caps((Client(0L, 0L, QString::null,
+													 std::string(srv.toStdString()),
+													 static_cast<uint16_t>(port))).
+											 capabilities(&tv));
 
-		const std::string &sVer(caps.find("SERVER_VERSION")->second);
-		version->setText(QString::fromStdString(sVer));
+			ulong curPCnt = (QString::fromStdString(caps.find("CUR_PLAYERS")->second)).toULong();
+			ulong maxPCnt = (QString::fromStdString(caps.find("MAX_PLAYERS")->second)).toULong();
 
-		const std::string &sMinClientVer(caps.find("MIN_VERSION")->second);
-		version->setToolTip(tr("Server accepts clients of at least version %1").
-							arg(QString::fromStdString(sMinClientVer)));
+			const std::string &sVer(caps.find("SERVER_VERSION")->second);
+			version->setText(QString::fromStdString(sVer));
 
-		ai->setCheckState(caps.find("AI_OPPONENT")->second == "true" ? Qt::Checked : Qt::Unchecked);
-		ai->setToolTip(ai->checkState() == Qt::Checked ?
-						   tr("You'll play against AI \"%1\"")
-						   .arg(QString::fromUtf8(caps.find("AI_NAME")->second.c_str()))
-						 : tr("The server has only human players"));
+			const std::string &sMinClientVer(caps.find("MIN_VERSION")->second);
+			version->setToolTip(tr("Server accepts clients of at least version %1").
+								arg(QString::fromStdString(sMinClientVer)));
 
-		const Client::CAPABILITIES::const_iterator &f(caps.find("ACEROUND"));
+			ai->setCheckState(caps.find("AI_OPPONENT")->second == "true" ? Qt::Checked :
+																		   Qt::Unchecked);
+			ai->setToolTip(ai->checkState() == Qt::Checked ?
+							   tr("You'll play against AI \"%1\"")
+							   .arg(QString::fromUtf8(caps.find("AI_NAME")->second.c_str()))
+							 : tr("The server has only human players"));
 
-		if(f != caps.end() && f->second != "false") {
-			ai->setToolTip(ai->toolTip() + "\n" + tr("You'll play with %1").
-						   arg(f->second == "A" ? tr("ace rounds") : (f->second == "Q"
-																	  ? tr("queen rounds") :
-																		(f->second == "K"
-																		 ? tr("king rounds") :
-																		   tr("ace rounds")))));
-			ai->setData(QString::fromStdString(f->second), ACEROUNDRANK);
-		}
+			const Client::CAPABILITIES::const_iterator &f(caps.find("ACEROUND"));
 
-		const Client::CAPABILITIES::const_iterator &ic(caps.find("INITIAL_CARDS"));
-		const uint initialCards = ic != caps.end() ?
-											QString::fromStdString(ic->second).toUInt() : 5;
+			if(f != caps.end() && f->second != "false") {
+				ai->setToolTip(ai->toolTip() + "\n" + tr("You'll play with %1").
+							   arg(f->second == "A" ? tr("ace rounds") : (f->second == "Q"
+																		  ? tr("queen rounds") :
+																			(f->second == "K"
+																			 ? tr("king rounds") :
+																			   tr("ace rounds")))));
+				ai->setData(QString::fromStdString(f->second), ACEROUNDRANK);
+			}
 
-		server->setData(initialCards, INIT);
+			const Client::CAPABILITIES::const_iterator &ic(caps.find("INITIAL_CARDS"));
+			const uint initialCards = ic != caps.end() ?
+						QString::fromStdString(ic->second).toUInt() : 5;
 
-		if(ic != caps.end()) ai->setToolTip(ai->toolTip() + "\n" +
-											tr("You'll start with %n card(s)", "", initialCards));
+			server->setData(initialCards, INIT);
 
-		const Client::CAPABILITIES::const_iterator &dc(caps.find("DIRCHANGE"));
-		const bool hasDirChange = dc != caps.end() && dc->second != "false";
+			if(ic != caps.end()) ai->setToolTip(ai->toolTip() + "\n" +
+												tr("You'll start with %n card(s)", "",
+												   initialCards));
 
-		server->setData(hasDirChange, DIRCHANGE);
+			const Client::CAPABILITIES::const_iterator &dc(caps.find("DIRCHANGE"));
+			const bool hasDirChange = dc != caps.end() && dc->second != "false";
 
-		if(hasDirChange) ai->setToolTip(ai->toolTip() + "\n" + tr("You can change directions"));
+			server->setData(hasDirChange, DIRCHANGE);
 
-		const Client::CAPABILITIES::const_iterator &hs(caps.find("HAVE_SCORES"));
-		server->setData(hs != caps.end() && hs->second != "false", HAVESCORES);
+			if(hasDirChange) ai->setToolTip(ai->toolTip() + "\n" + tr("You can change directions"));
 
-		players->setText(tr("%1/%2").arg(curPCnt).arg(maxPCnt));
-		players->setToolTip(tr("Waiting for %n more player(s)", "", (maxPCnt - curPCnt)));
+			const Client::CAPABILITIES::const_iterator &hs(caps.find("HAVE_SCORES"));
+			server->setData(hs != caps.end() && hs->second != "false", HAVESCORES);
 
-		if(curPCnt >= maxPCnt) {
-			server->setToolTip(serverTooltip + tr("The server accepts no more players") +
-							   "</body></html>");
+			players->setText(tr("%1/%2").arg(curPCnt).arg(maxPCnt));
+			players->setToolTip(tr("Waiting for %n more player(s)", "", (maxPCnt - curPCnt)));
+
+			if(curPCnt >= maxPCnt) {
+				server->setToolTip(serverTooltip + tr("The server accepts no more players") +
+								   "</body></html>");
+				emit online(false, m_row);
+				return;
+			}
+
+			if(Client::parseProtocolVersion(sMinClientVer) > Client::getClientProtocolVersion()) {
+				const QString &tooOld(tr("This client is too old for the server"));
+				server->setToolTip(serverTooltip + tooOld + "</body></html>");
+				version->setToolTip(tooOld);
+				emit online(false, m_row);
+				return;
+			}
+
+		} catch(const NetMauMau::Client::Exception::CapabilitiesException &e) {
+
+			setError(ai, players, version, server, host, serverTooltip +
+					 tr("Couldn't get capabilities from server") + "</body></html>");
+
 			emit online(false, m_row);
 			return;
-		}
 
-		if(Client::parseProtocolVersion(sMinClientVer) > Client::getClientProtocolVersion()) {
-			const QString &tooOld(tr("This client is too old for the server"));
-			server->setToolTip(serverTooltip + tooOld + "</body></html>");
-			version->setToolTip(tooOld);
+		} catch(const NetMauMau::Client::Exception::TimeoutException &e) {
+
+			setError(ai, players, version, server, host,
+					 serverTooltip + tr("Server timed out while getting capabilities") +
+					 "</body></html>");
+
 			emit online(false, m_row);
 			return;
-		}
 
-	} catch(const NetMauMau::Client::Exception::CapabilitiesException &e) {
-
-		setError(ai, players, version, server, host, serverTooltip +
-				 tr("Couldn't get capabilities from server") + "</body></html>");
-
-		emit online(false, m_row);
-		return;
-
-	} catch(const NetMauMau::Client::Exception::TimeoutException &e) {
-
-		setError(ai, players, version, server, host,
-				 serverTooltip + tr("Server timed out while getting capabilities") +
-				 "</body></html>");
-
-		emit online(false, m_row);
-		return;
-
-	} catch(const NetMauMau::Common::Exception::SocketException &e) {
+		} catch(const NetMauMau::Common::Exception::SocketException &e) {
 
 #ifndef _WIN32
-		setError(ai, players, version, server, host, serverTooltip + QString::fromUtf8(e.what()) +
-				 "</body></html>");
+			setError(ai, players, version, server, host, serverTooltip + QString::fromUtf8(e.what())
+					 + "</body></html>");
 #else
-		setError(ai, players, version, server, host, serverTooltip +
-				 QString::fromLocal8Bit(e.what()) + "</body></html>");
+			setError(ai, players, version, server, host, serverTooltip +
+					 QString::fromLocal8Bit(e.what()) + "</body></html>");
 #endif
 
-		emit online(false, m_row);
-		return;
+			emit online(false, m_row);
+			return;
+		}
+
+		server->setToolTip(serverTooltip + tr("The server is ready and waiting") +
+						   "</body></html>");
+
+		emit online(true, m_row);
 	}
-
-	server->setToolTip(serverTooltip + tr("The server is ready and waiting") + "</body></html>");
-
-	emit online(true, m_row);
 }
 
 void ServerInfo::setError(QStandardItem *ai, QStandardItem *players, QStandardItem *version,

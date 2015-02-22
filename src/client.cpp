@@ -39,7 +39,7 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 									  CLIENTVERSION, new Base64Bridge()), m_mainWindow(w),
 	m_disconnectNow(false), m_cardToPlay(0L), m_chosenSuit(NetMauMau::Common::ICard::HEARTS),
 	m_online(false), m_connectionLogDialog(cld), m_aceRoundChoice(false),
-	m_server(QString::fromUtf8(server.c_str())), m_port(port), m_noCardReason("SUSPEND") {
+	m_server(QString::fromUtf8(server.c_str())), m_port(port) {
 	init();
 }
 
@@ -50,8 +50,7 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 									  buf.size(), server, port, CLIENTVERSION, new Base64Bridge()),
 	m_mainWindow(w), m_disconnectNow(false), m_cardToPlay(0L),
 	m_chosenSuit(NetMauMau::Common::ICard::HEARTS), m_online(false), m_connectionLogDialog(cld),
-	m_aceRoundChoice(false), m_server(QString::fromUtf8(server.c_str())), m_port(port),
-	m_noCardReason("SUSPEND") {
+	m_aceRoundChoice(false), m_server(QString::fromUtf8(server.c_str())), m_port(port) {
 	init();
 }
 
@@ -75,8 +74,6 @@ void Client::init() const {
 						 this, SLOT(chosenSuite(NetMauMau::Common::ICard::SUIT)));
 		QObject::connect(m_mainWindow, SIGNAL(chosenAceRound(bool)),
 						 this, SLOT(chosenAceRound(bool)));
-		QObject::connect(m_mainWindow, SIGNAL(noCardReason(QString)),
-						 this, SLOT(noCardReason(QString)));
 	}
 }
 
@@ -220,13 +217,6 @@ void Client::chosenAceRound(bool c) {
 	emit aceRoundChoiceAvailable();
 }
 
-void Client::noCardReason(const QString &reason) {
-	log(QString("noCardReason(%1)"). arg(reason), ConnectionLogDialog::FROM_CLIENT);
-
-	m_noCardReason = reason;
-	emit noCardReasonAvailable();
-}
-
 void Client::message(const std::string &msg) const {
 	log(QString("message(%1)").arg(QString::fromUtf8(msg.c_str())));
 	emit cMessage(QString::fromUtf8(msg.c_str()));
@@ -255,23 +245,6 @@ void Client::gameOver() const {
 void Client::directionChanged() const {
 	log("directionChanged");
 	emit cDirectionChanged();
-}
-
-std::string Client::noCardReason() const {
-
-	log("noCardReason REQUEST");
-	emit cGetNoCardReason();
-
-	QEventLoop waitForNoCardReason;
-
-	QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), &waitForNoCardReason, SLOT(quit()));
-	QObject::connect(this, SIGNAL(noCardReasonAvailable()), &waitForNoCardReason, SLOT(quit()));
-
-	waitForNoCardReason.exec(QEventLoop::ExcludeUserInputEvents);
-
-	log(QString("noCardReason(%1)").arg(m_noCardReason), ConnectionLogDialog::TO_SERVER);
-
-	return m_noCardReason.toStdString();
 }
 
 void Client::playerJoined(const std::string &player, const unsigned char *b,
