@@ -25,6 +25,7 @@
 #include <scoresexception.h>
 #include <defaultplayerimage.h>
 #include <playerlistexception.h>
+#include <connectionrejectedexception.h>
 
 #include "mainwindow.h"
 

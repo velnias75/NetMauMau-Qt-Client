@@ -21,6 +21,7 @@
 #include <timeoutexception.h>
 #include <shutdownexception.h>
 #include <playerlistexception.h>
+#include <gamerunningexception.h>
 #include <protocolerrorexception.h>
 #include <versionmismatchexception.h>
 #include <nonetmaumauserverexception.h>
@@ -90,6 +91,8 @@ void Client::run() {
 		play();
 		emit offline(true);
 
+	} catch(const NetMauMau::Client::Exception::GameRunningException &) {
+		emit cError(tr("There is already a game running on this server"));
 	} catch(const NetMauMau::Client::Exception::PlayerlistException &e) {
 		emit cError(tr("Player name %1 is already in use").arg(QString::fromUtf8(e.what())), false);
 	} catch(const NetMauMau::Client::Exception::TimeoutException &e) {
