@@ -1106,7 +1106,8 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t t
 
 	takeCardsMark(takeCount);
 
-	m_ui->suspendButton->setText(cards.empty() && !gs->isDrawn() ? tr("Dra&w") : tr("&Suspend"));
+	m_ui->suspendButton->setText(cards.empty() && !gs->isDrawn() && gs->aceRoundActive().isEmpty()
+								 ? tr("Dra&w") : tr("&Suspend"));
 
 	enableMyCards(true);
 	gs->setPickCardPrepended(false);
