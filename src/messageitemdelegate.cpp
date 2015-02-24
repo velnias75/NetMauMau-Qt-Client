@@ -53,7 +53,7 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItemV4 &opt,
 
 	QFont f = opt.font;
 
-	f.setPointSize(opt.font.pointSize() + 1);
+	if(QFontInfo(opt.font).pixelSize() < 12) f.setPointSize(opt.font.pointSize() + 1);
 
 	m_doc->setHtml(opt.text);
 	m_doc->setDefaultTextOption(tOpt);
