@@ -784,7 +784,7 @@ void MainWindow::clientStats(const Client::STATS &s) {
 
 #ifdef USE_ESPEAK
 		if(!(mau)) mau = i->cardCount == 1 &&
-				(gameState()->playerCardCounts()[pName].first !=
+						 (gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
 
@@ -1267,6 +1267,7 @@ void MainWindow::enableMyCards(bool b) {
 	GameState *gs = gameState();
 
 	m_ui->myCardsDock->setEnabled(b);
+	m_ui->actionWidget->setEnabled(b);
 
 	gs->setNoCardPossible(gs->possibleCards().empty());
 
