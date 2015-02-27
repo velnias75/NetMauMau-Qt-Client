@@ -21,10 +21,15 @@
 #undef QT_NO_CAST_FROM_BYTEARRAY
 #endif
 
+#include <QSettings>
+
 #include "localserveroutputview.h"
 
+#include "localserveroutputsettingsdialog.h"
+
 LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window),
-	m_text(QString::null), m_textFont("Monospace") {
+	m_text(QString::null), m_textFont("Monospace"),
+	m_lsosDlg(new LocalServerOutputSettingsDialog(this)) {
 
 	setupUi(this);
 
@@ -33,20 +38,46 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window
 	f &= ~Qt::WindowSystemMenuHint;
 	setWindowFlags(f);
 
-	setAttribute(Qt::WA_QuitOnClose, false);
+	QObject::connect(actionSettings, SIGNAL(activated()), this, SLOT(changeSettings()));
 
-	m_textFont.setStyleHint(QFont::TypeWriter);
+	setAttribute(Qt::WA_QuitOnClose, false);
 
 #if _WIN32
 	log->viewport()->unsetCursor();
 #endif
 
+	QPalette pal = log->palette();
+
+	QSettings settings;
+	settings.beginGroup("Launcher");
+
+	m_textFont.setStyleHint(QFont::TypeWriter);
+	m_textFont.fromString(settings.value("font", "Monospace").toString());
+
+	pal.setColor(QPalette::Base,
+				 qvariant_cast<QColor>(settings.value("background", pal.color(QPalette::Base))));
+	pal.setColor(QPalette::Text,
+				 qvariant_cast<QColor>(settings.value("textColor", pal.color(QPalette::Text))));
+
 	log->setFont(m_textFont);
+	log->setPalette(pal);
 	log->clear();
 }
 
 LocalServerOutputView::~LocalServerOutputView() {
+
+	QPalette pal = log->palette();
+
+	QSettings settings;
+	settings.beginGroup("Launcher");
+
+	settings.setValue("font", log->font().toString());
+	settings.setValue("background", pal.color(QPalette::Base));
+	settings.setValue("textColor", pal.color(QPalette::Text));
+
 	disconnect();
+
+	delete m_lsosDlg;
 }
 
 void LocalServerOutputView::updateOutput(const QByteArray &d) {
@@ -61,4 +92,20 @@ void LocalServerOutputView::updateOutput(const QByteArray &d) {
 void LocalServerOutputView::closeEvent(QCloseEvent *evt) {
 	if(triggerAction()) triggerAction()->setChecked(false);
 	QWidget::closeEvent(evt);
+}
+
+void LocalServerOutputView::changeSettings() {
+
+	QPalette pal = log->palette();
+
+	m_lsosDlg->setDefaults(pal, log->font());
+
+	if(m_lsosDlg->exec() == QDialog::Accepted) {
+
+		pal.setColor(QPalette::Text, m_lsosDlg->getTextColor());
+		pal.setColor(QPalette::Base, m_lsosDlg->getBackgroundColor());
+
+		log->setFont(m_lsosDlg->getFont());
+		log->setPalette(pal);
+	}
 }

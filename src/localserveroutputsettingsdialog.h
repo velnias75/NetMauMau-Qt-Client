@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,34 +17,37 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOCALSERVEROUTPUTVIEW_H
-#define LOCALSERVEROUTPUTVIEW_H
+#ifndef LOCALSERVEROUTPUTSETTINGSDIALOG_H
+#define LOCALSERVEROUTPUTSETTINGSDIALOG_H
 
-#include "launchdialogbase.h"
-#include "ui_localserveroutputview.h"
+#include "ui_localserveroutputsettingsdialog.h"
 
+class LocalServerOutputView;
 class LocalServerOutputSettingsDialog;
 
-class LocalServerOutputView : public QWidget, public LaunchDialogBase,
-		private Ui::LocalServerOutputView {
+class LocalServerOutputSettingsDialog : public QDialog,
+		private Ui::LocalServerOutputSettingsDialog {
 	Q_OBJECT
-	Q_DISABLE_COPY(LocalServerOutputView)
+	Q_DISABLE_COPY(LocalServerOutputSettingsDialog)
+
 public:
-	explicit LocalServerOutputView(QWidget *parent = 0);
-	virtual ~LocalServerOutputView();
+	explicit LocalServerOutputSettingsDialog(QWidget *p);
 
-	void updateOutput(const QByteArray &data);
+	void setDefaults(const QPalette &p, const QFont f);
 
-protected:
-	virtual void closeEvent(QCloseEvent *);
+	QFont getFont() const;
+	QColor getTextColor() const;
+	QColor getBackgroundColor() const;
 
 private slots:
-	void changeSettings();
+	void backgroundColorChanged(const QColor &);
+	void textColorChanged(const QColor &);
+	void fontChanged(const QFont &);
 
 private:
-	QString m_text;
-	QFont m_textFont;
-	LocalServerOutputSettingsDialog *m_lsosDlg;
+	QFont m_font;
+	QColor m_textColor;
+	QColor m_backgroundColor;
 };
 
-#endif // LOCALSERVEROUTPUTVIEW_H
+#endif // LOCALSERVEROUTPUTSETTINGSDIALOG_H

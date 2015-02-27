@@ -79,6 +79,7 @@ SOURCES += addserverdialog.cpp \
 	cardwidget.cpp \
 	centeredimageheaderview.cpp \
 	client.cpp \
+	colorpickbutton.cpp \
 	connectionlogdialog.cpp \
 	countmessageitemdelegate.cpp \
 	deleteserversdialog.cpp \
@@ -89,6 +90,7 @@ SOURCES += addserverdialog.cpp \
 	launchdialogbase.cpp \
 	launchserverdialog.cpp \
 	licensedialog.cpp \
+	localserveroutputsettingsdialog.cpp \
 	localserveroutputview.cpp \
 	main.cpp \
 	mainwindow.cpp \
@@ -117,6 +119,7 @@ HEADERS += addserverdialog.h \
 	cardwidget.h \
 	centeredimageheaderview.h \
 	client.h \
+	colorpickbutton.h \
 	connectionlogdialog.h \
 	countmessageitemdelegate.h \
 	deleteserversdialog.h \
@@ -127,6 +130,7 @@ HEADERS += addserverdialog.h \
 	launchdialogbase.h \
 	launchserverdialog.h \
 	licensedialog.h \
+	localserveroutputsettingsdialog.h \
 	localserveroutputview.h \
 	mainwindow.h \
 	messageitemdelegate.h \
@@ -154,6 +158,7 @@ FORMS += addserverdialog.ui \
 	jackchoosedialog.ui \
 	launchserverdialog.ui \
 	licensedialog.ui \
+	localserveroutputsettingsdialog.ui \
 	localserveroutputview.ui \
 	mainwindow.ui \
 	scoresdialog.ui \

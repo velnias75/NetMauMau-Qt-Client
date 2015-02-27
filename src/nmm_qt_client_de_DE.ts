@@ -425,11 +425,74 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     </message>
 </context>
 <context>
+    <name>LocalServerOutputSettingsDialog</name>
+    <message>
+        <location filename="localserveroutputsettingsdialog.ui" line="17"/>
+        <source>Settings</source>
+        <translation>Einstellungen</translation>
+    </message>
+    <message>
+        <location filename="localserveroutputsettingsdialog.ui" line="26"/>
+        <source>&amp;Font:</source>
+        <translation>&amp;Schrift:</translation>
+    </message>
+    <message>
+        <location filename="localserveroutputsettingsdialog.ui" line="36"/>
+        <source>Choose the text font</source>
+        <translation>Wähle die Textschriftart</translation>
+    </message>
+    <message>
+        <location filename="localserveroutputsettingsdialog.ui" line="54"/>
+        <source>Colors:</source>
+        <translation>Farben:</translation>
+    </message>
+    <message>
+        <location filename="localserveroutputsettingsdialog.ui" line="63"/>
+        <source>Choose the background color</source>
+        <translation>Wähle die Hintergrundfarbe</translation>
+    </message>
+    <message>
+        <location filename="localserveroutputsettingsdialog.ui" line="66"/>
+        <source>&amp;Background</source>
+        <translation>&amp;Hintergrund</translation>
+    </message>
+    <message>
+        <location filename="localserveroutputsettingsdialog.ui" line="80"/>
+        <source>Choose the text color</source>
+        <translation>Wähle die Textfarbe</translation>
+    </message>
+    <message>
+        <location filename="localserveroutputsettingsdialog.ui" line="83"/>
+        <source>&amp;Text</source>
+        <translation>&amp;Text</translation>
+    </message>
+</context>
+<context>
     <name>LocalServerOutputView</name>
     <message>
         <location filename="localserveroutputview.ui" line="14"/>
         <source>NetMauMau server output</source>
         <translation>NetMauMau Serverausgabe</translation>
+    </message>
+    <message>
+        <location filename="localserveroutputview.ui" line="28"/>
+        <source>&amp;File</source>
+        <translation>&amp;Datei</translation>
+    </message>
+    <message>
+        <location filename="localserveroutputview.ui" line="123"/>
+        <source>&amp;Close</source>
+        <translation>&amp;Schliessen</translation>
+    </message>
+    <message>
+        <location filename="localserveroutputview.ui" line="126"/>
+        <source>Close window</source>
+        <translation>Schliesse Fenster</translation>
+    </message>
+    <message>
+        <location filename="localserveroutputview.ui" line="134"/>
+        <source>&amp;Settings...</source>
+        <translation>&amp;Einstellungen…</translation>
     </message>
 </context>
 <context>

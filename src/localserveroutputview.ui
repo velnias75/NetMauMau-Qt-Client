@@ -22,6 +22,19 @@
     <number>0</number>
    </property>
    <item>
+    <widget class="QMenuBar" name="menu">
+     <widget class="QMenu" name="menu_File">
+      <property name="title">
+       <string>&amp;File</string>
+      </property>
+      <addaction name="actionSettings"/>
+      <addaction name="separator"/>
+      <addaction name="actionClose"/>
+     </widget>
+     <addaction name="menu_File"/>
+    </widget>
+   </item>
+   <item>
     <widget class="QPlainTextEdit" name="log">
      <property name="palette">
       <palette>
@@ -102,9 +115,45 @@
     </widget>
    </item>
   </layout>
+  <action name="actionClose">
+   <property name="icon">
+    <iconset theme="window-close"/>
+   </property>
+   <property name="text">
+    <string>&amp;Close</string>
+   </property>
+   <property name="toolTip">
+    <string>Close window</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset theme="preferences-other"/>
+   </property>
+   <property name="text">
+    <string>&amp;Settings...</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="icons.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionClose</sender>
+   <signal>activated()</signal>
+   <receiver>LocalServerOutputView</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>329</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

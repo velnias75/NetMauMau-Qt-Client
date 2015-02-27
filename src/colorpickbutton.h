@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,34 +17,33 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LOCALSERVEROUTPUTVIEW_H
-#define LOCALSERVEROUTPUTVIEW_H
+#ifndef COLORPICKBUTTON_H
+#define COLORPICKBUTTON_H
 
-#include "launchdialogbase.h"
-#include "ui_localserveroutputview.h"
+#include <QPushButton>
 
-class LocalServerOutputSettingsDialog;
-
-class LocalServerOutputView : public QWidget, public LaunchDialogBase,
-		private Ui::LocalServerOutputView {
+class ColorPickButton : public QPushButton {
 	Q_OBJECT
-	Q_DISABLE_COPY(LocalServerOutputView)
+	Q_DISABLE_COPY(ColorPickButton)
+	Q_PROPERTY(QColor chosenColor READ chosenColor WRITE setChosenColor NOTIFY chosenColorChanged)
+
 public:
-	explicit LocalServerOutputView(QWidget *parent = 0);
-	virtual ~LocalServerOutputView();
+	explicit ColorPickButton(QWidget *parent = 0);
 
-	void updateOutput(const QByteArray &data);
+	QColor chosenColor() const;
+	void setChosenColor(const QColor &col);
 
-protected:
-	virtual void closeEvent(QCloseEvent *);
+signals:
+	void chosenColorChanged(const QColor&);
 
 private slots:
-	void changeSettings();
+	void clicked();
 
 private:
-	QString m_text;
-	QFont m_textFont;
-	LocalServerOutputSettingsDialog *m_lsosDlg;
+	QColor getIdealTextColor(const QColor& rBackgroundColor) const;
+
+private:
+	QColor m_chosenColor;
 };
 
-#endif // LOCALSERVEROUTPUTVIEW_H
+#endif // COLORPICKBUTTON_H
