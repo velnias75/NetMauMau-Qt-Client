@@ -43,7 +43,6 @@ private slots:
 
 private:
 	QString m_text;
-	QFont m_textFont;
 	LocalServerOutputSettingsDialog *m_lsosDlg;
 };
 

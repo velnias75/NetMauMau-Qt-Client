@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>660</width>
-    <height>300</height>
+    <width>656</width>
+    <height>296</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,10 @@
    <iconset resource="icons.qrc">
     <normaloff>:/nmm_qt_client.png</normaloff>:/nmm_qt_client.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="margin">
     <number>0</number>
    </property>
@@ -100,6 +103,12 @@
        </disabled>
       </palette>
      </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
      <property name="undoRedoEnabled">
       <bool>false</bool>
      </property>
@@ -117,7 +126,9 @@
   </layout>
   <action name="actionClose">
    <property name="icon">
-    <iconset theme="window-close"/>
+    <iconset theme="window-close">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Close</string>
@@ -128,7 +139,9 @@
   </action>
   <action name="actionSettings">
    <property name="icon">
-    <iconset theme="preferences-other"/>
+    <iconset theme="preferences-other">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Settings...</string>
@@ -141,7 +154,7 @@
  <connections>
   <connection>
    <sender>actionClose</sender>
-   <signal>activated()</signal>
+   <signal>triggered()</signal>
    <receiver>LocalServerOutputView</receiver>
    <slot>close()</slot>
    <hints>

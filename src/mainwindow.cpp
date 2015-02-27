@@ -784,7 +784,7 @@ void MainWindow::clientStats(const Client::STATS &s) {
 
 #ifdef USE_ESPEAK
 		if(!(mau)) mau = i->cardCount == 1 &&
-						 (gameState()->playerCardCounts()[pName].first !=
+				(gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
 
@@ -1099,7 +1099,6 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t t
 
 	statusBar()->showMessage(gs->pickCardPrepended() ?
 								 (statusBar()->currentMessage() + "; " + msg) : msg, 2000);
-
 	clientNextPlayer(myself());
 
 	gs->possibleCards() = cards;
@@ -1108,10 +1107,8 @@ void MainWindow::clientPlayCardRequest(const Client::CARDS &cards, std::size_t t
 
 	m_ui->suspendButton->setText(cards.empty() && !gs->isDrawn() && gs->aceRoundActive().isEmpty()
 								 ? tr("Dra&w") : tr("&Suspend"));
-
 	enableMyCards(true);
 	gs->setPickCardPrepended(false);
-
 }
 
 void MainWindow::suspend() {

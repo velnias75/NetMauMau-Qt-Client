@@ -28,8 +28,7 @@
 #include "localserveroutputsettingsdialog.h"
 
 LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window),
-	m_text(QString::null), m_textFont("Monospace"),
-	m_lsosDlg(new LocalServerOutputSettingsDialog(this)) {
+	m_text(QString::null), m_lsosDlg(new LocalServerOutputSettingsDialog(this)) {
 
 	setupUi(this);
 
@@ -38,28 +37,35 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window
 	f &= ~Qt::WindowSystemMenuHint;
 	setWindowFlags(f);
 
-	QObject::connect(actionSettings, SIGNAL(activated()), this, SLOT(changeSettings()));
+	QObject::connect(actionSettings, SIGNAL(triggered()), this, SLOT(changeSettings()));
 
 	setAttribute(Qt::WA_QuitOnClose, false);
 
 #if _WIN32
 	log->viewport()->unsetCursor();
+	QFont tf("Fixedsys");
+#else
+	QFont tf = log->font();
 #endif
 
 	QPalette pal = log->palette();
 
+#if _WIN32
+	pal.setColor(QPalette::Text, QColor(192, 192, 192, 255));
+#endif
+
 	QSettings settings;
-	settings.beginGroup("Launcher");
+	settings.beginGroup("ServerOutput");
 
-	m_textFont.setStyleHint(QFont::TypeWriter);
-	m_textFont.fromString(settings.value("font", "Monospace").toString());
+	tf.setStyleHint(QFont::TypeWriter);
+	tf.fromString(settings.value("font", tf.toString()).toString());
 
-	pal.setColor(QPalette::Base,
-				 qvariant_cast<QColor>(settings.value("background", pal.color(QPalette::Base))));
-	pal.setColor(QPalette::Text,
-				 qvariant_cast<QColor>(settings.value("textColor", pal.color(QPalette::Text))));
+	pal.setColor(QPalette::Base, settings.value("background", pal.color(QPalette::Base)).
+				 value<QColor>());
+	pal.setColor(QPalette::Text, settings.value("textColor", pal.color(QPalette::Text)).
+				 value<QColor>());
 
-	log->setFont(m_textFont);
+	log->setFont(tf);
 	log->setPalette(pal);
 	log->clear();
 }
@@ -69,7 +75,7 @@ LocalServerOutputView::~LocalServerOutputView() {
 	QPalette pal = log->palette();
 
 	QSettings settings;
-	settings.beginGroup("Launcher");
+	settings.beginGroup("ServerOutput");
 
 	settings.setValue("font", log->font().toString());
 	settings.setValue("background", pal.color(QPalette::Base));
