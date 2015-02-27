@@ -57,8 +57,8 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window
 	QSettings settings;
 	settings.beginGroup("ServerOutput");
 
-	tf.setStyleHint(QFont::TypeWriter);
 	tf.fromString(settings.value("font", tf.toString()).toString());
+	tf.setStyleHint(QFont::TypeWriter);
 
 	pal.setColor(QPalette::Base, settings.value("background", pal.color(QPalette::Base)).
 				 value<QColor>());
