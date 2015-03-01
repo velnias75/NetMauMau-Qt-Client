@@ -19,20 +19,14 @@
 
 #include "jackchoosedialog.h"
 
-JackChooseDialog::JackChooseDialog(QWidget *p) : QDialog(p) {
+JackChooseDialog::JackChooseDialog(QWidget *p) : NetMauMauDialog(p) {
 
 	setupUi(this);
-
-	Qt::WindowFlags f = windowFlags();
-	f &= ~Qt::WindowContextHelpButtonHint;
-	f &= ~Qt::WindowSystemMenuHint;
-	setWindowFlags(f);
 
 	heartsSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::HEARTS));
 	diamondsSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::DIAMONDS));
 	clubsSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::CLUBS));
 	spadesSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::SPADES));
-
 }
 
 JackChooseDialog::~JackChooseDialog() {

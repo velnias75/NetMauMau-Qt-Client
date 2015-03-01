@@ -22,12 +22,14 @@
 
 #include <QProcess>
 
+#include "netmaumaudialog.h"
+
 #include "launchdialogbase.h"
 #include "ui_launchserverdialog.h"
 
 class LocalServerOutputView;
 
-class LaunchServerDialog : public QDialog, public LaunchDialogBase,
+class LaunchServerDialog : public NetMauMauDialog, public LaunchDialogBase,
 		private Ui::LaunchServerDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(LaunchServerDialog)

@@ -22,9 +22,11 @@
 
 #include <QStandardItemModel>
 
+#include "netmaumaudialog.h"
+
 #include "ui_deleteserversdialog.h"
 
-class DeleteServersDialog : public QDialog, private Ui::DeleteServersDialog {
+class DeleteServersDialog : public NetMauMauDialog, private Ui::DeleteServersDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(DeleteServersDialog)
 public:

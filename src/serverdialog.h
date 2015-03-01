@@ -26,6 +26,8 @@
 
 #include <icard.h>
 
+#include "netmaumaudialog.h"
+
 #include "gamestate.h"
 #include "ui_serverdialog.h"
 
@@ -34,7 +36,7 @@ class AddServerDialog;
 class QSplashScreen;
 class ServerInfo;
 
-class ServerDialog : public QDialog, public Ui::ServerDialog {
+class ServerDialog : public NetMauMauDialog, public Ui::ServerDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(ServerDialog)
 	Q_PROPERTY(bool forceRefresh READ isForceRefresh WRITE forceRefresh NOTIFY refresh)

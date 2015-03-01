@@ -22,14 +22,9 @@
 
 #include "licensedialog.h"
 
-LicenseDialog::LicenseDialog(QWidget *p) : QDialog(p) {
+LicenseDialog::LicenseDialog(QWidget *p) : NetMauMauDialog(p) {
 
 	setupUi(this);
-
-	Qt::WindowFlags f = windowFlags();
-	f &= ~Qt::WindowContextHelpButtonHint;
-	f &= ~Qt::WindowSystemMenuHint;
-	setWindowFlags(f);
 
 	QObject::connect(textBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(anchorClicked(QUrl)));
 

@@ -22,11 +22,13 @@
 
 #include <QStandardItemModel>
 
+#include "netmaumaudialog.h"
+
 #include "ui_connectionlogdialog.h"
 
 class QMenu;
 
-class ConnectionLogDialog : public QDialog, private Ui::ConnectionLogDialog {
+class ConnectionLogDialog : public NetMauMauDialog, private Ui::ConnectionLogDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(ConnectionLogDialog)
 public:

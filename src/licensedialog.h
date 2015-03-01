@@ -20,9 +20,11 @@
 #ifndef LICENSEDIALOG_H
 #define LICENSEDIALOG_H
 
+#include "netmaumaudialog.h"
+
 #include "ui_licensedialog.h"
 
-class LicenseDialog : public QDialog, private Ui::LicenseDialog {
+class LicenseDialog : public NetMauMauDialog, private Ui::LicenseDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(LicenseDialog)
 public:

@@ -201,22 +201,22 @@ Der Server erwartet mindestens Version %3.%4</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="45"/>
+        <location filename="jackchoosedialog.cpp" line="39"/>
         <source>Hearts</source>
         <translation>Herz</translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="47"/>
+        <location filename="jackchoosedialog.cpp" line="41"/>
         <source>Diamonds</source>
         <translation>Karo</translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="49"/>
+        <location filename="jackchoosedialog.cpp" line="43"/>
         <source>Clubs</source>
         <translation>Kreuz</translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="51"/>
+        <location filename="jackchoosedialog.cpp" line="45"/>
         <source>Spades</source>
         <translation>Pik</translation>
     </message>
@@ -395,18 +395,18 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>&amp;Starten</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="166"/>
+        <location filename="launchserverdialog.cpp" line="161"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="166"/>
-        <location filename="launchserverdialog.cpp" line="248"/>
+        <location filename="launchserverdialog.cpp" line="161"/>
+        <location filename="launchserverdialog.cpp" line="243"/>
         <source>Failed to start %1</source>
         <translation>Starten von %1 gescheitert</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="262"/>
+        <location filename="launchserverdialog.cpp" line="257"/>
         <source>Find NetMauMau server executable</source>
         <translation>Finde die ausführbare Datei von NetMauMau</translation>
     </message>
@@ -1159,17 +1159,17 @@ Spieldauer: %2</translation>
         <translation>Punktzahlen</translation>
     </message>
     <message>
-        <location filename="scoresdialog.cpp" line="41"/>
+        <location filename="scoresdialog.cpp" line="36"/>
         <source>Player</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="scoresdialog.cpp" line="41"/>
+        <location filename="scoresdialog.cpp" line="36"/>
         <source>Score</source>
         <translation>Punktzahl</translation>
     </message>
     <message>
-        <location filename="scoresdialog.cpp" line="156"/>
+        <location filename="scoresdialog.cpp" line="151"/>
         <source>This server provides no scores</source>
         <translation>Dieser Server liefert keine Punktzahlen</translation>
     </message>
@@ -1264,7 +1264,7 @@ Spieldauer: %2</translation>
         <translation>Server löschen…</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="673"/>
+        <location filename="serverdialog.cpp" line="668"/>
         <source>Delete server</source>
         <translation>Server löschen</translation>
     </message>
@@ -1274,72 +1274,72 @@ Spieldauer: %2</translation>
         <translation>n.V.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="78"/>
+        <location filename="serverdialog.cpp" line="73"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="78"/>
+        <location filename="serverdialog.cpp" line="73"/>
         <source>AI</source>
         <translation>KI</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="78"/>
+        <location filename="serverdialog.cpp" line="73"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="78"/>
+        <location filename="serverdialog.cpp" line="73"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="254"/>
+        <location filename="serverdialog.cpp" line="249"/>
         <source>Choose a player image</source>
         <translation>Wähle ein Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="255"/>
+        <location filename="serverdialog.cpp" line="250"/>
         <source>Images (%1)</source>
         <translation>Bilder (%1)</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="528"/>
+        <location filename="serverdialog.cpp" line="523"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or of an unsupported image format.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="674"/>
+        <location filename="serverdialog.cpp" line="669"/>
         <source>&lt;html&gt;&lt;body&gt;Really delete server
 &lt;b&gt;%1&lt;/b&gt;?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Server &lt;b&gt;%1&lt;/b&gt; wirklich löschen?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="294"/>
-        <location filename="serverdialog.cpp" line="311"/>
+        <location filename="serverdialog.cpp" line="289"/>
+        <location filename="serverdialog.cpp" line="306"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="294"/>
+        <location filename="serverdialog.cpp" line="289"/>
         <source>%1 is already in use!</source>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="311"/>
+        <location filename="serverdialog.cpp" line="306"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="527"/>
-        <location filename="serverdialog.cpp" line="547"/>
+        <location filename="serverdialog.cpp" line="522"/>
+        <location filename="serverdialog.cpp" line="542"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="547"/>
+        <location filename="serverdialog.cpp" line="542"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>

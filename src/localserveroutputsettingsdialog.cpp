@@ -21,7 +21,7 @@
 
 #include "localserveroutputview.h"
 
-LocalServerOutputSettingsDialog::LocalServerOutputSettingsDialog(QWidget *p) : QDialog(p),
+LocalServerOutputSettingsDialog::LocalServerOutputSettingsDialog(QWidget *p) : NetMauMauDialog(p),
 	m_font("Monospace"), m_textColor(0, 192, 0, 255), m_backgroundColor(0, 0, 0, 255) {
 
 	setupUi(this);
@@ -32,11 +32,6 @@ LocalServerOutputSettingsDialog::LocalServerOutputSettingsDialog(QWidget *p) : Q
 					 this, SLOT(textColorChanged(QColor)));
 	QObject::connect(fontComboBox, SIGNAL(currentFontChanged(QFont)),
 					 this, SLOT(fontChanged(QFont)));
-
-	Qt::WindowFlags f = windowFlags();
-	f &= ~Qt::WindowContextHelpButtonHint;
-	f &= ~Qt::WindowSystemMenuHint;
-	setWindowFlags(f);
 }
 
 void LocalServerOutputSettingsDialog::setDefaults(const QPalette &p, const QFont f) {

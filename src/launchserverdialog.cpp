@@ -28,15 +28,10 @@
 #include "localserveroutputview.h"
 #include "client.h"
 
-LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) : QDialog(p),
-	LaunchDialogBase(), m_process(), m_errFail(false), m_lsov(lsov) {
+LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) :
+	NetMauMauDialog(p), LaunchDialogBase(), m_process(), m_errFail(false), m_lsov(lsov) {
 
 	setupUi(this);
-
-	Qt::WindowFlags f = windowFlags();
-	f &= ~Qt::WindowContextHelpButtonHint;
-	f &= ~Qt::WindowSystemMenuHint;
-	setWindowFlags(f);
 
 	QSettings settings;
 	settings.beginGroup("Launcher");

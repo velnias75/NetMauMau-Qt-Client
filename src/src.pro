@@ -96,6 +96,7 @@ SOURCES += addserverdialog.cpp \
 	mainwindow.cpp \
 	messageitemdelegate.cpp \
 	netmaumauapplication.cpp \
+	netmaumaudialog.cpp \
 	netmaumaumessagebox.cpp \
 	playerimagedelegate.cpp \
 	playerimagelineedit.cpp \
@@ -135,6 +136,7 @@ HEADERS += addserverdialog.h \
 	mainwindow.h \
 	messageitemdelegate.h \
 	netmaumauapplication.h \
+	netmaumaudialog.h \
 	netmaumaumessagebox.h \
 	playerimagedelegate.h \
 	playerimagelineedit.h \

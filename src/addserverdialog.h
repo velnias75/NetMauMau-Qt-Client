@@ -20,9 +20,11 @@
 #ifndef ADDSERVERDIALOG_H
 #define ADDSERVERDIALOG_H
 
+#include "netmaumaudialog.h"
+
 #include "ui_addserverdialog.h"
 
-class AddServerDialog : public QDialog, private Ui::AddServerDialog {
+class AddServerDialog : public NetMauMauDialog, private Ui::AddServerDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(AddServerDialog)
 public:

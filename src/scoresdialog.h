@@ -22,11 +22,13 @@
 
 #include <QStandardItemModel>
 
+#include "netmaumaudialog.h"
+
 #include "ui_scoresdialog.h"
 
 class ServerDialog;
 
-class ScoresDialog : public QDialog, private Ui::ScoresDialog {
+class ScoresDialog : public NetMauMauDialog, private Ui::ScoresDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(ScoresDialog)
 public:

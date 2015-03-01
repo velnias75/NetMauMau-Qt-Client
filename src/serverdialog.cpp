@@ -39,7 +39,7 @@ const char *NA = QT_TRANSLATE_NOOP("ServerDialog", "n/a");
 const QRegExp nameRex("[^\\+]+.*");
 }
 
-ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_model(0, 4),
+ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(p), m_model(0, 4),
 	m_playerNameModel(), m_forceRefresh(false), m_lastServer(QString::null),
 	m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
 	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
@@ -48,11 +48,6 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 	m_ctxPoint(), m_direction(GameState::NONE) {
 
 	QThreadPool::globalInstance()->setExpiryTimeout(-1);
-
-	Qt::WindowFlags f = windowFlags();
-	f &= ~Qt::WindowContextHelpButtonHint;
-	f &= ~Qt::WindowSystemMenuHint;
-	setWindowFlags(f);
 
 	setupUi(this);
 
@@ -93,8 +88,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : QDialog(p), m_mo
 
 	QStringList servers = settings.value("list", QStringList("localhost")).toStringList();
 	QStringList aliases = settings.value("alias", servers.count() == 1 && servers[0] ==
-			QLatin1String("localhost")
-			&& !localhost.isEmpty() ? QStringList(localhost) : servers).toStringList();
+						  QLatin1String("localhost")
+						  && !localhost.isEmpty() ? QStringList(localhost) : servers).toStringList();
 	setLastServer(settings.value("lastServer", QVariant("localhost")).toString());
 	settings.endGroup();
 

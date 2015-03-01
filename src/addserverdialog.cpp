@@ -19,12 +19,7 @@
 
 #include "addserverdialog.h"
 
-AddServerDialog::AddServerDialog(QWidget *p) : QDialog(p), m_okButton(0L) {
-
-	Qt::WindowFlags f = windowFlags();
-	f &= ~Qt::WindowContextHelpButtonHint;
-	f &= ~Qt::WindowSystemMenuHint;
-	setWindowFlags(f);
+AddServerDialog::AddServerDialog(QWidget *p) : NetMauMauDialog(p), m_okButton(0L) {
 
 	setupUi(this);
 

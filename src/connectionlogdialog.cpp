@@ -25,18 +25,13 @@
 #include "connectionlogdialog.h"
 #include "util.h"
 
-ConnectionLogDialog::ConnectionLogDialog(QWidget *p)
-	: QDialog(p, Qt::Window), m_entryFont("Monospace"), m_model(),
-	  m_toIcon(QApplication::style()->standardIcon(QStyle::SP_ArrowRight)),
-	  m_fromIcon(QApplication::style()->standardIcon(QStyle::SP_ArrowLeft)),
-	  m_ctxPopup(new QMenu(this)) {
+ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : NetMauMauDialog(p, Qt::Window),
+	m_entryFont("Monospace"), m_model(),
+	m_toIcon(QApplication::style()->standardIcon(QStyle::SP_ArrowRight)),
+	m_fromIcon(QApplication::style()->standardIcon(QStyle::SP_ArrowLeft)),
+	m_ctxPopup(new QMenu(this)) {
 
 	setupUi(this);
-
-	Qt::WindowFlags f = windowFlags();
-	f &= ~Qt::WindowContextHelpButtonHint;
-	f &= ~Qt::WindowSystemMenuHint;
-	setWindowFlags(f);
 
 	setAttribute(Qt::WA_QuitOnClose, false);
 

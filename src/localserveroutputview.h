@@ -21,6 +21,7 @@
 #define LOCALSERVEROUTPUTVIEW_H
 
 #include "launchdialogbase.h"
+
 #include "ui_localserveroutputview.h"
 
 class LocalServerOutputSettingsDialog;

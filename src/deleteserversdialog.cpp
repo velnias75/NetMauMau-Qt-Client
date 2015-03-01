@@ -24,15 +24,10 @@
 
 #include "serverinfo.h"
 
-DeleteServersDialog::DeleteServersDialog(const QStandardItemModel *model, QWidget *p) : QDialog(p),
-	m_pModel(model), m_model(0, 1) {
+DeleteServersDialog::DeleteServersDialog(const QStandardItemModel *model, QWidget *p) :
+	NetMauMauDialog(p), m_pModel(model), m_model(0, 1) {
 
 	setupUi(this);
-
-	Qt::WindowFlags f = windowFlags();
-	f &= ~Qt::WindowContextHelpButtonHint;
-	f &= ~Qt::WindowSystemMenuHint;
-	setWindowFlags(f);
 
 	serversList->setModel(&m_model);
 

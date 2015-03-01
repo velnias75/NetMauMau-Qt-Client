@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,27 +17,20 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JACHCHOOSEDIALOG_H
-#define JACHCHOOSEDIALOG_H
+#ifndef NETMAUMAUDIALOG_H
+#define NETMAUMAUDIALOG_H
 
-#include "ui_jackchoosedialog.h"
+#include <QDialog>
 
-#include "netmaumaudialog.h"
-
-#include <icard.h>
-
-class JackChooseDialog : public NetMauMauDialog, private Ui::JackChooseDialog {
+class NetMauMauDialog : public QDialog {
 	Q_OBJECT
-	Q_DISABLE_COPY(JackChooseDialog)
+	Q_DISABLE_COPY(NetMauMauDialog)
 public:
-	explicit JackChooseDialog(QWidget *parent = 0);
-	virtual ~JackChooseDialog();
+	virtual ~NetMauMauDialog();
 
-	void setSuite(NetMauMau::Common::ICard::SUIT s);
+protected:
+	explicit NetMauMauDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
-	NetMauMau::Common::ICard::SUIT getChosenSuit() const;
-
-	static QString suitToolTip(NetMauMau::Common::ICard::SUIT s);
 };
 
-#endif // JACHCHOOSEDIALOG_H
+#endif // NETMAUMAUDIALOG_H

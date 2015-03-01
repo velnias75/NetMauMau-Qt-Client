@@ -20,12 +20,14 @@
 #ifndef LOCALSERVEROUTPUTSETTINGSDIALOG_H
 #define LOCALSERVEROUTPUTSETTINGSDIALOG_H
 
+#include "netmaumaudialog.h"
+
 #include "ui_localserveroutputsettingsdialog.h"
 
 class LocalServerOutputView;
 class LocalServerOutputSettingsDialog;
 
-class LocalServerOutputSettingsDialog : public QDialog,
+class LocalServerOutputSettingsDialog : public NetMauMauDialog,
 		private Ui::LocalServerOutputSettingsDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(LocalServerOutputSettingsDialog)
