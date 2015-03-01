@@ -53,6 +53,9 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	QObject::connect(&m_process, SIGNAL(finished(int)), this, SLOT(finished(int)));
 	QObject::connect(&m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateViewer()));
 
+	QObject::connect(&m_process, SIGNAL(started()), lsov, SLOT(launched()));
+	QObject::connect(&m_process, SIGNAL(finished(int)), lsov, SLOT(finished(int)));
+
 	launchStartup->setChecked(settings.value("onStartup", false).toBool());
 	playersSpin->setValue(settings.value("playersSpin", 1).toInt());
 	cardDecksSpin->setValue(settings.value("cardDecks", 1).toInt());
@@ -70,6 +73,8 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	settings.endGroup();
 
 	m_process.setProcessChannelMode(QProcess::MergedChannels);
+
+	lsov->setProcess(&m_process);
 
 	updateOptions();
 }
@@ -163,11 +168,13 @@ void LaunchServerDialog::finished(int ec) {
 												  append(optionsEdit->text())));
 	m_errFail = false;
 	launchButton->setDisabled(false);
+	m_lsov->setLaunchDisabled(false);
 	emit serverLaunched(false);
 }
 
 void LaunchServerDialog::launched() {
 	launchButton->setDisabled(true);
+	m_lsov->setLaunchDisabled(true);
 }
 
 void LaunchServerDialog::stateChanged(QProcess::ProcessState ps) {

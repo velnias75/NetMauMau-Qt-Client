@@ -149,6 +149,8 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	QObject::connect(m_ui->actionLicense, SIGNAL(triggered()), m_licenseDialog, SLOT(exec()));
 	QObject::connect(m_ui->actionHallOfFame, SIGNAL(triggered()), m_scoresDialog, SLOT(exec()));
 
+	m_lsov->addLaunchAction(m_ui->actionLaunchServer);
+
 #ifdef USE_ESPEAK
 #ifdef _WIN32
 	if(espeakInstalled()) {

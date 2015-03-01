@@ -21,6 +21,7 @@
 #undef QT_NO_CAST_FROM_BYTEARRAY
 #endif
 
+#include <QProcess>
 #include <QSettings>
 
 #include "localserveroutputview.h"
@@ -28,7 +29,8 @@
 #include "localserveroutputsettingsdialog.h"
 
 LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window),
-	m_text(QString::null), m_lsosDlg(new LocalServerOutputSettingsDialog(this)) {
+	m_text(QString::null), m_lsosDlg(new LocalServerOutputSettingsDialog(this)), m_process(0L),
+	m_launchAction(0L){
 
 	setupUi(this);
 
@@ -68,6 +70,8 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window
 	log->setFont(tf);
 	log->setPalette(pal);
 	log->clear();
+
+	QObject::connect(actionTerminateServer, SIGNAL(triggered()), this, SLOT(terminate()));
 }
 
 LocalServerOutputView::~LocalServerOutputView() {
@@ -84,6 +88,39 @@ LocalServerOutputView::~LocalServerOutputView() {
 	disconnect();
 
 	delete m_lsosDlg;
+}
+
+void LocalServerOutputView::addLaunchAction(QAction *la) {
+	if(la) {
+		m_launchAction = la;
+		menu_File->insertAction(actionTerminateServer, la);
+	}
+}
+
+void LocalServerOutputView::setLaunchDisabled(bool b) {
+	if(m_launchAction) m_launchAction->setDisabled(b);
+}
+
+void LocalServerOutputView::setProcess(QProcess *p) {
+	m_process = p;
+}
+
+void LocalServerOutputView::terminate() {
+	if(m_process) {
+#ifndef _WIN32
+		m_process->terminate();
+#else
+		m_process->kill();
+#endif
+	}
+}
+
+void LocalServerOutputView::finished(int) {
+	actionTerminateServer->setEnabled(false);
+}
+
+void LocalServerOutputView::launched() {
+	actionTerminateServer->setEnabled(true);
 }
 
 void LocalServerOutputView::updateOutput(const QByteArray &d) {
@@ -106,12 +143,15 @@ void LocalServerOutputView::changeSettings() {
 
 	m_lsosDlg->setDefaults(pal, log->font());
 
-	if(m_lsosDlg->exec() == QDialog::Accepted) {
+	if(m_lsosDlg->exec() == NetMauMauDialog::Accepted) {
 
 		pal.setColor(QPalette::Text, m_lsosDlg->getTextColor());
 		pal.setColor(QPalette::Base, m_lsosDlg->getBackgroundColor());
 
+		log->setStyleSheet(QString::null);
 		log->setFont(m_lsosDlg->getFont());
 		log->setPalette(pal);
 	}
+
+	log->setStyleSheet(":focus { border: none; outline: none; }");
 }
