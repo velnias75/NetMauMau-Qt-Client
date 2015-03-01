@@ -229,18 +229,15 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 
 	setOpenCard(QByteArray());
 
-	readSettings();
-
+	QObject::connect(m_lsov, SIGNAL(closed()), m_ui->actionNetMauMauServerOutput, SLOT(toggle()));
 	QObject::connect(m_ui->actionNetMauMauServerOutput, SIGNAL(toggled(bool)),
 					 m_lsov, SLOT(setShown(bool)));
 
-	LaunchServerDialog *lsd = static_cast<LaunchServerDialog *>(m_launchDlg);
-	lsd->setTriggerAction(m_ui->actionNetMauMauServerOutput);
-	m_lsov->setTriggerAction(m_ui->actionNetMauMauServerOutput);
+	readSettings();
 
 	m_playTimer.stop();
 
-	if(lsd->launchAtStartup()) lsd->launch();
+	if(m_launchDlg->launchAtStartup()) m_launchDlg->launch();
 }
 
 MainWindow::~MainWindow() {
@@ -269,7 +266,6 @@ MainWindow::~MainWindow() {
 
 	disconnect();
 
-	delete m_lsov;
 	delete m_scoresDialog;
 	delete m_serverDlg;
 	delete m_launchDlg;
@@ -288,6 +284,7 @@ MainWindow::~MainWindow() {
 	delete m_gameState;
 	delete m_animLogo;
 	delete m_playerNamesActionGroup;
+	delete m_lsov;
 	delete m_ui;
 }
 
@@ -308,17 +305,7 @@ void MainWindow::forceRefreshServers(bool) {
 	m_serverDlg->forceRefresh(true);
 }
 
-void MainWindow::localServerLaunched(bool b) {
-
-	m_ui->actionNetMauMauServerOutput->setEnabled(b);
-
-	if(m_ui->actionNetMauMauServerOutput->isChecked()) {
-		m_lsov->show();
-		m_lsov->lower();
-	} else if(m_lsov->isVisible()) {
-		m_lsov->close();
-	}
-
+void MainWindow::localServerLaunched(bool) {
 	QTimer::singleShot(800, this, SLOT(forceRefreshServers()));
 }
 
@@ -600,7 +587,6 @@ void MainWindow::serverAccept() {
 
 		m_ui->actionServer->setEnabled(false);
 		m_ui->suspendButton->setEnabled(true);
-		m_ui->actionLaunchServer->setEnabled(false);
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
 		m_ui->remoteGroup->setTitle(tr("%1 on %2").arg(m_ui->remoteGroup->title()).arg(alias));
 
@@ -1508,7 +1494,6 @@ void MainWindow::clientDestroyed() {
 
 	m_ui->remoteGroup->setTitle(tr("Players"));
 	m_ui->actionServer->setEnabled(true);
-	m_ui->actionLaunchServer->setEnabled(true);
 	m_ui->suspendButton->setEnabled(false);
 
 	m_timeLabel.hide();

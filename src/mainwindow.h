@@ -39,6 +39,7 @@ class QSplashScreen;
 class FileDownloader;
 class QProgressDialog;
 class JackChooseDialog;
+class LaunchServerDialog;
 class ConnectionLogDialog;
 class LocalServerOutputView;
 
@@ -173,7 +174,7 @@ private:
 	Ui::MainWindow *m_ui;
 	ServerDialog *m_serverDlg;
 	LocalServerOutputView *m_lsov;
-	QDialog *m_launchDlg;
+	LaunchServerDialog *m_launchDlg;
 	QStandardItemModel m_model;
 	JackChooseDialog *m_jackChooseDialog;
 	QBrush m_stdForeground;

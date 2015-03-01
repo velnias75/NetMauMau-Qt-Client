@@ -19,7 +19,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
    <property name="spacing">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="margin">
     <number>0</number>
@@ -31,6 +31,8 @@
        <string>&amp;File</string>
       </property>
       <addaction name="actionTerminateServer"/>
+      <addaction name="separator"/>
+      <addaction name="actionStartAutomatically"/>
       <addaction name="separator"/>
       <addaction name="actionSettings"/>
       <addaction name="separator"/>
@@ -158,6 +160,14 @@
    </property>
    <property name="text">
     <string>&amp;Terminate server</string>
+   </property>
+  </action>
+  <action name="actionStartAutomatically">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Start &amp;automatically</string>
    </property>
   </action>
  </widget>

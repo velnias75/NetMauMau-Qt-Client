@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1020</width>
-    <height>600</height>
+    <width>1018</width>
+    <height>598</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -127,8 +127,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1020</width>
-     <height>21</height>
+     <width>1018</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -516,8 +516,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>845</width>
-             <height>165</height>
+             <width>838</width>
+             <height>169</height>
             </rect>
            </property>
            <layout class="QHBoxLayout" name="myCardsLayout">
@@ -803,9 +803,6 @@
   <action name="actionNetMauMauServerOutput">
    <property name="checkable">
     <bool>true</bool>
-   </property>
-   <property name="enabled">
-    <bool>false</bool>
    </property>
    <property name="text">
     <string>&amp;NetMauMau server output</string>

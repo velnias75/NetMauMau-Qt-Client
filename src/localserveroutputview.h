@@ -20,15 +20,12 @@
 #ifndef LOCALSERVEROUTPUTVIEW_H
 #define LOCALSERVEROUTPUTVIEW_H
 
-#include "launchdialogbase.h"
-
 #include "ui_localserveroutputview.h"
 
 class QProcess;
 class LocalServerOutputSettingsDialog;
 
-class LocalServerOutputView : public QWidget, public LaunchDialogBase,
-		private Ui::LocalServerOutputView {
+class LocalServerOutputView : public QWidget, private Ui::LocalServerOutputView {
 	Q_OBJECT
 	Q_DISABLE_COPY(LocalServerOutputView)
 public:
@@ -36,13 +33,19 @@ public:
 	virtual ~LocalServerOutputView();
 
 	void updateOutput(const QByteArray &data);
-	void setProcess(QProcess *p);
 
 	void addLaunchAction(QAction *la);
 	void setLaunchDisabled(bool);
 
+	void setAutoStart(bool);
+	bool autoStart() const;
+
 protected:
-	virtual void closeEvent(QCloseEvent *);
+	virtual void closeEvent(QCloseEvent *evt);
+
+signals:
+	void closed();
+	void requestTerminate();
 
 public slots:
 	void finished(int);
@@ -55,7 +58,6 @@ private slots:
 private:
 	QString m_text;
 	LocalServerOutputSettingsDialog *m_lsosDlg;
-	QProcess *m_process;
 	QAction *m_launchAction;
 };
 

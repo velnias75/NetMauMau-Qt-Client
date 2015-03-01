@@ -29,7 +29,7 @@
 #include "client.h"
 
 LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) :
-	NetMauMauDialog(p), LaunchDialogBase(), m_process(), m_errFail(false), m_lsov(lsov) {
+	NetMauMauDialog(p), m_process(), m_errFail(false), m_lsov(lsov) {
 
 	setupUi(this);
 
@@ -52,11 +52,12 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 					 this, SLOT(error(QProcess::ProcessError)));
 	QObject::connect(&m_process, SIGNAL(finished(int)), this, SLOT(finished(int)));
 	QObject::connect(&m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateViewer()));
-
 	QObject::connect(&m_process, SIGNAL(started()), lsov, SLOT(launched()));
 	QObject::connect(&m_process, SIGNAL(finished(int)), lsov, SLOT(finished(int)));
 
-	launchStartup->setChecked(settings.value("onStartup", false).toBool());
+	QObject::connect(lsov, SIGNAL(requestTerminate()), this, SLOT(terminate()));
+
+	m_lsov->setAutoStart(settings.value("onStartup", false).toBool());
 	playersSpin->setValue(settings.value("playersSpin", 1).toInt());
 	cardDecksSpin->setValue(settings.value("cardDecks", 1).toInt());
 	initCardSpin->setValue(settings.value("initialCards", 5).toInt());
@@ -74,8 +75,6 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 
 	m_process.setProcessChannelMode(QProcess::MergedChannels);
 
-	lsov->setProcess(&m_process);
-
 	updateOptions();
 }
 
@@ -83,7 +82,7 @@ LaunchServerDialog::~LaunchServerDialog() {
 
 	QSettings settings;
 	settings.beginGroup("Launcher");
-	settings.setValue("onStartup", launchStartup->isChecked());
+	settings.setValue("onStartup", m_lsov->autoStart());
 	settings.setValue("playersSpin", playersSpin->value());
 	settings.setValue("cardDecks", cardDecksSpin->value());
 	settings.setValue("initialCards", initCardSpin->value());
@@ -121,7 +120,7 @@ LaunchServerDialog::~LaunchServerDialog() {
 }
 
 bool LaunchServerDialog::launchAtStartup() const {
-	return launchStartup->isChecked();
+	return m_lsov->autoStart();
 }
 
 void LaunchServerDialog::updateOptions(int) {
@@ -194,8 +193,6 @@ void LaunchServerDialog::launch() {
 	qDebug("Launching %s...",
 		   QString(pathEdit->text()).append(" ").append(optionsEdit->text()).toUtf8().constData());
 
-	if(triggerAction()) triggerAction()->setChecked(true);
-
 	QObject::connect(&m_process, SIGNAL(stateChanged(QProcess::ProcessState)),
 					 this, SLOT(stateChanged(QProcess::ProcessState)));
 
@@ -246,9 +243,9 @@ void LaunchServerDialog::launch() {
 
 void LaunchServerDialog::error(QProcess::ProcessError) {
 
-	m_errFail = true;
-	QMessageBox::critical(this, "Error", tr("Failed to start %1")
-						  .arg(QString(pathEdit->text()).append(" ").append(optionsEdit->text())));
+	QMessageBox::critical(this, "Error", tr("Failed to start %1").
+						  arg(QString(pathEdit->text()).append(" ").
+							  append(optionsEdit->text())));
 
 	emit serverLaunched(false);
 }
@@ -270,4 +267,29 @@ void LaunchServerDialog::browse() {
 
 void LaunchServerDialog::updateViewer() {
 	m_lsov->updateOutput(m_process.readAllStandardOutput());
+}
+
+void LaunchServerDialog::terminate() {
+#ifdef _WIN32
+
+	QObject::disconnect(&m_process, SIGNAL(finished(int)), this, SLOT(finished(int)));
+	QObject::disconnect(&m_process, SIGNAL(error(QProcess::ProcessError)),
+						this, SLOT(error(QProcess::ProcessError)));
+
+	m_process.kill();
+	m_process.waitForFinished();
+
+	QObject::connect(&m_process, SIGNAL(finished(int)), this, SLOT(finished(int)));
+	QObject::connect(&m_process, SIGNAL(error(QProcess::ProcessError)),
+					 this, SLOT(error(QProcess::ProcessError)));
+
+	const QString st(tr("Server terminated") + "\r\n");
+
+	m_lsov->updateOutput(st.toUtf8());
+	m_lsov->setLaunchDisabled(false);
+	launchButton->setDisabled(false);
+
+#else
+	m_process.terminate();
+#endif
 }

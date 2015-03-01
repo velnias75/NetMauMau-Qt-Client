@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>249</width>
-    <height>405</height>
+    <height>380</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -345,26 +345,6 @@ Don't close the client while a game is running, because it will disconnect the r
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>On &amp;startup:</string>
-        </property>
-        <property name="buddy">
-         <cstring>launchStartup</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QCheckBox" name="launchStartup">
-        <property name="toolTip">
-         <string>The local server will get started automatically</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -427,7 +407,6 @@ Don't close the client while a game is running, because it will disconnect the r
   <tabstop>pathEdit</tabstop>
   <tabstop>execChooseButton</tabstop>
   <tabstop>optionsEdit</tabstop>
-  <tabstop>launchStartup</tabstop>
   <tabstop>cancelButton</tabstop>
   <tabstop>launchButton</tabstop>
  </tabstops>

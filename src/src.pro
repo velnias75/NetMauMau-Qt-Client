@@ -87,7 +87,6 @@ SOURCES += addserverdialog.cpp \
 	gamestate.cpp \
 	imagedelegate.cpp \
 	jackchoosedialog.cpp \
-	launchdialogbase.cpp \
 	launchserverdialog.cpp \
 	licensedialog.cpp \
 	localserveroutputsettingsdialog.cpp \
@@ -128,7 +127,6 @@ HEADERS += addserverdialog.h \
 	gamestate.h \
 	imagedelegate.h \
 	jackchoosedialog.h \
-	launchdialogbase.h \
 	launchserverdialog.h \
 	licensedialog.h \
 	localserveroutputsettingsdialog.h \

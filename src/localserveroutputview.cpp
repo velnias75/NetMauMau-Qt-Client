@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -29,8 +29,7 @@
 #include "localserveroutputsettingsdialog.h"
 
 LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window),
-	m_text(QString::null), m_lsosDlg(new LocalServerOutputSettingsDialog(this)), m_process(0L),
-	m_launchAction(0L){
+	m_text(QString::null), m_lsosDlg(new LocalServerOutputSettingsDialog(this)), m_launchAction(0L){
 
 	setupUi(this);
 
@@ -90,6 +89,11 @@ LocalServerOutputView::~LocalServerOutputView() {
 	delete m_lsosDlg;
 }
 
+void LocalServerOutputView::closeEvent(QCloseEvent *evt) {
+	QWidget::closeEvent(evt);
+	emit closed();
+}
+
 void LocalServerOutputView::addLaunchAction(QAction *la) {
 	if(la) {
 		m_launchAction = la;
@@ -101,18 +105,16 @@ void LocalServerOutputView::setLaunchDisabled(bool b) {
 	if(m_launchAction) m_launchAction->setDisabled(b);
 }
 
-void LocalServerOutputView::setProcess(QProcess *p) {
-	m_process = p;
+void LocalServerOutputView::setAutoStart(bool b) {
+	actionStartAutomatically->setChecked(b);
+}
+
+bool LocalServerOutputView::autoStart() const {
+	return actionStartAutomatically->isChecked();
 }
 
 void LocalServerOutputView::terminate() {
-	if(m_process) {
-#ifndef _WIN32
-		m_process->terminate();
-#else
-		m_process->kill();
-#endif
-	}
+	emit requestTerminate();
 }
 
 void LocalServerOutputView::finished(int) {
@@ -132,11 +134,6 @@ void LocalServerOutputView::updateOutput(const QByteArray &d) {
 	}
 }
 
-void LocalServerOutputView::closeEvent(QCloseEvent *evt) {
-	if(triggerAction()) triggerAction()->setChecked(false);
-	QWidget::closeEvent(evt);
-}
-
 void LocalServerOutputView::changeSettings() {
 
 	QPalette pal = log->palette();
@@ -151,7 +148,7 @@ void LocalServerOutputView::changeSettings() {
 		log->setStyleSheet(QString::null);
 		log->setFont(m_lsosDlg->getFont());
 		log->setPalette(pal);
-	}
 
-	log->setStyleSheet(":focus { border: none; outline: none; }");
+		log->setStyleSheet(":focus { border: none; outline: none; }");
+	}
 }

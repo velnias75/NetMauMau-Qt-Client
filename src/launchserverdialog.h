@@ -24,13 +24,11 @@
 
 #include "netmaumaudialog.h"
 
-#include "launchdialogbase.h"
 #include "ui_launchserverdialog.h"
 
 class LocalServerOutputView;
 
-class LaunchServerDialog : public NetMauMauDialog, public LaunchDialogBase,
-		private Ui::LaunchServerDialog {
+class LaunchServerDialog : public NetMauMauDialog, private Ui::LaunchServerDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(LaunchServerDialog)
 public:
@@ -53,6 +51,7 @@ private slots:
 	void browse();
 	void updateViewer();
 	void stateChanged(QProcess::ProcessState);
+	void terminate();
 
 private:
 	QProcess m_process;
