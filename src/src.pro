@@ -4,7 +4,7 @@ CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
 
-VERSION = 0.15
+VERSION = 0.16
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
 

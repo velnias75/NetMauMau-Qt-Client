@@ -162,6 +162,10 @@ private:
 	void writeSettings() const;
 	void readSettings();
 
+#ifdef _WIN32
+	bool espeakInstalled() const;
+#endif
+
 private:
 	typedef enum { PLAYERPIC = 0, NAME, CARDS, TURN, MESSAGE} MSGCOLS;
 
@@ -193,6 +197,7 @@ private:
 	const QImage m_defaultPlayerImage;
 	QMenu *m_playerNameMenu;
 	QMovie *m_animLogo;
+	QActionGroup *m_playerNamesActionGroup;
 };
 
 #endif // MAINWINDOW_H

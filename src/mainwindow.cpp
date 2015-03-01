@@ -87,7 +87,8 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_defaultPlayerImage(QImage::fromData
 						 (QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
 									 NetMauMau::Common::DefaultPlayerImage.length()))),
-	m_playerNameMenu(0L), m_animLogo(new QMovie(":/anim-logo.gif")) {
+	m_playerNameMenu(0L), m_animLogo(new QMovie(":/anim-logo.gif")),
+	m_playerNamesActionGroup(0L) {
 
 	m_animLogo->setScaledSize(QSize(54, 67));
 	m_animLogo->setCacheMode(QMovie::CacheAll);
@@ -150,8 +151,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 
 #ifdef USE_ESPEAK
 #ifdef _WIN32
-	QSettings useEspeak("HKEY_LOCAL_MACHINE\\SOFTWARE\\RANGUN\\NetMauMau", QSettings::NativeFormat);
-	if(useEspeak.value("USE_ESPEAK").toInt()) {
+	if(espeakInstalled()) {
 		QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)),
 						 &ESpeak::getInstance(), SLOT(setDisabled(bool)));
 	} else {
@@ -285,8 +285,16 @@ MainWindow::~MainWindow() {
 	delete m_playerNameMenu;
 	delete m_gameState;
 	delete m_animLogo;
+	delete m_playerNamesActionGroup;
 	delete m_ui;
 }
+
+#ifdef _WIN32
+bool MainWindow::espeakInstalled() const {
+	QSettings useEspeak("HKEY_LOCAL_MACHINE\\SOFTWARE\\RANGUN\\NetMauMau", QSettings::NativeFormat);
+	return useEspeak.value("USE_ESPEAK").toInt();
+}
+#endif
 
 GameState *MainWindow::gameState() const {
 	return m_gameState = (m_gameState ? m_gameState : new GameState());
@@ -783,7 +791,7 @@ void MainWindow::clientStats(const Client::STATS &s) {
 
 #ifdef USE_ESPEAK
 		if(!(mau)) mau = i->cardCount == 1 &&
-				(gameState()->playerCardCounts()[pName].first !=
+						 (gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
 
@@ -1787,28 +1795,63 @@ void MainWindow::dropEvent(QDropEvent *evt) {
 }
 
 void MainWindow::changePlayerName(QAction *act) {
-	m_ui->localPlayerDock->setWindowTitle(act->text());
-	m_serverDlg->setPlayerName(act->text());
+	if(!(act == m_ui->actionShowCardTooltips || act == m_ui->actionMute)) {
+		m_ui->localPlayerDock->setWindowTitle(act->text());
+		m_serverDlg->setPlayerName(act->text());
+	}
 }
 
 void MainWindow::showPlayerNameSelectMenu(const QPoint &p) {
 
 	const QStringList &altNames(m_serverDlg->getPlayerAltNames());
 
+	if(!m_playerNameMenu) m_playerNameMenu = new QMenu();
+
 	if(!gameState()->inGame() && altNames.size() > 1) {
 
-		delete m_playerNameMenu;
-		m_playerNameMenu = new QMenu();
+		delete m_playerNamesActionGroup;
+
+		m_playerNamesActionGroup = new QActionGroup(this);
+		m_playerNamesActionGroup->setExclusive(true);
 
 		QObject::connect(m_playerNameMenu, SIGNAL(triggered(QAction*)),
 						 this, SLOT(changePlayerName(QAction*)));
 
 		for(int i = 0; i < altNames.count(); ++i) {
-			m_playerNameMenu->addAction(altNames[i]);
+
+			QAction *a = m_playerNamesActionGroup->addAction(altNames[i]);
+
+			a->setCheckable(true);
+			a->setDisabled(false);
+			a->setChecked(altNames[i] == m_serverDlg->getPlayerName());
+
+			if(m_playerNameMenu->actions().indexOf(a) != -1) {
+				m_playerNameMenu->removeAction(a);
+			}
+
+			m_playerNameMenu->addAction(a);
 		}
 
-		m_playerNameMenu->popup(m_ui->localPlayerDock->mapToGlobal(p));
+		m_playerNameMenu->addSeparator();
+
+	} else if(m_playerNamesActionGroup) {
+		for(QList<QAction*>::iterator i(m_playerNamesActionGroup->actions().begin());
+			i != m_playerNamesActionGroup->actions().end(); ++i) {
+			(*i)->setDisabled(true);
+		}
 	}
+
+	m_playerNameMenu->addAction(m_ui->actionShowCardTooltips);
+
+#ifdef USE_ESPEAK
+#if _WIN32
+	if(espeakInstalled()) m_playerNameMenu->addAction(m_ui->actionMute);
+#else
+	m_playerNameMenu->addAction(m_ui->actionMute);
+#endif
+#endif
+
+	m_playerNameMenu->popup(m_ui->localPlayerDock->mapToGlobal(p));
 }
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;
