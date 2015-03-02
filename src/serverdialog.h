@@ -87,8 +87,6 @@ private slots:
 	void removeServer();
 	void addServer();
 	void addServer(const QString &, const QString &);
-	void resize();
-	void resizeColumns();
 	void choosePlayerImage();
 	void clearPlayerImage();
 	void enableClearButton(const QString &);

@@ -109,7 +109,11 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(
 	setPlayerImagePath(settings.value("playerImage").toString());
 	settings.endGroup();
 
+	m_model.horizontalHeaderItem(0)->setSizeHint(QSize(300, -1));
+
 	availServerView->setModel(&m_model);
+	availServerView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+
 	playerName->setModel(&m_playerNameModel);
 
 	QObject::connect(&m_model, SIGNAL(itemChanged(QStandardItem*)),
@@ -152,11 +156,6 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(
 	}
 
 	checkOnline();
-
-	QObject::connect(&m_model, SIGNAL(rowsInserted(QModelIndex,int,int)),
-					 this, SLOT(resize()));
-
-	resize();
 
 	refreshButton->setShortcutEnabled(true);
 	refreshButton->setShortcut(QKeySequence::Refresh);
@@ -202,6 +201,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(
 	QObject::connect(&m_autoRefresh, SIGNAL(timeout()), this, SLOT(checkOnline()));
 
 	enableClearButton(playerImagePath->text());
+
+	deleteServers->setEnabled(m_model.rowCount());
 
 	m_autoRefresh.start(30000);
 }
@@ -549,18 +550,6 @@ void ServerDialog::enableRemoveAndOkButton(const QItemSelection &, const QItemSe
 	connectButton->setEnabled(availServerView->selectionModel()->hasSelection());
 }
 
-void ServerDialog::resize() {
-	resizeColumns();
-	deleteServers->setEnabled(m_model.rowCount());
-}
-
-void ServerDialog::resizeColumns() {
-
-	for(int i = 0; i < m_model.columnCount() - 1; ++i) {
-		availServerView->resizeColumnToContents(i);
-	}
-}
-
 void ServerDialog::checkOnline() {
 
 	//	QMutexLocker locker(&m_mutex);
@@ -620,7 +609,6 @@ void ServerDialog::blockAutoRefresh(bool b) {
 
 void ServerDialog::itemChanged(QStandardItem *) {
 	saveServers();
-	resizeColumns();
 }
 
 void ServerDialog::addServer() {
@@ -647,6 +635,7 @@ void ServerDialog::addServer(const QString &shost, const QString &sport) {
 	row.back()->setTextAlignment(Qt::AlignCenter);
 
 	m_model.appendRow(row);
+	deleteServers->setEnabled(m_model.rowCount());
 
 	m_serverInfoThreads.push_back(new ServerInfo(&m_model, m_model.rowCount() - 1));
 	QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool,int)),
@@ -654,8 +643,6 @@ void ServerDialog::addServer(const QString &shost, const QString &sport) {
 
 	saveServers();
 	checkOnline();
-	resize();
-
 }
 
 void ServerDialog::removeServer() {
@@ -697,8 +684,8 @@ void ServerDialog::deleteRows(const QList<int> &rows) {
 		}
 	}
 
-	resize();
 	saveServers();
+	deleteServers->setEnabled(m_model.rowCount());
 }
 
 QImage ServerDialog::scalePlayerPic(const QImage &img) {
@@ -715,7 +702,6 @@ QImage ServerDialog::scalePlayerPic(const QImage &img) {
 void ServerDialog::serverViewContext(const QPoint &p) {
 	m_ctxPoint = p;
 	m_ctxPopup->popup(availServerView->mapToGlobal(p));
-	actionDeleteServer->setEnabled(availServerView->indexAt(p).isValid());
 }
 
 void ServerDialog::saveServers() {
