@@ -29,9 +29,12 @@
 #include "localserveroutputsettingsdialog.h"
 
 LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window),
-	m_text(QString::null), m_lsosDlg(new LocalServerOutputSettingsDialog(this)), m_launchAction(0L){
+	m_text(QString::null), m_lsosDlg(new LocalServerOutputSettingsDialog(this)),
+	m_launchAction(0L) {
 
 	setupUi(this);
+
+	log->setTerminateAction(actionTerminateServer);
 
 	Qt::WindowFlags f = windowFlags();
 	f &= ~Qt::WindowContextHelpButtonHint;

@@ -42,7 +42,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="log">
+    <widget class="LocalServerLog" name="log">
      <property name="palette">
       <palette>
        <active>
@@ -171,6 +171,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LocalServerLog</class>
+   <extends>QPlainTextEdit</extends>
+   <header>localserverlog.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="icons.qrc"/>
  </resources>
