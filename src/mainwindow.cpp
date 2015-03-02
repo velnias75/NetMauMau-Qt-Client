@@ -204,11 +204,9 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_ui->remotePlayersView->setItemDelegateForColumn(TURN, m_turnItemDelegate);
 	m_ui->remotePlayersView->setItemDelegateForColumn(MESSAGE, m_messageItemDelegate);
 
-	m_ui->remotePlayersView->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+	m_ui->remotePlayersView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	m_ui->remotePlayersView->horizontalHeader()->setClickable(false);
 	m_ui->remotePlayersView->setModel(&m_model);
-
-	resizeColumns();
 
 	QObject::connect(m_ui->localPlayerDock, SIGNAL(customContextMenuRequested(QPoint)),
 					 this, SLOT(showPlayerNameSelectMenu(QPoint)));
@@ -219,8 +217,6 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	QObject::connect(m_ui->suspendButton, SIGNAL(clicked()), this, SLOT(suspend()));
 	QObject::connect(m_ui->takeCardsButton, SIGNAL(clicked()), this, SLOT(takeCards()));
 	QObject::connect(m_serverDlg, SIGNAL(accepted()), this, SLOT(serverAccept()));
-	QObject::connect(&m_model, SIGNAL(rowsInserted(QModelIndex,int,int)),
-					 this, SLOT(resizeColumns()));
 	QObject::connect(m_serverDlg, SIGNAL(reconnectAvailable(QString)),
 					 this, SLOT(reconnectAvailable(QString )));
 	QObject::connect(m_launchDlg, SIGNAL(serverLaunched(bool)),
@@ -315,12 +311,6 @@ void MainWindow::reconnectAvailable(const QString &srv) const {
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
 	} else {
 		m_ui->actionReconnect->setDisabled(true);
-	}
-}
-
-void MainWindow::resizeColumns() const {
-	for(int c = 0; c < m_model.columnCount() - 1; ++c) {
-		m_ui->remotePlayersView->resizeColumnToContents(c);
 	}
 }
 
@@ -1368,9 +1358,6 @@ void MainWindow::updatePlayerStats(const QString &player, const QString &mesg, b
 			cnt->setToolTip(tr("%n card(s)", "", count));
 		}
 
-		m_ui->remotePlayersView->resizeColumnToContents(CARDS);
-		m_ui->remotePlayersView->resizeColumnToContents(MESSAGE);
-
 		nam->setToolTip(playerToolTip(gs, player));
 
 		const QStringList &msgList(gs->playerStatMsg()[player]);
@@ -1520,8 +1507,6 @@ void MainWindow::clearStats() {
 	m_ui->jackSuit->setProperty("suitDescription", QVariant());
 
 	gs->setTurn(1);
-
-	resizeColumns();
 }
 
 QString MainWindow::getAceRoundRankString(const GameState *gs, bool capitalize,

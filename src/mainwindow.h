@@ -122,7 +122,6 @@ private slots:
 	void clientDirectionChanged();
 
 	void clearStats();
-	void resizeColumns() const;
 	void sortNoSort(bool);
 	void sortSuitRank(bool);
 	void sortRankSuit(bool);
