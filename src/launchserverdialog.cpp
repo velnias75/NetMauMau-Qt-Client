@@ -45,6 +45,12 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	QObject::connect(aceRound, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(rankCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(aiNameEdit, SIGNAL(textChanged(QString)), this, SLOT(updateOptions()));
+	QObject::connect(aiNameEdit2, SIGNAL(textChanged(QString)), this, SLOT(updateOptions()));
+	QObject::connect(aiNameEdit3, SIGNAL(textChanged(QString)), this, SLOT(updateOptions()));
+	QObject::connect(aiNameEdit4, SIGNAL(textChanged(QString)), this, SLOT(updateOptions()));
+	QObject::connect(aiEnabled2, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
+	QObject::connect(aiEnabled3, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
+	QObject::connect(aiEnabled4, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
 	QObject::connect(portSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(launchButton, SIGNAL(clicked()), this, SLOT(launch()));
 	QObject::connect(&m_process, SIGNAL(started()), this, SLOT(launched()));
@@ -67,6 +73,12 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	rankCombo->setCurrentIndex(settings.value("ace-round-rank", 0).toInt());
 	aiNameEdit->setText(settings.value("aiName",
 									   QString::fromUtf8(Client::getDefaultAIName())).toString());
+	aiEnabled2->setChecked(settings.value("aiEnabled2", false).toBool());
+	aiNameEdit2->setText(settings.value("aiName2", "").toString());
+	aiEnabled3->setChecked(settings.value("aiEnabled3", false).toBool());
+	aiNameEdit3->setText(settings.value("aiName3", "").toString());
+	aiEnabled4->setChecked(settings.value("aiEnabled4", false).toBool());
+	aiNameEdit4->setText(settings.value("aiName4", "").toString());
 	portSpin->setValue(settings.value("port", Client::getDefaultPort()).toInt());
 	pathEdit->setText(settings.value("serverExe",
 									 QString::fromUtf8(NetMauMau::Common::getServerExe()))
@@ -91,6 +103,12 @@ LaunchServerDialog::~LaunchServerDialog() {
 	settings.setValue("ace-round", aceRound->isChecked());
 	settings.setValue("ace-round-rank", rankCombo->currentIndex());
 	settings.setValue("aiName", aiNameEdit->text());
+	settings.setValue("aiName2", aiNameEdit2->text());
+	settings.setValue("aiName3", aiNameEdit3->text());
+	settings.setValue("aiName4", aiNameEdit4->text());
+	settings.setValue("aiEnabled2", aiEnabled2->isChecked());
+	settings.setValue("aiEnabled3", aiEnabled3->isChecked());
+	settings.setValue("aiEnabled4", aiEnabled4->isChecked());
 	settings.setValue("port", portSpin->value());
 	settings.setValue("serverExe", pathEdit->text());
 	settings.endGroup();
@@ -113,6 +131,12 @@ LaunchServerDialog::~LaunchServerDialog() {
 	ultimateCheck->disconnect();
 	aceRound->disconnect();
 	aiNameEdit->disconnect();
+	aiNameEdit2->disconnect();
+	aiNameEdit3->disconnect();
+	aiNameEdit4->disconnect();
+	aiEnabled2->disconnect();
+	aiEnabled3->disconnect();
+	aiEnabled4->disconnect();
 	portSpin->disconnect();
 	launchButton->disconnect();
 
@@ -143,15 +167,60 @@ void LaunchServerDialog::updateOptions(int) {
 		opt.append("-c").append(QString::number(initCardSpin->value())).append(" ");
 	}
 
-	if(playersSpin->value() == 1 && !aiNameEdit->text().isEmpty()) {
-		opt.append("-A\"").append(aiNameEdit->text()).append("\" ");
+	uint aiCnt = 0;
+
+	if(playersSpin->value() == 1) {
+
+		++aiCnt;
+
+		if(!aiNameEdit->text().isEmpty()) {
+			opt.append("-A\"").append(aiNameEdit->text()).append("\" ");
+		} else {
+			aiNameEdit->setText(QString::fromUtf8(Client::getDefaultAIName()));
+		}
+
+		if(aiEnabled2->isChecked() && !aiNameEdit2->text().isEmpty()) {
+			opt.append("-A\"").append(aiNameEdit2->text()).append("\" ");
+			++aiCnt;
+		}
+
+		if(aiEnabled3->isChecked() && !aiNameEdit3->text().isEmpty()) {
+			opt.append("-A\"").append(aiNameEdit3->text()).append("\" ");
+			++aiCnt;
+		}
+
+		if(aiEnabled4->isChecked() && !aiNameEdit4->text().isEmpty()) {
+			opt.append("-A\"").append(aiNameEdit4->text()).append("\" ");
+			++aiCnt;
+		}
 	}
 
 	aiNameEdit->setEnabled(playersSpin->value() == 1);
+	aiNameEdit2->setEnabled(playersSpin->value() == 1 && aiEnabled2->isChecked());
+	aiNameEdit2->setReadOnly(!aiEnabled2->isChecked());
+	aiNameEdit3->setEnabled(playersSpin->value() == 1 && aiEnabled3->isChecked());
+	aiNameEdit3->setReadOnly(!aiEnabled3->isChecked());
+	aiNameEdit4->setEnabled(playersSpin->value() == 1 && aiEnabled4->isChecked());
+	aiNameEdit4->setReadOnly(!aiEnabled4->isChecked());
 
-	if(ultimateCheck->isChecked()) opt.append("-u").append(" ");
+	aiEnabled2->setEnabled(playersSpin->value() == 1);
+	aiEnabled3->setEnabled(playersSpin->value() == 1);
+	aiEnabled4->setEnabled(playersSpin->value() == 1);
 
-	if(dirChangecheck->isChecked()) opt.append("-d").append(" ");
+	dirChangecheck->setEnabled(playersSpin->value() > 1 || aiCnt > 1);
+
+	if(aiCnt > 1 && playersSpin->value() == 1) {
+		ultimateCheck->setDisabled(true);
+		ultimateCheck->setChecked(true);
+	} else {
+		ultimateCheck->setDisabled(false);
+	}
+
+	ultimateCheck->setEnabled(playersSpin->value() > 1);
+
+	if(ultimateCheck->isEnabled() && ultimateCheck->isChecked()) opt.append("-u").append(" ");
+
+	if(dirChangecheck->isEnabled() && dirChangecheck->isChecked()) opt.append("-d").append(" ");
 
 	if(aceRound->isChecked()) opt.append("-a").
 			append(rankCombo->currentIndex() == 0 ? 'a' :
@@ -208,8 +277,23 @@ void LaunchServerDialog::launch() {
 		args << QString("-p").append(QString::number(playersSpin->value()));
 	}
 
-	if(playersSpin->value() == 1 && !aiNameEdit->text().isEmpty()) {
-		args << QString("-A").append(aiNameEdit->text());
+	if(playersSpin->value() == 1) {
+
+		if(!aiNameEdit->text().isEmpty()) {
+			args << QString("-A").append(aiNameEdit->text());
+		}
+
+		if(aiEnabled2->isChecked() && !aiNameEdit2->text().isEmpty()) {
+			args << QString("-A").append(aiNameEdit2->text());
+		}
+
+		if(aiEnabled4->isChecked() && !aiNameEdit3->text().isEmpty()) {
+			args << QString("-A").append(aiNameEdit3->text());
+		}
+
+		if(aiEnabled4->isChecked() && !aiNameEdit4->text().isEmpty()) {
+			args << QString("-A").append(aiNameEdit4->text());
+		}
 	}
 
 	if(cardDecksSpin->value() != 1) {
@@ -220,9 +304,9 @@ void LaunchServerDialog::launch() {
 		args << QString("-c").append(QString::number(initCardSpin->value()));
 	}
 
-	if(ultimateCheck->isChecked()) args << "-u";
+	if(ultimateCheck->isEnabled() && ultimateCheck->isChecked()) args << "-u";
 
-	if(dirChangecheck->isChecked()) args << "-d";
+	if(dirChangecheck->isEnabled() && dirChangecheck->isChecked()) args << "-d";
 
 	if(aceRound->isChecked()) {
 		args << QString("-a").

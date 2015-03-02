@@ -224,32 +224,32 @@ Der Server erwartet mindestens Version %3.%4</translation>
 <context>
     <name>LaunchServerDialog</name>
     <message>
-        <location filename="launchserverdialog.ui" line="14"/>
+        <location filename="launchserverdialog.ui" line="12"/>
         <source>Launch local server</source>
         <translation>Lokalen Server starten</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="33"/>
+        <location filename="launchserverdialog.ui" line="31"/>
         <source>Options</source>
         <translation>Optionen</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="39"/>
+        <location filename="launchserverdialog.ui" line="40"/>
         <source>&amp;Players:</source>
         <translation>&amp;Spieler:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="55"/>
+        <location filename="launchserverdialog.ui" line="374"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of players.&lt;/p&gt;&lt;p&gt;If set to &lt;tt&gt;1&lt;/tt&gt; you&apos;ll play against the AI.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Anzahl der Spieler.&lt;/p&gt;&lt;p&gt;Wenn auf &lt;tt&gt;1&lt;/tt&gt; gesetzt, wird gegen den Computer gespielt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="71"/>
+        <location filename="launchserverdialog.ui" line="108"/>
         <source>&amp;Ultimate:</source>
         <translation>&amp;Ultimativ:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="81"/>
+        <location filename="launchserverdialog.ui" line="118"/>
         <source>If checked, the game is finished when the last player has won.
 
 If you have won before the game ended, you&apos;ll watch the game.
@@ -260,148 +260,190 @@ Wenn Du vor dem Spielende gewonnen hast, dann wirst Du das Spiel beobachten.
 Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spieler getrennt.</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="140"/>
-        <source>&amp;AI name:</source>
-        <translation>&amp;KI-Name:</translation>
-    </message>
-    <message>
-        <location filename="launchserverdialog.ui" line="150"/>
-        <source>The name of the AI player</source>
-        <translation>Der Name des KI-Spielers</translation>
-    </message>
-    <message>
-        <location filename="launchserverdialog.ui" line="160"/>
+        <location filename="launchserverdialog.ui" line="237"/>
         <source>P&amp;ort:</source>
         <translation>P&amp;ort:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="176"/>
+        <location filename="launchserverdialog.ui" line="253"/>
         <source>The port to run the server on</source>
         <translation>Der Port auf dem der Server laufen soll</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="94"/>
+        <location filename="launchserverdialog.ui" line="151"/>
         <source>Ace &amp;round:</source>
         <translation>Ass&amp;runde:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="106"/>
+        <location filename="launchserverdialog.ui" line="163"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables &lt;span style=&quot; font-weight:600;&quot;&gt;Ace rounds&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;In an &lt;span style=&quot; font-weight:600;&quot;&gt;Ace round&lt;/span&gt; players are only allowed to play &lt;span style=&quot; font-style:italic;&quot;&gt;Aces.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;NOTE:&lt;/span&gt; enabling this option forces other player&apos;s clients to be at least of version 0.7&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aktiviert &lt;span style=&quot; font-weight:600;&quot;&gt;Assrunden&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;In einer &lt;span style=&quot; font-weight:600;&quot;&gt;Assrunde&lt;/span&gt; können die Spieler nur &lt;span style=&quot; font-style:italic;&quot;&gt;Asse&lt;/span&gt; legen.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;HINWEIS:&lt;/span&gt; das Aktivieren dieser Option zwingt andere Spieler mindestens die Version 0.7 des Klienten zu nutzen&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="116"/>
+        <location filename="launchserverdialog.ui" line="173"/>
         <source>Choose the rank to play the round with</source>
         <translation>Wähle die Farbe der zu spielenden Runde</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="120"/>
+        <location filename="launchserverdialog.ui" line="177"/>
         <source>Ace</source>
         <translation>Ass</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="125"/>
+        <location filename="launchserverdialog.ui" line="182"/>
         <source>Queen</source>
         <translation>Dame</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="130"/>
+        <location filename="launchserverdialog.ui" line="187"/>
         <source>King</source>
         <translation>König</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="183"/>
+        <location filename="launchserverdialog.ui" line="131"/>
         <source>&amp;Direction change:</source>
         <translation>&amp;Richtungswechsel:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="193"/>
+        <location filename="launchserverdialog.ui" line="141"/>
         <source>if checked than playing a &lt;i&gt;nine&lt;/i&gt; will cause a change of direction</source>
         <translation>Wenn ausgewählt, löst das Spielen einer &lt;i&gt;Neun&lt;/i&gt; einen Richtungswechsel aus</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="203"/>
+        <location filename="launchserverdialog.ui" line="50"/>
         <source>&amp;Initial cards:</source>
         <translation>Anfängl&amp;iche Karten:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="213"/>
+        <location filename="launchserverdialog.ui" line="82"/>
         <source>Card dec&amp;ks:</source>
         <translation>&amp;Kartensätze:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="229"/>
+        <location filename="launchserverdialog.ui" line="66"/>
         <source>The amount of initial cards a player gets at game start</source>
         <translation>Die Anzahl anfänglicher Karten, der Spieler zu Spielbeginn bekommt</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="251"/>
+        <location filename="launchserverdialog.ui" line="98"/>
         <source>The amount of card decks to use</source>
         <translation>Die Anzahl der zu verwendenden Kartensätze </translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="270"/>
+        <location filename="launchserverdialog.ui" line="197"/>
+        <source>&amp;First AI name:</source>
+        <translation>&amp;Erster KI-Name:</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="207"/>
+        <source>&amp;Second AI name:</source>
+        <translation>&amp;Zweiter KI-Name:</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="217"/>
+        <source>&amp;Third AI name:</source>
+        <translation>&amp;Dritter KI-Name:</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="227"/>
+        <source>Fourth AI &amp;name:</source>
+        <translation>&amp;Vierter KI-Name:</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="262"/>
+        <location filename="launchserverdialog.ui" line="292"/>
+        <location filename="launchserverdialog.ui" line="322"/>
+        <source>Check if that player should get added as AI player</source>
+        <translation>Kreuze an, wenn der Spieler als KI-Spieler hinzugefügt werden soll</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="281"/>
+        <source>The name of the fourth AI player</source>
+        <translation>Der Name des vierten KI-Spielers</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="311"/>
+        <source>The name of the third AI player</source>
+        <translation>Der Name des dritten KI-Spielers</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="341"/>
+        <source>The name of the second AI player</source>
+        <translation>Der Name des zweiten KI-Spielers</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="356"/>
+        <source>The name of the first AI player</source>
+        <translation>Der Name des ersten KI-Spielers</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="396"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:small;&quot;&gt;Set to 1 to play against the computer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:small;&quot;&gt;Setze auf 1 um gegen den Computer zu spielen&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="417"/>
         <source>Executable</source>
         <translation>Ausführbare Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="279"/>
+        <location filename="launchserverdialog.ui" line="426"/>
         <source>Pat&amp;h:</source>
         <translation>&amp;Pfad:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="294"/>
+        <location filename="launchserverdialog.ui" line="441"/>
         <source>Path to the server executable</source>
         <translation>Pfad zu der auführbaren Datei des Servers</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="316"/>
+        <location filename="launchserverdialog.ui" line="463"/>
         <source>Browse for a path to the server executable</source>
         <translation>Suche nach einen Pfad zu der ausführbaren Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="331"/>
+        <location filename="launchserverdialog.ui" line="478"/>
         <source>Op&amp;tions:</source>
         <translation>&amp;Optionen:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="341"/>
+        <location filename="launchserverdialog.ui" line="488"/>
         <source>The options the server will be started with</source>
         <translation>Die Optionen mit denen der Server gestartet wird</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="369"/>
+        <location filename="launchserverdialog.ui" line="516"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbruch</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="376"/>
+        <location filename="launchserverdialog.ui" line="523"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to launch the server.&lt;/p&gt;&lt;p&gt;The server will be available at &lt;tt&gt;localhost&lt;/tt&gt; and the given port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Versucht den Server zu starten.&lt;/p&gt;&lt;p&gt;Der Server wird unter &lt;tt&gt;localhost&lt;/tt&gt; und dem angegeben Port verfügbar sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="379"/>
+        <location filename="launchserverdialog.ui" line="526"/>
         <source>&amp;Launch</source>
         <translation>&amp;Starten</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="165"/>
+        <location filename="launchserverdialog.cpp" line="234"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="165"/>
-        <location filename="launchserverdialog.cpp" line="246"/>
+        <location filename="launchserverdialog.cpp" line="234"/>
+        <location filename="launchserverdialog.cpp" line="330"/>
         <source>Failed to start %1</source>
         <translation>Starten von %1 gescheitert</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="261"/>
+        <location filename="launchserverdialog.cpp" line="345"/>
         <source>Find NetMauMau server executable</source>
         <translation>Finde die ausführbare Datei von NetMauMau</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="286"/>
+        <location filename="launchserverdialog.cpp" line="370"/>
         <source>Server terminated</source>
         <translation>Server beendet</translation>
     </message>
