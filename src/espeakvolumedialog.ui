@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>296</width>
-    <height>74</height>
+    <height>75</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,6 +83,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>volumeSlider</tabstop>
+  <tabstop>muteCheck</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources>
   <include location="icons.qrc"/>
  </resources>

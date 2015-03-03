@@ -29,9 +29,11 @@
 #include "client.h"
 
 LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) :
-	NetMauMauDialog(p), m_process(), m_errFail(false), m_lsov(lsov) {
+	NetMauMauDialog(p), m_process(), m_errFail(false), m_lsov(lsov), m_hostLabel() {
 
 	setupUi(this);
+
+	m_hostLabel = hostLabel->text();
 
 	QSettings settings;
 	settings.beginGroup("Launcher");
@@ -155,6 +157,8 @@ void LaunchServerDialog::updateOptions(int) {
 		opt.append("--port=").append(QString::number(portSpin->value())).append(" ");
 	}
 
+	hostLabel->setText(m_hostLabel.arg(portSpin->value()));
+
 	if(playersSpin->value() != 1) {
 		opt.append("-p").append(QString::number(playersSpin->value())).append(" ");
 	}
@@ -173,11 +177,11 @@ void LaunchServerDialog::updateOptions(int) {
 
 		++aiCnt;
 
-		if(!aiNameEdit->text().isEmpty()) {
-			opt.append("-A\"").append(aiNameEdit->text()).append("\" ");
-		} else {
+		if(aiNameEdit->text().isEmpty()) {
 			aiNameEdit->setText(QString::fromUtf8(Client::getDefaultAIName()));
 		}
+
+		opt.append("-A\"").append(aiNameEdit->text()).append("\" ");
 
 		if(aiEnabled2->isChecked() && !aiNameEdit2->text().isEmpty()) {
 			opt.append("-A\"").append(aiNameEdit2->text()).append("\" ");
@@ -194,6 +198,8 @@ void LaunchServerDialog::updateOptions(int) {
 			++aiCnt;
 		}
 	}
+
+	optionsGroup->setTabEnabled(1, playersSpin->value() == 1);
 
 	aiNameEdit->setEnabled(playersSpin->value() == 1);
 	aiNameEdit2->setEnabled(playersSpin->value() == 1 && aiEnabled2->isChecked());
@@ -281,6 +287,8 @@ void LaunchServerDialog::launch() {
 
 		if(!aiNameEdit->text().isEmpty()) {
 			args << QString("-A").append(aiNameEdit->text());
+		} else {
+			args << QString("-A").append(QString::fromUtf8(Client::getDefaultAIName()));
 		}
 
 		if(aiEnabled2->isChecked() && !aiNameEdit2->text().isEmpty()) {

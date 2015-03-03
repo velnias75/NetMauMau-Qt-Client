@@ -57,6 +57,7 @@ private:
 	QProcess m_process;
 	bool m_errFail;
 	LocalServerOutputView *m_lsov;
+	QString m_hostLabel;
 };
 
 #endif // LAUNCHSERVERDIALOG_H
