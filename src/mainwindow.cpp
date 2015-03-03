@@ -911,7 +911,9 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 
 		gs->setLostDisplaying(false);
 
-		emit confirmLostWon(lost.buttonRole(lost.clickedButton()));
+		emit confirmLostWon(m_model.rowCount() == 2 ?
+								lost.buttonRole(lost.clickedButton()) :
+								QMessageBox::AcceptRole);
 
 	} else {
 		statusBar()->showMessage(tr("%1 lost!").arg(p), 10000);
@@ -963,7 +965,9 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		gs->incCountWonDisplayed();
 
-		emit confirmLostWon(gameOver.buttonRole(gameOver.clickedButton()));
+		emit confirmLostWon(m_model.rowCount() == 2 ?
+								gameOver.buttonRole(gameOver.clickedButton()) :
+								QMessageBox::AcceptRole);
 
 	} else if(m_model.rowCount() > 2 && gs->maumauCount() ==
 			  static_cast<ulong>(m_model.rowCount() - 1) && !gs->lostDisplaying()) {
