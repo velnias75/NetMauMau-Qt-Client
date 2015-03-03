@@ -42,13 +42,11 @@ bool ESpeakVolumeDialog::mute() const {
 void ESpeakVolumeDialog::setVolume(int v) {
 	ESpeak::getInstance().setVolume(v);
 	volumeSlider->setValue(v);
-
-	if(volume() != v) emit volumeChanged(v);
+	emit volumeChanged(v);
 }
 
 void ESpeakVolumeDialog::setMute(bool b) {
 	ESpeak::getInstance().setDisabled(b);
 	muteCheck->setChecked(b);
-
-	if(mute() != b) emit muteChanged(b);
+	emit muteChanged(b);
 }

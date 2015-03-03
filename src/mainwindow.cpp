@@ -158,19 +158,26 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 #ifdef USE_ESPEAK
 #ifdef _WIN32
 	if(espeakInstalled()) {
+		QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)),
+						 m_volumeDialog, SLOT(setMute(bool)));
 		QObject::connect(m_ui->actionVolume, SIGNAL(triggered()), m_volumeDialog, SLOT(raise()));
 		QObject::connect(m_ui->actionVolume, SIGNAL(triggered()),
 						 m_volumeDialog, SLOT(showNormal()));
 	} else {
 		m_ui->menu_View->removeAction(m_ui->actionVolume);
+		m_ui->menu_View->removeAction(m_ui->actionMute);
 	}
 
 #else
+	QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)), m_volumeDialog, SLOT(setMute(bool)));
 	QObject::connect(m_ui->actionVolume, SIGNAL(triggered()), m_volumeDialog, SLOT(raise()));
 	QObject::connect(m_ui->actionVolume, SIGNAL(triggered()), m_volumeDialog, SLOT(showNormal()));
+	QObject::connect(m_volumeDialog, SIGNAL(muteChanged(bool)),
+					 m_ui->actionMute, SLOT(setChecked(bool)));
 #endif
 #else
 	m_ui->menu_View->removeAction(m_ui->actionVolume);
+	m_ui->menu_View->removeAction(m_ui->actionMute);
 #endif
 
 	QFont fnt("Monospace");
@@ -1780,7 +1787,9 @@ void MainWindow::dropEvent(QDropEvent *evt) {
 }
 
 void MainWindow::changePlayerName(QAction *act) {
-	if(!(act == m_ui->actionShowCardTooltips || act == m_ui->actionVolume)) {
+	if(!(act == m_ui->actionShowCardTooltips ||
+		 act == m_ui->actionVolume ||
+		 act == m_ui->actionMute)) {
 		m_ui->localPlayerDock->setWindowTitle(act->text());
 		m_serverDlg->setPlayerName(act->text());
 	}
@@ -1830,9 +1839,13 @@ void MainWindow::showPlayerNameSelectMenu(const QPoint &p) {
 
 #ifdef USE_ESPEAK
 #if _WIN32
-	if(espeakInstalled()) m_playerNameMenu->addAction(m_ui->actionVolume);
+	if(espeakInstalled()) {
+		m_playerNameMenu->addAction(m_ui->actionVolume);
+		m_playerNameMenu->addAction(m_ui->actionMute);
+	}
 #else
 	m_playerNameMenu->addAction(m_ui->actionVolume);
+	m_playerNameMenu->addAction(m_ui->actionMute);
 #endif
 #endif
 

@@ -22,6 +22,8 @@
 
 #include <QObject>
 
+#include <linkercontrol.h>
+
 class ESpeak : public QObject {
 	Q_OBJECT
 	Q_DISABLE_COPY(ESpeak)
@@ -32,7 +34,7 @@ public:
 
 	void speak(const QString &text, QString lang = QString::null);
 
-	bool isDisabled() const;
+	bool isDisabled() const _PURE;
 	int getVolume() const;
 
 public slots:

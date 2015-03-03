@@ -162,7 +162,9 @@
     <addaction name="actionNetMauMauServerOutput"/>
     <addaction name="separator"/>
     <addaction name="actionShowCardTooltips"/>
+    <addaction name="separator"/>
     <addaction name="actionVolume"/>
+    <addaction name="actionMute"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
@@ -866,7 +868,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Show card tooltips</string>
+    <string>Show &amp;card tooltips</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+T</string>
@@ -882,13 +884,27 @@
     </iconset>
    </property>
    <property name="text">
-    <string>Volume</string>
+    <string>&amp;Volume</string>
    </property>
    <property name="toolTip">
     <string>Set the speech volume</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionMute">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Mute</string>
+   </property>
+   <property name="toolTip">
+    <string>Mute speech output</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+M</string>
    </property>
   </action>
  </widget>
