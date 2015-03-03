@@ -110,7 +110,7 @@ SOURCES += addserverdialog.cpp \
 	suitradiobutton.cpp \
 	util.cpp
 
-espeak:SOURCES += espeak.cpp
+espeak:SOURCES += espeak.cpp espeakvolumedialog.cpp
 
 HEADERS += addserverdialog.h \
 	addserverwidget.h \
@@ -150,7 +150,7 @@ HEADERS += addserverdialog.h \
 	suitradiobutton.h \
 	util.h
 
-espeak:HEADERS += espeak.h
+espeak:HEADERS += espeak.h espeakvolumedialog.h
 
 FORMS += addserverdialog.ui \
 	addserverwidget.ui \
@@ -166,7 +166,8 @@ FORMS += addserverdialog.ui \
 	scoresdialog.ui \
 	serverdialog.ui \
 	suitlabel.ui \
-	suitradiobutton.ui
+	suitradiobutton.ui \
+	espeakvolumedialog.ui
 
 RESOURCES += cards.qrc \
 	icons.qrc \

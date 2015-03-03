@@ -31,6 +31,7 @@
 
 #ifdef USE_ESPEAK
 #include "espeak.h"
+#include "espeakvolumedialog.h"
 #endif
 
 #include "util.h"
@@ -87,8 +88,11 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_defaultPlayerImage(QImage::fromData
 						 (QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
 									 NetMauMau::Common::DefaultPlayerImage.length()))),
-	m_playerNameMenu(0L), m_animLogo(new QMovie(":/anim-logo.gif")),
-	m_playerNamesActionGroup(0L) {
+	m_playerNameMenu(0L), m_animLogo(new QMovie(":/anim-logo.gif")), m_playerNamesActionGroup(0L)
+  #ifdef USE_ESPEAK
+  , m_volumeDialog(new ESpeakVolumeDialog())
+  #endif
+{
 
 	m_animLogo->setScaledSize(QSize(54, 67));
 	m_animLogo->setCacheMode(QMovie::CacheAll);
@@ -154,18 +158,19 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 #ifdef USE_ESPEAK
 #ifdef _WIN32
 	if(espeakInstalled()) {
-		QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)),
-						 &ESpeak::getInstance(), SLOT(setDisabled(bool)));
+		QObject::connect(m_ui->actionVolume, SIGNAL(triggered()), m_volumeDialog, SLOT(raise()));
+		QObject::connect(m_ui->actionVolume, SIGNAL(triggered()),
+						 m_volumeDialog, SLOT(showNormal()));
 	} else {
-		m_ui->menu_View->removeAction(m_ui->actionMute);
+		m_ui->menu_View->removeAction(m_ui->actionVolume);
 	}
 
 #else
-	QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)), &ESpeak::getInstance(),
-					 SLOT(setDisabled(bool)));
+	QObject::connect(m_ui->actionVolume, SIGNAL(triggered()), m_volumeDialog, SLOT(raise()));
+	QObject::connect(m_ui->actionVolume, SIGNAL(triggered()), m_volumeDialog, SLOT(showNormal()));
 #endif
 #else
-	m_ui->menu_View->removeAction(m_ui->actionMute);
+	m_ui->menu_View->removeAction(m_ui->actionVolume);
 #endif
 
 	QFont fnt("Monospace");
@@ -281,6 +286,7 @@ MainWindow::~MainWindow() {
 	delete m_animLogo;
 	delete m_playerNamesActionGroup;
 	delete m_lsov;
+	delete m_volumeDialog;
 	delete m_ui;
 }
 
@@ -1647,7 +1653,10 @@ void MainWindow::writeSettings() const {
 		settings.setValue("sortMode", static_cast<uint>(NO_SORT));
 	}
 
-	settings.setValue("mute", m_ui->actionMute->isChecked());
+#ifdef USE_ESPEAK
+	settings.setValue("mute", m_volumeDialog->mute());
+	settings.setValue("volume", m_volumeDialog->volume());
+#endif
 	settings.setValue("filterCards", m_ui->filterCards->isChecked());
 	settings.setValue("cardTooltips", m_ui->actionShowCardTooltips->isChecked());
 	settings.endGroup();
@@ -1692,7 +1701,11 @@ void MainWindow::readSettings() {
 		m_ui->noSort->setChecked(true); break;
 	}
 
-	m_ui->actionMute->setChecked(settings.value("mute", QVariant(false)).toBool());
+#ifdef USE_ESPEAK
+	m_volumeDialog->setMute(settings.value("mute", QVariant(false)).toBool());
+	m_volumeDialog->setVolume(settings.value("volume", 100).toInt());
+#endif
+
 	m_ui->filterCards->setChecked(settings.value("filterCards", QVariant(false)).toBool());
 	m_ui->actionShowCardTooltips->setChecked(settings.value("cardTooltips",
 															QVariant(true)).toBool());
@@ -1767,7 +1780,7 @@ void MainWindow::dropEvent(QDropEvent *evt) {
 }
 
 void MainWindow::changePlayerName(QAction *act) {
-	if(!(act == m_ui->actionShowCardTooltips || act == m_ui->actionMute)) {
+	if(!(act == m_ui->actionShowCardTooltips || act == m_ui->actionVolume)) {
 		m_ui->localPlayerDock->setWindowTitle(act->text());
 		m_serverDlg->setPlayerName(act->text());
 	}
@@ -1817,9 +1830,9 @@ void MainWindow::showPlayerNameSelectMenu(const QPoint &p) {
 
 #ifdef USE_ESPEAK
 #if _WIN32
-	if(espeakInstalled()) m_playerNameMenu->addAction(m_ui->actionMute);
+	if(espeakInstalled()) m_playerNameMenu->addAction(m_ui->actionVolume);
 #else
-	m_playerNameMenu->addAction(m_ui->actionMute);
+	m_playerNameMenu->addAction(m_ui->actionVolume);
 #endif
 #endif
 

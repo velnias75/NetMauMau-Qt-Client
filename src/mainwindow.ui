@@ -128,7 +128,7 @@
      <x>0</x>
      <y>0</y>
      <width>1018</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -162,7 +162,7 @@
     <addaction name="actionNetMauMauServerOutput"/>
     <addaction name="separator"/>
     <addaction name="actionShowCardTooltips"/>
-    <addaction name="actionMute"/>
+    <addaction name="actionVolume"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
@@ -516,8 +516,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>838</width>
-             <height>169</height>
+             <width>844</width>
+             <height>165</height>
             </rect>
            </property>
            <layout class="QHBoxLayout" name="myCardsLayout">
@@ -731,6 +731,9 @@
    <property name="text">
     <string>E&amp;xit</string>
    </property>
+   <property name="toolTip">
+    <string>Exit from NetMauMau</string>
+   </property>
    <property name="shortcut">
     <string notr="true">Ctrl+Q</string>
    </property>
@@ -782,6 +785,9 @@
    <property name="text">
     <string>Connection &amp;log</string>
    </property>
+   <property name="toolTip">
+    <string>Show the connection log</string>
+   </property>
    <property name="shortcut">
     <string notr="true">Ctrl+L</string>
    </property>
@@ -806,6 +812,9 @@
    </property>
    <property name="text">
     <string>&amp;NetMauMau server output</string>
+   </property>
+   <property name="toolTip">
+    <string>Show the local server output</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+O</string>
@@ -837,10 +846,16 @@
    <property name="text">
     <string>License</string>
    </property>
+   <property name="toolTip">
+    <string>Show the license</string>
+   </property>
   </action>
   <action name="actionHallOfFame">
    <property name="text">
     <string>Hall of Fame</string>
+   </property>
+   <property name="toolTip">
+    <string>Show the scores</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+H</string>
@@ -857,18 +872,23 @@
     <string notr="true">Ctrl+T</string>
    </property>
   </action>
-  <action name="actionMute">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
+  <action name="actionVolume">
    <property name="checked">
     <bool>false</bool>
    </property>
+   <property name="icon">
+    <iconset theme="multimedia-volume-control">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
-    <string>Mute</string>
+    <string>Volume</string>
+   </property>
+   <property name="toolTip">
+    <string>Set the speech volume</string>
    </property>
    <property name="shortcut">
-    <string notr="true">Ctrl+M</string>
+    <string notr="true">Ctrl+V</string>
    </property>
   </action>
  </widget>

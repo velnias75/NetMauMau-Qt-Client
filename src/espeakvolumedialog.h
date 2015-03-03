@@ -17,42 +17,35 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ESPEAK_H
-#define ESPEAK_H
+#ifndef ESPEAKVOLUMEDIALOG_H
+#define ESPEAKVOLUMEDIALOG_H
 
-#include <QObject>
+#include "netmaumaudialog.h"
 
-class ESpeak : public QObject {
+#include "ui_espeakvolumedialog.h"
+
+class ESpeakVolumeDialog : public NetMauMauDialog, private Ui::ESpeakVolumeDialog {
 	Q_OBJECT
-	Q_DISABLE_COPY(ESpeak)
+	Q_PROPERTY(int volume READ volume WRITE setVolume NOTIFY volumeChanged)
+	Q_PROPERTY(bool mute READ mute WRITE setMute NOTIFY muteChanged)
+	Q_DISABLE_COPY(ESpeakVolumeDialog)
 public:
-	~ESpeak();
+	explicit ESpeakVolumeDialog(QWidget *parent = 0);
 
-	static ESpeak &getInstance();
-
-	void speak(const QString &text, QString lang = QString::null);
-
-	bool isDisabled() const;
-	int getVolume() const;
+	int volume() const;
+	bool mute() const;
 
 public slots:
-	void setDisabled(bool);
 	void setVolume(int);
+	void setMute(bool);
 
-private slots:
-	void speakNow();
-
-private:
-	explicit ESpeak(QObject *parent = 0);
-
-	bool isSpeaking() const;
+signals:
+	void volumeChanged(int);
+	void muteChanged(bool);
 
 private:
-	QString m_speakTxt;
-	QString m_lang;
-	const QString m_systemLang;
-	char *m_path;
-	bool m_enabled;
+	int m_volume;
+	bool m_mute;
 };
 
-#endif // ESPEAK_H
+#endif // ESPEAKVOLUMEDIALOG_H

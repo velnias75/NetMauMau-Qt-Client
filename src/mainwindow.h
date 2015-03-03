@@ -43,6 +43,10 @@ class LaunchServerDialog;
 class ConnectionLogDialog;
 class LocalServerOutputView;
 
+#ifdef USE_ESPEAK
+class ESpeakVolumeDialog;
+#endif
+
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 	Q_DISABLE_COPY(MainWindow)
@@ -198,6 +202,9 @@ private:
 	QMenu *m_playerNameMenu;
 	QMovie *m_animLogo;
 	QActionGroup *m_playerNamesActionGroup;
+#ifdef USE_ESPEAK
+	ESpeakVolumeDialog *m_volumeDialog;
+#endif
 };
 
 #endif // MAINWINDOW_H

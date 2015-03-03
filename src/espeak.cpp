@@ -46,7 +46,7 @@ ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt(), m_lang("de"),
 
 	if(m_enabled) {
 		espeak_SetParameter(espeakRATE, 175, 0);
-		espeak_SetParameter(espeakVOLUME, 100, 0);
+		setVolume(100);
 		espeak_SetParameter(espeakCAPITALS, 3, 0);
 	}
 }
@@ -68,6 +68,18 @@ ESpeak &ESpeak::getInstance() {
 
 void ESpeak::setDisabled(bool b) {
 	m_enabled = !b;
+}
+
+void ESpeak::setVolume(int v) {
+	if(m_enabled) espeak_SetParameter(espeakVOLUME, v, 0);
+}
+
+bool ESpeak::isDisabled() const {
+	return !m_enabled;
+}
+
+int ESpeak::getVolume() const {
+	return m_enabled ? espeak_GetParameter(espeakVOLUME, 1) : 0;
 }
 
 void ESpeak::speak(const QString &text, const QString lang) {
