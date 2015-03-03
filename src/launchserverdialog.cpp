@@ -33,6 +33,9 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 
 	setupUi(this);
 
+	QLayoutItem *li = formLayout_4->itemAt(2, QFormLayout::FieldRole);
+	if(li && li->widget()) formLayout_4->setWidget(2, QFormLayout::SpanningRole, li->widget());
+
 	m_hostLabel = hostLabel->text();
 
 	QSettings settings;
@@ -53,6 +56,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	QObject::connect(aiEnabled2, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
 	QObject::connect(aiEnabled3, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
 	QObject::connect(aiEnabled4, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
+	QObject::connect(delaySpin, SIGNAL(valueChanged(double)), this, SLOT(updateOptions()));
 	QObject::connect(portSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(launchButton, SIGNAL(clicked()), this, SLOT(launch()));
 	QObject::connect(&m_process, SIGNAL(started()), this, SLOT(launched()));
@@ -81,6 +85,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	aiNameEdit3->setText(settings.value("aiName3", "").toString());
 	aiEnabled4->setChecked(settings.value("aiEnabled4", false).toBool());
 	aiNameEdit4->setText(settings.value("aiName4", "").toString());
+	delaySpin->setValue(settings.value("aiDelay", 1.0).toDouble());
 	portSpin->setValue(settings.value("port", Client::getDefaultPort()).toInt());
 	pathEdit->setText(settings.value("serverExe",
 									 QString::fromUtf8(NetMauMau::Common::getServerExe()))
@@ -111,6 +116,7 @@ LaunchServerDialog::~LaunchServerDialog() {
 	settings.setValue("aiEnabled2", aiEnabled2->isChecked());
 	settings.setValue("aiEnabled3", aiEnabled3->isChecked());
 	settings.setValue("aiEnabled4", aiEnabled4->isChecked());
+	settings.setValue("aiDelay", delaySpin->value());
 	settings.setValue("port", portSpin->value());
 	settings.setValue("serverExe", pathEdit->text());
 	settings.endGroup();
@@ -197,6 +203,10 @@ void LaunchServerDialog::updateOptions(int) {
 			opt.append("-A\"").append(aiNameEdit4->text()).append("\" ");
 			++aiCnt;
 		}
+	}
+
+	if(playersSpin->value() == 1) {
+		opt.append("-D").append(QString::number(delaySpin->value())).append(' ');
 	}
 
 	optionsGroup->setTabEnabled(1, playersSpin->value() == 1);
@@ -302,6 +312,10 @@ void LaunchServerDialog::launch() {
 		if(aiEnabled4->isChecked() && !aiNameEdit4->text().isEmpty()) {
 			args << QString("-A").append(aiNameEdit4->text());
 		}
+	}
+
+	if(playersSpin->value() == 1) {
+		args << QString("-D").append(QString::number(delaySpin->value()));
 	}
 
 	if(cardDecksSpin->value() != 1) {

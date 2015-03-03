@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>333</height>
+    <height>348</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -43,8 +43,17 @@
        <string>&amp;General</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="text">
           <string>&amp;Players:</string>
          </property>
@@ -54,49 +63,41 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QSpinBox" name="playersSpin">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of players.&lt;/p&gt;&lt;p&gt;If set to &lt;tt&gt;1&lt;/tt&gt; you'll play against the AI.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="maximum">
-            <number>5</number>
-           </property>
-           <property name="value">
-            <number>1</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_14">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:small;&quot;&gt;Set to 1 to play against the computer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QSpinBox" name="playersSpin">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of players.&lt;/p&gt;&lt;p&gt;If set to &lt;tt&gt;1&lt;/tt&gt; you'll play against the AI.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>5</number>
+         </property>
+         <property name="value">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_10">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="text">
           <string>&amp;Initial cards:</string>
          </property>
@@ -113,6 +114,12 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>The amount of initial cards a player gets at game start</string>
          </property>
@@ -127,8 +134,14 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QLabel" name="label_11">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="text">
           <string>Card dec&amp;ks:</string>
          </property>
@@ -137,13 +150,19 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="QSpinBox" name="cardDecksSpin">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>23</height>
+          </size>
          </property>
          <property name="toolTip">
           <string>The amount of card decks to use</string>
@@ -153,8 +172,14 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="label_4">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="text">
           <string>&amp;Ultimate:</string>
          </property>
@@ -163,8 +188,14 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="QCheckBox" name="ultimateCheck">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>If checked, the game is finished when the last player has won.
 
@@ -176,8 +207,14 @@ Don't close the client while a game is running, because it will disconnect the r
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
+       <item row="5" column="0">
         <widget class="QLabel" name="label_9">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="text">
           <string>&amp;Direction change:</string>
          </property>
@@ -186,8 +223,14 @@ Don't close the client while a game is running, because it will disconnect the r
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="5" column="1">
         <widget class="QCheckBox" name="dirChangecheck">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>if checked than playing a &lt;i&gt;nine&lt;/i&gt; will cause a change of direction</string>
          </property>
@@ -196,8 +239,14 @@ Don't close the client while a game is running, because it will disconnect the r
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="6" column="0">
         <widget class="QLabel" name="label_8">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>23</height>
+          </size>
+         </property>
          <property name="text">
           <string>Ace &amp;round:</string>
          </property>
@@ -206,10 +255,16 @@ Don't close the client while a game is running, because it will disconnect the r
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="6" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QCheckBox" name="aceRound">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>23</height>
+            </size>
+           </property>
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables &lt;span style=&quot; font-weight:600;&quot;&gt;Ace rounds&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;In an &lt;span style=&quot; font-weight:600;&quot;&gt;Ace round&lt;/span&gt; players are only allowed to play &lt;span style=&quot; font-style:italic;&quot;&gt;Aces.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;NOTE:&lt;/span&gt; enabling this option forces other player's clients to be at least of version 0.7&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
@@ -239,6 +294,19 @@ Don't close the client while a game is running, because it will disconnect the r
             </property>
            </item>
           </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </item>
@@ -392,6 +460,35 @@ Don't close the client while a game is running, because it will disconnect the r
          </property>
          <property name="buddy">
           <cstring>aiNameEdit3</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>&amp;Delay:</string>
+         </property>
+         <property name="buddy">
+          <cstring>delaySpin</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QDoubleSpinBox" name="delaySpin">
+         <property name="toolTip">
+          <string>Delay after turns of the AI players</string>
+         </property>
+         <property name="suffix">
+          <string> seconds</string>
+         </property>
+         <property name="maximum">
+          <double>120.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.500000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -601,6 +698,7 @@ Don't close the client while a game is running, because it will disconnect the r
   <tabstop>aiNameEdit3</tabstop>
   <tabstop>aiEnabled4</tabstop>
   <tabstop>aiNameEdit4</tabstop>
+  <tabstop>delaySpin</tabstop>
   <tabstop>portSpin</tabstop>
   <tabstop>pathEdit</tabstop>
   <tabstop>execChooseButton</tabstop>
