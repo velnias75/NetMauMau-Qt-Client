@@ -193,7 +193,7 @@ Der Server erwartet mindestens Version %3.%4</translation>
     <message>
         <location filename="espeakvolumedialog.ui" line="24"/>
         <source>Speech volume:</source>
-        <translation>Sprachlaustärke:</translation>
+        <translation>Sprachlautstärke:</translation>
     </message>
     <message>
         <location filename="espeakvolumedialog.ui" line="78"/>
@@ -632,7 +632,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>Meine Karten</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="565"/>
+        <location filename="mainwindow.ui" line="571"/>
         <source>Actions</source>
         <translation>Aktionen</translation>
     </message>
@@ -814,7 +814,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.ui" line="887"/>
         <source>&amp;Volume</source>
-        <translation>&amp;Laustärke</translation>
+        <translation>&amp;Lautstärke</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="901"/>
@@ -829,7 +829,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.ui" line="890"/>
         <source>Set the speech volume</source>
-        <translation>Setze die Sprachlaustärke</translation>
+        <translation>Setze die Sprachlautstärke</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="207"/>

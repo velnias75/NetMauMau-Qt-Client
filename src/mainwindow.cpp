@@ -1840,6 +1840,7 @@ void MainWindow::showPlayerNameSelectMenu(const QPoint &p) {
 	m_playerNameMenu->addAction(m_ui->actionShowCardTooltips);
 
 #ifdef USE_ESPEAK
+	m_playerNameMenu->addSeparator();
 #if _WIN32
 	if(espeakInstalled()) {
 		m_playerNameMenu->addAction(m_ui->actionVolume);
