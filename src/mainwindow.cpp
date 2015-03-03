@@ -163,6 +163,8 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 		QObject::connect(m_ui->actionVolume, SIGNAL(triggered()), m_volumeDialog, SLOT(raise()));
 		QObject::connect(m_ui->actionVolume, SIGNAL(triggered()),
 						 m_volumeDialog, SLOT(showNormal()));
+		QObject::connect(m_volumeDialog, SIGNAL(muteChanged(bool)),
+						 m_ui->actionMute, SLOT(setChecked(bool)));
 	} else {
 		m_ui->menu_View->removeAction(m_ui->actionVolume);
 		m_ui->menu_View->removeAction(m_ui->actionMute);
