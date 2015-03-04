@@ -38,8 +38,10 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : NetMauMauDialog(p), m
 	m_model.setHorizontalHeaderLabels(header);
 
 	scoresView->setModel(&m_model);
+	scoresView->setColumnWidth(0, 180);
 	scoresView->verticalHeader()->setClickable(false);
 	scoresView->horizontalHeader()->setClickable(false);
+	scoresView->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
 
 	QObject::connect(serverCombo, SIGNAL(currentIndexChanged(QString)),
 					 this, SLOT(currentIndexChanged(QString)));
@@ -153,8 +155,6 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 		m_model.appendRow(items);
 	}
-
-	scoresView->resizeColumnToContents(0);
 }
 
 void ScoresDialog::setServer(const QString &server) {
