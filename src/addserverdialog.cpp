@@ -46,5 +46,5 @@ void AddServerDialog::enableOkButton(const QString &str) {
 }
 
 void AddServerDialog::addServerClicked() {
-	emit addServer(serverAdd->getHost(), serverAdd->getPort());
+	emit addServer(serverAdd->getHost(), serverAdd->getPort(), serverAdd->alias());
 }

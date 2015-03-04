@@ -75,6 +75,7 @@ private:
 
 public slots:
 	void setPlayerImagePath(const QString &path, bool warn = false);
+	void addServer(const QString &, const QString &, const QString & = QString::null);
 
 private slots:
 	void checkOnline();
@@ -86,7 +87,6 @@ private slots:
 	void removeSelected();
 	void removeServer();
 	void addServer();
-	void addServer(const QString &, const QString &);
 	void choosePlayerImage();
 	void clearPlayerImage();
 	void enableClearButton(const QString &);

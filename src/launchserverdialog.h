@@ -26,13 +26,14 @@
 
 #include "ui_launchserverdialog.h"
 
+class ServerDialog;
 class LocalServerOutputView;
 
 class LaunchServerDialog : public NetMauMauDialog, private Ui::LaunchServerDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(LaunchServerDialog)
 public:
-	explicit LaunchServerDialog(LocalServerOutputView *lsov, QWidget *parent = 0);
+	explicit LaunchServerDialog(LocalServerOutputView *lsov, ServerDialog *sd, QWidget *parent = 0);
 	virtual ~LaunchServerDialog();
 
 	bool launchAtStartup() const;
@@ -52,12 +53,14 @@ private slots:
 	void updateViewer();
 	void stateChanged(QProcess::ProcessState);
 	void terminate();
+	void addServer();
 
 private:
 	QProcess m_process;
 	bool m_errFail;
 	LocalServerOutputView *m_lsov;
 	QString m_hostLabel;
+	ServerDialog *m_serverDlg;
 };
 
 #endif // LAUNCHSERVERDIALOG_H

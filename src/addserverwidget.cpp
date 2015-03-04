@@ -27,7 +27,7 @@ const QRegExp hostRex("^(?=.{1,255}$)[0-9A-Za-z]" \
 }
 
 AddServerWidget::AddServerWidget(QWidget *p) : QGroupBox(p),
-	m_hostRexValidator(new QRegExpValidator(hostRex)) {
+	m_hostRexValidator(new QRegExpValidator(hostRex)), m_portVisible(true), m_readOnly(false) {
 
 	setupUi(this);
 
@@ -37,6 +37,7 @@ AddServerWidget::AddServerWidget(QWidget *p) : QGroupBox(p),
 
 	hostEdit->setValidator(m_hostRexValidator);
 
+	QObject::connect(portSpin, SIGNAL(valueChanged(QString)), this, SLOT(setPort(QString)));
 	QObject::connect(hostEdit, SIGNAL(textChanged(QString)),
 					 this, SLOT(enableAddButton(QString)));
 	QObject::connect(addButton, SIGNAL(clicked()), this, SLOT(addServerClicked()));
@@ -64,6 +65,56 @@ QString AddServerWidget::getHost() const {
 
 QString AddServerWidget::getPort() const {
 	return portSpin->text();
+}
+
+bool AddServerWidget::portVisible() const {
+	return m_portVisible;
+}
+
+void AddServerWidget::setPortVisible(bool b) {
+	m_portVisible = b;
+	portLabel->setVisible(b);
+	portSpin->setVisible(b);
+	emit portVisibleChanged(b);
+}
+
+bool AddServerWidget::readOnly() const {
+	return m_readOnly;
+}
+
+void AddServerWidget::setReadOnly(bool b) {
+	m_readOnly = b;
+	hostEdit->setReadOnly(b);
+	hostEdit->setDisabled(b);
+	emit readOnlyChanged(b);
+}
+
+void AddServerWidget::setHost(const QString host) {
+	getHostEdit()->setText(host);
+	emit hostChanged(host);
+}
+
+uint AddServerWidget::port() const {
+	return static_cast<uint>(portSpin->value());
+}
+
+void AddServerWidget::setPort(uint p) {
+	portSpin->setValue(static_cast<int>(p));
+	emit portChanged(p);
+}
+
+void AddServerWidget::setPort(const QString &p) {
+	portSpin->setValue(p.toInt());
+	emit portChanged(p.toUInt());
+}
+
+QString AddServerWidget::alias() const {
+	return aliasEdit->text();
+}
+
+void AddServerWidget::setAlias(const QString &a) {
+	aliasEdit->setText(a);
+	emit aliasChanged(a);
 }
 
 void AddServerWidget::enableAddButton(const QString &str) {

@@ -31,7 +31,7 @@ public:
 	explicit AddServerDialog(QWidget *parent = 0);
 
 signals:
-	void addServer(const QString &, const QString &);
+	void addServer(const QString &, const QString &, const QString &);
 
 private slots:
 	void enableOkButton(const QString &);

@@ -26,21 +26,19 @@
 #include "launchserverdialog.h"
 
 #include "localserveroutputview.h"
+#include "serverdialog.h"
 #include "client.h"
 
-LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) :
-	NetMauMauDialog(p), m_process(), m_errFail(false), m_lsov(lsov), m_hostLabel() {
+LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, ServerDialog *sd, QWidget *p) :
+	NetMauMauDialog(p), m_process(), m_errFail(false), m_lsov(lsov), m_hostLabel(),
+	m_serverDlg(sd) {
 
 	setupUi(this);
-
-	QLayoutItem *li = formLayout_4->itemAt(2, QFormLayout::FieldRole);
-	if(li && li->widget()) formLayout_4->setWidget(2, QFormLayout::SpanningRole, li->widget());
-
-	m_hostLabel = hostLabel->text();
 
 	QSettings settings;
 	settings.beginGroup("Launcher");
 
+	QObject::connect(addServerWidget, SIGNAL(addServer()), this, SLOT(addServer()));
 	QObject::connect(execChooseButton, SIGNAL(clicked()), this, SLOT(browse()));
 	QObject::connect(playersSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(cardDecksSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
@@ -57,7 +55,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	QObject::connect(aiEnabled3, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
 	QObject::connect(aiEnabled4, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
 	QObject::connect(delaySpin, SIGNAL(valueChanged(double)), this, SLOT(updateOptions()));
-	QObject::connect(portSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
+	QObject::connect(addServerWidget, SIGNAL(portChanged(uint)), this, SLOT(updateOptions()));
 	QObject::connect(launchButton, SIGNAL(clicked()), this, SLOT(launch()));
 	QObject::connect(&m_process, SIGNAL(started()), this, SLOT(launched()));
 	QObject::connect(&m_process, SIGNAL(error(QProcess::ProcessError)),
@@ -86,7 +84,7 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, QWidget *p) 
 	aiEnabled4->setChecked(settings.value("aiEnabled4", false).toBool());
 	aiNameEdit4->setText(settings.value("aiName4", "").toString());
 	delaySpin->setValue(settings.value("aiDelay", 1.0).toDouble());
-	portSpin->setValue(settings.value("port", Client::getDefaultPort()).toInt());
+	addServerWidget->setPort(settings.value("port", Client::getDefaultPort()).toUInt());
 	pathEdit->setText(settings.value("serverExe",
 									 QString::fromUtf8(NetMauMau::Common::getServerExe()))
 					  .toString());
@@ -117,7 +115,7 @@ LaunchServerDialog::~LaunchServerDialog() {
 	settings.setValue("aiEnabled3", aiEnabled3->isChecked());
 	settings.setValue("aiEnabled4", aiEnabled4->isChecked());
 	settings.setValue("aiDelay", delaySpin->value());
-	settings.setValue("port", portSpin->value());
+	settings.setValue("port", addServerWidget->getPort().toUInt());
 	settings.setValue("serverExe", pathEdit->text());
 	settings.endGroup();
 
@@ -145,7 +143,6 @@ LaunchServerDialog::~LaunchServerDialog() {
 	aiEnabled2->disconnect();
 	aiEnabled3->disconnect();
 	aiEnabled4->disconnect();
-	portSpin->disconnect();
 	launchButton->disconnect();
 
 	disconnect();
@@ -159,11 +156,9 @@ void LaunchServerDialog::updateOptions(int) {
 
 	QString opt;
 
-	if(portSpin->value() != Client::getDefaultPort()) {
-		opt.append("--port=").append(QString::number(portSpin->value())).append(" ");
+	if(addServerWidget->port() != Client::getDefaultPort()) {
+		opt.append("--port=").append(QString::number(addServerWidget->port())).append(" ");
 	}
-
-	hostLabel->setText(m_hostLabel.arg(portSpin->value()));
 
 	if(playersSpin->value() != 1) {
 		opt.append("-p").append(QString::number(playersSpin->value())).append(" ");
@@ -285,8 +280,8 @@ void LaunchServerDialog::launch() {
 
 	QStringList args;
 
-	if(portSpin->value() != Client::getDefaultPort()) {
-		args << QString("--port=").append(QString::number(portSpin->value()));
+	if(addServerWidget->port() != Client::getDefaultPort()) {
+		args << QString("--port=").append(QString::number(addServerWidget->port()));
 	}
 
 	if(playersSpin->value() != 1) {
@@ -398,4 +393,10 @@ void LaunchServerDialog::terminate() {
 #else
 	m_process.terminate();
 #endif
+}
+
+void LaunchServerDialog::addServer() {
+	m_serverDlg->addServer(addServerWidget->getHost(), addServerWidget->getPort(),
+						   addServerWidget->alias());
+	//	addServerWidget->getAddButton()->setDisabled(true);
 }

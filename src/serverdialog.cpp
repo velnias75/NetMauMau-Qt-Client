@@ -186,8 +186,8 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(
 	QObject::connect(refreshButton, SIGNAL(clicked()), this, SLOT(checkOnline()));
 	QObject::connect(removeButton, SIGNAL(clicked()), this, SLOT(removeSelected()));
 	QObject::connect(serverAdd, SIGNAL(addServer()), this, SLOT(addServer()));
-	QObject::connect(m_addServerDialog, SIGNAL(addServer(QString,QString)),
-					 this, SLOT(addServer(QString,QString)));
+	QObject::connect(m_addServerDialog, SIGNAL(addServer(QString,QString,QString)),
+					 this, SLOT(addServer(QString,QString,QString)));
 	QObject::connect(imageChooseButton, SIGNAL(clicked()), this, SLOT(choosePlayerImage()));
 	QObject::connect(picRemoveButton, SIGNAL(clicked()), this, SLOT(clearPlayerImage()));
 	QObject::connect(this, SIGNAL(refresh()), this, SLOT(checkOnline()));
@@ -612,16 +612,16 @@ void ServerDialog::itemChanged(QStandardItem *) {
 }
 
 void ServerDialog::addServer() {
-	addServer(serverAdd->getHost(), serverAdd->getPort());
+	addServer(serverAdd->getHost(), serverAdd->getPort(), serverAdd->alias());
 }
 
-void ServerDialog::addServer(const QString &shost, const QString &sport) {
+void ServerDialog::addServer(const QString &shost, const QString &sport, const QString &alias) {
 
 	QList<QStandardItem *> row;
 
 	const QString &host(shost + (!sport.isEmpty() ? QString(":%1").arg(sport) : QString::null));
 
-	row << new QStandardItem(host);
+	row << new QStandardItem(alias.isEmpty() ? host : alias);
 	row.back()->setData(host, ServerInfo::HOST);
 	row.back()->setEnabled(false);
 	row << new QStandardItem(NA);

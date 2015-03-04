@@ -475,6 +475,12 @@ Don't close the client while a game is running, because it will disconnect the r
        </item>
        <item row="5" column="1">
         <widget class="QDoubleSpinBox" name="delaySpin">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="toolTip">
           <string>Delay after turns of the AI players</string>
          </property>
@@ -499,54 +505,24 @@ Don't close the client while a game is running, because it will disconnect the r
        <string>Net&amp;work</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_4">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>P&amp;ort:</string>
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
+       <item row="0" column="0" colspan="2">
+        <widget class="AddServerWidget" name="addServerWidget" native="true">
+         <property name="portVisible" stdset="0">
+          <bool>true</bool>
          </property>
-         <property name="buddy">
-          <cstring>portSpin</cstring>
+         <property name="readOnly" stdset="0">
+          <bool>true</bool>
          </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="PortSpin" name="portSpin">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+         <property name="host" stdset="0">
+          <string notr="true">localhost</string>
          </property>
-         <property name="toolTip">
-          <string>The port to run the server on</string>
+         <property name="alias" stdset="0">
+          <string>My local server</string>
          </property>
         </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="hostLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Your local server will be available at&lt;br/&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;localhost:%1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -677,9 +653,10 @@ Don't close the client while a game is running, because it will disconnect the r
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PortSpin</class>
-   <extends>QSpinBox</extends>
-   <header>portspin.h</header>
+   <class>AddServerWidget</class>
+   <extends>QWidget</extends>
+   <header>addserverwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -699,7 +676,6 @@ Don't close the client while a game is running, because it will disconnect the r
   <tabstop>aiEnabled4</tabstop>
   <tabstop>aiNameEdit4</tabstop>
   <tabstop>delaySpin</tabstop>
-  <tabstop>portSpin</tabstop>
   <tabstop>pathEdit</tabstop>
   <tabstop>execChooseButton</tabstop>
   <tabstop>optionsEdit</tabstop>

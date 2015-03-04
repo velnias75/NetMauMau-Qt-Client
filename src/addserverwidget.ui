@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>AddServerWidget</class>
  <widget class="QGroupBox" name="AddServerWidget">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>214</width>
-    <height>91</height>
-   </rect>
-  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
     <horstretch>0</horstretch>
@@ -20,8 +12,8 @@
    <string>Add server</string>
   </property>
   <layout class="QFormLayout" name="formLayout_2">
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
+   <item row="1" column="0">
+    <widget class="QLabel" name="hostEditLabel">
      <property name="text">
       <string>&amp;Server:</string>
      </property>
@@ -30,7 +22,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="1">
     <widget class="QLineEdit" name="hostEdit">
      <property name="focusPolicy">
       <enum>Qt::StrongFocus</enum>
@@ -43,7 +35,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="PortSpin" name="portSpin">
@@ -91,13 +83,30 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_2">
+   <item row="2" column="0">
+    <widget class="QLabel" name="portLabel">
      <property name="text">
-      <string>&amp;Port:</string>
+      <string>Po&amp;rt:</string>
      </property>
      <property name="buddy">
       <cstring>portSpin</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>A&amp;lias:</string>
+     </property>
+     <property name="buddy">
+      <cstring>aliasEdit</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="aliasEdit">
+     <property name="toolTip">
+      <string>An optional alias name for the server</string>
      </property>
     </widget>
    </item>
@@ -110,6 +119,12 @@
    <header>portspin.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>aliasEdit</tabstop>
+  <tabstop>hostEdit</tabstop>
+  <tabstop>portSpin</tabstop>
+  <tabstop>addButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -27,6 +27,11 @@
 class AddServerWidget : public QGroupBox, private Ui::AddServerWidget {
 	Q_OBJECT
 	Q_DISABLE_COPY(AddServerWidget)
+	Q_PROPERTY(bool portVisible READ portVisible WRITE setPortVisible NOTIFY portVisibleChanged)
+	Q_PROPERTY(bool readOnly READ readOnly WRITE setReadOnly NOTIFY readOnlyChanged)
+	Q_PROPERTY(QString alias READ alias WRITE setAlias NOTIFY aliasChanged)
+	Q_PROPERTY(QString host READ getHost WRITE setHost NOTIFY hostChanged)
+	Q_PROPERTY(uint port READ port WRITE setPort NOTIFY portChanged)
 public:
 	explicit AddServerWidget(QWidget *parent = 0);
 	virtual ~AddServerWidget();
@@ -40,8 +45,30 @@ public:
 	QString getHost() const;
 	QString getPort() const;
 
+	bool portVisible() const _PURE;
+	void setPortVisible(bool b);
+
+	bool readOnly() const _PURE;
+	void setReadOnly(bool b);
+
+	void setHost(const QString host);
+
+	uint port() const;
+	void setPort(uint port);
+
+	QString alias() const;
+	void setAlias(const QString &alias);
+
 signals:
 	void addServer();
+	void portVisibleChanged(bool);
+	void readOnlyChanged(bool);
+	void hostChanged(const QString &);
+	void portChanged(uint port);
+	void aliasChanged(const QString &);
+
+public slots:
+	void setPort(const QString &port);
 
 private slots:
 	void enableAddButton(const QString &str);
@@ -49,6 +76,8 @@ private slots:
 
 private:
 	const QRegExpValidator *m_hostRexValidator;
+	bool m_portVisible;
+	bool m_readOnly;
 };
 
 #endif // ADDSERVERWIDGET_H
