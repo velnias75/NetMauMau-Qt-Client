@@ -296,7 +296,9 @@ MainWindow::~MainWindow() {
 	delete m_animLogo;
 	delete m_playerNamesActionGroup;
 	delete m_lsov;
+#ifdef USE_ESPEAK
 	delete m_volumeDialog;
+#endif
 	delete m_ui;
 }
 
