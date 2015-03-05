@@ -32,7 +32,7 @@
 #include "mainwindow.h"
 #include "base64bridge.h"
 
-#define CLIENTVERSION 15
+#define CLIENTVERSION 16
 
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port) : QThread(),
