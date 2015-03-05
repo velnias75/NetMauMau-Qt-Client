@@ -360,12 +360,12 @@ void MainWindow::sortMyCards(SORTMODE mode) {
 
 		qSort(cards.begin(), cards.end(), mode == SUIT_RANK ? NetMauMau::Common::cardLess :
 															  NetMauMau::Common::cardGreater);
-		int k = 1;
-		for(QList<CardWidget *>::ConstIterator i(cards.begin()); i != cards.end(); ++i, ++k) {
-			m_ui->myCardsLayout->addWidget(*i, 0, Qt::AlignHCenter);
-			(*i)->installEventFilter(this);
-			addKeyShortcutTooltip(*i, k);
-			(*i)->setVisible(true);
+		int k = 0;
+		foreach(CardWidget *i, cards) {
+			m_ui->myCardsLayout->addWidget(i, 0, Qt::AlignHCenter);
+			i->installEventFilter(this);
+			addKeyShortcutTooltip(i, ++k);
+			i->setVisible(true);
 		}
 
 		m_ui->myCardsScrollArea->ensureWidgetVisible(prevLast);
@@ -450,12 +450,12 @@ throw(NetMauMau::Common::Exception::SocketException) {
 	const Client::SCORES &scores(Client(0L, 0L, QString::null, m_client->getServer().toStdString(),
 										m_client->getPort()).getScores(Client::SCORE_TYPE::ABS, 0));
 
-	for(Client::PLAYERINFOS::const_iterator i(pl.begin()); i != pl.end(); ++i) {
+	foreach(const NetMauMau::Client::Connection::PLAYERINFO &i, pl) {
 
-		const QString &pName(QString::fromUtf8(i->name.c_str()));
+		const QString &pName(QString::fromUtf8(i.name.c_str()));
 		const Client::SCORES::const_iterator &ps(std::find_if(scores.begin(), scores.end(),
 															  std::bind2nd(scoresPlayer(),
-																		   i->name)));
+																		   i.name)));
 
 		if(gs && ps != scores.end()) gs->playerScores()[pName] = QString::number(ps->score);
 
@@ -513,14 +513,14 @@ void MainWindow::serverAccept() {
 
 		const Client::PLAYERINFOS &pl(m_client->playerList(true));
 
-		for(Client::PLAYERINFOS::const_iterator i(pl.begin()); i != pl.end(); ++i) {
+		foreach(const NetMauMau::Client::Connection::PLAYERINFO &i, pl) {
 			qApp->processEvents();
 
-			const QString &pName(QString::fromUtf8(i->name.c_str()));
+			const QString &pName(QString::fromUtf8(i.name.c_str()));
 
-			clientPlayerJoined(pName, i->pngDataLen ?  QImage::fromData(i->pngData,
-																		i->pngDataLen) : QImage());
-			delete [] i->pngData;
+			clientPlayerJoined(pName, i.pngDataLen ?  QImage::fromData(i.pngData,
+																	   i.pngDataLen) : QImage());
+			delete [] i.pngData;
 		}
 
 		updatePlayerScores(gs, pl);
@@ -700,15 +700,13 @@ void MainWindow::clientCardSet(const Client::CARDS &c) {
 
 	QList<CardWidget *> &cards(gameState()->cards());
 
-	int k = 1;
-	for(Client::CARDS::const_iterator i(c.begin()); i != c.end(); ++i, ++k) {
-
-		const NetMauMau::Common::ICard *card = *i;
+	int k = 0;
+	foreach(const NetMauMau::Common::ICard *card, c) {
 
 		if(card) {
 			cards.push_back(new CardWidget(m_ui->awidget, card->description().c_str(), true));
 			m_ui->myCardsLayout->addWidget(cards.back(), 0, Qt::AlignHCenter);
-			addKeyShortcutTooltip(cards.back(), k);
+			addKeyShortcutTooltip(cards.back(), ++k);
 			QObject::connect(cards.back(), SIGNAL(chosen(CardWidget*)),
 							 this, SLOT(cardChosen(CardWidget*)));
 		} else {
@@ -736,14 +734,14 @@ void MainWindow::clearMyCards(bool del, bool dis) {
 
 	QList<CardWidget *> &cards(gameState()->cards());
 
-	for(QList<CardWidget *>::ConstIterator i(cards.begin()); i != cards.end(); ++i) {
+	foreach(CardWidget *i, cards) {
 
-		m_ui->myCardsLayout->removeWidget(*i);
+		m_ui->myCardsLayout->removeWidget(i);
 
 		if(del) {
-			delete *i;
+			delete i;
 		} else {
-			(*i)->setVisible(false);
+			i->setVisible(false);
 		}
 	}
 
@@ -772,21 +770,21 @@ void MainWindow::clientStats(const Client::STATS &s) {
 	bool mau = false;
 #endif
 
-	for(Client::STATS::const_iterator i(s.begin()); i != s.end(); ++i) {
+	foreach(const Client::STAT &i, s) {
 
-		const QString &pName(QString::fromUtf8(i->playerName.c_str()));
+		const QString &pName(QString::fromUtf8(i.playerName.c_str()));
 
 		if(!isMe(pName)) {
 			gameState()->playerCardCounts().
 					insert(pName, QPair<std::size_t,
 						   std::size_t>(gameState()->playerCardCounts()[pName].second,
-										i->cardCount));
+										i.cardCount));
 		}
 
 		updatePlayerStats(pName);
 
 #ifdef USE_ESPEAK
-		if(!(mau)) mau = i->cardCount == 1 &&
+		if(!(mau)) mau = i.cardCount == 1 &&
 						 (gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
@@ -1329,8 +1327,9 @@ void MainWindow::unmau() {
 
 	GameState *gs = gameState();
 
-	for(std::set<QStandardItem *>::const_iterator i(gs->unmau().begin()); i != gs->unmau().end();
-		++i) if(*i && (*i)->text().contains(QRegExp(".*\\>Mau\\<.*"))) (*i)->setText("1");
+	foreach(QStandardItem *i, gs->unmau()) {
+		if(i && i->text().contains(QRegExp(".*\\>Mau\\<.*"))) i->setText("1");
+	}
 
 	gs->unmau().clear();
 }
@@ -1838,10 +1837,7 @@ void MainWindow::showPlayerNameSelectMenu(const QPoint &p) {
 		m_playerNameMenu->addSeparator();
 
 	} else if(m_playerNamesActionGroup) {
-		for(QList<QAction*>::iterator i(m_playerNamesActionGroup->actions().begin());
-			i != m_playerNamesActionGroup->actions().end(); ++i) {
-			(*i)->setDisabled(true);
-		}
+		foreach(QAction *i, m_playerNamesActionGroup->actions()) i->setDisabled(true);
 	}
 
 	m_playerNameMenu->addAction(m_ui->actionShowCardTooltips);

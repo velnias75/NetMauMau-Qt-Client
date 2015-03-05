@@ -119,9 +119,9 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 			m_model.removeRows(0, m_model.rowCount());
 
-			for(Client::SCORES::const_iterator i(scores.begin()); i != scores.end(); ++i) {
+			foreach(const NetMauMau::Client::Connection::SCORE &i, scores) {
 
-				const QString pName(QString::fromUtf8(i->name.c_str()));
+				const QString pName(QString::fromUtf8(i.name.c_str()));
 				const bool isMe = m_serverdialog->getPlayerName() == pName;
 
 				QList<QStandardItem *> items;
@@ -129,7 +129,7 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 				items << new QStandardItem(pName);
 				if(isMe) items.back()->setBackground(Qt::lightGray);
 				items.back()->setToolTip(pName);
-				items << new QStandardItem(QString::number(i->score));
+				items << new QStandardItem(QString::number(i.score));
 				items.back()->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
 				if(isMe) items.back()->setBackground(Qt::lightGray);
 

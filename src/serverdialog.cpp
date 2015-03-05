@@ -209,12 +209,7 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(
 
 ServerDialog::~ServerDialog() {
 
-	for(QList<ServerInfo *>::Iterator r(m_serverInfoThreads.begin());
-		r != m_serverInfoThreads.end(); ++r) {
-
-		ServerInfo *si = *r;
-		si->disarm();
-	}
+	foreach(ServerInfo *si, m_serverInfoThreads) si->disarm();
 
 	m_autoRefresh.stop();
 
@@ -222,10 +217,7 @@ ServerDialog::~ServerDialog() {
 
 	QThreadPool::globalInstance()->waitForDone(3100UL);
 
-	for(QList<ServerInfo *>::Iterator r(m_serverInfoThreads.begin());
-		r != m_serverInfoThreads.end(); ++r) {
-
-		ServerInfo *si = *r;
+	foreach(ServerInfo *si, m_serverInfoThreads) {
 		si->disconnect();
 		delete si;
 	}
@@ -678,10 +670,7 @@ void ServerDialog::deleteRow(const QModelIndex &idx) {
 void ServerDialog::deleteRows(const QList<int> &rows) {
 
 	for(int r = rows.size() - 1; r >= 0; --r) {
-		const QList<QStandardItem *> cols(m_model.takeRow(rows[r]));
-		for(QList<QStandardItem *>::ConstIterator i(cols.begin()); i != cols.end(); ++i) {
-			delete *i;
-		}
+		foreach(const QStandardItem *i, m_model.takeRow(rows[r])) delete i;
 	}
 
 	saveServers();
