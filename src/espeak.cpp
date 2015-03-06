@@ -86,7 +86,7 @@ void ESpeak::speak(const QString &text, const QString lang) {
 
 	if(!m_enabled) return;
 
-	m_speakTxt = text;
+	m_speakTxt = text.toUtf8();
 	m_lang = lang.isNull() ? m_systemLang : lang;
 
 	if(espeak_IsPlaying()) {
@@ -104,20 +104,20 @@ void ESpeak::speakNow() {
 	unsigned int uid;
 	void *udata = NULL;
 
-	QByteArray txt = m_speakTxt.toUtf8();
+	QByteArray lng = m_lang.toAscii().constData();
 
 	espeak_VOICE voice;
 	std::memset(&voice, 0, sizeof(espeak_VOICE));
 
-	voice.languages = m_lang.toAscii().constData();
+	voice.languages = lng.constData();
 	voice.gender = 2;
 	voice.age = 8;
 	voice.variant = 2;
 
 	if(espeak_SetVoiceByProperties(&voice) == EE_OK) {
-		espeak_Synth(txt.constData(), txt.size() * 2, 0, POS_SENTENCE, 0, espeakCHARS_AUTO,
-					 &uid, udata);
+		espeak_Synth(m_speakTxt.constData(), m_speakTxt.size() * 2, 0, POS_SENTENCE, 0,
+					 espeakCHARS_AUTO, &uid, udata);
 	}
 
-	m_speakTxt = QString::null;
+	m_speakTxt.clear();
 }

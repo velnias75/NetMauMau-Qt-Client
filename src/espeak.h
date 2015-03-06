@@ -50,7 +50,7 @@ private:
 	bool isSpeaking() const;
 
 private:
-	QString m_speakTxt;
+	QByteArray m_speakTxt;
 	QString m_lang;
 	const QString m_systemLang;
 	char *m_path;
