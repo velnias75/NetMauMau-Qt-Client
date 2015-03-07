@@ -39,8 +39,8 @@ const char *NA = QT_TRANSLATE_NOOP("ServerDialog", "n/a");
 const QRegExp nameRex("[^\\+]+.*");
 }
 
-ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(p), m_model(0, 4),
-	m_playerNameModel(), m_forceRefresh(false), m_lastServer(QString::null),
+ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(p),
+	m_model(0, 4, this), m_playerNameModel(), m_forceRefresh(false), m_lastServer(QString::null),
 	m_deleteServersDlg(new DeleteServersDialog(&m_model, this)),
 	m_nameRexValidator(new QRegExpValidator(nameRex)), m_playerImage(), m_autoRefresh(this),
 	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null),

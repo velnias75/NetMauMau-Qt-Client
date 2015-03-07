@@ -38,14 +38,14 @@ int main(int argc, char *argv[]) {
 	QCoreApplication::setApplicationName(PACKAGE_NAME);
 	QCoreApplication::setApplicationVersion(PACKAGE_VERSION);
 
+	NetMauMauApplication a(argc, argv);
+
 #ifdef _WIN32
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 #else
-	QSharedMemory sharedMemory;
+	QSharedMemory sharedMemory(&a);
 	sharedMemory.setKey(QCoreApplication::applicationName() + qgetenv("USER"));
 #endif
-
-	NetMauMauApplication a(argc, argv);
 
 	QTranslator qtTranslator;
 #ifndef _WIN32

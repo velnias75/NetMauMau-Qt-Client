@@ -69,7 +69,7 @@ struct scoresPlayer : public std::binary_function<Client::SCORE, std::string, bo
 MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_client(0L),
 	m_ui(new Ui::MainWindow),m_serverDlg(new ServerDialog(splash, this)),
 	m_lsov(new LocalServerOutputView()),
-	m_launchDlg(new LaunchServerDialog(m_lsov, m_serverDlg, this)), m_model(0, 5),
+	m_launchDlg(new LaunchServerDialog(m_lsov, m_serverDlg, this)), m_model(0, 5, this),
 	m_jackChooseDialog(new JackChooseDialog(this)), m_stdForeground(), m_stdBackground(),
 	m_connectionLogDlg(new ConnectionLogDialog(0L)), m_remotePlayersHeader(0L),
 	m_playerImageDelegate(new PlayerImageDelegate(this)),

@@ -24,7 +24,7 @@
 #include "client.h"
 
 ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : NetMauMauDialog(p), m_serverdialog(sd),
-	m_model(0, 2), m_server(QString::null) {
+	m_model(0, 2, this), m_server(QString::null) {
 
 	setupUi(this);
 

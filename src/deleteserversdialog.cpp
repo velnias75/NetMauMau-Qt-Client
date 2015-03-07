@@ -25,7 +25,7 @@
 #include "serverinfo.h"
 
 DeleteServersDialog::DeleteServersDialog(const QStandardItemModel *model, QWidget *p) :
-	NetMauMauDialog(p), m_pModel(model), m_model(0, 1) {
+	NetMauMauDialog(p), m_pModel(model), m_model(0, 1, this) {
 
 	setupUi(this);
 

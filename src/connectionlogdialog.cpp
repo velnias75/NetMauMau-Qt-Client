@@ -26,7 +26,7 @@
 #include "util.h"
 
 ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : NetMauMauDialog(p, Qt::Window),
-	m_entryFont("Monospace"), m_model(),
+	m_entryFont("Monospace"), m_model(this),
 	m_toIcon(QApplication::style()->standardIcon(QStyle::SP_ArrowRight)),
 	m_fromIcon(QApplication::style()->standardIcon(QStyle::SP_ArrowLeft)),
 	m_ctxPopup(new QMenu(this)) {
