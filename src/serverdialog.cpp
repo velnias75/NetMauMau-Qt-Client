@@ -547,6 +547,7 @@ void ServerDialog::checkOnline() {
 	//	QMutexLocker locker(&m_mutex);
 
 	if(!m_blockAutoRefresh) {
+
 		m_forceRefresh = false;
 
 		for(int r = 0; r < m_serverInfoThreads.count(); ++r) {

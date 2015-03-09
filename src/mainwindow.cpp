@@ -431,6 +431,7 @@ void MainWindow::showReceiveProgress() const {
 void MainWindow::updatePlayerScores(GameState *gs, uint attempts) {
 
 	if(gs) {
+
 		gs->playerScores().clear();
 
 		for(uint i = 0; i < attempts; ++i) {
@@ -785,7 +786,7 @@ void MainWindow::clientStats(const Client::STATS &s) {
 
 #ifdef USE_ESPEAK
 		if(!(mau)) mau = i.cardCount == 1 &&
-						 (gameState()->playerCardCounts()[pName].first !=
+				(gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
 
@@ -1039,7 +1040,6 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 																   verticalHeader()->
 																   minimumSectionSize() - 2)),
 						   Qt::DisplayRole);
-
 		QByteArray ba;
 		QBuffer buf(&ba);
 		buf.open(QIODevice::WriteOnly);

@@ -71,7 +71,6 @@ void ScoresDialog::refresh() {
 
 	const QList<QStandardItem *> &its(model->findItems(m_server.isEmpty() ?
 														   serverCombo->currentText() : m_server));
-
 	if(!its.empty() && its.first()->isEnabled()) {
 		currentIndexChanged(m_server.isEmpty() ? serverCombo->currentText() : m_server);
 	} else {
@@ -98,6 +97,11 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 	if(serverCombo->itemData(serverCombo->currentIndex(), ServerInfo::HAVESCORES).toBool()) {
 
+		const long attempts =
+				serverCombo->itemData(serverCombo->currentIndex(), ServerInfo::ATTEMPTS).isValid()
+				? serverCombo->itemData(serverCombo->currentIndex(), ServerInfo::ATTEMPTS).
+				  value<long>() : 0L;
+
 		const QString &host(serverCombo->itemData(serverCombo->currentIndex(), ServerInfo::HOST).
 							toString());
 
@@ -106,11 +110,9 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 		const uint port = (QString(idx != -1 ? host.mid(idx + 1) :
 											   QString::number(Client::getDefaultPort()))).toUInt();
 
-		scoresView->setCursor(Qt::WaitCursor);
-
 		try {
 
-			timeval tv = { 5, 0 };
+			timeval tv = { 2L * attempts, 0L };
 
 			const Client::SCORES &scores((Client(0L, 0L, QString::null,
 												 std::string(srv.toStdString()),
@@ -141,8 +143,6 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 		} catch(const NetMauMau::Common::Exception::SocketException &e) {
 			qWarning("Get server score for %s: %s", host.toLocal8Bit().constData(), e.what());
 		}
-
-		scoresView->unsetCursor();
 
 	} else {
 
