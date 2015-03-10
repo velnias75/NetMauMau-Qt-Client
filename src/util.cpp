@@ -28,10 +28,10 @@ namespace {
 const QString replaceSuitSymbolColor("<span style=\"color:red;\">\\1 \\2</span>");
 const QString replaceSuitSymbol("\\1 \\2");
 
-const QRegExp spadesRex("(" + QString::fromUtf8("\u2660") + ") ([0-9]{1,2}|[JQKA])");
-const QRegExp clubsRex("(" + QString::fromUtf8("\u2663") + ") ([0-9]{1,2}|[JQKA])");
-const QRegExp heartsRex("(" + QString::fromUtf8("\u2665") + ") ([0-9]{1,2}|[JQKA])");
-const QRegExp diamondsRex("(" + QString::fromUtf8("\u2666") + ") ([0-9]{1,2}|[JQKA])");
+QRegExp spadesRex("(" + QString::fromUtf8("\u2660") + ") ([0-9]{1,2}|[JQKA])");
+QRegExp clubsRex("(" + QString::fromUtf8("\u2663") + ") ([0-9]{1,2}|[JQKA])");
+QRegExp heartsRex("(" + QString::fromUtf8("\u2665") + ") ([0-9]{1,2}|[JQKA])");
+QRegExp diamondsRex("(" + QString::fromUtf8("\u2666") + ") ([0-9]{1,2}|[JQKA])");
 
 }
 
@@ -62,7 +62,7 @@ QString Util::cardStyler(const QString &c, const QFont &f, bool color) {
 	return cardStyler(ret, f, color);
 }
 
-void Util::replaceSymbolCard(const QRegExp &rex, QString &c, const QString &suit) {
+void Util::replaceSymbolCard(QRegExp &rex, QString &c, const QString &suit) {
 
 	int pos = 0;
 

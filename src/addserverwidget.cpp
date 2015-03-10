@@ -27,13 +27,18 @@ const QRegExp hostRex("^(?=.{1,255}$)[0-9A-Za-z]" \
 }
 
 AddServerWidget::AddServerWidget(QWidget *p) : QGroupBox(p),
-	m_hostRexValidator(new QRegExpValidator(hostRex)), m_portVisible(true), m_readOnly(false) {
+	m_hostRexValidator(new QRegExpValidator(hostRex, this)), m_portVisible(true),
+	m_readOnly(false) {
 
 	setupUi(this);
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!addButton->icon().hasThemeIcon("list-add")) {
+#endif
 		addButton->setIcon(QIcon(":/list-add.png"));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	}
+#endif
 
 	hostEdit->setValidator(m_hostRexValidator);
 

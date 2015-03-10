@@ -19,6 +19,7 @@
 
 #include <QSplashScreen>
 #include <QImageReader>
+#include <QHeaderView>
 #include <QThreadPool>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -51,9 +52,13 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(
 
 	setupUi(this);
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!actionAddServer->icon().hasThemeIcon("list-add")) {
+#endif
 		actionAddServer->setIcon(QIcon(":/list-add.png"));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	}
+#endif
 
 	addAction(actionAddServer);
 
@@ -113,6 +118,7 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(
 
 	availServerView->setModel(&m_model);
 	availServerView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	availServerView->verticalHeader()->setVisible(false);
 
 	playerName->setModel(&m_playerNameModel);
 
@@ -160,22 +166,38 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(
 	refreshButton->setShortcutEnabled(true);
 	refreshButton->setShortcut(QKeySequence::Refresh);
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!refreshButton->icon().hasThemeIcon("view-refresh")) {
+#endif
 		refreshButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_BrowserReload));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	}
+#endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!removeButton->icon().hasThemeIcon("list-remove")) {
+#endif
 		removeButton->setIcon(QIcon(":/list-remove.png"));
 		actionDeleteServer->setIcon(QIcon(":/list-remove.png"));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	}
+#endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!picRemoveButton->icon().hasThemeIcon("list-remove")) {
+#endif
 		picRemoveButton->setIcon(QIcon(":/list-remove.png"));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	}
+#endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!deleteServers->icon().hasThemeIcon("user-trash")) {
+#endif
 		deleteServers->setIcon(QApplication::style()->standardIcon(QStyle::SP_TrashIcon));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	}
+#endif
 
 	connectButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_DialogOkButton));
 	cancelButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_DialogCancelButton));

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -31,7 +31,11 @@ typedef struct _nameSize {
 
 	QString name;
 	QSize size;
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	QPixmapCache::Key pm;
+#else
+	QString pm;
+#endif
 } NAMESIZE;
 
 typedef struct _cardKey {
@@ -133,7 +137,11 @@ CardPixmap::CardPixmap(const QSize &siz, NetMauMau::Common::ICard::SUIT s,
 	const QMap<CARDKEY, NAMESIZE>::iterator f(CARDMAP.find(CARDKEY(s, r)));
 
 	QPixmap fpm;
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	const bool cached = QPixmapCache::find(f.value().pm, &fpm);
+#else
+	const bool cached = QPixmapCache::find(f.value().pm, fpm);
+#endif
 
 	if(!cached || !f.value().size.isValid() || f.value().size != size()) {
 
@@ -146,7 +154,11 @@ CardPixmap::CardPixmap(const QSize &siz, NetMauMau::Common::ICard::SUIT s,
 			renderer.render(&painter);
 
 			f.value().size = size();
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 			f.value().pm = QPixmapCache::insert(*this);
+#else
+			if(QPixmapCache::insert(f.value().name, *this)) f.value().pm = f.value().name;
+#endif
 		}
 
 	} else {

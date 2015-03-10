@@ -36,7 +36,7 @@ class Util {
 private:
 	Util() _CONST;
 
-	static void replaceSymbolCard(const QRegExp &rex, QString &c, const QString &suit);
+	static void replaceSymbolCard(QRegExp &rex, QString &c, const QString &suit);
 	static QString rank(const QString &r);
 };
 

@@ -114,21 +114,37 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 
 	m_ui->shufflingLabel->setVisible(false);
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!m_ui->actionReconnect->icon().hasThemeIcon("go-previous")) {
+#endif
 		m_ui->actionReconnect->setIcon(QIcon(":/go-previous.png"));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	}
+#endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!m_ui->actionServer->icon().hasThemeIcon("network-server")) {
+#endif
 		m_ui->actionServer->setIcon(QIcon(":/network-server.png"));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	}
+#endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!m_ui->actionDisconnect->icon().hasThemeIcon("network-disconnect")) {
+#endif
 		m_ui->actionDisconnect->setIcon(QIcon(":/connect_no.png"));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	}
+#endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!m_ui->actionExit->icon().hasThemeIcon("application-exit")) {
+#endif
 		m_ui->actionExit->setIcon(QIcon(":/application-exit.png"));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	}
+#endif
 
 	m_ui->actionAbout->setText(m_ui->actionAbout->text().arg(QCoreApplication::applicationName()));
 
@@ -786,7 +802,7 @@ void MainWindow::clientStats(const Client::STATS &s) {
 
 #ifdef USE_ESPEAK
 		if(!(mau)) mau = i.cardCount == 1 &&
-				(gameState()->playerCardCounts()[pName].first !=
+						 (gameState()->playerCardCounts()[pName].first !=
 				gameState()->playerCardCounts()[pName].second);
 #endif
 
@@ -899,12 +915,18 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 								 arg(gs->playerScores().contains(p) ?
 										 yourScore(gs, p) : tr("Your deduction of points: %1").
 										 arg(pt)).arg(gs->playTime().toString("HH:mm:ss")),
+						 #if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 								 QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48),
+						 #else
+								 QIcon(":/sad.png").pixmap(48, 48),
+						 #endif
 								 this);
+
+		QAbstractButton *tryBut = 0L;
 
 		if(m_model.rowCount() == 2) {
 			m_timeLabel.hide();
-			lost.addButton(tr("Try &again"), QMessageBox::YesRole);
+			tryBut = lost.addButton(tr("Try &again"), QMessageBox::YesRole);
 		}
 
 		lost.setEscapeButton(lost.addButton(QMessageBox::Ok));
@@ -914,7 +936,8 @@ void MainWindow::clientPlayerLost(const QString &p, std::size_t t, std::size_t p
 		gs->setLostDisplaying(false);
 
 		emit confirmLostWon(m_model.rowCount() == 2 ?
-								lost.buttonRole(lost.clickedButton()) :
+								(tryBut && lost.clickedButton() == tryBut ?
+									 QMessageBox::YesRole : QMessageBox::AcceptRole) :
 								QMessageBox::AcceptRole);
 
 	} else {
@@ -946,19 +969,25 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 		if(first) ESpeak::getInstance().speak(tr("Congratulations! You have won!"),
 											  tr("Congratulations! You have won!") ==
 											  QLatin1String("Congratulations! You have won!") ?
-												  QString("en") :
-												  QString::null);
+												  QString("en") : QString::null);
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
 												QIcon(":/smile.png")).pixmap(48, 48));
+#else
+		gameOver.setIconPixmap(QIcon(":/smile.png").pixmap(48, 48));
+#endif
+
 		gameOver.setWindowTitle(first ? tr("Congratulations") : winnerRank(gs));
 		gameOver.setText(tr("You have won!\n%1\nPlaying time: %2").arg(yourScore(gs, p)).
 						 arg(gs->playTime().toString("HH:mm:ss")));
 
+		QAbstractButton *tryBut = 0L;
+
 		if(m_model.rowCount() == 2) {
 			m_timeLabel.hide();
-			gameOver.addButton(tr("Try &again"), QMessageBox::YesRole);
+			tryBut = gameOver.addButton(tr("Try &again"), QMessageBox::YesRole);
 		}
 
 		gameOver.setEscapeButton(gameOver.addButton(QMessageBox::Ok));
@@ -968,7 +997,8 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 		gs->incCountWonDisplayed();
 
 		emit confirmLostWon(m_model.rowCount() == 2 ?
-								gameOver.buttonRole(gameOver.clickedButton()) :
+								(tryBut && gameOver.clickedButton() == tryBut ?
+									 QMessageBox::YesRole : QMessageBox::AcceptRole) :
 								QMessageBox::AcceptRole);
 
 	} else if(m_model.rowCount() > 2 && gs->maumauCount() ==
@@ -976,7 +1006,11 @@ void MainWindow::clientPlayerWins(const QString &p, std::size_t t) {
 
 		gameOver.setWindowTitle(gs->winningOrder().indexOf(myself()) > gs->winningOrder().indexOf(p)
 								? tr("Sorry") : winnerRank(gs));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 		gameOver.setIconPixmap(QIcon::fromTheme("face-plain", QIcon(":/plain.png")).pixmap(48, 48));
+#else
+		gameOver.setIconPixmap(QIcon(":/plain.png").pixmap(48, 48));
+#endif
 		gameOver.setText("<html><body>" + tr("<font color=\"blue\">%1</font> has won!" \
 											 "<br /><br />Playing time: %2").arg(p).
 						 arg(gs->playTime().toString("HH:mm:ss")) + "</body></html>");
@@ -1045,9 +1079,13 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 		buf.open(QIODevice::WriteOnly);
 		ServerDialog::scalePlayerPic(myImg).save(&buf, "PNG");
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 8, 0)
 		si.back()->setToolTip(QString("<p align=\"center\">" \
 									  "<img src=\"data:image/png;base64,%1\"><br />%2</p>").
 							  arg(ba.toBase64().constData()).arg(p));
+#else
+		si.back()->setToolTip(p);
+#endif
 	}
 
 	QTimer::singleShot(500, m_receivingPlayerImageProgress, SLOT(hide()));
@@ -1607,9 +1645,15 @@ void MainWindow::clientAceRoundStarted(const QString &p) {
 
 	m_aceRoundLabel.setPixmap(CardPixmap(QSize(10, 14), NetMauMau::Common::ICard::HEARTS,
 										 gs->aceRoundRank()));
+
+#if QT_VERSION >= QT_VERSION_CHECK(4, 8, 0)
 	m_aceRoundLabel.setToolTip("<p align=\"center\"><img src=\"data:image/png;base64,"
 							   + ba.toBase64() + "\"><br />" + tr("%1 of %2").
 							   arg(getAceRoundRankString(gs, true)).arg(p) + "</p");
+#else
+	m_aceRoundLabel.setToolTip(tr("%1 of %2").arg(getAceRoundRankString(gs, true)).arg(p));
+#endif
+
 	m_aceRoundLabel.show();
 	gs->setAceRoundActive(p);
 }
@@ -1770,10 +1814,14 @@ void MainWindow::notifyClientUpdate() {
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *evt) {
-	if(!gameState()->inGame() && evt->mimeData()->hasUrls() &&
-			evt->mimeData()->urls().first().isLocalFile()) {
-		evt->acceptProposedAction();
-	}
+
+#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
+	const bool accept = evt->mimeData()->hasUrls() && evt->mimeData()->urls().first().isLocalFile();
+#else
+	const bool accept = evt->mimeData()->hasUrls();
+#endif
+
+	if(!gameState()->inGame() && accept) evt->acceptProposedAction();
 }
 
 void MainWindow::dropEvent(QDropEvent *evt) {

@@ -28,9 +28,14 @@ PlayerImageLineEdit::PlayerImageLineEdit(QWidget *p) : QLineEdit(p) {
 }
 
 void PlayerImageLineEdit::dragEnterEvent(QDragEnterEvent *evt) {
-	if(evt->mimeData()->hasUrls() && evt->mimeData()->urls().first().isLocalFile()) {
-		evt->acceptProposedAction();
-	}
+
+#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
+	const bool accept = evt->mimeData()->hasUrls() && evt->mimeData()->urls().first().isLocalFile();
+#else
+	const bool accept = evt->mimeData()->hasUrls();
+#endif
+
+	if(accept) evt->acceptProposedAction();
 }
 
 void PlayerImageLineEdit::dropEvent(QDropEvent *evt) {
@@ -39,9 +44,13 @@ void PlayerImageLineEdit::dropEvent(QDropEvent *evt) {
 
 		const QUrl url(evt->mimeData()->urls().first());
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
 		if(url.isLocalFile()) {
+#endif
 			setText(url.toLocalFile());
 			evt->acceptProposedAction();
+#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
 		}
+#endif
 	}
 }

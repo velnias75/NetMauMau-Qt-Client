@@ -69,14 +69,13 @@ void JackChooseDialog::setSuite(NetMauMau::Common::ICard::SUIT s) {
 
 NetMauMau::Common::ICard::SUIT JackChooseDialog::getChosenSuit() const {
 
-	const QString &but(suitGroup->checkedButton()->objectName());
 	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;
 
-	if(but == QLatin1String("clubsSuit")) {
+	if(clubsSuit->isChecked()) {
 		s = NetMauMau::Common::ICard::CLUBS;
-	} else if(but == QLatin1String("spadesSuit")) {
+	} else if(spadesSuit->isChecked()) {
 		s = NetMauMau::Common::ICard::SPADES;
-	} else if(but == QLatin1String("diamondsSuit")) {
+	} else if(diamondsSuit->isChecked()) {
 		s = NetMauMau::Common::ICard::DIAMONDS;
 	}
 

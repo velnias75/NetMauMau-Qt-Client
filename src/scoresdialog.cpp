@@ -28,9 +28,13 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : NetMauMauDialog(p), m
 
 	setupUi(this);
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!refreshButton->icon().hasThemeIcon("view-refresh")) {
+#endif
 		refreshButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_BrowserReload));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	}
+#endif
 
 	QStringList header;
 	header << tr("Player") << tr("Score");

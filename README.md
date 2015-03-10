@@ -6,7 +6,7 @@ A Qt client for the [NetMauMau server](https://github.com/velnias75/NetMauMau).
 Requirements
 ------------
 
-It requires Qt in at least version 4.8.1
+It requires Qt in at least version 4.4
 
 For the speech support you'll need [eSpeak](http://espeak.sourceforge.net)
 

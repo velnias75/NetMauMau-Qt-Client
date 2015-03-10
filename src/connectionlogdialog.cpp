@@ -17,6 +17,7 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QHeaderView>
 #include <QCloseEvent>
 #include <QClipboard>
 #include <QSettings>
@@ -32,6 +33,9 @@ ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : NetMauMauDialog(p, Qt::Wi
 	m_ctxPopup(new QMenu(this)) {
 
 	setupUi(this);
+
+	logView->horizontalHeader()->setVisible(false);
+	logView->verticalHeader()->setVisible(false);
 
 	setAttribute(Qt::WA_QuitOnClose, false);
 
