@@ -1830,7 +1830,9 @@ void MainWindow::dropEvent(QDropEvent *evt) {
 
 		const QUrl url(evt->mimeData()->urls().first());
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
 		if(url.isLocalFile()) {
+#endif
 			const QString lf(url.toLocalFile());
 
 			m_serverDlg->setPlayerImagePath(lf, true);
@@ -1838,7 +1840,9 @@ void MainWindow::dropEvent(QDropEvent *evt) {
 			if(m_serverDlg->getPlayerImagePath() == lf) {
 				statusBar()->showMessage(tr("%1 set as player image").arg(lf), 1000);
 			}
+#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
 		}
+#endif
 	}
 }
 

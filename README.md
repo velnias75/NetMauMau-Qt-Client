@@ -8,7 +8,10 @@ Requirements
 
 It requires Qt in at least version 4.4
 
-For the speech support you'll need [eSpeak](http://espeak.sourceforge.net)
+(for Qt versions < 4.6 in `mainwindow.ui` you'll need to replace all occurences of 
+`Qt::ToolButtonFollowStyle` to `Qt::ToolButtonTextUnderIcon`)
+
+For the speech support you'll need [eSpeak](http://espeak.sourceforge.net) and Qt >= 4.8
 
 Building
 --------

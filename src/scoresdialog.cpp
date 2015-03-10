@@ -17,6 +17,8 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QHeaderView>
+
 #include "scoresdialog.h"
 
 #include "serverdialog.h"
