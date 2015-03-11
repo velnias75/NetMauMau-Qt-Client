@@ -48,6 +48,7 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : NetMauMauDialog(p), m
 	scoresView->verticalHeader()->setClickable(false);
 	scoresView->horizontalHeader()->setClickable(false);
 	scoresView->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
+	scoresView->horizontalHeader()->setStretchLastSection(true);
 
 	QObject::connect(serverCombo, SIGNAL(currentIndexChanged(QString)),
 					 this, SLOT(currentIndexChanged(QString)));

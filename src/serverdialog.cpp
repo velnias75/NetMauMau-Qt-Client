@@ -118,6 +118,7 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(
 
 	availServerView->setModel(&m_model);
 	availServerView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	availServerView->horizontalHeader()->setStretchLastSection(true);
 	availServerView->verticalHeader()->setVisible(false);
 
 	playerName->setModel(&m_playerNameModel);

@@ -422,52 +422,52 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>&amp;Netzwerk</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="523"/>
+        <location filename="launchserverdialog.ui" line="526"/>
         <source>My local server</source>
         <translation>Mein lokaler Server</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="534"/>
+        <location filename="launchserverdialog.ui" line="537"/>
         <source>Executable</source>
         <translation>Ausführbare Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="543"/>
+        <location filename="launchserverdialog.ui" line="546"/>
         <source>Pat&amp;h:</source>
         <translation>&amp;Pfad:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="558"/>
+        <location filename="launchserverdialog.ui" line="561"/>
         <source>Path to the server executable</source>
         <translation>Pfad zu der auführbaren Datei des Servers</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="580"/>
+        <location filename="launchserverdialog.ui" line="583"/>
         <source>Browse for a path to the server executable</source>
         <translation>Suche nach einen Pfad zu der ausführbaren Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="595"/>
+        <location filename="launchserverdialog.ui" line="598"/>
         <source>Op&amp;tions:</source>
         <translation>&amp;Optionen:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="605"/>
+        <location filename="launchserverdialog.ui" line="608"/>
         <source>The options the server will be started with</source>
         <translation>Die Optionen mit denen der Server gestartet wird</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="633"/>
+        <location filename="launchserverdialog.ui" line="636"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbruch</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="640"/>
+        <location filename="launchserverdialog.ui" line="643"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to launch the server.&lt;/p&gt;&lt;p&gt;The server will be available at &lt;tt&gt;localhost&lt;/tt&gt; and the given port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Versucht den Server zu starten.&lt;/p&gt;&lt;p&gt;Der Server wird unter &lt;tt&gt;localhost&lt;/tt&gt; und dem angegeben Port verfügbar sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="643"/>
+        <location filename="launchserverdialog.ui" line="646"/>
         <source>&amp;Launch</source>
         <translation>&amp;Starten</translation>
     </message>
@@ -1302,7 +1302,7 @@ Spieldauer: %2</translation>
         <translation>Punktzahl</translation>
     </message>
     <message>
-        <location filename="scoresdialog.cpp" line="159"/>
+        <location filename="scoresdialog.cpp" line="160"/>
         <source>This server provides no scores</source>
         <translation>Dieser Server liefert keine Punktzahlen</translation>
     </message>
@@ -1397,7 +1397,7 @@ Spieldauer: %2</translation>
         <translation>Server löschen…</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="674"/>
+        <location filename="serverdialog.cpp" line="675"/>
         <source>Delete server</source>
         <translation>Server löschen</translation>
     </message>
@@ -1427,52 +1427,52 @@ Spieldauer: %2</translation>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="268"/>
+        <location filename="serverdialog.cpp" line="269"/>
         <source>Choose a player image</source>
         <translation>Wähle ein Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="269"/>
+        <location filename="serverdialog.cpp" line="270"/>
         <source>Images (%1)</source>
         <translation>Bilder (%1)</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="542"/>
+        <location filename="serverdialog.cpp" line="543"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or of an unsupported image format.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="675"/>
+        <location filename="serverdialog.cpp" line="676"/>
         <source>&lt;html&gt;&lt;body&gt;Really delete server
 &lt;b&gt;%1&lt;/b&gt;?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Server &lt;b&gt;%1&lt;/b&gt; wirklich löschen?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="308"/>
-        <location filename="serverdialog.cpp" line="325"/>
+        <location filename="serverdialog.cpp" line="309"/>
+        <location filename="serverdialog.cpp" line="326"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="308"/>
+        <location filename="serverdialog.cpp" line="309"/>
         <source>%1 is already in use!</source>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="325"/>
+        <location filename="serverdialog.cpp" line="326"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="541"/>
-        <location filename="serverdialog.cpp" line="561"/>
+        <location filename="serverdialog.cpp" line="542"/>
+        <location filename="serverdialog.cpp" line="562"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog.cpp" line="561"/>
+        <location filename="serverdialog.cpp" line="562"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>
