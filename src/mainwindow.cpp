@@ -237,6 +237,7 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 
 	m_ui->remotePlayersView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	m_ui->remotePlayersView->horizontalHeader()->setClickable(false);
+	m_ui->remotePlayersView->verticalHeader()->setVisible(false);
 	m_ui->remotePlayersView->setModel(&m_model);
 
 	QObject::connect(m_ui->localPlayerDock, SIGNAL(customContextMenuRequested(QPoint)),
