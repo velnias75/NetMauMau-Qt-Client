@@ -7,6 +7,8 @@ unix:CONFIG += link_pkgconfig
 VERSION = 0.17
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
+DEFINES += _GLIBCXX_VISIBILITY=0 QT_NO_CAST_FROM_BYTEARRAY QT_NO_CAST_TO_ASCII \
+		   QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION QT_NO_WHATSTHIS
 
 QMAKE_RESOURCE_FLAGS += -compress 9
 
@@ -29,8 +31,7 @@ CONFIG(debug, debug|release) {
 	MOC_DIR = debug-moc
 	OBJECTS_DIR = debug-obj
 	TARGET = nmm-qt-client-debug
-	DEFINES += _GLIBCXX_VISIBILITY=0 _GLIBCXX_CONCEPT_CHECKS QT_NO_CAST_FROM_BYTEARRAY \
-		QT_NO_CAST_TO_ASCII QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION
+	DEFINES += _GLIBCXX_CONCEPT_CHECKS
 	INCLUDEPATH += "../../netmaumau/src/include"
 	QMAKE_CXXFLAGS += -g3 -O0 -fstrict-aliasing -ftrapv -fno-inline -W -Wextra -Wall -Wnoexcept \
 	-Woverloaded-virtual -Wno-packed-bitfield-compat -Wmissing-noreturn -Wunused -Wtrampolines \
@@ -49,8 +50,7 @@ CONFIG(debug, debug|release) {
 	OBJECTS_DIR = release-obj
 	TARGET = nmm-qt-client
 	win32:CONFIG += static
-	DEFINES += NDEBUG _GLIBCXX_VISIBILITY=0 QT_NO_DEBUG_OUTPUT QT_NO_CAST_FROM_BYTEARRAY \
-		QT_NO_CAST_TO_ASCII QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION
+	DEFINES += NDEBUG QT_NO_DEBUG_OUTPUT
 	unix:target.path = /usr/bin
 	qmfiles.commands = $$QMAKE_LRELEASE src.pro
 	qmfiles.path = /usr/share/nmm-qt-client

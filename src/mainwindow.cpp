@@ -1075,12 +1075,18 @@ void MainWindow::clientPlayerJoined(const QString &p, const QImage &img) {
 																   verticalHeader()->
 																   minimumSectionSize() - 2)),
 						   Qt::DisplayRole);
+
+#if QT_VERSION >= QT_VERSION_CHECK(4, 8, 0)
+
 		QByteArray ba;
+		ba.reserve(524288);
+
 		QBuffer buf(&ba);
 		buf.open(QIODevice::WriteOnly);
 		ServerDialog::scalePlayerPic(myImg).save(&buf, "PNG");
+		ba.squeeze();
 
-#if QT_VERSION >= QT_VERSION_CHECK(4, 8, 0)
+		si.back()->setToolTip(QString::null);
 		si.back()->setToolTip(QString("<p align=\"center\">" \
 									  "<img src=\"data:image/png;base64,%1\"><br />%2</p>").
 							  arg(ba.toBase64().constData()).arg(p));
@@ -1639,15 +1645,19 @@ void MainWindow::clientAceRoundStarted(const QString &p) {
 
 	statusBar()->addPermanentWidget(&m_aceRoundLabel);
 
-	QByteArray ba;
-	QBuffer buf(&ba);
-	CardPixmap(QSize(28, 38), NetMauMau::Common::ICard::HEARTS, gs->aceRoundRank()).toImage().
-			save(&buf, "PNG");
-
 	m_aceRoundLabel.setPixmap(CardPixmap(QSize(10, 14), NetMauMau::Common::ICard::HEARTS,
 										 gs->aceRoundRank()));
 
 #if QT_VERSION >= QT_VERSION_CHECK(4, 8, 0)
+
+	QByteArray ba;
+	ba.reserve(524288);
+	QBuffer buf(&ba);
+	CardPixmap(QSize(28, 38), NetMauMau::Common::ICard::HEARTS, gs->aceRoundRank()).toImage().
+			save(&buf, "PNG");
+	ba.squeeze();
+
+	m_aceRoundLabel.setToolTip(QString::null);
 	m_aceRoundLabel.setToolTip("<p align=\"center\"><img src=\"data:image/png;base64,"
 							   + ba.toBase64() + "\"><br />" + tr("%1 of %2").
 							   arg(getAceRoundRankString(gs, true)).arg(p) + "</p");
