@@ -23,6 +23,13 @@ JackChooseDialog::JackChooseDialog(QWidget *p) : NetMauMauDialog(p) {
 
 	setupUi(this);
 
+	heartsSuit->setChecked(false);
+	diamondsSuit->setChecked(false);
+	spadesSuit->setChecked(false);
+
+	clubsSuit->setChecked(true);
+	clubsSuit->setFocus();
+
 	heartsSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::HEARTS));
 	diamondsSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::DIAMONDS));
 	clubsSuit->setToolTip(suitToolTip(NetMauMau::Common::ICard::CLUBS));
@@ -34,6 +41,7 @@ JackChooseDialog::~JackChooseDialog() {
 }
 
 QString JackChooseDialog::suitToolTip(NetMauMau::Common::ICard::SUIT s) {
+
 	switch(s) {
 	case NetMauMau::Common::ICard::HEARTS:
 		return tr("Hearts");
@@ -47,6 +55,12 @@ QString JackChooseDialog::suitToolTip(NetMauMau::Common::ICard::SUIT s) {
 }
 
 void JackChooseDialog::setSuite(NetMauMau::Common::ICard::SUIT s) {
+
+	heartsSuit->setChecked(false);
+	diamondsSuit->setChecked(false);
+	clubsSuit->setChecked(false);
+	spadesSuit->setChecked(false);
+
 	switch(s) {
 	case NetMauMau::Common::ICard::HEARTS:
 		heartsSuit->setChecked(true);

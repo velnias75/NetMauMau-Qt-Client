@@ -220,7 +220,8 @@ Der Server erwartet mindestens Version %3.%4</translation>
     </message>
     <message>
         <location filename="jackchoosedialog.ui" line="38"/>
-        <source>Choose Jack suit</source>
+        <source>Choose suit</source>
+        <oldsource>Choose Jack suit</oldsource>
         <translation>Wähle Farbe</translation>
     </message>
     <message>
@@ -229,22 +230,22 @@ Der Server erwartet mindestens Version %3.%4</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="39"/>
+        <location filename="jackchoosedialog.cpp" line="47"/>
         <source>Hearts</source>
         <translation>Herz</translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="41"/>
+        <location filename="jackchoosedialog.cpp" line="49"/>
         <source>Diamonds</source>
         <translation>Karo</translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="43"/>
+        <location filename="jackchoosedialog.cpp" line="51"/>
         <source>Clubs</source>
         <translation>Kreuz</translation>
     </message>
     <message>
-        <location filename="jackchoosedialog.cpp" line="45"/>
+        <location filename="jackchoosedialog.cpp" line="53"/>
         <source>Spades</source>
         <translation>Pik</translation>
     </message>

@@ -35,7 +35,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Choose Jack suit</string>
+      <string>Choose suit</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
