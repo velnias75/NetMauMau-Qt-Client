@@ -46,7 +46,7 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(
 	m_nameRexValidator(new QRegExpValidator(nameRex, this)), m_playerImage(), m_autoRefresh(this),
 	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null),
 	m_imageFormats(), m_addServerDialog(new AddServerDialog(this)), m_ctxPopup(new QMenu(this)),
-	m_ctxPoint(), m_direction(GameState::NONE) {
+	m_ctxIndex(), m_direction(GameState::NONE) {
 
 	QThreadPool::globalInstance()->setExpiryTimeout(-1);
 
@@ -571,8 +571,6 @@ void ServerDialog::enableRemoveAndOkButton(const QItemSelection &, const QItemSe
 
 void ServerDialog::checkOnline() {
 
-	//	QMutexLocker locker(&m_mutex);
-
 	if(!m_blockAutoRefresh) {
 
 		m_forceRefresh = false;
@@ -660,26 +658,20 @@ void ServerDialog::addServer(const QString &shost, const QString &sport, const Q
 	m_serverInfoThreads.push_back(new ServerInfo(&m_model, m_model.rowCount() - 1));
 	QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool,int)),
 					 this, SLOT(updateOnline(bool,int)));
-
 	saveServers();
 	checkOnline();
 }
 
 void ServerDialog::removeServer() {
 
-	if(!m_ctxPoint.isNull()) {
-
-		const QModelIndex idx = availServerView->indexAt(m_ctxPoint);
-
-		if(idx.isValid() &&
-				QMessageBox::question(this, tr("Delete server"),
-									  tr("<html><body>Really delete server\n" \
-										 "<b>%1</b>?</body></html>").
-									  arg(m_model.item(idx.row(), ServerInfo::SERVER)->text()),
-									  QMessageBox::Yes|QMessageBox::No,
-									  QMessageBox::No) == QMessageBox::Yes) {
-			deleteRow(availServerView->indexAt(m_ctxPoint));
-		}
+	if(m_ctxIndex.isValid() &&
+			QMessageBox::question(this, tr("Delete server"),
+								  tr("<html><body>Really delete server\n" \
+									 "<b>%1</b>?</body></html>").
+								  arg(m_model.item(m_ctxIndex.row(), ServerInfo::SERVER)->text()),
+								  QMessageBox::Yes|QMessageBox::No,
+								  QMessageBox::No) == QMessageBox::Yes) {
+		deleteRow(m_ctxIndex);
 	}
 }
 
@@ -717,7 +709,8 @@ QImage ServerDialog::scalePlayerPic(const QImage &img) {
 }
 
 void ServerDialog::serverViewContext(const QPoint &p) {
-	m_ctxPoint = p;
+	m_ctxIndex = availServerView->indexAt(p);
+	actionDeleteServer->setEnabled(m_ctxIndex.isValid());
 	m_ctxPopup->popup(availServerView->mapToGlobal(p));
 }
 

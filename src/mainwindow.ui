@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1018</width>
-    <height>598</height>
+    <width>1016</width>
+    <height>596</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -127,8 +127,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1018</width>
-     <height>21</height>
+     <width>1016</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -248,7 +248,7 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
-         <widget class="QLabel" name="openCard">
+         <widget class="CardLabel" name="openCard">
           <property name="maximumSize">
            <size>
             <width>54</width>
@@ -518,8 +518,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>845</width>
-             <height>165</height>
+             <width>837</width>
+             <height>169</height>
             </rect>
            </property>
            <layout class="QHBoxLayout" name="myCardsLayout">
@@ -552,7 +552,7 @@
    <property name="minimumSize">
     <size>
      <width>150</width>
-     <height>186</height>
+     <height>193</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -919,6 +919,11 @@
    <extends>QWidget</extends>
    <header>carddropwidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CardLabel</class>
+   <extends>QLabel</extends>
+   <header>cardlabel.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

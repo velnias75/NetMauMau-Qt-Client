@@ -27,26 +27,35 @@
 #include "ui_scoresdialog.h"
 
 class ServerDialog;
+class QStyledItemDelegate;
 
 class ScoresDialog : public NetMauMauDialog, private Ui::ScoresDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(ScoresDialog)
 public:
 	explicit ScoresDialog(ServerDialog *sd, QWidget *parent = 0);
+	virtual ~ScoresDialog();
 
 	void setServer(const QString &server);
 
+	bool relative() const;
+
 protected:
 	virtual void showEvent(QShowEvent *event);
+	virtual void closeEvent(QCloseEvent *event);
 
 private slots:
 	void currentIndexChanged(const QString &);
 	void refresh();
 
 private:
+	void writeSettings();
+
+private:
 	ServerDialog *m_serverdialog;
 	QStandardItemModel m_model;
 	QString m_server;
+	QStyledItemDelegate *m_scoresDelegate;
 };
 
 #endif // SCORESDIALOG_H

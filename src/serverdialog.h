@@ -114,7 +114,7 @@ private:
 	QString m_imageFormats;
 	AddServerDialog *m_addServerDialog;
 	QMenu *m_ctxPopup;
-	QPoint m_ctxPoint;
+	QModelIndex m_ctxIndex;
 	mutable GameState::DIR m_direction;
 };
 

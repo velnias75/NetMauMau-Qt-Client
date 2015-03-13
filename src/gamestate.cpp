@@ -111,7 +111,7 @@ QMap<QString, QStringList> &GameState::playerStatMsg() {
 	return m_playerStatMsg;
 }
 
-QMap<QString, QString> &GameState::playerScores() {
+QMap<QString, qlonglong> &GameState::playerScores() {
 	return m_playerScores;
 }
 

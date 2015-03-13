@@ -79,6 +79,7 @@ private:
 	QString m_defaultStyleSheet;
 	bool m_dragable;
 	QPoint m_dragStartPosition;
+	QSize m_curSize;
 };
 
 #endif // CARDWIDGET_H

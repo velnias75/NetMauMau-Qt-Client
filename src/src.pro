@@ -75,6 +75,7 @@ SOURCES += addserverdialog.cpp \
 	addserverwidget.cpp \
 	base64bridge.cpp \
 	carddropwidget.cpp \
+	cardlabel.cpp \
 	cardpixmap.cpp \
 	cardwidget.cpp \
 	centeredimageheaderview.cpp \
@@ -116,6 +117,7 @@ HEADERS += addserverdialog.h \
 	addserverwidget.h \
 	base64bridge.h \
 	carddropwidget.h \
+	cardlabel.h \
 	cardpixmap.h \
 	cardwidget.h \
 	centeredimageheaderview.h \

@@ -18,15 +18,18 @@
  */
 
 #include <QHeaderView>
+#include <QSettings>
 
 #include "scoresdialog.h"
 
+#include "messageitemdelegate.h"
 #include "serverdialog.h"
 #include "serverinfo.h"
 #include "client.h"
 
 ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : NetMauMauDialog(p), m_serverdialog(sd),
-	m_model(0, 2, this), m_server(QString::null) {
+	m_model(0, 2, this), m_server(QString::null),
+	m_scoresDelegate(new MessageItemDelegate(this, false)) {
 
 	setupUi(this);
 
@@ -45,22 +48,51 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : NetMauMauDialog(p), m
 
 	scoresView->setModel(&m_model);
 	scoresView->setColumnWidth(0, 180);
+	scoresView->setColumnWidth(1, 0);
 	scoresView->verticalHeader()->setClickable(false);
 	scoresView->horizontalHeader()->setClickable(false);
 	scoresView->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
+	scoresView->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
 	scoresView->horizontalHeader()->setStretchLastSection(true);
+	scoresView->setItemDelegateForColumn(1, m_scoresDelegate);
 
 	QObject::connect(serverCombo, SIGNAL(currentIndexChanged(QString)),
 					 this, SLOT(currentIndexChanged(QString)));
 	QObject::connect(refreshButton, SIGNAL(clicked()), this, SLOT(refresh()));
+	QObject::connect(relativeCheck, SIGNAL(toggled(bool)), this, SLOT(refresh()));
 
 	serverCombo->setModel(sd->getModel());
 	serverCombo->setCurrentIndex(serverCombo->findData(sd->getLastServer(), ServerInfo::HOST));
+
+	QSettings settings;
+	settings.beginGroup("Scores");
+	relativeCheck->setChecked(settings.value("relative", true).toBool());
+	settings.endGroup();
+
+}
+
+ScoresDialog::~ScoresDialog() {
+	writeSettings();
+	delete m_scoresDelegate;
 }
 
 void ScoresDialog::showEvent(QShowEvent *evt) {
 	refresh();
-	QDialog::showEvent(evt);
+	NetMauMauDialog::showEvent(evt);
+}
+
+void ScoresDialog::closeEvent(QCloseEvent *evt) {
+	writeSettings();
+	NetMauMauDialog::closeEvent(evt);
+}
+
+void ScoresDialog::writeSettings() {
+
+	QSettings settings;
+
+	settings.beginGroup("Scores");
+	settings.setValue("relative", relativeCheck->isChecked());
+	settings.endGroup();
 }
 
 void ScoresDialog::refresh() {
@@ -125,8 +157,10 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 			const Client::SCORES &scores((Client(0L, 0L, QString::null,
 												 std::string(srv.toStdString()),
-												 static_cast<uint16_t>(port))).
-										 getScores(Client::SCORE_TYPE::ABS, 0, &tv));
+												 static_cast<uint16_t>(port))).getScores(
+											 relativeCheck->isChecked() ?
+												 Client::SCORE_TYPE::ABS :
+												 Client::SCORE_TYPE::NORM, 0, &tv));
 
 			m_model.removeRows(0, m_model.rowCount());
 
@@ -140,7 +174,9 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 				items << new QStandardItem(pName);
 				if(isMe) items.back()->setBackground(Qt::lightGray);
 				items.back()->setToolTip(pName);
-				items << new QStandardItem(QString::number(i.score));
+				items << new QStandardItem((i.score < 0 ? "<span style=\"color:red;\">" : "") +
+										   QString::number(i.score) + (i.score < 0 ? "</span>"
+																				   : ""));
 				items.back()->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
 				if(isMe) items.back()->setBackground(Qt::lightGray);
 
@@ -169,4 +205,8 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 void ScoresDialog::setServer(const QString &server) {
 	m_server = server;
+}
+
+bool ScoresDialog::relative() const {
+	return relativeCheck->isChecked();
 }

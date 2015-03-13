@@ -466,7 +466,9 @@ void MainWindow::updatePlayerScores(GameState *gs, const Client::PLAYERINFOS &pl
 throw(NetMauMau::Common::Exception::SocketException) {
 
 	const Client::SCORES &scores(Client(0L, 0L, QString::null, m_client->getServer().toStdString(),
-										m_client->getPort()).getScores(Client::SCORE_TYPE::ABS, 0));
+										m_client->getPort()).getScores(
+									 m_scoresDialog->relative() ? Client::SCORE_TYPE::ABS :
+																  Client::SCORE_TYPE::NORM, 0));
 
 	foreach(const NetMauMau::Client::Connection::PLAYERINFO &i, pl) {
 
@@ -475,7 +477,7 @@ throw(NetMauMau::Common::Exception::SocketException) {
 															  std::bind2nd(scoresPlayer(),
 																		   i.name)));
 
-		if(gs && ps != scores.end()) gs->playerScores()[pName] = QString::number(ps->score);
+		if(gs && ps != scores.end()) gs->playerScores()[pName] = static_cast<qlonglong>(ps->score);
 
 		const Client::SCORES::const_iterator
 				&myScore(std::find_if(scores.begin(), scores.end(),
@@ -484,7 +486,8 @@ throw(NetMauMau::Common::Exception::SocketException) {
 												   constData())));
 
 		if(gs && myScore != scores.end()) {
-			gs->playerScores()[m_serverDlg->getPlayerName()] = QString::number(myScore->score);
+			gs->playerScores()[m_serverDlg->getPlayerName()] =
+					static_cast<qlonglong>(myScore->score);
 		}
 	}
 }
@@ -1245,14 +1248,21 @@ void MainWindow::setOpenCard(const QByteArray &d) {
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::RANK_ILLEGAL;
 
 	if(NetMauMau::Common::parseCardDesc(d.constData(), &s, &r)) {
-		m_animLogo->stop();
-		m_ui->openCard->setPixmap(CardPixmap(QSize(54, 67), s, r));
-		m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r, false));
+
+		if(!(m_ui->openCard->suit() == s && m_ui->openCard->rank() == r)) {
+			m_animLogo->stop();
+			m_ui->openCard->setPixmap(CardPixmap(QSize(54, 67), s, r));
+			m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r, false));
+		}
+
 	} else {
 		m_ui->openCard->setMovie(m_animLogo);
 		m_animLogo->start();
 		m_ui->openCard->setToolTip(m_aboutTxt);
 	}
+
+	m_ui->openCard->setSuit(s);
+	m_ui->openCard->setRank(r);
 }
 
 void MainWindow::takeCardsMark(std::size_t count) const {
@@ -1459,8 +1469,11 @@ QString MainWindow::playerToolTip(GameState *gs, const QString &player) const {
 	ptt.append(player);
 
 	if(gs && gs->playerScores().contains(player)) {
+		const qlonglong sc = gs->playerScores()[player];
 		ptt.append("<br /><span style=\"font-size:small;\">").
-				append(tr("Current score: %1").arg(gs->playerScores()[player])).
+				append(tr("Current score: %1").
+					   arg((sc < 0 ? "<span style=\"color:red;\">" : "") +
+						   QString::number(sc) + (sc < 0 ? "</span>" : ""))).
 				append("</span>");
 	}
 
