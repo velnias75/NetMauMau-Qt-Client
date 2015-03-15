@@ -80,9 +80,9 @@ void ServerInfo::run() {
 												 capabilities(&tv));
 
 				ulong curPCnt = (QString::fromStdString(caps.find("CUR_PLAYERS")->second)).
-						toULong();
+								toULong();
 				ulong maxPCnt = (QString::fromStdString(caps.find("MAX_PLAYERS")->second))
-						.toULong();
+								.toULong();
 
 				retry = false;
 
@@ -115,7 +115,7 @@ void ServerInfo::run() {
 
 				const Client::CAPABILITIES::const_iterator &ic(caps.find("INITIAL_CARDS"));
 				const uint initialCards = ic != caps.end() ?
-							QString::fromStdString(ic->second).toUInt() : 5;
+													QString::fromStdString(ic->second).toUInt() : 5;
 
 				server->setData(initialCards, INIT);
 

@@ -77,12 +77,13 @@ MainWindow::MainWindow(QSplashScreen *splash, QWidget *p) : QMainWindow(p), m_cl
 	m_countItemDelegate(new CountMessageItemDelegate(this)),
 	m_turnItemDelegate(new MessageItemDelegate(this, false)),
 	m_messageItemDelegate(new MessageItemDelegate(this, true)),
-	m_aboutTxt(QString::fromUtf8("%1 %2\n%3: %4.%5\nCopyright \u00a9 2015 by Heiko Sch\u00e4fer")
+	m_aboutTxt(QString::fromUtf8("%1 %2\n%3: %4.%5.%6\nCopyright \u00a9 2015 by Heiko Sch\u00e4fer")
 			   .arg(QCoreApplication::applicationName())
 			   .arg(QCoreApplication::applicationVersion())
 			   .arg(tr("Client library version"))
-			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion() >> 16))
-			   .arg(static_cast<uint16_t>(Client::getClientProtocolVersion()))),
+			   .arg(VERSION_MAJ(Client::getClientLibraryVersion()))
+			   .arg(VERSION_MIN(Client::getClientLibraryVersion()))
+			   .arg(VERSION_REL(Client::getClientLibraryVersion()))),
 	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(this)),
 	m_licenseDialog(new LicenseDialog(this)), m_aceRoundLabel(), m_gameState(0L),
 	m_scoresDialog(new ScoresDialog(m_serverDlg, this)), m_clientReleaseDownloader(0L),
@@ -1822,9 +1823,11 @@ void MainWindow::notifyClientUpdate() {
 	const QString &rel(idx > 0 ? dld.mid(idxl + 2, dld.indexOf(",", idxl) - idxl - 3).constData() :
 								 "0.0");
 
-	const uint32_t avail  = Client::parseProtocolVersion(rel.toStdString());
-	const uint32_t actual = Client::parseProtocolVersion(PACKAGE_VERSION);
-
+	const uint32_t savail  = Client::parseProtocolVersion(rel.toStdString()),
+			avail = MAKE_VERSION_REL(VERSION_MAJ(savail), VERSION_MIN(savail), VERSION_REL(savail));
+	const uint32_t sactual = Client::parseProtocolVersion(PACKAGE_VERSION),
+			actual = MAKE_VERSION_REL(VERSION_MAJ(sactual), VERSION_MIN(sactual),
+									  VERSION_REL(sactual));
 	if(avail > actual) {
 		QLabel *url = new QLabel(QString("<html><body><a href=\"https://sourceforge.net/projects" \
 										 "/netmaumau/\">%1</a></body></html>").
@@ -1832,8 +1835,10 @@ void MainWindow::notifyClientUpdate() {
 		url->setOpenExternalLinks(true);
 		statusBar()->insertPermanentWidget(0, url);
 	} else {
-		qDebug("Current version: %s (%u)", PACKAGE_VERSION, actual);
-		qDebug("Current release: %s (%u)", rel.toLocal8Bit().constData(), avail);
+		qDebug("Current version: %u.%u.%u (%u)", VERSION_MAJ(actual), VERSION_MIN(actual),
+			   VERSION_REL(actual), actual);
+		qDebug("Current release: %u.%u.%u (%u)", VERSION_MAJ(avail), VERSION_MIN(avail),
+			   VERSION_REL(avail), avail);
 	}
 }
 
