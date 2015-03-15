@@ -32,7 +32,9 @@
 #include "mainwindow.h"
 #include "base64bridge.h"
 
-#define CLIENTVERSION MAKE_VERSION(0,17)
+// set this to the highest supported protocol version
+// see NetMauMau::Client::AbstractClientXX for reference
+#define CLIENTVERSION MAKE_VERSION(0,13)
 
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port) : QThread(),
