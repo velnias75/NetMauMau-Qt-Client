@@ -32,9 +32,11 @@
 #include "mainwindow.h"
 #include "base64bridge.h"
 
-// set this to the highest supported protocol version
-// see NetMauMau::Client::AbstractClientXX for reference
-#define CLIENTVERSION MAKE_VERSION(0,13)
+// in release builds we get the correct client version via pkg-config
+#ifndef CLIENTVERSION
+#warning "CLIENTVERSION was not defined, please check the default value"
+#define CLIENTVERSION MAKE_VERSION(0,15)
+#endif
 
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port) : QThread(),
@@ -108,11 +110,11 @@ void Client::run() {
 	} catch(const NetMauMau::Client::Exception::ShutdownException &e) {
 		emit cError(tr("The server is in the progress of a shutdown"));
 	} catch(const NetMauMau::Client::Exception::VersionMismatchException &e) {
-		emit cError(tr("Client (version %1.%2) not supported.\nServer wants at least version %3.%4")
-					.arg(static_cast<uint16_t>(e.getClientVersion() >> 16))
-					.arg(static_cast<uint16_t>(e.getClientVersion()))
-					.arg(static_cast<uint16_t>(e.getServerVersion() >> 16))
-					.arg(static_cast<uint16_t>(e.getServerVersion())));
+		emit cError(tr("Client (version %1.%2) not supported.\nServer accepts at " \
+					   "maximum version %3.%4")
+					.arg(VERSION_MAJ(CLIENTVERSION)).arg(VERSION_MIN(CLIENTVERSION))
+					.arg(VERSION_MAJ(e.getServerVersion()))
+					.arg(VERSION_MIN(e.getServerVersion())), false);
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 #ifndef _WIN32
 		emit cError(QString::fromUtf8(e.what()));

@@ -118,48 +118,48 @@
 <context>
     <name>Client</name>
     <message>
-        <location filename="client.cpp" line="95"/>
+        <location filename="client.cpp" line="99"/>
         <source>There is already a game running on this server</source>
         <translation>Es läuft bereits ein Spiel auf diesem Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="97"/>
+        <location filename="client.cpp" line="101"/>
         <source>Player name %1 is already in use</source>
         <translation>Der Spielername %1 wird bereits verwendet</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="99"/>
+        <location filename="client.cpp" line="103"/>
         <source>A timeout occured while connection to the server</source>
         <translation>Zeitüberschreitung während des Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="101"/>
+        <location filename="client.cpp" line="105"/>
         <source>An protocol error occured while connection to the server</source>
         <translation>Es gab einen Protokollfehler beim
 Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="103"/>
+        <location filename="client.cpp" line="107"/>
         <source>The server rejected the connection</source>
         <translation>Der Server hat die Verbindung zurückgewiesen</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="105"/>
+        <location filename="client.cpp" line="109"/>
         <source>The remote host seems not to be a NetMauMau server</source>
         <translation>Die Gegenstelle scheint kein NetMauMau-Server zu sein</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="107"/>
+        <location filename="client.cpp" line="111"/>
         <source>The server is in the progress of a shutdown</source>
         <oldsource>The server is in the progress of a ashutdown</oldsource>
         <translation>Der Server ist gerade dabei herunter zu fahren</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="109"/>
+        <location filename="client.cpp" line="113"/>
         <source>Client (version %1.%2) not supported.
-Server wants at least version %3.%4</source>
+Server accepts at maximum version %3.%4</source>
         <translation>Klient (Version %1.%2) wird nicht unterstützt.
-Der Server erwartet mindestens Version %3.%4</translation>
+Der Server akzeptiert maximal Version %3.%4</translation>
     </message>
 </context>
 <context>
