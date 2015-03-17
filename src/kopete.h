@@ -27,7 +27,7 @@
 class Kopete {
 	Q_DISABLE_COPY(Kopete)
 public:
-	~Kopete();
+	~Kopete() _CONST;
 
 	static Kopete &getInstance();
 

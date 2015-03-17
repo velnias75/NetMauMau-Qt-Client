@@ -22,22 +22,60 @@
 
 #include <QMetaType>
 
-struct KopeteContact {
-	QString display_name;
-	bool file_reachable;
-	QString id;
-	qulonglong idle_time;
-	bool message_reachable;
-	QStringList pending_messages;
-	QString picture;
-	QString status;
-};
+#include "linkercontrol.h"
 
+struct KopeteContact;
 class QDBusArgument;
 
-QDBusArgument &operator<<(QDBusArgument &, const KopeteContact &);
+QDBusArgument &operator<<(QDBusArgument &, const KopeteContact &) _CONST;
 
 const QDBusArgument &operator>>(const QDBusArgument &, KopeteContact &);
+
+struct KopeteContact {
+	friend const QDBusArgument &operator>>(const QDBusArgument &, KopeteContact &);
+public:
+	inline QString displayName() const {
+		return m_display_name;
+	}
+
+	inline bool fileReachable() const {
+		return m_file_reachable;
+	}
+
+	inline QString id() const {
+		return m_id;
+	}
+
+	inline qulonglong idleTime() const {
+		return m_idle_time;
+	}
+
+	inline bool messageReachable() const {
+		return m_message_reachable;
+	}
+
+	inline QStringList pendingMessages() const {
+		return m_pending_messages;
+	}
+
+	inline QString picture() const {
+		return m_picture;
+	}
+
+	inline QString status() const {
+		return m_status;
+	}
+
+private:
+	QString m_display_name;
+	bool m_file_reachable;
+	QString m_id;
+	qulonglong m_idle_time;
+	bool m_message_reachable;
+	QStringList m_pending_messages;
+	QString m_picture;
+	QString m_status;
+};
 
 Q_DECLARE_METATYPE(KopeteContact)
 

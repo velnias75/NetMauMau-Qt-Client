@@ -39,21 +39,21 @@ const QDBusArgument &operator>>(const QDBusArgument &arg, KopeteContact &kc) {
 		arg >> key >> var;
 
 		if(key == QLatin1String("display_name")) {
-			kc.display_name = var.toString();
+			kc.m_display_name = var.toString();
 		} else if(key == QLatin1String("file_reachable")) {
-			kc.file_reachable = var.toBool();
+			kc.m_file_reachable = var.toBool();
 		} else if(key == QLatin1String("id")) {
-			kc.id = var.toString();
+			kc.m_id = var.toString();
 		} else if(key == QLatin1String("idle_time")) {
-			kc.idle_time = var.toULongLong();
+			kc.m_idle_time = var.toULongLong();
 		} else if(key == QLatin1String("message_reachable")) {
-			kc.message_reachable = var.toBool();
+			kc.m_message_reachable = var.toBool();
 		} else if(key == QLatin1String("pending_messages")) {
-			kc.pending_messages = var.toStringList();
+			kc.m_pending_messages = var.toStringList();
 		} else if(key == QLatin1String("picture")) {
-			kc.picture = var.toString();
+			kc.m_picture = var.toString();
 		} else if(key == QLatin1String("status")) {
-			kc.status = var.toString();
+			kc.m_status = var.toString();
 		}
 
 		arg.endMapEntry();
