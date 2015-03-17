@@ -1,5 +1,7 @@
 QT += svg network
 
+unix:QT += dbus
+
 CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
@@ -111,6 +113,9 @@ SOURCES += addserverdialog.cpp \
 	suitradiobutton.cpp \
 	util.cpp
 
+unix:SOURCES += kopete.cpp \
+	kopetecontact.cpp
+
 espeak:SOURCES += espeak.cpp espeakvolumedialog.cpp
 
 HEADERS += addserverdialog.h \
@@ -151,6 +156,9 @@ HEADERS += addserverdialog.h \
 	suitlabel.h \
 	suitradiobutton.h \
 	util.h
+
+unix:HEADERS += kopete.h \
+	kopetecontact.h
 
 espeak:HEADERS += espeak.h espeakvolumedialog.h
 
