@@ -35,10 +35,10 @@ public:
 	explicit CardLabel(QWidget *parent = 0);
 
 	void setSuit(NetMauMau::Common::ICard::SUIT s);
-	NetMauMau::Common::ICard::SUIT suit() const;
+	NetMauMau::Common::ICard::SUIT suit() const _PURE;
 
 	void setRank(NetMauMau::Common::ICard::RANK r);
-	NetMauMau::Common::ICard::RANK rank() const;
+	NetMauMau::Common::ICard::RANK rank() const _PURE;
 
 signals:
 	void suitChanged(NetMauMau::Common::ICard::SUIT);
