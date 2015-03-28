@@ -25,7 +25,7 @@
 class Base64Bridge : public NetMauMau::Client::IBase64 {
 	DISALLOW_COPY_AND_ASSIGN(Base64Bridge)
 	public:
-		Base64Bridge();
+		explicit Base64Bridge();
 	virtual ~Base64Bridge();
 
 	virtual std::string encode(unsigned char const *buf, unsigned int bufLen) const;

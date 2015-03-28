@@ -34,7 +34,7 @@ class Util {
 	static QString cardStyler(const QString &c, const QFont &f, bool color = true);
 
 private:
-	Util() _CONST;
+	explicit Util() _CONST;
 
 	static void replaceSymbolCard(QRegExp &rex, QString &c, const QString &suit);
 	static QString rank(const QString &r);

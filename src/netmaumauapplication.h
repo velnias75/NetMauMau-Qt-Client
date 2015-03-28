@@ -26,7 +26,7 @@ class NetMauMauApplication : public QApplication {
 	Q_OBJECT
 	Q_DISABLE_COPY(NetMauMauApplication)
 public:
-	NetMauMauApplication(int &argc, char **argv);
+	explicit NetMauMauApplication(int &argc, char **argv);
 
 	virtual bool notify(QObject *receiver, QEvent *e);
 

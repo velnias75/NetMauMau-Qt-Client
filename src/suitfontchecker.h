@@ -30,7 +30,7 @@ class SuitFontChecker {
 		static bool suitsInFont(const QFont &f);
 
 private:
-	SuitFontChecker() _CONST;
+	explicit SuitFontChecker() _CONST;
 };
 
 #endif // SUITFONTCHECKER_H

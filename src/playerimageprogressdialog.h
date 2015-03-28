@@ -26,7 +26,7 @@ class PlayerImageProgressDialog : public QProgressDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(PlayerImageProgressDialog)
 public:
-	PlayerImageProgressDialog(QWidget *parent);
+	explicit PlayerImageProgressDialog(QWidget *parent);
 	virtual ~PlayerImageProgressDialog();
 
 	void show(const QString &player);

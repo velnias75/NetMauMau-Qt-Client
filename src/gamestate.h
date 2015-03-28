@@ -36,7 +36,7 @@ class GameState {
 
 		typedef enum { NONE, CW, CCW } DIR;
 
-	GameState();
+	explicit GameState();
 
 	bool inGame() const _PURE;
 	void setInGame(bool b);
