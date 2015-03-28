@@ -62,7 +62,7 @@ void NetMauMauMessageBox::init() {
 	setWindowIcon(ico);
 	setWindowModality(Qt::ApplicationModal);
 
-	Qt::WindowFlags f = windowFlags();
+	Qt::WindowFlags f(windowFlags());
 	f &= ~Qt::WindowContextHelpButtonHint;
 	f &= ~Qt::WindowSystemMenuHint;
 	setWindowFlags(f);

@@ -354,7 +354,7 @@ void LaunchServerDialog::error(QProcess::ProcessError) {
 void LaunchServerDialog::browse() {
 
 #ifndef _WIN32
-	const QString filter = QString::null;
+	const QString filter(QString::null);
 #else
 	const QString filter("*.exe");
 #endif

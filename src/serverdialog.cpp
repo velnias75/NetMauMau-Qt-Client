@@ -91,10 +91,10 @@ ServerDialog::ServerDialog(QSplashScreen *splash, QWidget *p) : NetMauMauDialog(
 	const QString &localhost("localhost");
 #endif
 
-	QStringList servers = settings.value("list", QStringList("localhost")).toStringList();
-	QStringList aliases = settings.value("alias", servers.count() == 1 && servers[0] ==
-						  QLatin1String("localhost")
-						  && !localhost.isEmpty() ? QStringList(localhost) : servers).toStringList();
+	QStringList servers(settings.value("list", QStringList("localhost")).toStringList());
+	QStringList aliases(settings.value("alias", servers.count() == 1 && servers[0] ==
+						QLatin1String("localhost")
+						&& !localhost.isEmpty() ? QStringList(localhost) : servers).toStringList());
 	setLastServer(settings.value("lastServer", QVariant("localhost")).toString());
 	settings.endGroup();
 
@@ -483,7 +483,7 @@ QString ServerDialog::getPlayerImagePath() const {
 QByteArray ServerDialog::convertToPNG(const QByteArray &ba) const {
 
 	QImage img(QImage::fromData(ba));
-	QByteArray oba = ba;
+	QByteArray oba(ba);
 
 	if(!img.isNull()) {
 
@@ -595,7 +595,7 @@ void ServerDialog::updateOnline(bool enabled, int row) {
 	version->setEditable(false);
 	ai->setEnabled(enabled);
 	version->setEditable(false);
-	Qt::ItemFlags f = ai->flags();
+	Qt::ItemFlags f(ai->flags());
 	f &= ~Qt::ItemIsUserCheckable;
 	ai->setFlags(f);
 	players->setEditable(false);

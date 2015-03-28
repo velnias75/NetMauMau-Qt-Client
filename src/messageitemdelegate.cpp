@@ -51,7 +51,7 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItemV4 &opt,
 	QTextOption tOpt(opt.displayAlignment|Qt::AlignVCenter);
 	tOpt.setWrapMode(QTextOption::NoWrap);
 
-	QFont f = opt.font;
+	QFont f(opt.font);
 
 	if(QFontInfo(opt.font).pixelSize() < 12) f.setPointSize(opt.font.pointSize() + 1);
 

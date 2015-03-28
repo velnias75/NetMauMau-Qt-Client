@@ -103,7 +103,7 @@ void ESpeak::speakNow() {
 	unsigned int uid;
 	void *udata = NULL;
 
-	QByteArray lng = m_lang.toAscii().constData();
+	QByteArray lng(m_lang.toAscii().constData());
 
 	espeak_VOICE voice;
 	std::memset(&voice, 0, sizeof(espeak_VOICE));

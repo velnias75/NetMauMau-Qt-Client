@@ -36,7 +36,7 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window
 
 	log->setTerminateAction(actionTerminateServer);
 
-	Qt::WindowFlags f = windowFlags();
+	Qt::WindowFlags f(windowFlags());
 	f &= ~Qt::WindowContextHelpButtonHint;
 	f &= ~Qt::WindowSystemMenuHint;
 	setWindowFlags(f);
@@ -49,10 +49,10 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window
 	log->viewport()->unsetCursor();
 	QFont tf("Fixedsys");
 #else
-	QFont tf = log->font();
+	QFont tf(log->font());
 #endif
 
-	QPalette pal = log->palette();
+	QPalette pal(log->palette());
 
 #if _WIN32
 	pal.setColor(QPalette::Text, QColor(192, 192, 192, 255));
@@ -78,7 +78,7 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window
 
 LocalServerOutputView::~LocalServerOutputView() {
 
-	QPalette pal = log->palette();
+	QPalette pal(log->palette());
 
 	QSettings settings;
 	settings.beginGroup("ServerOutput");
@@ -139,7 +139,7 @@ void LocalServerOutputView::updateOutput(const QByteArray &d) {
 
 void LocalServerOutputView::changeSettings() {
 
-	QPalette pal = log->palette();
+	QPalette pal(log->palette());
 
 	m_lsosDlg->setDefaults(pal, log->font());
 

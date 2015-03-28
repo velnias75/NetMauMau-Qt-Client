@@ -114,7 +114,7 @@ void SuitLabel::styleSuit() {
 		setToolTip(QString::null);
 	}
 
-	QFont f = font();
+	QFont f(font());
 	f.setPointSize(18);
 	setFont(f);
 }

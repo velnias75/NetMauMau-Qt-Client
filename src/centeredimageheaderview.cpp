@@ -37,7 +37,7 @@ void CenteredImageHeaderView::paintSection(QPainter *painter, const QRect &r, in
 	if(idx == 0) {
 
 		const QIcon i(getIcon());
-		const QSize s = i.actualSize(QSize(r.height(), r.height()));
+		const QSize s(i.actualSize(QSize(r.height(), r.height())));
 
 		QRect drawingRect;
 

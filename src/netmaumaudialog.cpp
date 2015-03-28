@@ -20,7 +20,7 @@
 #include "netmaumaudialog.h"
 
 NetMauMauDialog::NetMauMauDialog(QWidget *p, Qt::WindowFlags f) : QDialog(p, f) {
-	Qt::WindowFlags wf = windowFlags();
+	Qt::WindowFlags wf(windowFlags());
 	wf &= ~Qt::WindowContextHelpButtonHint;
 	wf &= ~Qt::WindowSystemMenuHint;
 	setWindowFlags(wf);

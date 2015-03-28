@@ -34,7 +34,7 @@ ColorPickButton::ColorPickButton(QWidget *p) : QPushButton(p), m_chosenColor() {
 
 void ColorPickButton::clicked() {
 
-	const QColor c = QColorDialog::getColor(chosenColor(), this);
+	const QColor c(QColorDialog::getColor(chosenColor(), this));
 
 	if(c.isValid()) {
 		setChosenColor(c);
@@ -49,7 +49,7 @@ void ColorPickButton::setChosenColor(const QColor &col) {
 
 	m_chosenColor = col;
 
-	const QColor idealTextColor = getIdealTextColor(m_chosenColor);
+	const QColor idealTextColor(getIdealTextColor(m_chosenColor));
 
 	setStyleSheet(COLOR_STYLE.arg(m_chosenColor.name()).arg(idealTextColor.name()));
 

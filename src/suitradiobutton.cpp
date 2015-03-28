@@ -27,7 +27,7 @@ SuitRadioButton::SuitRadioButton(QWidget *p, const QByteArray &suitDesc) : QRadi
 
 	setupUi(this);
 
-	QFont f = font();
+	QFont f(font());
 	f.setPointSize(18);
 	setFont(f);
 

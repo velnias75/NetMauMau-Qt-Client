@@ -58,7 +58,7 @@ QString &Util::cardStyler(QString &c, const QFont &f, bool color) {
 }
 
 QString Util::cardStyler(const QString &c, const QFont &f, bool color) {
-	QString ret = c;
+	QString ret(c);
 	return cardStyler(ret, f, color);
 }
 
