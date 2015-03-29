@@ -96,6 +96,7 @@ SOURCES += addserverdialog.cpp \
 	localserveroutputview.cpp \
 	main.cpp \
 	mainwindow.cpp \
+	mainwindowprivate.cpp \
 	messageitemdelegate.cpp \
 	netmaumauapplication.cpp \
 	netmaumaudialog.cpp \
@@ -138,6 +139,7 @@ HEADERS += addserverdialog.h \
 	localserveroutputsettingsdialog.h \
 	localserveroutputview.h \
 	mainwindow.h \
+	mainwindowprivate.h \
 	messageitemdelegate.h \
 	netmaumauapplication.h \
 	netmaumaudialog.h \

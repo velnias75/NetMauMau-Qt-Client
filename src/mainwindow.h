@@ -20,36 +20,16 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QStandardItemModel>
 #include <QMainWindow>
-#include <QBasicTimer>
-#include <QLabel>
 
 #include "client.h"
 
-namespace Ui {
-class MainWindow;
-}
+class MainWindowPrivate;
 
-class QMovie;
 class GameState;
 class CardWidget;
-class QHeaderView;
-class QActionGroup;
-class ServerDialog;
-class ScoresDialog;
 class QSplashScreen;
-class FileDownloader;
-class QProgressDialog;
-class JackChooseDialog;
-class LaunchServerDialog;
-class ConnectionLogDialog;
-class QAbstractItemDelegate;
-class LocalServerOutputView;
-
-#ifdef USE_ESPEAK
-class ESpeakVolumeDialog;
-#endif
+class QStandardItem;
 
 class MainWindow : public QMainWindow {
 	Q_OBJECT
@@ -139,76 +119,8 @@ private slots:
 	void setOpenCard(const QByteArray &);
 
 private:
-	GameState *gameState() const;
-
-	void clickCard(int num, QKeyEvent *e);
-
-	QString myself() const;
-	bool isMe(const QString &player) const;
-	QString yourScore(GameState *gs, const QString &p);
-
-	QList<QStandardItem *> rowForPlayer(const QString &p) const;
-
-	void addKeyShortcutTooltip(CardWidget *c, int num);
-
-	void takeCardsMark(std::size_t count) const;
-	void enableMyCards(bool b);
-	void clearMyCards(bool del, bool dis = true);
-	void updatePlayerStats(const QString &player, const QString &msg = QString::null,
-						   bool disable = false);
-	void updatePlayerScores(GameState *gs, const Client::PLAYERINFOS &pl)
-	throw(NetMauMau::Common::Exception::SocketException);
-	void updatePlayerScores(GameState *gs, uint attempts = 3);
-	QString playerToolTip(GameState *gs, const QString &player) const;
-
-	QString getAceRoundRankString(const GameState *gs, bool capitalize = false,
-								  QString *lang = 0L) const;
-	QString reconnectToolTip() const;
-
-	QString winnerRank(GameState *gs) const;
-
-	void writeSettings() const;
-	void readSettings();
-
-#ifdef _WIN32
-	bool espeakInstalled() const;
-#endif
-
-private:
-	typedef enum { PLAYERPIC = 0, NAME, CARDS, TURN, MESSAGE} MSGCOLS;
-
-	Client *m_client;
-	Ui::MainWindow *m_ui;
-	ServerDialog *m_serverDlg;
-	LocalServerOutputView *m_lsov;
-	LaunchServerDialog *m_launchDlg;
-	QStandardItemModel m_model;
-	JackChooseDialog *m_jackChooseDialog;
-	QBrush m_stdForeground;
-	QBrush m_stdBackground;
-	ConnectionLogDialog *m_connectionLogDlg;
-	QHeaderView *m_remotePlayersHeader;
-	QAbstractItemDelegate *m_playerImageDelegate;
-	QAbstractItemDelegate *m_nameItemDelegate;
-	QAbstractItemDelegate *m_countItemDelegate;
-	QAbstractItemDelegate *m_turnItemDelegate;
-	QAbstractItemDelegate *m_messageItemDelegate;
-	const QString m_aboutTxt;
-	QProgressDialog *m_receivingPlayerImageProgress;
-	QLabel m_timeLabel;
-	QBasicTimer m_playTimer;
-	QDialog *m_licenseDialog;
-	QLabel m_aceRoundLabel;
-	mutable GameState *m_gameState;
-	ScoresDialog *m_scoresDialog;
-	FileDownloader *m_clientReleaseDownloader;
-	const QImage m_defaultPlayerImage;
-	QMenu *m_playerNameMenu;
-	QMovie *m_animLogo;
-	QActionGroup *m_playerNamesActionGroup;
-#ifdef USE_ESPEAK
-	ESpeakVolumeDialog *m_volumeDialog;
-#endif
+	MainWindowPrivate *const d_ptr;
+	Q_DECLARE_PRIVATE(MainWindow)
 };
 
 #endif // MAINWINDOW_H
