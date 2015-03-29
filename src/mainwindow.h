@@ -20,6 +20,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QStandardItemModel>
 #include <QMainWindow>
 #include <QBasicTimer>
 #include <QLabel>
@@ -33,6 +34,8 @@ class MainWindow;
 class QMovie;
 class GameState;
 class CardWidget;
+class QHeaderView;
+class QActionGroup;
 class ServerDialog;
 class ScoresDialog;
 class QSplashScreen;
@@ -41,6 +44,7 @@ class QProgressDialog;
 class JackChooseDialog;
 class LaunchServerDialog;
 class ConnectionLogDialog;
+class QAbstractItemDelegate;
 class LocalServerOutputView;
 
 #ifdef USE_ESPEAK

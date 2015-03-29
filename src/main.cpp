@@ -20,6 +20,8 @@
 #include <QSplashScreen>
 #include <QLibraryInfo>
 #include <QTranslator>
+#include <QLocale>
+#include <QStyle>
 
 #ifdef _WIN32
 #include <QSettings>

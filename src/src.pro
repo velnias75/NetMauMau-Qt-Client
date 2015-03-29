@@ -80,6 +80,7 @@ SOURCES += addserverdialog.cpp \
 	cardwidget.cpp \
 	centeredimageheaderview.cpp \
 	client.cpp \
+	clientprivate.cpp \
 	colorpickbutton.cpp \
 	connectionlogdialog.cpp \
 	countmessageitemdelegate.cpp \
@@ -122,6 +123,7 @@ HEADERS += addserverdialog.h \
 	cardwidget.h \
 	centeredimageheaderview.h \
 	client.h \
+	clientprivate.h \
 	colorpickbutton.h \
 	connectionlogdialog.h \
 	countmessageitemdelegate.h \

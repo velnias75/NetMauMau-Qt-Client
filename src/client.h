@@ -24,9 +24,10 @@
 
 #include <abstractclient.h>
 
-#include "connectionlogdialog.h"
-
+class QImage;
 class MainWindow;
+class ClientPrivate;
+class ConnectionLogDialog;
 
 class Client : public QThread, public NetMauMau::Client::AbstractClient {
 	Q_OBJECT
@@ -41,13 +42,9 @@ public:
 
 	virtual ~Client();
 
-	inline QString getServer() const {
-		return m_server;
-	}
-
-	inline uint16_t getPort() const {
-		return m_port;
-	}
+	bool isOnline() const _PURE;
+	QString getServer() const;
+	uint16_t getPort() const;
 
 protected:
 	using NetMauMau::Client::AbstractClient::playCard;
@@ -144,21 +141,8 @@ protected:
 	virtual void run();
 
 private:
-	void init() const;
-	bool isOnline() const _PURE;
-	void log(const QString &,
-			 ConnectionLogDialog::DIRECTION dir = ConnectionLogDialog::FROM_SERVER) const;
-
-private:
-	MainWindow *const m_mainWindow;
-	bool m_disconnectNow;
-	mutable NetMauMau::Common::ICard *m_cardToPlay;
-	NetMauMau::Common::ICard::SUIT m_chosenSuit;
-	bool m_online;
-	ConnectionLogDialog *const m_connectionLogDialog;
-	bool m_aceRoundChoice;
-	QString m_server;
-	uint16_t m_port;
+	ClientPrivate *const d_ptr;
+	Q_DECLARE_PRIVATE(Client)
 };
 
 #endif // CLIENT_H

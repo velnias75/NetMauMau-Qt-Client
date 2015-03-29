@@ -23,12 +23,14 @@
 #include <set>
 
 #include <QMap>
+#include <QPair>
 #include <QTime>
 #include <QStringList>
 
 #include "client.h"
 
 class CardWidget;
+class QStandardItem;
 
 class GameState {
 	DISALLOW_COPY_AND_ASSIGN(GameState)

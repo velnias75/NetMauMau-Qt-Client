@@ -28,6 +28,7 @@
 #include <connectionrejectedexception.h>
 
 #include "client.h"
+#include "clientprivate.h"
 
 #include "mainwindow.h"
 #include "base64bridge.h"
@@ -41,56 +42,30 @@
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port) : QThread(),
 	NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server, port,
-									  CLIENTVERSION, new Base64Bridge()), m_mainWindow(w),
-	m_disconnectNow(false), m_cardToPlay(0L), m_chosenSuit(NetMauMau::Common::ICard::HEARTS),
-	m_online(false), m_connectionLogDialog(cld), m_aceRoundChoice(false),
-	m_server(QString::fromUtf8(server.c_str())), m_port(port) {
-	init();
-}
+									  CLIENTVERSION, new Base64Bridge()),
+	d_ptr(new ClientPrivate(this, w, cld, server, port)) {}
 
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port, const QByteArray &buf) : QThread(),
 	NetMauMau::Client::AbstractClient(player.toUtf8().constData(),
 									  reinterpret_cast<const unsigned char *>(buf.constData()),
 									  buf.size(), server, port, CLIENTVERSION, new Base64Bridge()),
-	m_mainWindow(w), m_disconnectNow(false), m_cardToPlay(0L),
-	m_chosenSuit(NetMauMau::Common::ICard::HEARTS), m_online(false), m_connectionLogDialog(cld),
-	m_aceRoundChoice(false), m_server(QString::fromUtf8(server.c_str())), m_port(port) {
-	init();
-}
+	d_ptr(new ClientPrivate(this, w, cld, server, port)) {}
 
 Client::~Client() {
 	emit offline(true);
 	QThread::disconnect();
-}
 
-void Client::init() const {
-
-	qRegisterMetaType<CARDS>("Client::CARDS");
-	qRegisterMetaType<STATS>("Client::STATS");
-	qRegisterMetaType<std::size_t>("std::size_t");
-	qRegisterMetaType<NetMauMau::Common::ICard::SUIT>("NetMauMau::Common::ICard::SUIT");
-
-	if(m_mainWindow) {
-		QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), this, SLOT(disconnectNow()));
-		QObject::connect(m_mainWindow, SIGNAL(cardToPlay(NetMauMau::Common::ICard*)),
-						 this, SLOT(cardToPlay(NetMauMau::Common::ICard*)));
-		QObject::connect(m_mainWindow, SIGNAL(chosenSuite(NetMauMau::Common::ICard::SUIT)),
-						 this, SLOT(chosenSuite(NetMauMau::Common::ICard::SUIT)));
-		QObject::connect(m_mainWindow, SIGNAL(chosenAceRound(bool)),
-						 this, SLOT(chosenAceRound(bool)));
-	}
-}
-
-bool Client::isOnline() const {
-	return m_online;
+	delete d_ptr;
 }
 
 void Client::run() {
 
+	Q_D(Client);
+
 	try {
 
-		m_online = true;
+		d->m_online = true;
 		emit offline(false);
 		play();
 		emit offline(true);
@@ -123,244 +98,286 @@ void Client::run() {
 #endif
 	}
 
-	m_online = false;
+	d->m_online = false;
 }
 
 void Client::disconnectNow() {
 	NetMauMau::Client::AbstractClient::disconnect();
-	m_disconnectNow = true;
+	Q_D(Client);
+	d->m_disconnectNow = true;
 }
 
 NetMauMau::Common::ICard *Client::playCard(const CARDS &cards, std::size_t takeCount) const {
 
-	log(QString("playCard(%1, %2) REQUEST").arg(cards.size()).arg(takeCount));
+	Q_D(const Client);
+
+	d->log(QString("playCard(%1, %2) REQUEST").arg(cards.size()).arg(takeCount));
 
 	emit cPlayCard(cards, takeCount);
 
 	QEventLoop waitForCard;
 
-	QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), &waitForCard, SLOT(quit()));
+	QObject::connect(d->m_mainWindow, SIGNAL(disconnectNow()), &waitForCard, SLOT(quit()));
 	QObject::connect(this, SIGNAL(jackSuitChoiceAvailable()), &waitForCard, SLOT(quit()));
 
 	waitForCard.exec(QEventLoop::ExcludeUserInputEvents);
 
-	if(m_disconnectNow) {
-		m_cardToPlay = 0L;
-		log("playCard(SUSPEND) [because of a disconnect request]",
-			ConnectionLogDialog::TO_SERVER);
+	if(d->m_disconnectNow) {
+		d->m_cardToPlay = 0L;
+		d->log("playCard(SUSPEND) [because of a disconnect request]",
+			   ConnectionLogDialog::TO_SERVER);
 	} else {
-		log(QString("playCard(%1)")
-			.arg(QString::fromUtf8(m_cardToPlay ? m_cardToPlay->description().c_str() :
-												  "SUSPEND")), ConnectionLogDialog::TO_SERVER);
+		d->log(QString("playCard(%1)")
+			   .arg(QString::fromUtf8(d->m_cardToPlay ? d->m_cardToPlay->description().c_str() :
+														"SUSPEND")),
+			   ConnectionLogDialog::TO_SERVER);
 	}
 
-	return m_cardToPlay;
+	return d->m_cardToPlay;
 }
 
 NetMauMau::Common::ICard::SUIT Client::getJackSuitChoice() const {
 
-	log("getJackSuitChoice REQUEST");
+	Q_D(const Client);
+
+	d->log("getJackSuitChoice REQUEST");
 
 	emit cGetJackSuitChoice();
 
 	QEventLoop waitForSuit;
 
-	QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), &waitForSuit, SLOT(quit()));
+	QObject::connect(d->m_mainWindow, SIGNAL(disconnectNow()), &waitForSuit, SLOT(quit()));
 	QObject::connect(this, SIGNAL(jackSuitChoiceAvailable()), &waitForSuit, SLOT(quit()));
 
 	waitForSuit.exec(QEventLoop::ExcludeUserInputEvents);
 
-	log(QString("getJackSuitChoice(%1)").
-		arg(QString::fromUtf8(NetMauMau::Common::suitToSymbol(m_chosenSuit, false).c_str())),
-		ConnectionLogDialog::TO_SERVER);
+	d->log(QString("getJackSuitChoice(%1)").
+		   arg(QString::fromUtf8(NetMauMau::Common::suitToSymbol(d->m_chosenSuit, false).c_str())),
+		   ConnectionLogDialog::TO_SERVER);
 
-	return m_chosenSuit;
+	return d->m_chosenSuit;
 }
 
 bool Client::getAceRoundChoice() const {
 
-	log("getAceRoundChoice REQUEST");
+	Q_D(const Client);
+
+	d->log("getAceRoundChoice REQUEST");
 
 	emit cGetAceRoundChoice();
 
 	QEventLoop waitForAceRoundChoice;
 
-	QObject::connect(m_mainWindow, SIGNAL(disconnectNow()), &waitForAceRoundChoice, SLOT(quit()));
+	QObject::connect(d->m_mainWindow, SIGNAL(disconnectNow()),
+					 &waitForAceRoundChoice, SLOT(quit()));
 	QObject::connect(this, SIGNAL(aceRoundChoiceAvailable()), &waitForAceRoundChoice, SLOT(quit()));
 
 	waitForAceRoundChoice.exec(QEventLoop::ExcludeUserInputEvents);
 
-	log(QString("getAceRoundChoice(%1)").arg(m_aceRoundChoice ? "TRUE" : "FALSE"),
-		ConnectionLogDialog::TO_SERVER);
+	d->log(QString("getAceRoundChoice(%1)").arg(d->m_aceRoundChoice ? "TRUE" : "FALSE"),
+		   ConnectionLogDialog::TO_SERVER);
 
-	return m_aceRoundChoice;
+	return d->m_aceRoundChoice;
 }
 
 void Client::cardToPlay(NetMauMau::Common::ICard *ctp) const {
 
-	log(QString("cardToPlay(%1)").arg(QString::fromUtf8(ctp ? ctp->description().c_str()
-															: "SUSPEND")),
-		ConnectionLogDialog::FROM_CLIENT);
+	Q_D(const Client);
 
-	m_cardToPlay = ctp;
+	d->log(QString("cardToPlay(%1)").arg(QString::fromUtf8(ctp ? ctp->description().c_str()
+															   : "SUSPEND")),
+		   ConnectionLogDialog::FROM_CLIENT);
+
+	d->m_cardToPlay = ctp;
 	emit jackSuitChoiceAvailable();
 }
 
 void Client::chosenSuite(NetMauMau::Common::ICard::SUIT s) {
 
-	log(QString("chosenSuite(%1)").
-		arg(QString::fromUtf8(NetMauMau::Common::suitToSymbol(s, false).c_str())),
-		ConnectionLogDialog::FROM_CLIENT);
+	Q_D(Client);
 
-	m_chosenSuit = s;
+	d->log(QString("chosenSuite(%1)").
+		   arg(QString::fromUtf8(NetMauMau::Common::suitToSymbol(s, false).c_str())),
+		   ConnectionLogDialog::FROM_CLIENT);
+
+	d->m_chosenSuit = s;
 	emit jackSuitChoiceAvailable();
 }
 
 void Client::chosenAceRound(bool c) {
 
-	log(QString("chosenAceRound(%1)"). arg(c ? "TRUE" : "FALSE"), ConnectionLogDialog::FROM_CLIENT);
+	Q_D(Client);
 
-	m_aceRoundChoice = c;
+	d->log(QString("chosenAceRound(%1)"). arg(c ? "TRUE" : "FALSE"),
+		   ConnectionLogDialog::FROM_CLIENT);
+
+	d->m_aceRoundChoice = c;
 	emit aceRoundChoiceAvailable();
 }
 
 void Client::message(const std::string &msg) const {
-	log(QString("message(%1)").arg(QString::fromUtf8(msg.c_str())));
+	Q_D(const Client);
+	d->log(QString("message(%1)").arg(QString::fromUtf8(msg.c_str())));
 	emit cMessage(QString::fromUtf8(msg.c_str()));
 }
 
 void Client::error(const std::string &msg) const {
-	log(QString("error(%1)").arg(QString::fromUtf8(msg.c_str())));
+	Q_D(const Client);
+	d->log(QString("error(%1)").arg(QString::fromUtf8(msg.c_str())));
 	emit cError(QString::fromUtf8(msg.c_str()));
 }
 
 void Client::turn(std::size_t t) const {
-	log(QString("turn(%1)").arg(t));
+	Q_D(const Client);
+	d->log(QString("turn(%1)").arg(t));
 	emit cTurn(t);
 }
 
 void Client::stats(const STATS &s) const {
-	log(QString("stats(%1)").arg(s.size()));
+	Q_D(const Client);
+	d->log(QString("stats(%1)").arg(s.size()));
 	emit cStats(s);
 }
 
 void Client::gameOver() const {
-	log("gameOver");
+	Q_D(const Client);
+	d->log("gameOver");
 	emit cGameOver();
 }
 
 void Client::directionChanged() const {
-	log("directionChanged");
+	Q_D(const Client);
+	d->log("directionChanged");
 	emit cDirectionChanged();
 }
 
 void Client::playerJoined(const std::string &player, const unsigned char *b,
 						  std::size_t l) const {
-	log(QString("playerJoined(%1, %2, %3)").arg(QString::fromUtf8(player.c_str()))
-		.arg(l ? "PNG DATA" : "NO PNG DATA").arg(QString::number(l)));
+	Q_D(const Client);
+	d->log(QString("playerJoined(%1, %2, %3)").arg(QString::fromUtf8(player.c_str()))
+		   .arg(l ? "PNG DATA" : "NO PNG DATA").arg(QString::number(l)));
 	emit cPlayerJoined(QString::fromUtf8(player.c_str()), l ? QImage::fromData(b, l) :
 															  QImage());
 }
 
 void Client::playerRejected(const std::string &player) const {
-	log(QString("playerRejected(%1)").arg(QString::fromUtf8(player.c_str())));
+	Q_D(const Client);
+	d->log(QString("playerRejected(%1)").arg(QString::fromUtf8(player.c_str())));
 }
 
 void Client::playerSuspends(const std::string &player) const {
-	log(QString("playerSuspends(%1)").arg(QString::fromUtf8(player.c_str())));
+	Q_D(const Client);
+	d->log(QString("playerSuspends(%1)").arg(QString::fromUtf8(player.c_str())));
 	emit cPlayerSuspends(QString::fromUtf8(player.c_str()));
 }
 
 void Client::playedCard(const std::string &player, const NetMauMau::Common::ICard *card) const {
-	log(QString("playedCard(%1, %2)").arg(QString::fromUtf8(player.c_str())).
-		arg(QString::fromUtf8(card->description().c_str())));
+	Q_D(const Client);
+	d->log(QString("playedCard(%1, %2)").arg(QString::fromUtf8(player.c_str())).
+		   arg(QString::fromUtf8(card->description().c_str())));
 	emit cPlayedCard(QString::fromUtf8(player.c_str()), card->description().c_str());
 }
 
 void Client::playerWins(const std::string &player, std::size_t t) const {
-	log(QString("playerWins(%1, %2)").arg(QString::fromUtf8(player.c_str())).arg(t));
+	Q_D(const Client);
+	d->log(QString("playerWins(%1, %2)").arg(QString::fromUtf8(player.c_str())).arg(t));
 	emit cplayerWins(QString::fromUtf8(player.c_str()), t);
 }
 
 void Client::playerLost(const std::string &player, std::size_t t, std::size_t p) const {
-	log(QString("playerLost(%1, %2, %3)").arg(QString::fromUtf8(player.c_str())).arg(t).arg(p));
+	Q_D(const Client);
+	d->log(QString("playerLost(%1, %2, %3)").arg(QString::fromUtf8(player.c_str())).arg(t).arg(p));
 	emit cplayerLost(QString::fromUtf8(player.c_str()), t, p);
 }
 
 void Client::playerPicksCard(const std::string &player,
 							 const NetMauMau::Common::ICard *card) const {
-	log(QString("playerPicksCard(%1, %2)").arg(player.c_str()).arg(card
-																   ? card->description().c_str() :
-																	 "[NULL]"));
+	Q_D(const Client);
+	d->log(QString("playerPicksCard(%1, %2)").arg(player.c_str()).arg(card
+																	  ? card->description().c_str() :
+																		"[NULL]"));
 	emit cPlayerPicksCard(QString::fromUtf8(player.c_str()));
 }
 
 void Client::playerPicksCard(const std::string &player, std::size_t count) const {
-	log(QString("playerPicksCard(%1, %2)").arg(QString::fromUtf8(player.c_str())).arg(count));
+	Q_D(const Client);
+	d->log(QString("playerPicksCard(%1, %2)").arg(QString::fromUtf8(player.c_str())).arg(count));
 	emit cPlayerPicksCard(QString::fromUtf8(player.c_str()), count);
 }
 
 void Client::nextPlayer(const std::string &player) const {
-	log(QString("nextPlayer(%1)").arg(QString::fromUtf8(player.c_str())));
+	Q_D(const Client);
+	d->log(QString("nextPlayer(%1)").arg(QString::fromUtf8(player.c_str())));
 	emit cNextPlayer(QString::fromUtf8(player.c_str()));
 }
 
 void Client::cardSet(const CARDS &cards) const {
-	log(QString("cardSet(#%1)").arg(cards.size()));
+	Q_D(const Client);
+	d->log(QString("cardSet(#%1)").arg(cards.size()));
 	emit cCardSet(cards);
 }
 
 void Client::enableSuspend(bool enable) const {
-	log(QString("enableSuspend(%1)").arg(enable ? "true" : "false"));
+	Q_D(const Client);
+	d->log(QString("enableSuspend(%1)").arg(enable ? "true" : "false"));
 	emit cEnableSuspend(enable);
 }
 
 void Client::initialCard(const NetMauMau::Common::ICard *card) const {
-	log(QString("initialCard(%1)").arg(QString::fromUtf8(card->description().c_str())));
+	Q_D(const Client);
+	d->log(QString("initialCard(%1)").arg(QString::fromUtf8(card->description().c_str())));
 	emit cInitialCard(card->description().c_str());
 }
 
 void Client::openCard(const NetMauMau::Common::ICard *card, const std::string &js) const {
-	log(QString("openCard(%1, \"%2\")")
-		.arg(QString::fromUtf8(card->description().c_str())).arg(QString::fromUtf8(js.c_str())));
+	Q_D(const Client);
+	d->log(QString("openCard(%1, \"%2\")")
+		   .arg(QString::fromUtf8(card->description().c_str())).arg(QString::fromUtf8(js.c_str())));
 	emit cOpenCard(card->description().c_str(), QString::fromUtf8(js.c_str()));
 }
 
 void Client::talonShuffled() const {
-	log("talonShuffled()");
+	Q_D(const Client);
+	d->log("talonShuffled()");
 	emit ctalonShuffled();
 }
 
 void Client::cardRejected(const std::string &player, const NetMauMau::Common::ICard *card) const {
-	log(QString("cardRejected(%1, %2)").arg(QString::fromUtf8(player.c_str()))
-		.arg(QString::fromUtf8(card->description().c_str())));
+	Q_D(const Client);
+	d->log(QString("cardRejected(%1, %2)").arg(QString::fromUtf8(player.c_str()))
+		   .arg(QString::fromUtf8(card->description().c_str())));
 	emit cCardRejected(QString::fromUtf8(player.c_str()), card->description().c_str());
 }
 
 void Client::cardAccepted(const NetMauMau::Common::ICard *card) const {
-	log(QString("cardAccepted(%1)").arg(QString::fromUtf8(card->description().c_str())));
+	Q_D(const Client);
+	d->log(QString("cardAccepted(%1)").arg(QString::fromUtf8(card->description().c_str())));
 	emit cCardAccepted(card->description().c_str());
 }
 
 void Client::jackSuit(NetMauMau::Common::ICard::SUIT suit) const {
-	log(QString("jackSuit(%1)")
-		.arg(QString::fromUtf8(NetMauMau::Common::suitToSymbol(suit, false).c_str())));
+	Q_D(const Client);
+	d->log(QString("jackSuit(%1)")
+		   .arg(QString::fromUtf8(NetMauMau::Common::suitToSymbol(suit, false).c_str())));
 	emit cJackSuit(suit);
 }
 
 void Client::aceRoundStarted(const std::string &player) const {
-	log(QString("aceRoundStarted(%1)").arg(QString::fromUtf8(player.c_str())));
+	Q_D(const Client);
+	d->log(QString("aceRoundStarted(%1)").arg(QString::fromUtf8(player.c_str())));
 	emit cAceRoundStarted(QString::fromUtf8(player.c_str()));
 }
 
 void Client::aceRoundEnded(const std::string &player) const {
-	log(QString("aceRoundEnded(%1)").arg(QString::fromUtf8(player.c_str())));
+	Q_D(const Client);
+	d->log(QString("aceRoundEnded(%1)").arg(QString::fromUtf8(player.c_str())));
 	emit cAceRoundEnded(QString::fromUtf8(player.c_str()));
 }
 
 void Client::unknownServerMessage(const std::string &msg) const {
 	qWarning("Unknown server message: \"%s\"", msg.c_str());
-	log(QString("unknownServerMessage(%1)").arg(QString::fromUtf8(msg.c_str())));
+	Q_D(const Client);
+	d->log(QString("unknownServerMessage(%1)").arg(QString::fromUtf8(msg.c_str())));
 }
 
 void Client::beginReceivePlayerPicture(const std::string &player) const throw() {
@@ -379,8 +396,19 @@ void Client::uploadFailed(const std::string &p) const throw() {
 	emit sendingPlayerImageFailed(QString::fromUtf8(p.c_str()));
 }
 
-void Client::log(const QString &e, ConnectionLogDialog::DIRECTION dir) const {
-	if(m_connectionLogDialog) m_connectionLogDialog->addEntry(e, dir);
+bool Client::isOnline() const {
+	Q_D(const Client);
+	return d->m_online;
+}
+
+QString Client::getServer() const {
+	Q_D(const Client);
+	return d->m_server;
+}
+
+uint16_t Client::getPort() const {
+	Q_D(const Client);
+	return d->m_port;
 }
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;

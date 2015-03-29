@@ -44,6 +44,7 @@
 #include "filedownloader.h"
 #include "jackchoosedialog.h"
 #include "launchserverdialog.h"
+#include "connectionlogdialog.h"
 #include "playerimagedelegate.h"
 #include "netmaumaumessagebox.h"
 #include "localserveroutputview.h"
