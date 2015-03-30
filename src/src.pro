@@ -107,6 +107,7 @@ SOURCES += addserverdialog.cpp \
 	portspin.cpp \
 	scoresdialog.cpp \
 	serverdialog.cpp \
+	serverdialogprivate.cpp \
 	serverinfo.cpp \
 	suitfontchecker.cpp \
 	suitlabel.cpp \
@@ -150,6 +151,7 @@ HEADERS += addserverdialog.h \
 	portspin.h \
 	scoresdialog.h \
 	serverdialog.h \
+	serverdialogprivate.h \
 	serverinfo.h \
 	suitfontchecker.h \
 	suitlabel.h \

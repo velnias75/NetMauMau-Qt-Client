@@ -44,7 +44,7 @@ public:
 
 	bool isOnline() const _PURE;
 	QString getServer() const;
-	uint16_t getPort() const;
+	uint16_t getPort() const _PURE;
 
 protected:
 	using NetMauMau::Client::AbstractClient::playCard;

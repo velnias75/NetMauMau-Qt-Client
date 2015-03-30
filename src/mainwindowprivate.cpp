@@ -18,6 +18,7 @@
  */
 
 #include <QMovie>
+#include <QTimer>
 #include <QBuffer>
 #include <QSettings>
 #include <QSplashScreen>
@@ -85,7 +86,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 			   .arg(VERSION_MAJ(Client::getClientLibraryVersion()))
 			   .arg(VERSION_MIN(Client::getClientLibraryVersion()))
 			   .arg(VERSION_REL(Client::getClientLibraryVersion()))),
-	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(p)),
+	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(p)), m_timeLabel(), m_playTimer(),
 	m_licenseDialog(new LicenseDialog(p)), m_aceRoundLabel(), m_gameState(0L),
 	m_scoresDialog(new ScoresDialog(m_serverDlg, p)), m_clientReleaseDownloader(0L),
 	m_defaultPlayerImage(QImage::fromData
@@ -104,9 +105,9 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 
 	m_ui->setupUi(q);
 
-	m_ui->myCardsScrollArea->installEventFilter(this);
-	m_ui->takeCardsButton->installEventFilter(this);
-	m_ui->suspendButton->installEventFilter(this);
+	m_ui->myCardsScrollArea->installEventFilter(q);
+	m_ui->takeCardsButton->installEventFilter(q);
+	m_ui->suspendButton->installEventFilter(q);
 
 	q->setCorner(Qt::TopLeftCorner, Qt::TopDockWidgetArea);
 	q->setCorner(Qt::TopRightCorner, Qt::TopDockWidgetArea);
@@ -1585,7 +1586,9 @@ void MainWindowPrivate::setOpenCard(const QByteArray &dat) {
 
 	m_receivingPlayerImageProgress->hide();
 
-	if(!m_playTimer.isActive()) m_playTimer.start(1000, this);
+	Q_Q(MainWindow);
+
+	if(!m_playTimer.isActive()) m_playTimer.start(1000, q);
 
 	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::SUIT_ILLEGAL;
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::RANK_ILLEGAL;

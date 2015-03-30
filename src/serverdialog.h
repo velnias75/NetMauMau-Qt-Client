@@ -20,21 +20,15 @@
 #ifndef SERVERDIALOG_H
 #define SERVERDIALOG_H
 
-#include <QStandardItemModel>
-#include <QMutex>
-#include <QTimer>
-
-#include <icard.h>
-
 #include "netmaumaudialog.h"
 
 #include "gamestate.h"
 #include "ui_serverdialog.h"
 
-class DeleteServersDialog;
-class AddServerDialog;
+class ServerDialogPrivate;
+
 class QSplashScreen;
-class ServerInfo;
+class QStandardItemModel;
 
 class ServerDialog : public NetMauMauDialog, public Ui::ServerDialog {
 	Q_OBJECT
@@ -60,62 +54,25 @@ public:
 	GameState::DIR getDirection() const _PURE;
 	uint getInitialCardCount() const;
 
-	QStandardItemModel *getModel() _CONST;
+	QStandardItemModel *getModel() _PURE;
 
 	void blockAutoRefresh(bool b);
 	void forceRefresh(bool b);
+	bool isForceRefresh() const _PURE;
 
 	static QImage scalePlayerPic(const QImage &img);
-
-private:
-	bool isForceRefresh() const _PURE;
-	void saveServers();
-	void savePlayer();
-	QByteArray convertToPNG(const QByteArray &ba) const;
 
 public slots:
 	void setPlayerImagePath(const QString &path, bool warn = false);
 	void addServer(const QString &, const QString &, const QString & = QString::null);
-
-private slots:
-	void checkOnline();
-	void updateOnline(bool enabled, int row);
-	void doubleClick();
-	void enableRemoveAndOkButton(const QItemSelection &sel, const QItemSelection &desel);
-	void deleteRows(const QList<int> &);
-	void deleteRow(const QModelIndex &);
-	void removeSelected();
-	void removeServer();
-	void addServer();
-	void choosePlayerImage();
-	void clearPlayerImage();
-	void enableClearButton(const QString &);
-	void itemChanged(QStandardItem *);
-	void serverViewContext(const QPoint &);
 
 signals:
 	void refresh();
 	void reconnectAvailable(const QString &);
 
 private:
-	QList<ServerInfo *> m_serverInfoThreads;
-	QStandardItemModel m_model;
-	mutable QStandardItemModel m_playerNameModel;
-	mutable bool m_forceRefresh;
-	QString m_lastServer;
-	const DeleteServersDialog *m_deleteServersDlg;
-	const QRegExpValidator *m_nameRexValidator;
-	QByteArray m_playerImage;
-	QTimer m_autoRefresh;
-	QMutex m_mutex;
-	bool m_blockAutoRefresh;
-	QSplashScreen *m_splash;
-	mutable QString m_lastPlayerName;
-	QString m_imageFormats;
-	AddServerDialog *m_addServerDialog;
-	QMenu *m_ctxPopup;
-	QModelIndex m_ctxIndex;
-	mutable GameState::DIR m_direction;
+	ServerDialogPrivate *const d_ptr;
+	Q_DECLARE_PRIVATE(ServerDialog)
 };
 
 #endif // SERVERDIALOG_H
