@@ -36,7 +36,6 @@ public:
 	explicit ClientPrivate(Client *parent, MainWindow *const w, ConnectionLogDialog *cld,
 						   const std::string &server, uint16_t port);
 
-	void init() const;
 	void log(const QString &,
 			 ConnectionLogDialog::DIRECTION dir = ConnectionLogDialog::FROM_SERVER) const;
 

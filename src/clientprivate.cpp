@@ -19,6 +19,7 @@
 
 #include "clientprivate.h"
 
+#include "client.h"
 #include "mainwindow.h"
 
 ClientPrivate::ClientPrivate(Client *p, MainWindow *const w, ConnectionLogDialog *cld,
@@ -26,10 +27,6 @@ ClientPrivate::ClientPrivate(Client *p, MainWindow *const w, ConnectionLogDialog
 	m_mainWindow(w), m_disconnectNow(false), m_cardToPlay(0L),
 	m_chosenSuit(NetMauMau::Common::ICard::HEARTS), m_online(false), m_connectionLogDialog(cld),
 	m_aceRoundChoice(false), m_server(QString::fromUtf8(server.c_str())), m_port(port) {
-	init();
-}
-
-void ClientPrivate::init() const {
 
 	qRegisterMetaType<Client::CARDS>("Client::CARDS");
 	qRegisterMetaType<Client::STATS>("Client::STATS");

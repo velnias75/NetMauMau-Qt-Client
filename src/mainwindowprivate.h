@@ -30,24 +30,20 @@ namespace Ui {
 class MainWindow;
 }
 
-class CardWidget;
-class ServerDialog;
-class LocalServerOutputView;
-class LaunchServerDialog;
-class JackChooseDialog;
-class ConnectionLogDialog;
-class QHeaderView;
-class QAbstractItemDelegate;
-class QProgressDialog;
-class QDialog;
-class ScoresDialog;
-class FileDownloader;
-class GameState;
 class QMenu;
-class QMovie;
+class GameState;
+class CardWidget;
+class QHeaderView;
 class QActionGroup;
+class ScoresDialog;
+class ServerDialog;
 class QSplashScreen;
-class MainWindow;
+class FileDownloader;
+class QProgressDialog;
+class JackChooseDialog;
+class LaunchServerDialog;
+class LocalServerOutputView;
+class QAbstractItemDelegate;
 
 #ifdef USE_ESPEAK
 class ESpeakVolumeDialog;
@@ -57,6 +53,8 @@ class MainWindowPrivate : public QObject {
 	Q_OBJECT
 	Q_DISABLE_COPY(MainWindowPrivate)
 public:
+	typedef enum { NO_SORT, SUIT_RANK, RANK_SUIT } SORTMODE;
+
 	explicit MainWindowPrivate(QSplashScreen *splash, MainWindow *parent);
 	virtual ~MainWindowPrivate();
 
@@ -94,6 +92,67 @@ public:
 #ifdef _WIN32
 	bool espeakInstalled() const;
 #endif
+
+private slots:
+	void about();
+	void scrollToLastCard();
+
+	void changePlayerName(QAction *);
+	void showPlayerNameSelectMenu(const QPoint &);
+	void receivingPlayerImage(const QString &);
+	void receivedPlayerImage(const QString &);
+	void showReceiveProgress() const;
+	void itemChanged(QStandardItem *);
+	void notifyClientUpdate();
+	void unmau();
+
+	void serverAccept();
+	void serverDisconnect();
+	void lostWinConfirmed(int);
+	void destroyClient(bool = false);
+	void destroyClientOffline(bool);
+	void clientDestroyed();
+	void forceRefreshServers(bool = true);
+	void localServerLaunched(bool);
+	void reconnectAvailable(const QString &) const;
+
+	void suspend();
+	void takeCards();
+	void cardChosen(CardWidget *);
+	void clientPlayCardRequest(const Client::CARDS &, std::size_t);
+	void clientChooseJackSuitRequest();
+	void clientChooseAceRoundRequest();
+
+	void clientError(const QString &, bool = true);
+	void clientMessage(const QString &) const;
+	void clientCardSet(const Client::CARDS &);
+	void clientTurn(std::size_t);
+	void clientStats(const Client::STATS &);
+	void clientOpenCard(const QByteArray &, const QString &);
+	void clientTalonShuffled();
+	void clientCardRejected(const QString &, const QByteArray &);
+	void clientCardAccepted(const QByteArray &);
+	void clientPlayerJoined(const QString &, const QImage &);
+	void clientPlayerSuspends(const QString &);
+	void clientPlayerWins(const QString &, std::size_t);
+	void clientPlayerLost(const QString &, std::size_t, std::size_t);
+	void clientPlayerPicksCard(const QString &, std::size_t);
+	void clientPlayerPicksCard(const QString &);
+	void clientPlayedCard(const QString &, const QByteArray &);
+	void clientJackSuit(NetMauMau::Common::ICard::SUIT) const;
+	void clientNextPlayer(const QString &);
+	void clientAceRoundStarted(const QString &);
+	void clientAceRoundEnded(const QString &);
+	void clientDirectionChanged();
+
+	void clearStats();
+	void sortNoSort(bool);
+	void sortSuitRank(bool);
+	void sortRankSuit(bool);
+	void cardsReordered();
+	void sortMyCards(SORTMODE);
+	void filterMyCards(bool);
+	void setOpenCard(const QByteArray &);
 
 public:
 	typedef enum { PLAYERPIC = 0, NAME, CARDS, TURN, MESSAGE} MSGCOLS;
