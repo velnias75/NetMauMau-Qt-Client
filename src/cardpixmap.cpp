@@ -127,7 +127,7 @@ QMap<CARDKEY, NAMESIZE> createCardMap() {
 	return cm;
 }
 
-const QMap<CARDKEY, NAMESIZE> CARDMAP(createCardMap());
+QMap<CARDKEY, NAMESIZE> CARDMAP(createCardMap());
 
 }
 
