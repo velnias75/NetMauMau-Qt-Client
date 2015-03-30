@@ -79,6 +79,7 @@ SOURCES += addserverdialog.cpp \
 	cardlabel.cpp \
 	cardpixmap.cpp \
 	cardwidget.cpp \
+	cardwidgetprivate.cpp \
 	centeredimageheaderview.cpp \
 	client.cpp \
 	clientprivate.cpp \
@@ -124,6 +125,7 @@ HEADERS += addserverdialog.h \
 	cardlabel.h \
 	cardpixmap.h \
 	cardwidget.h \
+	cardwidgetprivate.h \
 	centeredimageheaderview.h \
 	client.h \
 	clientprivate.h \

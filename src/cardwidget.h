@@ -24,13 +24,15 @@
 
 #include <icard.h>
 
+class CardWidgetPrivate;
+
 class CardWidget : public QPushButton, public NetMauMau::Common::ICard, private Ui::CardWidget {
 	Q_OBJECT
 	Q_DISABLE_COPY(CardWidget)
 	Q_PROPERTY(bool dragable READ dragable WRITE setDragable NOTIFY dragableChanged)
 public:
 	explicit CardWidget(QWidget *parent = 0, const QByteArray &cardDesc = QByteArray(),
-						bool dragable = false);
+						bool drag = false);
 	virtual ~CardWidget();
 
 	virtual QSize sizeHint() const _CONST;
@@ -48,14 +50,8 @@ public:
 	static QString tooltipText(NetMauMau::Common::ICard::SUIT,
 							   NetMauMau::Common::ICard::RANK, bool points = true);
 
-	inline bool dragable() const {
-		return m_dragable;
-	}
-
-	inline void setDragable(bool d) {
-		m_dragable = d;
-		emit dragableChanged(m_dragable);
-	}
+	bool dragable() const;
+	void setDragable(bool drag);
 
 protected:
 	virtual void changeEvent(QEvent *e);
@@ -64,22 +60,13 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
 
-private:
-	void styleCard();
-	QString tooltipText() const;
-
-private slots:
-	void clickedCard();
-
 signals:
 	void dragableChanged(bool);
 	void chosen(CardWidget *);
 
 private:
-	QString m_defaultStyleSheet;
-	bool m_dragable;
-	QPoint m_dragStartPosition;
-	QSize m_curSize;
+	CardWidgetPrivate *const d_ptr;
+	Q_DECLARE_PRIVATE(CardWidget)
 };
 
 #endif // CARDWIDGET_H

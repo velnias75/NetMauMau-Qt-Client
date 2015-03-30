@@ -22,24 +22,51 @@
 #include <cardtools.h>
 
 #include "cardwidget.h"
+
+#include "cardwidgetprivate.h"
 #include "cardpixmap.h"
 
-CardWidget::CardWidget(QWidget *p, const QByteArray &cardDesc, bool d) : QPushButton(p),
-	NetMauMau::Common::ICard(), m_defaultStyleSheet(), m_dragable(d), m_dragStartPosition() {
+CardWidget::CardWidget(QWidget *p, const QByteArray &cardDesc, bool drag) : QPushButton(p),
+	NetMauMau::Common::ICard(), d_ptr(new CardWidgetPrivate(this, drag)) {
 
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 
 	setupUi(this);
 
-	m_defaultStyleSheet = styleSheet();
+	Q_D(CardWidget);
 
-	QObject::connect(this, SIGNAL(clicked()), this, SLOT(clickedCard()));
+	d->m_defaultStyleSheet = styleSheet();
+
+	QObject::connect(this, SIGNAL(clicked()), d, SLOT(clickedCard()));
 
 	if(!cardDesc.isEmpty()) setProperty("cardDescription", cardDesc);
 }
 
 CardWidget::~CardWidget() {
 	disconnect();
+	delete d_ptr;
+}
+
+bool CardWidget::dragable() const {
+	Q_D(const CardWidget);
+	return d->m_dragable;
+}
+
+void CardWidget::setDragable(bool drag) {
+	Q_D(CardWidget);
+	d->m_dragable = drag;
+	emit dragableChanged(d->m_dragable);
+}
+
+bool CardWidget::event(QEvent *e) {
+
+	if(e->type() == QEvent::DynamicPropertyChange &&
+			(static_cast<QDynamicPropertyChangeEvent *>(e)->propertyName() == "cardDescription")) {
+		Q_D(CardWidget);
+		d->styleCard();
+	}
+
+	return QPushButton::event(e);
 }
 
 QSize CardWidget::sizeHint() const {
@@ -82,34 +109,16 @@ bool CardWidget::operator==(const QByteArray &cd) const {
 	return cd == QByteArray(description().c_str());
 }
 
-bool CardWidget::event(QEvent *e) {
-
-	if(e->type() == QEvent::DynamicPropertyChange &&
-			(static_cast<QDynamicPropertyChangeEvent *>(e)->propertyName() == "cardDescription")) {
-		styleCard();
-	}
-
-	return QPushButton::event(e);
-}
-
-void CardWidget::clickedCard() {
-	emit chosen(this);
-}
-
 void CardWidget::changeEvent(QEvent *e) {
-
 	QPushButton::changeEvent(e);
-
-	if(e->type() == QEvent::EnabledChange) styleCard();
+	Q_D(CardWidget);
+	if(e->type() == QEvent::EnabledChange) d->styleCard();
 }
 
 void CardWidget::resizeEvent(QResizeEvent *e) {
-	if(e->oldSize() != e->size()) styleCard();
+	Q_D(CardWidget);
+	if(e->oldSize() != e->size()) d->styleCard();
 	e->accept();
-}
-
-QString CardWidget::tooltipText() const {
-	return tooltipText(getSuit(), getRank());
 }
 
 QString CardWidget::tooltipText(NetMauMau::Common::ICard::SUIT s,
@@ -171,32 +180,10 @@ QString CardWidget::tooltipText(NetMauMau::Common::ICard::SUIT s,
 	return tr("Illegal card");
 }
 
-void CardWidget::styleCard() {
-
-	const QByteArray &cardDesc(property("cardDescription").toByteArray());
-
-	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;
-	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::ACE;
-
-	QSize siz(QSize(140, 190));
-	siz.scale(size() * 0.9f, Qt::KeepAspectRatio);
-	setIconSize(siz.expandedTo(minimumSize()));
-
-	if(NetMauMau::Common::parseCardDesc(cardDesc.constData(), &s, &r)) {
-		setIcon(CardPixmap(iconSize(), s, r));
-	} else {
-		QIcon ico;
-		ico.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
-		setIcon(ico);
-	}
-
-	setToolTip(tooltipText());
-	updateGeometry();
-}
-
 void CardWidget::dragMoveEvent(QDragMoveEvent *e) {
 
-	if(m_dragable && e->mimeData()->hasFormat("application/x-dndcardwidget")) {
+	Q_D(const CardWidget);
+	if(d->m_dragable && e->mimeData()->hasFormat("application/x-dndcardwidget")) {
 
 		if(children().contains(e->source())) {
 			e->setDropAction(Qt::MoveAction);
@@ -211,7 +198,8 @@ void CardWidget::dragMoveEvent(QDragMoveEvent *e) {
 }
 
 void CardWidget::mousePressEvent(QMouseEvent *e) {
-	if(e->button() == Qt::LeftButton) m_dragStartPosition = e->pos();
+	Q_D(CardWidget);
+	if(e->button() == Qt::LeftButton) d->m_dragStartPosition = e->pos();
 	QPushButton::mousePressEvent(e);
 }
 
@@ -219,14 +207,16 @@ void CardWidget::mouseMoveEvent(QMouseEvent *e) {
 
 	if(!(e->buttons() & Qt::LeftButton)) return;
 
-	if((e->pos() - m_dragStartPosition).manhattanLength() < QApplication::startDragDistance()) {
+	Q_D(const CardWidget);
+
+	if((e->pos() - d->m_dragStartPosition).manhattanLength() < QApplication::startDragDistance()) {
 		return;
 	}
 
 	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::HEARTS;
 	NetMauMau::Common::ICard::RANK r = NetMauMau::Common::ICard::ACE;
 
-	if(m_dragable && NetMauMau::Common::parseCardDesc(description(false), &s, &r)) {
+	if(d->m_dragable && NetMauMau::Common::parseCardDesc(description(false), &s, &r)) {
 
 		CardPixmap cpm(QSize(42, 47), s, r);
 

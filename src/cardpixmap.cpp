@@ -27,7 +27,7 @@
 namespace {
 
 typedef struct _nameSize {
-	_nameSize(const QString &n, const QSize &s = QSize()) : name(n), size(s) {}
+	explicit _nameSize(const QString &n, const QSize &s = QSize()) : name(n), size(s) {}
 
 	QString name;
 	QSize size;
@@ -40,7 +40,7 @@ typedef struct _nameSize {
 
 typedef struct _cardKey {
 
-	_cardKey(NetMauMau::Common::ICard::SUIT s, NetMauMau::Common::ICard::RANK r) : suit(s),
+	explicit _cardKey(NetMauMau::Common::ICard::SUIT s, NetMauMau::Common::ICard::RANK r) : suit(s),
 		rank(r) {}
 
 	bool operator<(const _cardKey &x) const {
