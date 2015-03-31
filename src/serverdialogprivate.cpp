@@ -20,6 +20,7 @@
 #include <QMenu>
 #include <QBuffer>
 #include <QSettings>
+#include <QHeaderView>
 #include <QFileDialog>
 #include <QThreadPool>
 #include <QMessageBox>
