@@ -1226,7 +1226,7 @@ Spieldauer: %2</translation>
         <location filename="mainwindowprivate.cpp" line="1780"/>
         <location filename="mainwindowprivate.cpp" line="1783"/>
         <source>%1 of %2</source>
-        <translation></translation>
+        <translation>%1 von %2</translation>
     </message>
     <message>
         <location filename="mainwindowprivate.cpp" line="1802"/>
