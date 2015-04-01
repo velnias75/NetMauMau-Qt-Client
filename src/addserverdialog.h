@@ -22,23 +22,21 @@
 
 #include "netmaumaudialog.h"
 
-#include "ui_addserverdialog.h"
+class AddServerDialogPrivate;
 
-class AddServerDialog : public NetMauMauDialog, private Ui::AddServerDialog {
+class AddServerDialog : public NetMauMauDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(AddServerDialog)
 public:
 	explicit AddServerDialog(QWidget *parent = 0);
+	virtual ~AddServerDialog();
 
 signals:
 	void addServer(const QString &, const QString &, const QString &);
 
-private slots:
-	void enableOkButton(const QString &);
-	void addServerClicked();
-
 private:
-	QAbstractButton *m_okButton;
+	AddServerDialogPrivate *const d_ptr;
+	Q_DECLARE_PRIVATE(AddServerDialog)
 };
 
 #endif // ADDSERVERDIALOG_H

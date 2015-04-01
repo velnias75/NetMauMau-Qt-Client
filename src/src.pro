@@ -41,8 +41,8 @@ CONFIG(debug, debug|release) {
 	-Wimport -Wmissing-format-attribute -Wmissing-include-dirs -Wredundant-decls -Winline \
 	-Wuninitialized -Wvariadic-macros -Wlogical-op -Wnoexcept -Wmissing-noreturn -Wpointer-arith \
 	-Wstrict-null-sentinel -Wstrict-overflow -Wshadow -Werror=strict-aliasing
-	LIBS    += ../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
-		 ../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
+	LIBS += ../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
+			../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
 	unix:PKGCONFIG += netmaumau
 	UI_DIR = release-ui
@@ -68,11 +68,13 @@ CONFIG(debug, debug|release) {
 	-Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wdisabled-optimization -Wuninitialized
 	win32:QMAKE_CXXFLAGS += -O2 -fomit-frame-pointer -fstrict-aliasing -Wsuggest-attribute=pure \
 	-Wsuggest-attribute=const -Wall -Wextra
-	win32:LIBS    += /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
-				/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
+	win32:LIBS += /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
+				  /usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
 }
 
-SOURCES += addserverdialog.cpp \
+SOURCES += \
+	addserverdialog.cpp \
+	addserverdialogprivate.cpp \
 	addserverwidget.cpp \
 	addserverwidgetprivate.cpp \
 	base64bridge.cpp \
@@ -119,7 +121,9 @@ SOURCES += addserverdialog.cpp \
 
 espeak:SOURCES += espeak.cpp espeakvolumedialog.cpp
 
-HEADERS += addserverdialog.h \
+HEADERS += \
+	addserverdialog.h \
+	addserverdialogprivate.h \
 	addserverwidget.h \
 	addserverwidgetprivate.h \
 	base64bridge.h \

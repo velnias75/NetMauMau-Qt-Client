@@ -17,13 +17,28 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "addserverdialog.h"
+#ifndef ADDSERVERDIALOGPRIVATE_H
+#define ADDSERVERDIALOGPRIVATE_H
 
-#include "addserverdialogprivate.h"
+#include "ui_addserverdialog.h"
 
-AddServerDialog::AddServerDialog(QWidget *p) : NetMauMauDialog(p),
-	d_ptr(new AddServerDialogPrivate(this)) {}
+class AddServerDialog;
 
-AddServerDialog::~AddServerDialog() {
-	delete d_ptr;
-}
+class AddServerDialogPrivate : public QObject, public Ui::AddServerDialog {
+	Q_OBJECT
+	Q_DISABLE_COPY(AddServerDialogPrivate)
+public:
+	explicit AddServerDialogPrivate(::AddServerDialog *parent = 0);
+
+public slots:
+	void enableOkButton(const QString &);
+	void addServerClicked();
+
+public:
+	::AddServerDialog *const q_ptr;
+	Q_DECLARE_PUBLIC(::AddServerDialog)
+
+	QAbstractButton *m_okButton;
+};
+
+#endif // ADDSERVERDIALOGPRIVATE_H

@@ -56,57 +56,57 @@
 <context>
     <name>CardWidget</name>
     <message>
-        <location filename="cardwidget.cpp" line="126"/>
+        <location filename="cardwidget.cpp" line="135"/>
         <source>Hearts</source>
         <translation>Herz</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="128"/>
+        <location filename="cardwidget.cpp" line="137"/>
         <source>Diamonds</source>
         <translation>Karo</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="130"/>
+        <location filename="cardwidget.cpp" line="139"/>
         <source>Clubs</source>
         <translation>Kreuz</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="132"/>
+        <location filename="cardwidget.cpp" line="141"/>
         <source>Spades</source>
         <translation>Pik</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="171"/>
+        <location filename="cardwidget.cpp" line="180"/>
         <source>Illegal card</source>
         <translation>Ungültige Karte</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="149"/>
+        <location filename="cardwidget.cpp" line="158"/>
         <source>Jack</source>
         <translation>Bube</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="151"/>
+        <location filename="cardwidget.cpp" line="160"/>
         <source>Queen</source>
         <translation>Dame</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="153"/>
+        <location filename="cardwidget.cpp" line="162"/>
         <source>King</source>
         <translation>König</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="155"/>
+        <location filename="cardwidget.cpp" line="164"/>
         <source>Ace</source>
         <translation>Ass</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="160"/>
+        <location filename="cardwidget.cpp" line="169"/>
         <source>%1 of %2</source>
         <translation>%2 %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="cardwidget.cpp" line="163"/>
+        <location filename="cardwidget.cpp" line="172"/>
         <source>%n point(s)</source>
         <oldsource>%n points(s)</oldsource>
         <translation>
@@ -1426,82 +1426,82 @@ Spieldauer: %2</translation>
 <context>
     <name>ServerDialogPrivate</name>
     <message>
-        <location filename="serverdialogprivate.cpp" line="38"/>
+        <location filename="serverdialogprivate.cpp" line="39"/>
         <source>n/a</source>
         <translation>n.V.</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="79"/>
+        <location filename="serverdialogprivate.cpp" line="80"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="79"/>
+        <location filename="serverdialogprivate.cpp" line="80"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="79"/>
+        <location filename="serverdialogprivate.cpp" line="80"/>
         <source>AI</source>
         <translation>KI</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="79"/>
+        <location filename="serverdialogprivate.cpp" line="80"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="333"/>
+        <location filename="serverdialogprivate.cpp" line="334"/>
         <source>Choose a player image</source>
         <translation>Wähle ein Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="335"/>
+        <location filename="serverdialogprivate.cpp" line="336"/>
         <source>Images (%1)</source>
         <translation>Bilder (%1)</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="377"/>
-        <location filename="serverdialogprivate.cpp" line="394"/>
+        <location filename="serverdialogprivate.cpp" line="378"/>
+        <location filename="serverdialogprivate.cpp" line="395"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="377"/>
+        <location filename="serverdialogprivate.cpp" line="378"/>
         <source>%1 is already in use!</source>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="394"/>
+        <location filename="serverdialogprivate.cpp" line="395"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="463"/>
+        <location filename="serverdialogprivate.cpp" line="464"/>
         <source>Delete server</source>
         <translation>Server löschen</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="464"/>
+        <location filename="serverdialogprivate.cpp" line="465"/>
         <source>&lt;html&gt;&lt;body&gt;Really delete server
 &lt;b&gt;%1&lt;/b&gt;?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Server &lt;b&gt;%1&lt;/b&gt; wirklich löschen?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="553"/>
-        <location filename="serverdialogprivate.cpp" line="573"/>
+        <location filename="serverdialogprivate.cpp" line="554"/>
+        <location filename="serverdialogprivate.cpp" line="574"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="554"/>
+        <location filename="serverdialogprivate.cpp" line="555"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or of an unsupported image format.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
     </message>
     <message>
-        <location filename="serverdialogprivate.cpp" line="573"/>
+        <location filename="serverdialogprivate.cpp" line="574"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>
