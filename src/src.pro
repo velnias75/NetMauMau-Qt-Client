@@ -74,6 +74,7 @@ CONFIG(debug, debug|release) {
 
 SOURCES += addserverdialog.cpp \
 	addserverwidget.cpp \
+	addserverwidgetprivate.cpp \
 	base64bridge.cpp \
 	carddropwidget.cpp \
 	cardlabel.cpp \
@@ -120,6 +121,7 @@ espeak:SOURCES += espeak.cpp espeakvolumedialog.cpp
 
 HEADERS += addserverdialog.h \
 	addserverwidget.h \
+	addserverwidgetprivate.h \
 	base64bridge.h \
 	carddropwidget.h \
 	cardlabel.h \

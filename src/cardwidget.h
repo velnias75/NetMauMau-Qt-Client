@@ -50,7 +50,7 @@ public:
 	static QString tooltipText(NetMauMau::Common::ICard::SUIT,
 							   NetMauMau::Common::ICard::RANK, bool points = true);
 
-	bool dragable() const;
+	bool dragable() const _PURE;
 	void setDragable(bool drag);
 
 protected:

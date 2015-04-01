@@ -20,11 +20,15 @@
 #ifndef ADDSERVERWIDGET_H
 #define ADDSERVERWIDGET_H
 
+#include <QGroupBox>
+
 #include <linkercontrol.h>
 
-#include "ui_addserverwidget.h"
+class QLineEdit;
+class QAbstractButton;
+class AddServerWidgetPrivate;
 
-class AddServerWidget : public QGroupBox, private Ui::AddServerWidget {
+class AddServerWidget : public QGroupBox {
 	Q_OBJECT
 	Q_DISABLE_COPY(AddServerWidget)
 	Q_PROPERTY(bool portVisible READ portVisible WRITE setPortVisible NOTIFY portVisibleChanged)
@@ -37,9 +41,9 @@ public:
 	virtual ~AddServerWidget();
 
 public:
-	const QRegExp &getHostRex() const _CONST;
+	const QRegExp &getHostRex() const _PURE;
 
-	QPushButton *getAddButton() const _PURE;
+	QAbstractButton *getAddButton() const _PURE;
 	QLineEdit *getHostEdit() const _PURE;
 
 	QString getHost() const;
@@ -70,14 +74,9 @@ signals:
 public slots:
 	void setPort(const QString &port);
 
-private slots:
-	void enableAddButton(const QString &str);
-	void addServerClicked();
-
 private:
-	const QRegExpValidator *m_hostRexValidator;
-	bool m_portVisible;
-	bool m_readOnly;
+	AddServerWidgetPrivate *const d_ptr;
+	Q_DECLARE_PRIVATE(AddServerWidget)
 };
 
 #endif // ADDSERVERWIDGET_H

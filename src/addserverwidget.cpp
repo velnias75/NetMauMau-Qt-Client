@@ -19,49 +19,28 @@
 
 #include "addserverwidget.h"
 
-namespace {
-const QRegExp hostRex("^(?=.{1,255}$)[0-9A-Za-z]" \
-					  "(?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?" \
-					  "(?:\\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|-)" \
-					  "{0,61}[0-9A-Za-z])?)*\\.?$");
-}
+#include "addserverwidgetprivate.h"
 
 AddServerWidget::AddServerWidget(QWidget *p) : QGroupBox(p),
-	m_hostRexValidator(new QRegExpValidator(hostRex, this)), m_portVisible(true),
-	m_readOnly(false) {
-
-	setupUi(this);
-
-#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
-	if(!addButton->icon().hasThemeIcon("list-add")) {
-#endif
-		addButton->setIcon(QIcon(":/list-add.png"));
-#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
-	}
-#endif
-
-	hostEdit->setValidator(m_hostRexValidator);
-
-	QObject::connect(portSpin, SIGNAL(valueChanged(QString)), this, SLOT(setPort(QString)));
-	QObject::connect(hostEdit, SIGNAL(textChanged(QString)),
-					 this, SLOT(enableAddButton(QString)));
-	QObject::connect(addButton, SIGNAL(clicked()), this, SLOT(addServerClicked()));
-}
+	d_ptr(new AddServerWidgetPrivate(this)) {}
 
 AddServerWidget::~AddServerWidget() {
-	delete m_hostRexValidator;
+	delete d_ptr;
 }
 
 const QRegExp &AddServerWidget::getHostRex() const {
-	return hostRex;
+	Q_D(const AddServerWidget);
+	return d->getHostRex();
 }
 
-QPushButton *AddServerWidget::getAddButton() const {
-	return addButton;
+QAbstractButton *AddServerWidget::getAddButton() const {
+	Q_D(const AddServerWidget);
+	return d->addButton;
 }
 
 QLineEdit *AddServerWidget::getHostEdit() const {
-	return hostEdit;
+	Q_D(const AddServerWidget);
+	return d->hostEdit;
 }
 
 QString AddServerWidget::getHost() const {
@@ -69,28 +48,33 @@ QString AddServerWidget::getHost() const {
 }
 
 QString AddServerWidget::getPort() const {
-	return portSpin->text();
+	Q_D(const AddServerWidget);
+	return d->portSpin->text();
 }
 
 bool AddServerWidget::portVisible() const {
-	return m_portVisible;
+	Q_D(const AddServerWidget);
+	return d->m_portVisible;
 }
 
 void AddServerWidget::setPortVisible(bool b) {
-	m_portVisible = b;
-	portLabel->setVisible(b);
-	portSpin->setVisible(b);
+	Q_D(AddServerWidget);
+	d->m_portVisible = b;
+	d->portLabel->setVisible(b);
+	d->portSpin->setVisible(b);
 	emit portVisibleChanged(b);
 }
 
 bool AddServerWidget::readOnly() const {
-	return m_readOnly;
+	Q_D(const AddServerWidget);
+	return d->m_readOnly;
 }
 
 void AddServerWidget::setReadOnly(bool b) {
-	m_readOnly = b;
-	hostEdit->setReadOnly(b);
-	hostEdit->setDisabled(b);
+	Q_D(AddServerWidget);
+	d->m_readOnly = b;
+	d->hostEdit->setReadOnly(b);
+	d->hostEdit->setDisabled(b);
 	emit readOnlyChanged(b);
 }
 
@@ -100,32 +84,29 @@ void AddServerWidget::setHost(const QString host) {
 }
 
 uint AddServerWidget::port() const {
-	return static_cast<uint>(portSpin->value());
+	Q_D(const AddServerWidget);
+	return static_cast<uint>(d->portSpin->value());
 }
 
 void AddServerWidget::setPort(uint p) {
-	portSpin->setValue(static_cast<int>(p));
+	Q_D(const AddServerWidget);
+	d->portSpin->setValue(static_cast<int>(p));
 	emit portChanged(p);
 }
 
 void AddServerWidget::setPort(const QString &p) {
-	portSpin->setValue(p.toInt());
+	Q_D(const AddServerWidget);
+	d->portSpin->setValue(p.toInt());
 	emit portChanged(p.toUInt());
 }
 
 QString AddServerWidget::alias() const {
-	return aliasEdit->text();
+	Q_D(const AddServerWidget);
+	return d->aliasEdit->text();
 }
 
 void AddServerWidget::setAlias(const QString &a) {
-	aliasEdit->setText(a);
+	Q_D(const AddServerWidget);
+	d->aliasEdit->setText(a);
 	emit aliasChanged(a);
-}
-
-void AddServerWidget::enableAddButton(const QString &str) {
-	addButton->setDisabled(str.isEmpty());
-}
-
-void AddServerWidget::addServerClicked() {
-	emit addServer();
 }

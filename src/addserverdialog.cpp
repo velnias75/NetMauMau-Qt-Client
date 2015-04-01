@@ -17,6 +17,9 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QLineEdit>
+#include <QAbstractButton>
+
 #include "addserverdialog.h"
 
 AddServerDialog::AddServerDialog(QWidget *p) : NetMauMauDialog(p), m_okButton(0L) {

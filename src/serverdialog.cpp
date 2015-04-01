@@ -223,7 +223,7 @@ void ServerDialog::addServer(const QString &shost, const QString &sport, const Q
 
 	d->m_serverInfoThreads.push_back(new ServerInfo(&d->m_model, d->m_model.rowCount() - 1));
 	QObject::connect(d->m_serverInfoThreads.back(), SIGNAL(online(bool,int)),
-					 this, SLOT(updateOnline(bool,int)));
+					 d, SLOT(updateOnline(bool,int)));
 	d->saveServers();
 	d->checkOnline();
 }
