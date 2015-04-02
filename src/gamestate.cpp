@@ -17,6 +17,8 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QStringList>
+
 #include "gamestate.h"
 
 GameState::GameState() : m_inGame(false), m_cards(), m_lastPlayedCard(0L), m_lastPlayedCardIdx(-1),

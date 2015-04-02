@@ -20,13 +20,12 @@
 #ifndef FILEDOWNLOADER_H
 #define FILEDOWNLOADER_H
 
-#include <QObject>
-#include <QByteArray>
 #include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
 
 #include <linkercontrol.h>
+
+class QUrl;
+class QNetworkReply;
 
 class FileDownloader : public QObject {
 	Q_OBJECT

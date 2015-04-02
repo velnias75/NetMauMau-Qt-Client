@@ -17,6 +17,9 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QNetworkReply>
+#include <QNetworkRequest>
+
 #include "filedownloader.h"
 
 FileDownloader::FileDownloader(const QUrl &url, QObject *p) : QObject(p) {

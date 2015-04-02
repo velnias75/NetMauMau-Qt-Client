@@ -25,7 +25,6 @@
 #include <QMap>
 #include <QPair>
 #include <QTime>
-#include <QStringList>
 
 #include "client.h"
 
