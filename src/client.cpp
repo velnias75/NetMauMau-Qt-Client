@@ -28,7 +28,7 @@
 #include <connectionrejectedexception.h>
 
 #include "client.h"
-#include "clientprivate.h"
+#include "client_p.h"
 
 #include "mainwindow.h"
 #include "base64bridge.h"

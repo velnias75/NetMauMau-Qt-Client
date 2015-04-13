@@ -19,7 +19,7 @@
 
 #include "addserverdialog.h"
 
-#include "addserverdialogprivate.h"
+#include "addserverdialog_p.h"
 
 AddServerDialog::AddServerDialog(QWidget *p) : NetMauMauDialog(p),
 	d_ptr(new AddServerDialogPrivate(this)) {}

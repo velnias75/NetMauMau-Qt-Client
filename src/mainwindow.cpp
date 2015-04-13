@@ -21,7 +21,7 @@
 #include <QCloseEvent>
 
 #include "mainwindow.h"
-#include "mainwindowprivate.h"
+#include "mainwindow_p.h"
 
 #ifdef USE_ESPEAK
 #include "espeak.h"

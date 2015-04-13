@@ -17,7 +17,7 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "clientprivate.h"
+#include "client_p.h"
 
 #include "client.h"
 #include "mainwindow.h"

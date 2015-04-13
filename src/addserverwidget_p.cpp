@@ -17,7 +17,7 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "addserverwidgetprivate.h"
+#include "addserverwidget_p.h"
 
 #include "addserverwidget.h"
 

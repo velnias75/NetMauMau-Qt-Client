@@ -26,6 +26,17 @@ CONFIG(espeak) {
 	win32:LIBS += /usr/i686-pc-mingw32/usr/bin/libespeak.dll
 }
 
+unix:CONFIG(devrelease) {
+	QMAKE_CXXFLAGS += -floop-interchange -ftree-loop-distribution -floop-strip-mine \
+					  -floop-block -ftree-vectorize -flto=2 -fuse-linker-plugin
+	QMAKE_LFLAGS += -flto=2 -fuse-linker-plugin $$[QMAKE_CXXFLAGS]
+}
+
+CONFIG(lto) {
+	QMAKE_CXXFLAGS += -flto -fuse-linker-plugin
+	QMAKE_LFLAGS += -flto -fuse-linker-plugin $$(QMAKE_CXXFLAGS)
+}
+
 CONFIG(debug, debug|release) {
 	UI_DIR = debug-ui
 	RCC_DIR = debug-rcc
@@ -74,18 +85,18 @@ CONFIG(debug, debug|release) {
 
 SOURCES += \
 	addserverdialog.cpp \
-	addserverdialogprivate.cpp \
+	addserverdialog_p.cpp \
 	addserverwidget.cpp \
-	addserverwidgetprivate.cpp \
+	addserverwidget_p.cpp \
 	base64bridge.cpp \
 	carddropwidget.cpp \
 	cardlabel.cpp \
 	cardpixmap.cpp \
 	cardwidget.cpp \
-	cardwidgetprivate.cpp \
+	cardwidget_p.cpp \
 	centeredimageheaderview.cpp \
 	client.cpp \
-	clientprivate.cpp \
+	client_p.cpp \
 	colorpickbutton.cpp \
 	connectionlogdialog.cpp \
 	countmessageitemdelegate.cpp \
@@ -101,7 +112,7 @@ SOURCES += \
 	localserveroutputview.cpp \
 	main.cpp \
 	mainwindow.cpp \
-	mainwindowprivate.cpp \
+	mainwindow_p.cpp \
 	messageitemdelegate.cpp \
 	netmaumauapplication.cpp \
 	netmaumaudialog.cpp \
@@ -112,7 +123,7 @@ SOURCES += \
 	portspin.cpp \
 	scoresdialog.cpp \
 	serverdialog.cpp \
-	serverdialogprivate.cpp \
+	serverdialog_p.cpp \
 	serverinfo.cpp \
 	suitfontchecker.cpp \
 	suitlabel.cpp \
@@ -123,18 +134,18 @@ espeak:SOURCES += espeak.cpp espeakvolumedialog.cpp
 
 HEADERS += \
 	addserverdialog.h \
-	addserverdialogprivate.h \
+	addserverdialog_p.h \
 	addserverwidget.h \
-	addserverwidgetprivate.h \
+	addserverwidget_p.h \
 	base64bridge.h \
 	carddropwidget.h \
 	cardlabel.h \
 	cardpixmap.h \
 	cardwidget.h \
-	cardwidgetprivate.h \
+	cardwidget_p.h \
 	centeredimageheaderview.h \
 	client.h \
-	clientprivate.h \
+	client_p.h \
 	colorpickbutton.h \
 	connectionlogdialog.h \
 	countmessageitemdelegate.h \
@@ -149,7 +160,7 @@ HEADERS += \
 	localserveroutputsettingsdialog.h \
 	localserveroutputview.h \
 	mainwindow.h \
-	mainwindowprivate.h \
+	mainwindow_p.h \
 	messageitemdelegate.h \
 	netmaumauapplication.h \
 	netmaumaudialog.h \
@@ -160,7 +171,7 @@ HEADERS += \
 	portspin.h \
 	scoresdialog.h \
 	serverdialog.h \
-	serverdialogprivate.h \
+	serverdialog_p.h \
 	serverinfo.h \
 	suitfontchecker.h \
 	suitlabel.h \

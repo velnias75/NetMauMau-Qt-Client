@@ -23,7 +23,7 @@
 
 #include "cardwidget.h"
 
-#include "cardwidgetprivate.h"
+#include "cardwidget_p.h"
 #include "cardpixmap.h"
 
 CardWidget::CardWidget(QWidget *p, const QByteArray &cardDesc, bool drag) : QPushButton(p),

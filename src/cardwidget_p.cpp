@@ -19,7 +19,7 @@
 
 #include <cardtools.h>
 
-#include "cardwidgetprivate.h"
+#include "cardwidget_p.h"
 
 #include "cardwidget.h"
 #include "cardpixmap.h"

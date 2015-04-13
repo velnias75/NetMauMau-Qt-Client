@@ -28,7 +28,7 @@
 #include <defaultplayerimage.h>
 #include <playerlistexception.h>
 
-#include "mainwindowprivate.h"
+#include "mainwindow_p.h"
 #include "mainwindow.h"
 
 #ifdef USE_ESPEAK

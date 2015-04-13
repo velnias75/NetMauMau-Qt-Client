@@ -19,7 +19,7 @@
 
 #include "addserverwidget.h"
 
-#include "addserverwidgetprivate.h"
+#include "addserverwidget_p.h"
 
 AddServerWidget::AddServerWidget(QWidget *p) : QGroupBox(p),
 	d_ptr(new AddServerWidgetPrivate(this)) {}

@@ -20,7 +20,7 @@
 #include <QLineEdit>
 #include <QAbstractButton>
 
-#include "addserverdialogprivate.h"
+#include "addserverdialog_p.h"
 
 #include "addserverdialog.h"
 

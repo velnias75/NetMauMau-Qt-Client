@@ -18,7 +18,7 @@
  */
 
 #include "serverdialog.h"
-#include "serverdialogprivate.h"
+#include "serverdialog_p.h"
 
 #include "serverinfo.h"
 

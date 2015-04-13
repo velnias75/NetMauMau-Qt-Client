@@ -27,7 +27,7 @@
 #include <QImageReader>
 #include <QSplashScreen>
 
-#include "serverdialogprivate.h"
+#include "serverdialog_p.h"
 
 #include "serverinfo.h"
 #include "base64bridge.h"
