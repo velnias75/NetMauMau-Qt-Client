@@ -27,7 +27,7 @@
 #include "cardpixmap.h"
 
 CardWidget::CardWidget(QWidget *p, const QByteArray &cardDesc, bool drag) : QPushButton(p),
-	NetMauMau::Common::ICard(), d_ptr(new CardWidgetPrivate(this, drag)) {
+	NetMauMau::Common::ICard(), d_ptr(new CardWidgetPrivate(this, cardDesc.constData(), drag)) {
 
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 
@@ -101,8 +101,9 @@ std::size_t CardWidget::getPoints() const {
 	return NetMauMau::Common::getCardPoints(getRank());
 }
 
-std::string CardWidget::description(bool) const {
-	return property("cardDescription").toByteArray().constData();
+const std::string &CardWidget::description(bool) const {
+	Q_D(const CardWidget);
+	return d->description();
 }
 
 bool CardWidget::operator==(const QByteArray &cd) const {

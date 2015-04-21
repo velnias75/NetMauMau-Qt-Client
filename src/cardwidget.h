@@ -43,7 +43,7 @@ public:
 	virtual NetMauMau::Common::ICard::RANK getRank() const;
 
 	virtual std::size_t getPoints() const;
-	virtual std::string description(bool = false) const;
+	virtual const std::string &description(bool = false) const _PURE;
 
 	bool operator==(const QByteArray &) const;
 

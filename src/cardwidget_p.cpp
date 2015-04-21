@@ -24,8 +24,14 @@
 #include "cardwidget.h"
 #include "cardpixmap.h"
 
-CardWidgetPrivate::CardWidgetPrivate(CardWidget *p, bool d) : QObject(p), q_ptr(p),
-	m_defaultStyleSheet(), m_dragable(d), m_dragStartPosition() {}
+CardWidgetPrivate::CardWidgetPrivate(CardWidget *p, const char *cardDesc, bool d) : QObject(p),
+	q_ptr(p), m_defaultStyleSheet(), m_dragable(d), m_dragStartPosition(), m_cardDesc(cardDesc) {}
+
+CardWidgetPrivate::~CardWidgetPrivate() {}
+
+const std::string &CardWidgetPrivate::description() const {
+	return m_cardDesc;
+}
 
 void CardWidgetPrivate::clickedCard() {
 	Q_Q(CardWidget);

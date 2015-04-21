@@ -24,16 +24,21 @@
 #include <QPoint>
 #include <QSize>
 
+#include "linkercontrol.h"
+
 class CardWidget;
 
 class CardWidgetPrivate : public QObject {
 	Q_OBJECT
 	Q_DISABLE_COPY(CardWidgetPrivate)
 public:
-	explicit CardWidgetPrivate(CardWidget *parent, bool d);
+	explicit CardWidgetPrivate(CardWidget *parent, const char *cardDesc, bool d);
+	virtual ~CardWidgetPrivate();
 
 	void styleCard();
 	QString tooltipText() const;
+
+	const std::string &description() const _CONST;
 
 public slots:
 	void clickedCard();
@@ -46,6 +51,7 @@ public:
 	bool m_dragable;
 	QPoint m_dragStartPosition;
 	QSize m_curSize;
+	std::string m_cardDesc;
 };
 
 #endif // CARDWIDGETPRIVATE_H
