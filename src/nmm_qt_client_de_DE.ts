@@ -56,57 +56,57 @@
 <context>
     <name>CardWidget</name>
     <message>
-        <location filename="cardwidget.cpp" line="135"/>
+        <location filename="cardwidget.cpp" line="136"/>
         <source>Hearts</source>
         <translation>Herz</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="137"/>
+        <location filename="cardwidget.cpp" line="138"/>
         <source>Diamonds</source>
         <translation>Karo</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="139"/>
+        <location filename="cardwidget.cpp" line="140"/>
         <source>Clubs</source>
         <translation>Kreuz</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="141"/>
+        <location filename="cardwidget.cpp" line="142"/>
         <source>Spades</source>
         <translation>Pik</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="180"/>
+        <location filename="cardwidget.cpp" line="181"/>
         <source>Illegal card</source>
         <translation>Ungültige Karte</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="158"/>
+        <location filename="cardwidget.cpp" line="159"/>
         <source>Jack</source>
         <translation>Bube</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="160"/>
+        <location filename="cardwidget.cpp" line="161"/>
         <source>Queen</source>
         <translation>Dame</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="162"/>
+        <location filename="cardwidget.cpp" line="163"/>
         <source>King</source>
         <translation>König</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="164"/>
+        <location filename="cardwidget.cpp" line="165"/>
         <source>Ace</source>
         <translation>Ass</translation>
     </message>
     <message>
-        <location filename="cardwidget.cpp" line="169"/>
+        <location filename="cardwidget.cpp" line="170"/>
         <source>%1 of %2</source>
         <translation>%2 %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="cardwidget.cpp" line="172"/>
+        <location filename="cardwidget.cpp" line="173"/>
         <source>%n point(s)</source>
         <oldsource>%n points(s)</oldsource>
         <translation>
