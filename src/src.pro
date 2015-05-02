@@ -114,6 +114,7 @@ SOURCES += \
 	mainwindow.cpp \
 	mainwindow_p.cpp \
 	messageitemdelegate.cpp \
+	namevalidator.cpp \
 	netmaumauapplication.cpp \
 	netmaumaudialog.cpp \
 	netmaumaumessagebox.cpp \
@@ -162,6 +163,7 @@ HEADERS += \
 	mainwindow.h \
 	mainwindow_p.h \
 	messageitemdelegate.h \
+	namevalidator.h \
 	netmaumauapplication.h \
 	netmaumaudialog.h \
 	netmaumaumessagebox.h \

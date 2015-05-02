@@ -161,6 +161,10 @@ const QTime &GameState::playTime() const {
 	return m_playTime;
 }
 
+void GameState::setPlayTime(int h, int m, int s) {
+	m_playTime.setHMS(h, m, s);
+}
+
 void GameState::addMSecs(int ms) {
 	m_playTime = m_playTime.addMSecs(ms);
 }

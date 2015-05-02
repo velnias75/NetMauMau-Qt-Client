@@ -61,6 +61,7 @@ private:
 	LocalServerOutputView *m_lsov;
 	QString m_hostLabel;
 	ServerDialog *m_serverDlg;
+	QValidator *m_nameValidator;
 };
 
 #endif // LAUNCHSERVERDIALOG_H

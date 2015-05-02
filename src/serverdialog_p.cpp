@@ -32,18 +32,18 @@
 #include "serverinfo.h"
 #include "base64bridge.h"
 #include "serverdialog.h"
+#include "namevalidator.h"
 #include "addserverdialog.h"
 #include "deleteserversdialog.h"
 
 namespace {
 const char *NA = QT_TRANSLATE_NOOP("ServerDialogPrivate", "n/a");
-const QRegExp nameRex("[^\\+]+.*");
 }
 
 ServerDialogPrivate::ServerDialogPrivate(QSplashScreen *splash, ServerDialog *p) : QObject(p),
 	q_ptr(p), m_model(0, 4, this), m_playerNameModel(), m_forceRefresh(false),
 	m_lastServer(QString::null), m_deleteServersDlg(new DeleteServersDialog(&m_model, p)),
-	m_nameRexValidator(new QRegExpValidator(nameRex, this)), m_playerImage(), m_autoRefresh(this),
+	m_nameRexValidator(new NameValidator(this)), m_playerImage(), m_autoRefresh(this),
 	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null),
 	m_imageFormats(), m_addServerDialog(new AddServerDialog(p)), m_ctxPopup(new QMenu(p)),
 	m_ctxIndex(), m_direction(GameState::NONE) {

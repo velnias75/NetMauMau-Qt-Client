@@ -26,12 +26,13 @@
 #include "launchserverdialog.h"
 
 #include "localserveroutputview.h"
+#include "namevalidator.h"
 #include "serverdialog.h"
 #include "client.h"
 
 LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, ServerDialog *sd, QWidget *p) :
 	NetMauMauDialog(p), m_process(), m_errFail(false), m_lsov(lsov), m_hostLabel(),
-	m_serverDlg(sd) {
+	m_serverDlg(sd), m_nameValidator(new NameValidator(this)) {
 
 	setupUi(this);
 
@@ -75,13 +76,17 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, ServerDialog
 	dirChangecheck->setChecked(settings.value("dirChange", false).toBool());
 	aceRound->setChecked(settings.value("ace-round", false).toBool());
 	rankCombo->setCurrentIndex(settings.value("ace-round-rank", 0).toInt());
+	aiNameEdit->setValidator(m_nameValidator);
 	aiNameEdit->setText(settings.value("aiName",
 									   QString::fromUtf8(Client::getDefaultAIName())).toString());
 	aiEnabled2->setChecked(settings.value("aiEnabled2", false).toBool());
+	aiNameEdit2->setValidator(m_nameValidator);
 	aiNameEdit2->setText(settings.value("aiName2", "").toString());
 	aiEnabled3->setChecked(settings.value("aiEnabled3", false).toBool());
+	aiNameEdit3->setValidator(m_nameValidator);
 	aiNameEdit3->setText(settings.value("aiName3", "").toString());
 	aiEnabled4->setChecked(settings.value("aiEnabled4", false).toBool());
+	aiNameEdit4->setValidator(m_nameValidator);
 	aiNameEdit4->setText(settings.value("aiName4", "").toString());
 	delaySpin->setValue(settings.value("aiDelay", 1.0).toDouble());
 	addServerWidget->setPort(settings.value("port", Client::getDefaultPort()).toUInt());

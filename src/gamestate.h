@@ -88,6 +88,7 @@ class GameState {
 	void setAceRoundActive(const QString& s);
 
 	const QTime &playTime() const _CONST;
+	void setPlayTime(int h, int m, int s);
 	void addMSecs(int ms);
 
 	bool lostDisplaying() const _PURE;

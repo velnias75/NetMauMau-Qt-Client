@@ -1058,6 +1058,7 @@ void MainWindowPrivate::serverAccept() {
 		m_ui->remoteGroup->setTitle(tr("%1 on %2").arg(m_ui->remoteGroup->title()).
 									arg(alias));
 
+		gs->setPlayTime(0, 0, 0);
 		m_timeLabel.setText(gs->playTime().toString("HH:mm:ss"));
 		m_timeLabel.show();
 
@@ -1720,6 +1721,7 @@ void MainWindowPrivate::clientDestroyed() {
 	m_ui->suspendButton->setEnabled(false);
 
 	m_timeLabel.hide();
+	m_timeLabel.setText("00:00:00");
 
 	clientAceRoundEnded(QString::null);
 

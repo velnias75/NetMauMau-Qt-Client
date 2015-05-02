@@ -62,6 +62,8 @@ public:
 
 	static QImage scalePlayerPic(const QImage &img);
 
+	const QRegExp &getNameRex();
+
 public slots:
 	void setPlayerImagePath(const QString &path, bool warn = false);
 	void addServer(const QString &, const QString &, const QString & = QString::null);
