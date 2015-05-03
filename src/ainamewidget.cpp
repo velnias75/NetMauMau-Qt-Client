@@ -39,13 +39,13 @@ AINameWidget::AINameWidget(QWidget *p) : QWidget(p), m_nameValidator(new NameVal
 
 QString AINameWidget::text() const {
 	return nameEdit->text().isEmpty() ? nameEdit->text() :
-										nameEdit->text().append('=').
+										nameEdit->text().append(':').
 										append(typeCombo->currentIndex() == 0 ? 'E' : 'H');
 }
 
 void AINameWidget::setText(const QString &txt) {
 
-	const int typeIdx = txt.lastIndexOf('=');
+	const int typeIdx = txt.lastIndexOf(':');
 
 	nameEdit->setText(txt.left(typeIdx));
 

@@ -20,7 +20,7 @@
 #include "namevalidator.h"
 
 namespace {
-const QRegExp nameRex("[^\\+]+.*");
+const QRegExp nameRex("[^\\+]+.+");
 }
 
 NameValidator::NameValidator(QObject *p) : QRegExpValidator(nameRex, p) {}
@@ -31,7 +31,6 @@ NameValidator::State NameValidator::validate(QString &input, int &pos) const {
 }
 
 void NameValidator::fixup(QString &input) const {
-	if(input.endsWith('=')) {
-		input = input.left(input.lastIndexOf('='));
-	}
+	if(input.contains('=')) input.replace('=', "");
+	if(input.endsWith(':')) input.replace(':', "");
 }
