@@ -4,7 +4,7 @@ CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
 
-VERSION = 0.17
+VERSION = 0.18
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
 DEFINES += _GLIBCXX_VISIBILITY=0 QT_NO_CAST_FROM_BYTEARRAY QT_NO_CAST_TO_ASCII \
@@ -88,6 +88,7 @@ SOURCES += \
 	addserverdialog_p.cpp \
 	addserverwidget.cpp \
 	addserverwidget_p.cpp \
+	ainamewidget.cpp \
 	base64bridge.cpp \
 	carddropwidget.cpp \
 	cardlabel.cpp \
@@ -138,6 +139,7 @@ HEADERS += \
 	addserverdialog_p.h \
 	addserverwidget.h \
 	addserverwidget_p.h \
+	ainamewidget.h \
 	base64bridge.h \
 	carddropwidget.h \
 	cardlabel.h \
@@ -197,7 +199,8 @@ FORMS += addserverdialog.ui \
 	serverdialog.ui \
 	suitlabel.ui \
 	suitradiobutton.ui \
-	espeakvolumedialog.ui
+	espeakvolumedialog.ui \
+	ainamewidget.ui
 
 RESOURCES += cards.qrc \
 	icons.qrc \

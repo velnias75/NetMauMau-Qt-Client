@@ -328,7 +328,7 @@ Don't close the client while a game is running, because it will disconnect the r
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="aiNameEdit">
+        <widget class="AINameWidget" name="aiNameEdit" native="true">
          <property name="minimumSize">
           <size>
            <width>180</width>
@@ -338,7 +338,7 @@ Don't close the client while a game is running, because it will disconnect the r
          <property name="toolTip">
           <string>The name of the first AI player</string>
          </property>
-         <property name="maxLength">
+         <property name="maxLength" stdset="0">
           <number>255</number>
          </property>
         </widget>
@@ -356,7 +356,7 @@ Don't close the client while a game is running, because it will disconnect the r
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="aiNameEdit3">
+          <widget class="AINameWidget" name="aiNameEdit3" native="true">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -386,7 +386,7 @@ Don't close the client while a game is running, because it will disconnect the r
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="aiNameEdit4">
+          <widget class="AINameWidget" name="aiNameEdit4" native="true">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -426,7 +426,7 @@ Don't close the client while a game is running, because it will disconnect the r
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="aiNameEdit2">
+          <widget class="AINameWidget" name="aiNameEdit2" native="true">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -509,7 +509,7 @@ Don't close the client while a game is running, because it will disconnect the r
         <enum>QFormLayout::ExpandingFieldsGrow</enum>
        </property>
        <property name="horizontalSpacing">
-	 <number>0</number> 
+        <number>0</number>
        </property>
        <item row="0" column="1">
         <widget class="AddServerWidget" name="addServerWidget" native="true">
@@ -661,6 +661,12 @@ Don't close the client while a game is running, because it will disconnect the r
    <header>addserverwidget.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>AINameWidget</class>
+   <extends>QWidget</extends>
+   <header>ainamewidget.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>optionsGroup</tabstop>
@@ -671,13 +677,9 @@ Don't close the client while a game is running, because it will disconnect the r
   <tabstop>dirChangecheck</tabstop>
   <tabstop>aceRound</tabstop>
   <tabstop>rankCombo</tabstop>
-  <tabstop>aiNameEdit</tabstop>
   <tabstop>aiEnabled2</tabstop>
-  <tabstop>aiNameEdit2</tabstop>
   <tabstop>aiEnabled3</tabstop>
-  <tabstop>aiNameEdit3</tabstop>
   <tabstop>aiEnabled4</tabstop>
-  <tabstop>aiNameEdit4</tabstop>
   <tabstop>delaySpin</tabstop>
   <tabstop>pathEdit</tabstop>
   <tabstop>execChooseButton</tabstop>

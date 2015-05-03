@@ -3,6 +3,24 @@
 <TS version="2.0" language="de_DE">
 <defaultcodec>UTF-8</defaultcodec>
 <context>
+    <name>AINameWidget</name>
+    <message>
+        <location filename="ainamewidget.ui" line="33"/>
+        <source>Strength of the AI Player</source>
+        <translation>Stärke des KI-Spielers</translation>
+    </message>
+    <message>
+        <location filename="ainamewidget.ui" line="37"/>
+        <source>Easy</source>
+        <translation>Leicht</translation>
+    </message>
+    <message>
+        <location filename="ainamewidget.ui" line="42"/>
+        <source>Hard</source>
+        <translation>Schwer</translation>
+    </message>
+</context>
+<context>
     <name>AddServerDialog</name>
     <message>
         <location filename="addserverdialog.ui" line="14"/>
@@ -473,23 +491,23 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>&amp;Starten</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="250"/>
+        <location filename="launchserverdialog.cpp" line="246"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="250"/>
-        <location filename="launchserverdialog.cpp" line="352"/>
+        <location filename="launchserverdialog.cpp" line="246"/>
+        <location filename="launchserverdialog.cpp" line="348"/>
         <source>Failed to start %1</source>
         <translation>Starten von %1 gescheitert</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="367"/>
+        <location filename="launchserverdialog.cpp" line="363"/>
         <source>Find NetMauMau server executable</source>
         <translation>Finde die ausführbare Datei von NetMauMau</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="392"/>
+        <location filename="launchserverdialog.cpp" line="388"/>
         <source>Server terminated</source>
         <translation>Server beendet</translation>
     </message>
