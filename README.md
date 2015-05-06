@@ -68,6 +68,12 @@ Debian 7/8
 
 * run `apt-get update` 
 
+Arch Linux
+--------
+The package is available in the AUR at [https://aur.archlinux.org/packages/nmm-qt-client/](https://aur.archlinux.org/packages/nmm-qt-client/)
+
+* run `yaourt -S nmm-qt-client` 
+
 Windows
 -------
 [![Download NetMauMau](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/netmaumau/files/latest/download)
