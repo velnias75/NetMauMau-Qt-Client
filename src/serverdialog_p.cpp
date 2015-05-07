@@ -27,6 +27,12 @@
 #include <QImageReader>
 #include <QSplashScreen>
 
+#if !defined(_WIN32) && _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _BSD_SOURCE || _SVID_SOURCE \
+	|| _POSIX_SOURCE
+#include <sys/types.h>
+#include <pwd.h>
+#endif
+
 #include "serverdialog_p.h"
 
 #include "serverinfo.h"
@@ -101,7 +107,7 @@ ServerDialogPrivate::ServerDialogPrivate(QSplashScreen *splash, ServerDialog *p)
 	settings.endGroup();
 
 	settings.beginGroup("Player");
-	m_lastPlayerName = settings.value("name", "Phoenix").toString();
+	m_lastPlayerName = settings.value("name", getPlayerDefaultName()).toString();
 
 	if(!m_lastPlayerName.isEmpty()) {
 		m_playerNameModel.appendRow(new QStandardItem(m_lastPlayerName));
@@ -574,4 +580,32 @@ void ServerDialogPrivate::setPlayerImagePath(const QString &f, bool warn) {
 			QMessageBox::critical(q, tr("Player image"), tr("Cannot open %1").arg(f));
 		}
 	}
+}
+
+QString ServerDialogPrivate::getPlayerDefaultName() const {
+
+#if !defined(_WIN32) && _POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _BSD_SOURCE || _SVID_SOURCE \
+	|| _POSIX_SOURCE
+
+	const QByteArray username(qgetenv("USER"));
+
+	if(!username.isEmpty()) {
+
+		struct passwd *pwd = getpwnam(username.constData());
+
+		if(pwd) {
+
+			const QList<QByteArray> gecos(QByteArray(pwd->pw_gecos).split(','));
+
+			if(!gecos.isEmpty() && !gecos.at(0).isEmpty()) {
+				return QString::fromLocal8Bit(gecos.at(0).constData());
+			}
+		}
+	}
+
+	return "Phoenix";
+
+#else
+	return "Phoenix";
+#endif
 }

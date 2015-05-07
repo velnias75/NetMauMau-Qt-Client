@@ -66,6 +66,9 @@ public slots:
 	void itemChanged(QStandardItem *);
 	void serverViewContext(const QPoint &);
 
+private:
+	QString getPlayerDefaultName() const;
+
 public:
 	ServerDialog *const q_ptr;
 	Q_DECLARE_PUBLIC(ServerDialog)
