@@ -31,7 +31,11 @@
 #include "espeak.h"
 
 ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt(), m_lang("de"),
+	#if QT_VERSION >= QT_VERSION_CHECK(4, 8, 0)
 	m_systemLang(QLocale::system().name().leftRef(QLocale::system().name().indexOf('_')).
+				 #else
+	m_systemLang(QLocale::system().name().left(QLocale::system().name().indexOf('_')).
+				 #endif
 				 toLatin1().constData()),
 	#ifdef _WIN32
 	m_path(strdup(QCoreApplication::applicationDirPath().toLocal8Bit().constData()))
@@ -41,8 +45,13 @@ ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt(), m_lang("de"),
   , m_enabled(false)
 {
 
-	m_enabled = espeak_Initialize(AUDIO_OUTPUT_PLAYBACK, 0, m_path, espeakINITIALIZE_DONT_EXIT) !=
-			EE_INTERNAL_ERROR;
+	m_enabled = espeak_Initialize(AUDIO_OUTPUT_PLAYBACK, 0, m_path,
+							  #if ESPEAK_API_REVISION >= 6
+								  espeakINITIALIZE_DONT_EXIT)
+			#else
+								  0)
+			#endif
+				!= EE_INTERNAL_ERROR;
 
 	if(m_enabled) {
 		espeak_SetParameter(espeakRATE, 175, 0);
