@@ -933,6 +933,7 @@ void MainWindowPrivate::serverAccept() {
 
 	const QString &as(m_serverDlg->getAcceptedServer());
 	const QString &alias(m_serverDlg->getAcceptedServerAlias());
+	const QString &version(m_serverDlg->getAcceptedServerVersion());
 	const int p = as.indexOf(':');
 
 	if(as.isEmpty()) {
@@ -1056,8 +1057,8 @@ void MainWindowPrivate::serverAccept() {
 		m_ui->actionServer->setEnabled(false);
 		m_ui->suspendButton->setEnabled(true);
 		m_ui->actionReconnect->setToolTip(reconnectToolTip());
-		m_ui->remoteGroup->setTitle(tr("%1 on %2").arg(m_ui->remoteGroup->title()).
-									arg(alias));
+		m_ui->remoteGroup->setTitle(tr("%1 on %2 (%3)").arg(m_ui->remoteGroup->title()).
+									arg(alias).arg(version));
 
 		gs->setPlayTime(0, 0, 0);
 		m_timeLabel.setText(gs->playTime().toString("HH:mm:ss"));

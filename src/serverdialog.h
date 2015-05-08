@@ -41,6 +41,7 @@ public:
 
 	QString getAcceptedServer() const;
 	QString getAcceptedServerAlias() const;
+	QString getAcceptedServerVersion() const;
 	QString getPlayerName() const;
 	void setPlayerName(const QString &name);
 	QStringList getPlayerAltNames() const;

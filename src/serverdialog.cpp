@@ -67,6 +67,19 @@ QString ServerDialog::getAcceptedServerAlias() const {
 	}
 }
 
+QString ServerDialog::getAcceptedServerVersion() const {
+
+	Q_D(const ServerDialog);
+
+	const QModelIndexList &l(availServerView->selectionModel()->selection().indexes());
+
+	if(!l.isEmpty()) {
+		return d->m_model.itemFromIndex(l.first())->data(ServerInfo::VERREL).toString();
+	} else {
+		return QString::null;
+	}
+}
+
 NetMauMau::Common::ICard::RANK ServerDialog::getAceRoundRank() const {
 
 	Q_D(const ServerDialog);

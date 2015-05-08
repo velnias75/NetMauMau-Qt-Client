@@ -30,9 +30,9 @@ class ServerInfo : public QObject, public QRunnable {
 	Q_OBJECT
 	Q_DISABLE_COPY(ServerInfo)
 public:
-	typedef enum { SERVER = 0, VERSION, AI, PLAYERS } COLS;
+	typedef enum { SERVER = 0, VERSION, AI, PLAYERS, VERREL } COLS;
 	typedef enum { ACEROUNDRANK = Qt::UserRole + 1, HAVESCORES, HOST, DIRCHANGE, INIT,
-				 ATTEMPTS} DATAROLES;
+				   ATTEMPTS} DATAROLES;
 
 	explicit ServerInfo(const QStandardItemModel *model, int row, QObject *parent = 0);
 	virtual ~ServerInfo();

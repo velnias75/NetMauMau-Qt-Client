@@ -89,6 +89,10 @@ void ServerInfo::run() {
 				const std::string &sVer(caps.find("SERVER_VERSION")->second);
 				version->setText(QString::fromStdString(sVer));
 
+				const Client::CAPABILITIES::const_iterator &fvr(caps.find("SERVER_VERSION_REL"));
+				server->setData(fvr != caps.end() ? QString::fromStdString(fvr->second) :
+													QString::fromStdString(sVer), VERREL);
+
 				const std::string &sMinClientVer(caps.find("MIN_VERSION")->second);
 				version->setToolTip(tr("Server accepts clients of at least version %1").
 									arg(QString::fromStdString(sMinClientVer)));
