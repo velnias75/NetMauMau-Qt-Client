@@ -244,4 +244,9 @@ bool ServerDialog::isForceRefresh() const {
 	return d->m_forceRefresh;
 }
 
+QString ServerDialog::getPlayerDefaultName() const {
+	Q_D(const ServerDialog);
+	return d->getPlayerDefaultName();
+}
+
 // kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;

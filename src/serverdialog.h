@@ -34,6 +34,7 @@ class ServerDialog : public NetMauMauDialog, public Ui::ServerDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(ServerDialog)
 	Q_PROPERTY(bool forceRefresh READ isForceRefresh WRITE forceRefresh NOTIFY refresh)
+
 public:
 	explicit ServerDialog(QSplashScreen *splash, QWidget *parent = 0);
 	virtual ~ServerDialog();
@@ -62,7 +63,7 @@ public:
 
 	static QImage scalePlayerPic(const QImage &img);
 
-	const QRegExp &getNameRex();
+	QString getPlayerDefaultName() const;
 
 public slots:
 	void setPlayerImagePath(const QString &path, bool warn = false);

@@ -803,7 +803,8 @@ void MainWindowPrivate::readSettings() {
 	settings.endGroup();
 
 	settings.beginGroup("Player");
-	m_ui->localPlayerDock->setWindowTitle(settings.value("name", tr("Local player")).toString());
+	m_ui->localPlayerDock->
+			setWindowTitle(settings.value("name", m_serverDlg->getPlayerDefaultName()).toString());
 	settings.endGroup();
 
 	settings.beginGroup("ConnectionLog");

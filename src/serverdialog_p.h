@@ -49,6 +49,7 @@ public:
 
 	void setLastServer(const QString &ls);
 	void setPlayerImagePath(const QString &f, bool warn = false);
+	QString getPlayerDefaultName() const;
 
 public slots:
 	void checkOnline();
@@ -65,9 +66,6 @@ public slots:
 	void enableClearButton(const QString &);
 	void itemChanged(QStandardItem *);
 	void serverViewContext(const QPoint &);
-
-private:
-	QString getPlayerDefaultName() const;
 
 public:
 	ServerDialog *const q_ptr;
