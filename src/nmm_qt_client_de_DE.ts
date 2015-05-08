@@ -1231,34 +1231,34 @@ Spieldauer: %2</translation>
         <translation>Eine %1 beginnen?</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1719"/>
+        <location filename="mainwindow_p.cpp" line="1718"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1759"/>
+        <location filename="mainwindow_p.cpp" line="1758"/>
         <source>starts a %1</source>
         <translation>beginnt eine %1</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1782"/>
-        <location filename="mainwindow_p.cpp" line="1785"/>
+        <location filename="mainwindow_p.cpp" line="1781"/>
+        <location filename="mainwindow_p.cpp" line="1784"/>
         <source>%1 of %2</source>
         <translation>%1 von %2</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1804"/>
+        <location filename="mainwindow_p.cpp" line="1803"/>
         <source>ends a %1</source>
         <translation>beendet die %1</translation>
     </message>
     <message>
+        <location filename="mainwindow_p.cpp" line="1806"/>
         <location filename="mainwindow_p.cpp" line="1807"/>
-        <location filename="mainwindow_p.cpp" line="1808"/>
         <source>%1 finished</source>
         <translation>%1 beendet</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1848"/>
+        <location filename="mainwindow_p.cpp" line="1847"/>
         <source>Version %1 is available!</source>
         <translation>Version %1 ist verfügbar!</translation>
     </message>
@@ -1444,82 +1444,82 @@ Spieldauer: %2</translation>
 <context>
     <name>ServerDialogPrivate</name>
     <message>
-        <location filename="serverdialog_p.cpp" line="46"/>
+        <location filename="serverdialog_p.cpp" line="50"/>
         <source>n/a</source>
         <translation>n.V.</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="86"/>
+        <location filename="serverdialog_p.cpp" line="90"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="86"/>
+        <location filename="serverdialog_p.cpp" line="90"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="86"/>
+        <location filename="serverdialog_p.cpp" line="90"/>
         <source>AI</source>
         <translation>KI</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="86"/>
+        <location filename="serverdialog_p.cpp" line="90"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="340"/>
+        <location filename="serverdialog_p.cpp" line="344"/>
         <source>Choose a player image</source>
         <translation>Wähle ein Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="342"/>
+        <location filename="serverdialog_p.cpp" line="346"/>
         <source>Images (%1)</source>
         <translation>Bilder (%1)</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="384"/>
-        <location filename="serverdialog_p.cpp" line="401"/>
+        <location filename="serverdialog_p.cpp" line="388"/>
+        <location filename="serverdialog_p.cpp" line="405"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="384"/>
+        <location filename="serverdialog_p.cpp" line="388"/>
         <source>%1 is already in use!</source>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="401"/>
+        <location filename="serverdialog_p.cpp" line="405"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="470"/>
+        <location filename="serverdialog_p.cpp" line="474"/>
         <source>Delete server</source>
         <translation>Server löschen</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="471"/>
+        <location filename="serverdialog_p.cpp" line="475"/>
         <source>&lt;html&gt;&lt;body&gt;Really delete server
 &lt;b&gt;%1&lt;/b&gt;?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Server &lt;b&gt;%1&lt;/b&gt; wirklich löschen?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="560"/>
-        <location filename="serverdialog_p.cpp" line="580"/>
+        <location filename="serverdialog_p.cpp" line="564"/>
+        <location filename="serverdialog_p.cpp" line="584"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="561"/>
+        <location filename="serverdialog_p.cpp" line="565"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or of an unsupported image format.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="580"/>
+        <location filename="serverdialog_p.cpp" line="584"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>

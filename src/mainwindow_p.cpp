@@ -1715,7 +1715,6 @@ void MainWindowPrivate::clientDestroyed() {
 
 	m_model.horizontalHeaderItem(MainWindowPrivate::PLAYERPIC)->setData(QIcon(),
 																		Qt::DisplayRole);
-
 	m_ui->remoteGroup->setTitle(tr("Players"));
 	m_ui->actionServer->setEnabled(true);
 	m_ui->suspendButton->setEnabled(false);
