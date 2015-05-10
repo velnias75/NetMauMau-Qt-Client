@@ -78,10 +78,12 @@ CONFIG(debug, debug|release) {
 	devrelease:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing \
 	-Wformat -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \
 	-Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wdisabled-optimization -Wuninitialized
-	win32:QMAKE_CXXFLAGS += -O2 -g0 -fomit-frame-pointer -fstrict-aliasing \
-	-ftree-vectorize -Wsuggest-attribute=pure -Wsuggest-attribute=const -Wall -Wextra
+	win32:QMAKE_CXXFLAGS += -O2 -g0 -fstrict-aliasing -ftree-vectorize -Wsuggest-attribute=pure \
+	-Wsuggest-attribute=const -Wall -Wextra -march=i586 -mtune=generic -s -ffunction-sections \
+	-fdata-sections -fomit-frame-pointer -momit-leaf-frame-pointer -ftree-loop-distribution
 	win32:LIBS += -lsecur32 /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
 				  /usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
+	win32:QMAKE_LFLAGS += -Wl,--gc-sections
 }
 
 SOURCES += \
