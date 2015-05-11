@@ -1677,12 +1677,12 @@ Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="main.cpp" line="53"/>
+        <location filename="main.cpp" line="76"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="54"/>
+        <location filename="main.cpp" line="77"/>
         <source>NetMauMau is already running!</source>
         <translation>NetMauMau läuft bereits!</translation>
     </message>

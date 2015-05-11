@@ -44,22 +44,6 @@ int main(int argc, char *argv[]) {
 
 #ifdef _WIN32
 	QSettings::setDefaultFormat(QSettings::IniFormat);
-#else
-
-	SingleAppLock lock;
-
-	if(lock.isLocked()) {
-
-		NetMauMauMessageBox mb(QApplication::translate("main", "Warning"),
-							   QApplication::translate("main", "NetMauMau is already running!"),
-							   QApplication::style()->standardIcon(QStyle::SP_MessageBoxWarning).
-							   pixmap(48));
-
-		mb.setStandardButtons(QMessageBox::Cancel);
-
-		if(mb.exec() == QMessageBox::Cancel) exit(0);
-	}
-
 #endif
 
 	QTranslator qtTranslator;
@@ -82,6 +66,24 @@ int main(int argc, char *argv[]) {
 	myappTranslator.load("nmm_qt_client_" + QLocale::system().name(), locDir);
 	a.installTranslator(&myappTranslator);
 	a.processEvents();
+
+#ifndef _WIN32
+
+	SingleAppLock lock;
+
+	if(lock.isLocked()) {
+
+		NetMauMauMessageBox mb(QApplication::translate("main", "Warning"),
+							   QApplication::translate("main", "NetMauMau is already running!"),
+							   QApplication::style()->standardIcon(QStyle::SP_MessageBoxWarning).
+							   pixmap(48));
+
+		mb.setStandardButtons(QMessageBox::Cancel);
+
+		if(mb.exec() == QMessageBox::Cancel) exit(0);
+	}
+
+#endif
 
 	QSplashScreen splash(QPixmap(":/splash.png"), Qt::WindowStaysOnTopHint);
 
