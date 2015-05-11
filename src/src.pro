@@ -135,6 +135,8 @@ SOURCES += \
 	suitradiobutton.cpp \
 	util.cpp
 
+unix:SOURCES += singleapplock.cpp
+
 espeak:SOURCES += espeak.cpp espeakvolumedialog.cpp
 
 HEADERS += \
@@ -184,6 +186,8 @@ HEADERS += \
 	suitlabel.h \
 	suitradiobutton.h \
 	util.h
+
+unix:HEADERS += singleapplock.h
 
 espeak:HEADERS += espeak.h espeakvolumedialog.h
 

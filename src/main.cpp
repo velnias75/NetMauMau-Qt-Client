@@ -26,7 +26,7 @@
 #ifdef _WIN32
 #include <QSettings>
 #else
-#include <QSharedMemory>
+#include "singleapplock.h"
 #include "netmaumaumessagebox.h"
 #endif
 
@@ -45,8 +45,21 @@ int main(int argc, char *argv[]) {
 #ifdef _WIN32
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 #else
-	QSharedMemory sharedMemory(&a);
-	sharedMemory.setKey(QCoreApplication::applicationName() + qgetenv("USER"));
+
+	SingleAppLock lock;
+
+	if(lock.isLocked()) {
+
+		NetMauMauMessageBox mb(QApplication::translate("main", "Warning"),
+							   QApplication::translate("main", "NetMauMau is already running!"),
+							   QApplication::style()->standardIcon(QStyle::SP_MessageBoxWarning).
+							   pixmap(48));
+
+		mb.setStandardButtons(QMessageBox::Cancel);
+
+		if(mb.exec() == QMessageBox::Cancel) exit(0);
+	}
+
 #endif
 
 	QTranslator qtTranslator;
@@ -69,27 +82,6 @@ int main(int argc, char *argv[]) {
 	myappTranslator.load("nmm_qt_client_" + QLocale::system().name(), locDir);
 	a.installTranslator(&myappTranslator);
 	a.processEvents();
-
-#ifndef _WIN32
-	if(!sharedMemory.create(1)) {
-		NetMauMauMessageBox mb(QApplication::translate("main", "Warning"),
-							   QApplication::translate("main", "NetMauMau is already running!")
-					   #ifndef NDEBUG
-							   + QString("\nUse ipcs and ipcrm to get rid of this message")
-					   #endif
-							   , QApplication::style()->standardIcon(QStyle::SP_MessageBoxWarning).
-							   pixmap(48));
-
-#ifndef NDEBUG
-		mb.setStandardButtons(QMessageBox::Cancel|QMessageBox::Ignore);
-#else
-		mb.setStandardButtons(QMessageBox::Cancel);
-#endif
-
-		if(mb.exec() == QMessageBox::Cancel) exit(0);
-
-	}
-#endif
 
 	QSplashScreen splash(QPixmap(":/splash.png"), Qt::WindowStaysOnTopHint);
 
