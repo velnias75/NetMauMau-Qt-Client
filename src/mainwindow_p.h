@@ -167,8 +167,6 @@ public:
 	LaunchServerDialog *m_launchDlg;
 	QStandardItemModel m_model;
 	JackChooseDialog *m_jackChooseDialog;
-	QBrush m_stdForeground;
-	QBrush m_stdBackground;
 	ConnectionLogDialog *m_connectionLogDlg;
 	QHeaderView *m_remotePlayersHeader;
 	QAbstractItemDelegate *m_playerImageDelegate;

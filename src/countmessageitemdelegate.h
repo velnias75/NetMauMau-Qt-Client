@@ -26,7 +26,7 @@ class CountMessageItemDelegate : public MessageItemDelegate {
 	Q_OBJECT
 	Q_DISABLE_COPY(CountMessageItemDelegate)
 public:
-	explicit CountMessageItemDelegate(QObject *parent = 0);
+	explicit CountMessageItemDelegate(const QAbstractItemModel *model, QObject *parent = 0);
 	virtual ~CountMessageItemDelegate();
 
 protected:

@@ -28,8 +28,9 @@
 #include "client.h"
 
 ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : NetMauMauDialog(p), m_serverdialog(sd),
-	m_model(0, 2, this), m_server(QString::null),
-	m_scoresDelegate(new MessageItemDelegate(this, false)) {
+	m_model(0, 2, this), m_server(QString::null), m_scoresDelegate(new MessageItemDelegate(&m_model,
+																						   this,
+																						   false)) {
 
 	setupUi(this);
 
@@ -54,6 +55,8 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : NetMauMauDialog(p), m
 	scoresView->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
 	scoresView->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
 	scoresView->horizontalHeader()->setStretchLastSection(true);
+
+	scoresView->setItemDelegateForColumn(0, m_scoresDelegate);
 	scoresView->setItemDelegateForColumn(1, m_scoresDelegate);
 
 	QObject::connect(serverCombo, SIGNAL(currentIndexChanged(QString)),
@@ -172,13 +175,13 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 				QList<QStandardItem *> items;
 
 				items << new QStandardItem(pName);
-				if(isMe) items.back()->setBackground(Qt::lightGray);
+				items.back()->setData(isMe);
 				items.back()->setToolTip(pName);
 				items << new QStandardItem((i.score < 0 ? "<span style=\"color:red;\">" : "") +
 										   QString::number(i.score) + (i.score < 0 ? "</span>"
 																				   : ""));
 				items.back()->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
-				if(isMe) items.back()->setBackground(Qt::lightGray);
+				items.back()->setData(isMe);
 
 				m_model.appendRow(items);
 			}

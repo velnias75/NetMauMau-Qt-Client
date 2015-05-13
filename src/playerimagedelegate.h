@@ -26,7 +26,7 @@ class PlayerImageDelegate : public ImageDelegate {
 	Q_OBJECT
 	Q_DISABLE_COPY(PlayerImageDelegate)
 public:
-	explicit PlayerImageDelegate(QObject *parent = 0);
+	explicit PlayerImageDelegate(const QAbstractItemModel *model, QObject *parent = 0);
 
 protected:
 	virtual QPixmap pixmap(const QModelIndex &index) const;

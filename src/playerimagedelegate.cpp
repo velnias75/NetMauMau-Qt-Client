@@ -19,7 +19,8 @@
 
 #include "playerimagedelegate.h"
 
-PlayerImageDelegate::PlayerImageDelegate(QObject *p) : ImageDelegate(p) {}
+PlayerImageDelegate::PlayerImageDelegate(const QAbstractItemModel *model, QObject *p)
+	: ImageDelegate(model, p) {}
 
 QPixmap PlayerImageDelegate::pixmap(const QModelIndex &index) const {
 	return qvariant_cast<QPixmap>(index.data(Qt::DisplayRole));

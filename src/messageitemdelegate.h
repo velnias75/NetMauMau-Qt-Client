@@ -28,7 +28,8 @@ class MessageItemDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 	Q_DISABLE_COPY(MessageItemDelegate)
 public:
-	explicit MessageItemDelegate(QObject *parent = 0, bool cardDetect = true);
+	explicit MessageItemDelegate(const QAbstractItemModel *model, QObject *parent = 0,
+								 bool cardDetect = true);
 	virtual ~MessageItemDelegate();
 
 protected:
@@ -42,6 +43,7 @@ protected:
 private:
 	const bool m_cardDetect;
 	QTextDocument *m_doc;
+	const QAbstractItemModel *m_model;
 };
 
 #endif // MESSAGEITEMDELEGATE_H

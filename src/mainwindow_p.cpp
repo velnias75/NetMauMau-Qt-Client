@@ -72,13 +72,12 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	m_client(0L), m_ui(new Ui::MainWindow), m_serverDlg(new ServerDialog(splash, p)),
 	m_lsov(new LocalServerOutputView()),
 	m_launchDlg(new LaunchServerDialog(m_lsov, m_serverDlg, p)), m_model(0, 5, p),
-	m_jackChooseDialog(new JackChooseDialog(p)), m_stdForeground(), m_stdBackground(),
-	m_connectionLogDlg(new ConnectionLogDialog(0L)), m_remotePlayersHeader(0L),
-	m_playerImageDelegate(new PlayerImageDelegate(p)),
-	m_nameItemDelegate(new MessageItemDelegate(p, false)),
-	m_countItemDelegate(new CountMessageItemDelegate(p)),
-	m_turnItemDelegate(new MessageItemDelegate(p, false)),
-	m_messageItemDelegate(new MessageItemDelegate(p, true)),
+	m_jackChooseDialog(new JackChooseDialog(p)), m_connectionLogDlg(new ConnectionLogDialog(0L)),
+	m_remotePlayersHeader(0L), m_playerImageDelegate(new PlayerImageDelegate(&m_model, p)),
+	m_nameItemDelegate(new MessageItemDelegate(&m_model, p, false)),
+	m_countItemDelegate(new CountMessageItemDelegate(&m_model, p)),
+	m_turnItemDelegate(new MessageItemDelegate(&m_model, p, false)),
+	m_messageItemDelegate(new MessageItemDelegate(&m_model, p, true)),
 	m_aboutTxt(QString::fromUtf8("%1 %2\n%3: %4.%5.%6\nCopyright \u00a9 2015 by Heiko Sch\u00e4fer")
 			   .arg(QCoreApplication::applicationName())
 			   .arg(QCoreApplication::applicationVersion())
@@ -1442,10 +1441,6 @@ void MainWindowPrivate::clientPlayerJoined(const QString &p, const QImage &img) 
 	si.back()->setTextAlignment(Qt::AlignCenter);
 	si.push_back(new QStandardItem(tr("Player <span style=\"color:blue;\">%1</span> "\
 									  "joined the game").arg(p)));
-
-	m_stdForeground = si.back()->foreground();
-	m_stdBackground = si.back()->background();
-
 	m_model.appendRow(si);
 
 	QObject::connect(&m_model, SIGNAL(itemChanged(QStandardItem*)),
@@ -1474,9 +1469,7 @@ void MainWindowPrivate::clientNextPlayer(const QString &player) {
 
 	for(int r = 0; r < m_model.rowCount(); ++r) {
 		for(int c = 0; c < m_model.columnCount(); ++c) {
-			QStandardItem *item = m_model.item(r, c);
-			item->setBackground(r != row ? m_stdBackground : Qt::lightGray);
-			item->setForeground(r != row ? m_stdForeground : Qt::black);
+			m_model.item(r, c)->setData(r == row);
 		}
 	}
 }

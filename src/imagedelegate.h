@@ -26,7 +26,7 @@ class ImageDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 	Q_DISABLE_COPY(ImageDelegate)
 protected:
-	explicit ImageDelegate(QObject *parent = 0);
+	explicit ImageDelegate(const QAbstractItemModel *model, QObject *parent = 0);
 
 	virtual ~ImageDelegate();
 
@@ -35,6 +35,9 @@ protected:
 	void paint(QPainter *painter, const QStyleOptionViewItem &option,
 			   const QModelIndex &index) const;
 	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+private:
+	const QAbstractItemModel *m_model;
 };
 
 #endif // IMAGEDELEGATE_H

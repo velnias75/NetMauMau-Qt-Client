@@ -19,7 +19,8 @@
 
 #include "countmessageitemdelegate.h"
 
-CountMessageItemDelegate::CountMessageItemDelegate(QObject *p) : MessageItemDelegate(p, false) {}
+CountMessageItemDelegate::CountMessageItemDelegate(const QAbstractItemModel *model, QObject *p)
+	: MessageItemDelegate(model, p, false) {}
 
 CountMessageItemDelegate::~CountMessageItemDelegate() {}
 
