@@ -23,7 +23,7 @@
 #include "imagedelegate.h"
 
 ImageDelegate::ImageDelegate(const QAbstractItemModel *model, QObject *p)
-	: QStyledItemDelegate(p), m_model(model) {}
+	: QStyledItemDelegate(p), BaseItemDelegate(model) {}
 
 ImageDelegate::~ImageDelegate() {}
 
@@ -37,13 +37,7 @@ void ImageDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 
 	opt.state &= ~QStyle::State_MouseOver;
 
-	QPalette p(opt.widget ? opt.widget->palette() : QApplication::palette());
-
-	if(m_model->data(index, Qt::UserRole + 1).toBool()) {
-		QBrush b(p.highlight());
-		b.setColor(b.color().lighter(125));
-		opt.backgroundBrush = b;
-	}
+	highlight(opt, index);
 
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 

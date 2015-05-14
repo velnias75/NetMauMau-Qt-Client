@@ -17,26 +17,27 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGEDELEGATE_H
-#define IMAGEDELEGATE_H
+#ifndef BASEITEMDELEGATE_H
+#define BASEITEMDELEGATE_H
 
-#include <QStyledItemDelegate>
+#include "linkercontrol.h"
 
-#include "baseitemdelegate.h"
+class QModelIndex;
+class QAbstractItemModel;
+class QStyleOptionViewItemV4;
 
-class ImageDelegate : public QStyledItemDelegate, protected BaseItemDelegate {
-	Q_OBJECT
-	Q_DISABLE_COPY(ImageDelegate)
+class BaseItemDelegate {
+	DISALLOW_COPY_AND_ASSIGN(BaseItemDelegate)
+	public:
+		virtual ~BaseItemDelegate();
+
+	void highlight(QStyleOptionViewItemV4 &opt, const QModelIndex &index) const;
+
 protected:
-	explicit ImageDelegate(const QAbstractItemModel *model, QObject *parent = 0);
+	explicit BaseItemDelegate(const QAbstractItemModel *model);
 
-	virtual ~ImageDelegate();
-
-	virtual QPixmap pixmap(const QModelIndex &index) const = 0;
-
-	void paint(QPainter *painter, const QStyleOptionViewItem &option,
-			   const QModelIndex &index) const;
-	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+private:
+	const QAbstractItemModel *m_model;
 };
 
-#endif // IMAGEDELEGATE_H
+#endif // BASEITEMDELEGATE_H

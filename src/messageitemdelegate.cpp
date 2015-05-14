@@ -29,7 +29,7 @@
 
 MessageItemDelegate::MessageItemDelegate(const QAbstractItemModel *model, QObject *p,
 										 bool cardDetect) : QStyledItemDelegate(p),
-	m_cardDetect(cardDetect), m_doc(new QTextDocument()), m_model(model) {}
+	BaseItemDelegate(model), m_cardDetect(cardDetect), m_doc(new QTextDocument()) {}
 
 MessageItemDelegate::~MessageItemDelegate() {
 	delete m_doc;
@@ -75,13 +75,7 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	opt.text = QString::null;
 	opt.state &= ~QStyle::State_MouseOver;
 
-	QPalette p(opt.widget ? opt.widget->palette() : QApplication::palette());
-
-	if(m_model->data(index, Qt::UserRole + 1).toBool()) {
-		QBrush b(p.highlight());
-		b.setColor(b.color().lighter(125));
-		opt.backgroundBrush = b;
-	}
+	highlight(opt, index);
 
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 

@@ -17,26 +17,22 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGEDELEGATE_H
-#define IMAGEDELEGATE_H
-
-#include <QStyledItemDelegate>
+#include <QApplication>
+#include <QAbstractItemDelegate>
 
 #include "baseitemdelegate.h"
 
-class ImageDelegate : public QStyledItemDelegate, protected BaseItemDelegate {
-	Q_OBJECT
-	Q_DISABLE_COPY(ImageDelegate)
-protected:
-	explicit ImageDelegate(const QAbstractItemModel *model, QObject *parent = 0);
+BaseItemDelegate::BaseItemDelegate(const QAbstractItemModel *model) : m_model(model) {}
 
-	virtual ~ImageDelegate();
+BaseItemDelegate::~BaseItemDelegate() {}
 
-	virtual QPixmap pixmap(const QModelIndex &index) const = 0;
+void BaseItemDelegate::highlight(QStyleOptionViewItemV4 &opt, const QModelIndex &index) const {
 
-	void paint(QPainter *painter, const QStyleOptionViewItem &option,
-			   const QModelIndex &index) const;
-	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
-};
+	QPalette p(opt.widget ? opt.widget->palette() : QApplication::palette());
 
-#endif // IMAGEDELEGATE_H
+	if(m_model->data(index, Qt::UserRole + 1).toBool()) {
+		QBrush b(p.highlight());
+		b.setColor(b.color().lighter(125));
+		opt.backgroundBrush = b;
+	}
+}

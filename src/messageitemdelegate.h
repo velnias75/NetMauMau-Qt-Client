@@ -22,9 +22,11 @@
 
 #include <QStyledItemDelegate>
 
+#include "baseitemdelegate.h"
+
 class QTextDocument;
 
-class MessageItemDelegate : public QStyledItemDelegate {
+class MessageItemDelegate : public QStyledItemDelegate, protected BaseItemDelegate {
 	Q_OBJECT
 	Q_DISABLE_COPY(MessageItemDelegate)
 public:
@@ -43,7 +45,6 @@ protected:
 private:
 	const bool m_cardDetect;
 	QTextDocument *m_doc;
-	const QAbstractItemModel *m_model;
 };
 
 #endif // MESSAGEITEMDELEGATE_H
