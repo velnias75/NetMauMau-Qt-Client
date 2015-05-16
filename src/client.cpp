@@ -293,9 +293,8 @@ void Client::playerLost(const std::string &player, std::size_t t, std::size_t p)
 void Client::playerPicksCard(const std::string &player,
 							 const NetMauMau::Common::ICard *card) const {
 	Q_D(const Client);
-	d->log(QString("playerPicksCard(%1, %2)").arg(player.c_str()).arg(card
-																	  ? card->description().c_str() :
-																		"[NULL]"));
+	d->log(QString("playerPicksCard(%1, %2)").arg(player.c_str()).
+		   arg(card ? QString::fromUtf8(card->description().c_str()) : "[NULL]"));
 	emit cPlayerPicksCard(QString::fromUtf8(player.c_str()));
 }
 
