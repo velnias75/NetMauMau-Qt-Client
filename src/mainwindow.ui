@@ -219,6 +219,12 @@
      </property>
      <item>
       <widget class="QGroupBox" name="groupBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>Turn</string>
        </property>
@@ -249,14 +255,17 @@
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
          <widget class="CardLabel" name="openCard">
-          <property name="maximumSize">
+          <property name="minimumSize">
            <size>
-            <width>54</width>
-            <height>67</height>
+            <width>84</width>
+            <height>114</height>
            </size>
           </property>
-          <property name="scaledContents">
-           <bool>true</bool>
+          <property name="maximumSize">
+           <size>
+            <width>84</width>
+            <height>114</height>
+           </size>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -266,20 +275,20 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>54</width>
-             <height>67</height>
+             <width>84</width>
+             <height>114</height>
             </rect>
            </property>
            <property name="minimumSize">
             <size>
-             <width>54</width>
-             <height>67</height>
+             <width>84</width>
+             <height>114</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>54</width>
-             <height>67</height>
+             <width>84</width>
+             <height>114</height>
             </size>
            </property>
            <property name="palette">
@@ -404,6 +413,12 @@
      </item>
      <item>
       <widget class="QGroupBox" name="groupBox_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>Jack</string>
        </property>

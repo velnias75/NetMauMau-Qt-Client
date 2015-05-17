@@ -1593,7 +1593,7 @@ void MainWindowPrivate::setOpenCard(const QByteArray &dat) {
 
 		if(!(m_ui->openCard->suit() == s && m_ui->openCard->rank() == r)) {
 			m_animLogo->stop();
-			m_ui->openCard->setPixmap(CardPixmap(QSize(54, 67), s, r));
+			m_ui->openCard->setPixmap(CardPixmap(QSize(84, 114), s, r));
 			m_ui->openCard->setToolTip(CardWidget::tooltipText(s, r, false));
 		}
 
