@@ -51,6 +51,10 @@ public:
 	void setPlayerImagePath(const QString &f, bool warn = false);
 	QString getPlayerDefaultName() const;
 
+#if defined(_WIN32)
+	QString getUserName() const;
+#endif
+
 public slots:
 	void checkOnline();
 	void updateOnline(bool enabled, int row);

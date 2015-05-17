@@ -1465,57 +1465,57 @@ Spieldauer: %2</translation>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="344"/>
+        <location filename="serverdialog_p.cpp" line="363"/>
         <source>Choose a player image</source>
         <translation>Wähle ein Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="346"/>
+        <location filename="serverdialog_p.cpp" line="365"/>
         <source>Images (%1)</source>
         <translation>Bilder (%1)</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="388"/>
-        <location filename="serverdialog_p.cpp" line="405"/>
+        <location filename="serverdialog_p.cpp" line="407"/>
+        <location filename="serverdialog_p.cpp" line="424"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="388"/>
+        <location filename="serverdialog_p.cpp" line="407"/>
         <source>%1 is already in use!</source>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="405"/>
+        <location filename="serverdialog_p.cpp" line="424"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="474"/>
+        <location filename="serverdialog_p.cpp" line="493"/>
         <source>Delete server</source>
         <translation>Server löschen</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="475"/>
+        <location filename="serverdialog_p.cpp" line="494"/>
         <source>&lt;html&gt;&lt;body&gt;Really delete server
 &lt;b&gt;%1&lt;/b&gt;?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Server &lt;b&gt;%1&lt;/b&gt; wirklich löschen?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="564"/>
-        <location filename="serverdialog_p.cpp" line="584"/>
+        <location filename="serverdialog_p.cpp" line="583"/>
+        <location filename="serverdialog_p.cpp" line="603"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="565"/>
+        <location filename="serverdialog_p.cpp" line="584"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or of an unsupported image format.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="584"/>
+        <location filename="serverdialog_p.cpp" line="603"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>

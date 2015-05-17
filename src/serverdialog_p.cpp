@@ -126,6 +126,25 @@ ServerDialogPrivate::ServerDialogPrivate(QSplashScreen *splash, ServerDialog *p)
 	setPlayerImagePath(settings.value("playerImage").toString());
 	settings.endGroup();
 
+#if defined(_WIN32)
+
+	const QString &wun(getUserName());
+
+	if(q->playerImagePath->text().isEmpty() && !wun.isNull()) {
+
+		const QByteArray wup(qgetenv("USERPROFILE"));
+
+		if(!wup.isEmpty()) {
+
+			const QString utf(QString("%1\\AppData\\Local\\Temp\\%2.bmp").
+							  arg(QString::fromLocal8Bit(wup.constData())).
+							  arg(wun));
+
+			if(QFile(utf).exists()) setPlayerImagePath(utf);
+		}
+	}
+#endif
+
 	m_model.horizontalHeaderItem(0)->setSizeHint(QSize(300, -1));
 
 	q->availServerView->setModel(&m_model);
@@ -620,3 +639,14 @@ QString ServerDialogPrivate::getPlayerDefaultName() const {
 
 	return "Phoenix";
 }
+
+#if defined(_WIN32)
+QString ServerDialogPrivate::getUserName() const {
+
+	DWORD ulen = UNLEN + 1;
+	TCHAR uname[ulen];
+
+	return GetUserName(uname, &ulen) ? QString::fromStdWString(uname) : QString::null;
+}
+#endif
+
