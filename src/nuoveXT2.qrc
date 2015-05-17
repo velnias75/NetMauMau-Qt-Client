@@ -6,5 +6,7 @@
         <file alias="application-exit.png">application-exit.png</file>
         <file alias="go-previous.png">go-previous.png</file>
         <file alias="connect_no.png">connect_no.png</file>
+        <file alias="server-list.png">internet-web-browser.png</file>
+        <file alias="reconnect.png">system-software-update.png</file>
     </qresource>
 </RCC>

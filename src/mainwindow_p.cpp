@@ -117,21 +117,21 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 
 	m_ui->shufflingLabel->setVisible(false);
 
-#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
-	if(!m_ui->actionReconnect->icon().hasThemeIcon("go-previous")) {
-#endif
-		m_ui->actionReconnect->setIcon(QIcon(":/go-previous.png"));
-#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
-	}
-#endif
+	//#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
+	//	if(!m_ui->actionReconnect->icon().hasThemeIcon("go-previous")) {
+	//#endif
+	//		m_ui->actionReconnect->setIcon(QIcon(":/go-previous.png"));
+	//#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
+	//	}
+	//#endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
-	if(!m_ui->actionServer->icon().hasThemeIcon("network-server")) {
-#endif
-		m_ui->actionServer->setIcon(QIcon(":/network-server.png"));
-#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
-	}
-#endif
+	//#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
+	//	if(!m_ui->actionServer->icon().hasThemeIcon("network-server")) {
+	//#endif
+	//		m_ui->actionServer->setIcon(QIcon(":/network-server.png"));
+	//#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
+	//	}
+	//#endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 	if(!m_ui->actionDisconnect->icon().hasThemeIcon("network-disconnect")) {

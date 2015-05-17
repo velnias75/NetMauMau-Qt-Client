@@ -128,7 +128,7 @@
      <x>0</x>
      <y>0</y>
      <width>1016</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -518,8 +518,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>837</width>
-             <height>169</height>
+             <width>843</width>
+             <height>165</height>
             </rect>
            </property>
            <layout class="QHBoxLayout" name="myCardsLayout">
@@ -650,7 +650,7 @@
         <string>Disable cards which aren't possible to play</string>
        </property>
        <property name="text">
-        <string>F&amp;ilter</string>
+        <string>F&amp;ilter possible</string>
        </property>
       </widget>
      </item>
@@ -710,9 +710,8 @@
   </widget>
   <action name="actionServer">
    <property name="icon">
-    <iconset theme="network-server">
-     <normaloff/>
-    </iconset>
+    <iconset resource="nuoveXT2.qrc">
+     <normaloff>:/server-list.png</normaloff>:/server-list.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Servers...</string>
@@ -766,9 +765,8 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="go-previous">
-     <normaloff/>
-    </iconset>
+    <iconset resource="nuoveXT2.qrc">
+     <normaloff>:/reconnect.png</normaloff>:/reconnect.png</iconset>
    </property>
    <property name="text">
     <string>Re&amp;connect</string>
@@ -937,6 +935,7 @@
  </tabstops>
  <resources>
   <include location="icons.qrc"/>
+  <include location="nuoveXT2.qrc"/>
  </resources>
  <connections>
   <connection>
