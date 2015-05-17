@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1016</width>
-    <height>596</height>
+    <height>598</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -567,7 +567,7 @@
    <property name="minimumSize">
     <size>
      <width>150</width>
-     <height>193</height>
+     <height>194</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -664,8 +664,12 @@
        <property name="toolTip">
         <string>Disable cards which aren't possible to play</string>
        </property>
+       <property name="styleSheet">
+        <string notr="true">::indicator { subcontrol-origin: content; subcontrol-position: top left; }</string>
+       </property>
        <property name="text">
-        <string>F&amp;ilter possible</string>
+        <string>H&amp;ighlight
+possible cards</string>
        </property>
       </widget>
      </item>
