@@ -41,6 +41,8 @@ public:
 
 	static bool isDisplayed() _PURE;
 
+	void centerOver(const QWidget *w);
+
 protected:
 	virtual void showEvent(QShowEvent *event);
 	virtual void hideEvent(QHideEvent *event);

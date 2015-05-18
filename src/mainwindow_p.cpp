@@ -474,9 +474,9 @@ void MainWindowPrivate::takeCardsMark(std::size_t count) const {
 		const QList<CardWidget *> &cards(gs->cards());
 		const bool normal = NetMauMau::Common::findRank(NetMauMau::Common::ICard::SEVEN,
 														cards.begin(), cards.end());
-
 		if(name && normal) {
-			name->setText(QString("<span style=\"color:blue;\">%1</span>").arg(me));
+			name->setText(QString("<span style=\"color:%1;\">%2</span>").
+						  arg(QApplication::palette().link().color().name()).arg(me));
 			name->setToolTip(tr("You can play another <i>Seven</i> or take %n card(s)", "",
 								count));
 #ifdef USE_ESPEAK
@@ -1229,12 +1229,13 @@ void MainWindowPrivate::clientPlayerSuspends(const QString &p) {
 	updatePlayerStats(p, tr("suspended the turn"));
 }
 
-void MainWindowPrivate::clientPlayerLost(const QString &p, std::size_t t, std::size_t pt) {
+void MainWindowPrivate::clientPlayerLost(const QString &p, std::size_t, std::size_t pt) {
 
 	Q_Q(MainWindow);
 
-	updatePlayerStats(p, tr("<span style=\"color:blue;\">lost</span> in turn %1 " \
-							"with %n point(s) at hand", "", pt).arg(t), true);
+	updatePlayerStats(p, tr("<span style=\"color:%1;\">loses</span> " \
+							"with %n point(s) at hand", "", pt).
+					  arg(QApplication::palette().link().color().name()), true);
 
 	if(isMe(p) && !NetMauMauMessageBox::isDisplayed()) {
 
@@ -1255,6 +1256,8 @@ void MainWindowPrivate::clientPlayerLost(const QString &p, std::size_t t, std::s
 								 QIcon(":/sad.png").pixmap(48, 48),
 						 #endif
 								 q);
+
+		lost.centerOver(m_ui->localPlayerDock);
 
 		QAbstractButton *tryBut = 0L;
 
@@ -1289,13 +1292,16 @@ void MainWindowPrivate::clientPlayerWins(const QString &p, std::size_t t) {
 	gs->winningOrder().append(p);
 	gs->setMaumauCount(gs->maumauCount() + 1);
 
-	updatePlayerStats(p, tr("<span style=\"color:blue;\">wins</span> in turn %1").arg(t), true);
+	updatePlayerStats(p, tr("<span style=\"color:%1;\">wins</span> in turn %2").
+					  arg(QApplication::palette().link().color().name()).arg(t), true);
 
 	if(!isMe(p)) q->statusBar()->showMessage(tr("%1 wins!").arg(p), 10000);
 
 	if(NetMauMauMessageBox::isDisplayed()) return;
 
 	NetMauMauMessageBox gameOver(q);
+
+	gameOver.centerOver(m_ui->localPlayerDock);
 
 	if(isMe(p) && !gs->lostWonConfirmed()) {
 
@@ -1423,8 +1429,9 @@ void MainWindowPrivate::clientPlayerJoined(const QString &p, const QImage &img) 
 	si.back()->setTextAlignment(Qt::AlignCenter);
 	si.push_back(new QStandardItem("1"));
 	si.back()->setTextAlignment(Qt::AlignCenter);
-	si.push_back(new QStandardItem(tr("Player <span style=\"color:blue;\">%1</span> "\
-									  "joined the game").arg(p)));
+	si.push_back(new QStandardItem(tr("Player <span style=\"color:%1;\">%2</span> "\
+									  "joined the game").
+								   arg(QApplication::palette().link().color().name()).arg(p)));
 	m_model.appendRow(si);
 
 	QObject::connect(&m_model, SIGNAL(itemChanged(QStandardItem*)),
