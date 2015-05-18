@@ -480,21 +480,15 @@ void MainWindowPrivate::takeCardsMark(std::size_t count) const {
 			name->setToolTip(tr("You can play another <i>Seven</i> or take %n card(s)", "",
 								count));
 #ifdef USE_ESPEAK
-			ESpeak::getInstance().speak(tr("Take %n cards. Or play another SEVEN", "", count),
-										tr("Take %n cards. Or play another SEVEN", "", count)
-										== QString("Take %1 cards. Or play another SEVEN").
-										arg(QString::number(count)) ? QString("en") :
-																	  QString::null);
+			TR_SPEAK_NUM(tr("Take %n cards. Or play another SEVEN", "", count),
+						 "Take %1 cards. Or play another SEVEN", count);
 #endif
 		} else if(name) {
 			name->setText(QString("<span style=\"color:red;\">%1</span>").arg(me));
 			name->setToolTip(tr("You have no <i>Seven</i> to play over. You must take %n card(s)",
 								"", count));
 #ifdef USE_ESPEAK
-			ESpeak::getInstance().speak(tr("Take %n cards", "", count),
-										tr("Take %n cards", "", count) ==
-										QString("Take %1 cards").arg(QString::number(count))
-										? QString("en") : QString::null);
+			TR_SPEAK_NUM(tr("Take %n cards", "", count), "Take %1 cards", count);
 #endif
 		}
 
@@ -1740,7 +1734,8 @@ void MainWindowPrivate::clientAceRoundStarted(const QString &p) {
 	const QString &ars(getAceRoundRankString(gs, false, &lang));
 
 	if(gs->aceRoundActive() != p) {
-		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
+		updatePlayerStats(p, QString("<span style=\"color:%1;\">%2</span>")
+						  .arg(QApplication::palette().linkVisited().color().name())
 						  .arg(tr("starts a %1").arg(ars)));
 #if USE_ESPEAK
 		ESpeak::getInstance().speak(ars, lang);
@@ -1785,13 +1780,12 @@ void MainWindowPrivate::clientAceRoundEnded(const QString &p) {
 	const QString &ars(getAceRoundRankString(gs, false, &lang));
 
 	if(!p.isNull() && gs->aceRoundActive() == p) {
-		updatePlayerStats(p, QString("<span style=\"color:olive;\">%1</span>")
-						  .arg(tr("ends a %1").arg(ars)));
+		updatePlayerStats(p, QString("<span style=\"color:%1;\">%2</span>").
+						  arg(QApplication::palette().linkVisited().color().name()).
+						  arg(tr("ends a %1").arg(ars)));
 
 #if USE_ESPEAK
-		ESpeak::getInstance().speak(tr("%1 finished").arg(ars),
-									tr("%1 finished").arg(ars) == QString("%1 finished").arg(ars)
-									? QString("en") : QString::null);
+		TR_SPEAK_ARG(QT_TR_NOOP("%1 finished"), ars);
 #endif
 	}
 

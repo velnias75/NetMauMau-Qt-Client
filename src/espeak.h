@@ -24,6 +24,14 @@
 
 #include <linkercontrol.h>
 
+#define TR_SPEAK_ARG(text, argument) \
+	ESpeak::getInstance().speak(tr(text).arg(argument), tr(text).arg(argument) == \
+	QString(text).arg(argument) ? QString("en") : QString::null)
+
+#define TR_SPEAK_NUM(text, ntext, num) \
+	ESpeak::getInstance().speak((text), (text) == QString(ntext).arg(QString::number(num)) ? \
+	QString("en") : QString::null)
+
 class ESpeak : public QObject {
 	Q_OBJECT
 	Q_DISABLE_COPY(ESpeak)
