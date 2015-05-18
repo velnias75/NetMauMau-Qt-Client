@@ -4,7 +4,7 @@ CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
 
-VERSION = 0.18
+VERSION = 0.19
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
 DEFINES += _GLIBCXX_VISIBILITY=0 QT_NO_CAST_FROM_BYTEARRAY QT_NO_CAST_TO_ASCII \
@@ -64,7 +64,7 @@ CONFIG(debug, debug|release) {
 	win32:CONFIG += static
 	DEFINES += NDEBUG QT_NO_DEBUG_OUTPUT
 	unix:target.path = /usr/bin
-	qmfiles.commands = $$QMAKE_LRELEASE src.pro
+	qmfiles.commands = $$QMAKE_LRELEASE -compress -nounfinished -removeidentical -silent src.pro
 	qmfiles.path = /usr/share/nmm-qt-client
 	qmfiles.files = *.qm
 	unix:desktop.path = /usr/share/applications
