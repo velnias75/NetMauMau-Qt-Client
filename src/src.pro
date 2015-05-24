@@ -45,13 +45,14 @@ CONFIG(debug, debug|release) {
 	TARGET = nmm-qt-client-debug
 	DEFINES += _GLIBCXX_CONCEPT_CHECKS
 	INCLUDEPATH += "../../netmaumau/src/include"
-	QMAKE_CXXFLAGS += -g3 -O0 -fstrict-aliasing -ftrapv -fno-inline -W -Wextra -Wall -Wnoexcept \
-	-Woverloaded-virtual -Wno-packed-bitfield-compat -Wmissing-noreturn -Wunused -Wtrampolines \
-	-Wdouble-promotion -Wnon-virtual-dtor -Wold-style-cast -Winit-self -Wctor-dtor-privacy \
-	-Wunreachable-code -Wcast-align -Wcast-qual -Wdisabled-optimization -Wformat=2 \
-	-Wimport -Wmissing-format-attribute -Wmissing-include-dirs -Wredundant-decls -Winline \
-	-Wuninitialized -Wvariadic-macros -Wlogical-op -Wnoexcept -Wmissing-noreturn -Wpointer-arith \
-	-Wstrict-null-sentinel -Wstrict-overflow -Wshadow -Werror=strict-aliasing
+	QMAKE_CXXFLAGS += -g3 -O0 -fstrict-aliasing -ftrapv -fno-inline -Wcast-align -Wcast-qual \
+	-Wctor-dtor-privacy -Wdisabled-optimization -Wdouble-promotion -Wextra -Wformat=2 \
+	-Wformat-nonliteral -Wformat-security -Wimport -Winit-self -Winline -Wlogical-op \
+	-Wmissing-format-attribute -Wmissing-include-dirs -Wmissing-noreturn -Wmultichar -Wnoexcept \
+	-Wnon-virtual-dtor -Wno-packed-bitfield-compat -Wno-unused-label -Wno-unused-parameter \
+	-Wold-style-cast -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wreturn-type -Wshadow \
+	-Wsign-compare -Wstrict-null-sentinel -Wstrict-overflow=5 -Wtrampolines -Wuninitialized \
+	-Wunreachable-code -Wunused -Wvariadic-macros
 	LIBS += ../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
 			../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
