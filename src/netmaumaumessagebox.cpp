@@ -98,7 +98,8 @@ void NetMauMauMessageBox::closeEvent(QCloseEvent *e) {
 }
 
 void NetMauMauMessageBox::centerOver(const QWidget *w) {
-	if(parentWidget()) {
+
+	if(w && parentWidget()) {
 		QRect log(geometry());
 		log.moveCenter(parentWidget()->mapToGlobal(w->geometry().center()));
 		log.translate(QPoint(log.width()/-2, log.height()/-2));

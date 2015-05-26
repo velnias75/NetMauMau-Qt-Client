@@ -1239,19 +1239,22 @@ void MainWindowPrivate::clientPlayerLost(const QString &p, std::size_t, std::siz
 
 		takeCardsMark(false);
 
-		NetMauMauMessageBox lost(tr("Sorry"),
-								 tr("You have lost!\n%1\nPlaying time: %2").
-								 arg(gs->playerScores().contains(p) ?
-										 yourScore(gs, p) : tr("Your deduction of points: %1").
-										 arg(pt)).arg(gs->playTime().toString("HH:mm:ss")),
-						 #if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
-								 QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48),
-						 #else
-								 QIcon(":/sad.png").pixmap(48, 48),
-						 #endif
-								 q);
+		NetMauMauMessageBox lost(q);
 
+		// NOTE: on Qt 4.4 center over works only with the 1 arg constructor
 		lost.centerOver(m_ui->localPlayerDock);
+
+		lost.setWindowTitle(tr("Sorry"));
+		lost.setText(tr("You have lost!\n%1\nPlaying time: %2").
+					 arg(gs->playerScores().contains(p) ?
+							 yourScore(gs, p) : tr("Your deduction of points: %1").
+							 arg(pt)).arg(gs->playTime().toString("HH:mm:ss")));
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
+		lost.setIconPixmap(QIcon::fromTheme("face-sad", QIcon(":/sad.png")).pixmap(48, 48));
+#else
+		lost.setIconPixmap(QIcon(":/sad.png").pixmap(48, 48));
+#endif
+
 
 		QAbstractButton *tryBut = 0L;
 
