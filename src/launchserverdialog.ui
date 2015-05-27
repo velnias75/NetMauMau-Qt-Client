@@ -181,7 +181,7 @@
           </size>
          </property>
          <property name="text">
-          <string>&amp;Ultimate:</string>
+          <string>&amp;Watch mode:</string>
          </property>
          <property name="buddy">
           <cstring>ultimateCheck</cstring>

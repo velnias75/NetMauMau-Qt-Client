@@ -449,7 +449,8 @@ QString MainWindowPrivate::winnerRank(GameState *gs) const {
 		case 2: return tr("Second rank");
 		case 3: return tr("Third rank");
 		case 4: return tr("Fourth rank");
-		default: return tr("Fifth rank");
+		case 5: return tr("Fifth rank");
+		default: return tr("%1. rank").arg(gs->maumauCount());
 		}
 	} else {
 		return tr("Sorry");
@@ -1460,6 +1461,9 @@ void MainWindowPrivate::clientNextPlayer(const QString &player) {
 			m_model.item(r, c)->setData(r == row);
 		}
 	}
+
+	m_ui->remotePlayersView->scrollTo(m_model.indexFromItem(ml.front()),
+									  QAbstractItemView::PositionAtBottom);
 }
 
 void MainWindowPrivate::clientPlayCardRequest(const Client::CARDS &cards, std::size_t takeCount) {
