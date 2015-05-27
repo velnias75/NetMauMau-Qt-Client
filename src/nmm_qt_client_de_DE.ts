@@ -286,10 +286,6 @@ Der Server akzeptiert maximal Version %3.%4</translation>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Anzahl der Spieler.&lt;/p&gt;&lt;p&gt;Wenn auf &lt;tt&gt;1&lt;/tt&gt; gesetzt, wird gegen den Computer gespielt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>&amp;Ultimate:</source>
-        <translation type="obsolete">&amp;Ultimativ:</translation>
-    </message>
-    <message>
         <location filename="launchserverdialog.ui" line="200"/>
         <source>If checked, the game is finished when the last player has won.
 
@@ -495,23 +491,23 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>&amp;Starten</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="246"/>
+        <location filename="launchserverdialog.cpp" line="252"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="246"/>
-        <location filename="launchserverdialog.cpp" line="348"/>
+        <location filename="launchserverdialog.cpp" line="252"/>
+        <location filename="launchserverdialog.cpp" line="354"/>
         <source>Failed to start %1</source>
         <translation>Starten von %1 gescheitert</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="363"/>
+        <location filename="launchserverdialog.cpp" line="369"/>
         <source>Find NetMauMau server executable</source>
         <translation>Finde die ausführbare Datei von NetMauMau</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="388"/>
+        <location filename="launchserverdialog.cpp" line="394"/>
         <source>Server terminated</source>
         <translation>Server beendet</translation>
     </message>

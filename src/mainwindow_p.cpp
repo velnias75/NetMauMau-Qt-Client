@@ -1214,7 +1214,7 @@ void MainWindowPrivate::clientCardAccepted(const QByteArray &ac) {
 		QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
 		delete cw;
 	} else if(!gs->lastPlayedCard()) {
-		qWarning("las played card is NULL");
+		qWarning("last played card is NULL");
 	}
 
 	gs->setLastPlayedCard(0L);

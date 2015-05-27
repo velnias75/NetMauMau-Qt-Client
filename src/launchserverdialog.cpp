@@ -42,8 +42,11 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, ServerDialog
 	QObject::connect(addServerWidget, SIGNAL(addServer()), this, SLOT(addServer()));
 	QObject::connect(execChooseButton, SIGNAL(clicked()), this, SLOT(browse()));
 	QObject::connect(playersSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
+	QObject::connect(playersSpin, SIGNAL(valueChanged(int)), this, SLOT(adjustLimits()));
 	QObject::connect(cardDecksSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
+	QObject::connect(cardDecksSpin, SIGNAL(valueChanged(int)), this, SLOT(adjustLimits()));
 	QObject::connect(initCardSpin, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
+	QObject::connect(initCardSpin, SIGNAL(valueChanged(int)), this, SLOT(adjustLimits()));
 	QObject::connect(ultimateCheck, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(dirChangecheck, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(aceRound, SIGNAL(stateChanged(int)), this, SLOT(updateOptions()));
@@ -53,8 +56,11 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, ServerDialog
 	QObject::connect(aiNameEdit3, SIGNAL(textChanged(QString)), this, SLOT(updateOptions()));
 	QObject::connect(aiNameEdit4, SIGNAL(textChanged(QString)), this, SLOT(updateOptions()));
 	QObject::connect(aiEnabled2, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
+	QObject::connect(aiEnabled2, SIGNAL(toggled(bool)), this, SLOT(adjustLimits()));
 	QObject::connect(aiEnabled3, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
+	QObject::connect(aiEnabled3, SIGNAL(toggled(bool)), this, SLOT(adjustLimits()));
 	QObject::connect(aiEnabled4, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
+	QObject::connect(aiEnabled4, SIGNAL(toggled(bool)), this, SLOT(adjustLimits()));
 	QObject::connect(delaySpin, SIGNAL(valueChanged(double)), this, SLOT(updateOptions()));
 	QObject::connect(addServerWidget, SIGNAL(portChanged(uint)), this, SLOT(updateOptions()));
 	QObject::connect(launchButton, SIGNAL(clicked()), this, SLOT(launch()));
@@ -399,5 +405,30 @@ void LaunchServerDialog::terminate() {
 void LaunchServerDialog::addServer() {
 	m_serverDlg->addServer(addServerWidget->getHost(), addServerWidget->getPort(),
 						   addServerWidget->alias());
-	//	addServerWidget->getAddButton()->setDisabled(true);
+}
+
+void LaunchServerDialog::adjustLimits() {
+
+	const NetMauMau::Common::CARDCONFIG
+			&cc(NetMauMau::Common::getCardConfig(playersSpin->value() > 1 ?
+													 playersSpin->value() : 1 + countAI(),
+												 initCardSpin->value(), cardDecksSpin->value()));
+
+	initCardSpin->setValue(cc.initialCards);
+	cardDecksSpin->setValue(cc.decks);
+}
+
+uint LaunchServerDialog::countAI() const {
+
+	if(playersSpin->value() > 1) {
+		return 0;
+	} else {
+		uint cnt = 1;
+
+		if(aiEnabled2->isChecked()) ++cnt;
+		if(aiEnabled3->isChecked()) ++cnt;
+		if(aiEnabled4->isChecked()) ++cnt;
+
+		return cnt;
+	}
 }

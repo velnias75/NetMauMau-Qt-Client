@@ -54,6 +54,10 @@ private slots:
 	void stateChanged(QProcess::ProcessState);
 	void terminate();
 	void addServer();
+	void adjustLimits();
+
+private:
+	uint countAI() const;
 
 private:
 	QProcess m_process;
