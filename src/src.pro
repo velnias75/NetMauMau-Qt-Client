@@ -28,11 +28,12 @@ CONFIG(espeak) {
 
 CONFIG(graphite) {
 	QMAKE_CXXFLAGS += -floop-interchange -ftree-loop-distribution -floop-strip-mine \
-					  -floop-block -ftree-vectorize
+					  -floop-block -ftree-vectorize -frename-registers
 }
 
 CONFIG(lto) {
-	QMAKE_CXXFLAGS += -flto -fuse-linker-plugin -flto-partition=none -flto-compression-level=9
+	QMAKE_CXXFLAGS += -flto -fuse-linker-plugin -flto-partition=1to1 -flto-compression-level=9 \
+					  -fwhole-program -Wl,--strip-lto-sections
 	QMAKE_LFLAGS += $$QMAKE_CXXFLAGS
 }
 
