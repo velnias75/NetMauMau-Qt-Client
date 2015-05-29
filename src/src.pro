@@ -21,20 +21,19 @@ isEmpty(QMAKE_LRELEASE) {
 CONFIG(espeak) {
 	DEFINES += USE_ESPEAK
 	unix:INCLUDEPATH += /usr/include/espeak
-	win32:INCLUDEPATH += /usr/i686-pc-mingw32/usr/include
 	unix:LIBS += -lespeak
+	win32:INCLUDEPATH += /usr/i686-pc-mingw32/usr/include
 	win32:LIBS += /usr/i686-pc-mingw32/usr/bin/libespeak.dll
 }
 
-unix:CONFIG(devrelease) {
+CONFIG(graphite) {
 	QMAKE_CXXFLAGS += -floop-interchange -ftree-loop-distribution -floop-strip-mine \
-					  -floop-block -ftree-vectorize -flto=2 -fuse-linker-plugin
-	QMAKE_LFLAGS += -flto=2 -fuse-linker-plugin $$[QMAKE_CXXFLAGS]
+					  -floop-block -ftree-vectorize
 }
 
 CONFIG(lto) {
-	QMAKE_CXXFLAGS += -flto -fuse-linker-plugin
-	QMAKE_LFLAGS += -flto -fuse-linker-plugin $$(QMAKE_CXXFLAGS)
+	QMAKE_CXXFLAGS += -flto -fuse-linker-plugin -flto-partition=none -flto-compression-level=9
+	QMAKE_LFLAGS += $$QMAKE_CXXFLAGS
 }
 
 CONFIG(debug, debug|release) {

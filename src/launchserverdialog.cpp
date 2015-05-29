@@ -410,12 +410,27 @@ void LaunchServerDialog::addServer() {
 void LaunchServerDialog::adjustLimits() {
 
 	const NetMauMau::Common::CARDCONFIG
-			&cc(NetMauMau::Common::getCardConfig(playersSpin->value() > 1 ?
-													 playersSpin->value() : 1 + countAI(),
-												 initCardSpin->value(), cardDecksSpin->value()));
+			&ccur(NetMauMau::Common::getCardConfig(playersSpin->value() > 1 ?
+													   playersSpin->value() : 1 + countAI(),
+												   initCardSpin->value(), cardDecksSpin->value()));
 
-	initCardSpin->setValue(cc.initialCards);
-	cardDecksSpin->setValue(cc.decks);
+	const NetMauMau::Common::CARDCONFIG
+			&dmin(NetMauMau::Common::getCardConfig(playersSpin->value() > 1 ?
+													   playersSpin->value() : 1 + countAI(),
+												   initCardSpin->value(),
+												   cardDecksSpin->value() - 1));
+
+	const NetMauMau::Common::CARDCONFIG
+			&cmin(NetMauMau::Common::getCardConfig(playersSpin->value() > 1 ?
+													   playersSpin->value() : 1 + countAI(),
+												   initCardSpin->value() + 1,
+												   cardDecksSpin->value()));
+
+	cardDecksSpin->setMinimum(ccur.decks == dmin.decks ? dmin.decks : 1);
+	initCardSpin->setMaximum(ccur.initialCards == cmin.initialCards ? ccur.initialCards : 999);
+
+	initCardSpin->setValue(ccur.initialCards);
+	cardDecksSpin->setValue(ccur.decks);
 }
 
 uint LaunchServerDialog::countAI() const {
