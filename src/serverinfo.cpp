@@ -83,7 +83,6 @@ void ServerInfo::run() {
 								toULong();
 				ulong maxPCnt = (QString::fromStdString(caps.find("MAX_PLAYERS")->second))
 								.toULong();
-
 				retry = false;
 
 				const std::string &sVer(caps.find("SERVER_VERSION")->second);
@@ -94,8 +93,11 @@ void ServerInfo::run() {
 													QString::fromStdString(sVer), VERREL);
 
 				const std::string &sMinClientVer(caps.find("MIN_VERSION")->second);
-				version->setToolTip(tr("Server accepts clients of at least version %1").
-									arg(QString::fromStdString(sMinClientVer)));
+
+				version->setToolTip(
+							tr("Server version: %1\nServer accepts clients of at least version %2").
+							arg(server->data(VERREL).toString()).
+							arg(QString::fromStdString(sMinClientVer)));
 
 				ai->setCheckState(caps.find("AI_OPPONENT")->second == "true" ? Qt::Checked :
 																			   Qt::Unchecked);

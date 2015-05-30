@@ -1534,44 +1534,46 @@ Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
         <translation>n.V.</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="97"/>
-        <source>Server accepts clients of at least version %1</source>
-        <translation>Der Server akzeptiert Klienten von mindestens Version %1</translation>
+        <location filename="serverinfo.cpp" line="98"/>
+        <source>Server version: %1
+Server accepts clients of at least version %2</source>
+        <translation>Serverversion: %1
+Der Server akzeptiert Klienten von mindestens Version %2</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="103"/>
+        <location filename="serverinfo.cpp" line="105"/>
         <source>You&apos;ll play against AI &quot;%1&quot;</source>
         <translation>Du wirst gegen KI &quot;%1&quot; spielen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="105"/>
+        <location filename="serverinfo.cpp" line="107"/>
         <source>The server has only human players</source>
         <translation>Auf dem Server befinden sich nur menschliche Spieler</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="110"/>
+        <location filename="serverinfo.cpp" line="112"/>
         <source>You&apos;ll play with %1</source>
         <oldsource>You&apos;ll play with ace rounds</oldsource>
         <translation>Du wirst mit %1 spielen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="112"/>
-        <location filename="serverinfo.cpp" line="116"/>
+        <location filename="serverinfo.cpp" line="114"/>
+        <location filename="serverinfo.cpp" line="118"/>
         <source>ace rounds</source>
         <translation>Assrunden</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="113"/>
+        <location filename="serverinfo.cpp" line="115"/>
         <source>queen rounds</source>
         <translation>Damenrunden</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="115"/>
+        <location filename="serverinfo.cpp" line="117"/>
         <source>king rounds</source>
         <translation>Königsrunden</translation>
     </message>
     <message numerus="yes">
-        <location filename="serverinfo.cpp" line="127"/>
+        <location filename="serverinfo.cpp" line="129"/>
         <source>You&apos;ll start with %n card(s)</source>
         <translation>
             <numerusform>Du wirst mit %n Karte beginnen</numerusform>
@@ -1579,17 +1581,17 @@ Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
         </translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="136"/>
+        <location filename="serverinfo.cpp" line="138"/>
         <source>You can change directions</source>
         <translation>Du kannst die Richtungen ändern</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="141"/>
+        <location filename="serverinfo.cpp" line="143"/>
         <source>%1/%2</source>
         <translation>%1/%2</translation>
     </message>
     <message numerus="yes">
-        <location filename="serverinfo.cpp" line="142"/>
+        <location filename="serverinfo.cpp" line="144"/>
         <source>Waiting for %n more player(s)</source>
         <oldsource>Waiting for %1 more players</oldsource>
         <translation>
@@ -1598,33 +1600,33 @@ Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
         </translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="145"/>
+        <location filename="serverinfo.cpp" line="147"/>
         <source>The server accepts no more players</source>
         <oldsource>The server is too old for this client</oldsource>
         <translation>Der Server akzeptiert keine weitere Spieler</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="153"/>
+        <location filename="serverinfo.cpp" line="155"/>
         <source>This client is too old for the server</source>
         <translation>Dieser Klient ist zu alt für den Server</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="163"/>
+        <location filename="serverinfo.cpp" line="165"/>
         <source>Couldn&apos;t get capabilities from server</source>
         <translation>Konnte die Fähigkeiten nicht vom Server beziehen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="172"/>
+        <location filename="serverinfo.cpp" line="174"/>
         <source>Server timed out while getting capabilities</source>
         <translation>Zeitüberschreitung auf dem Server während des Abholen der Fähigkeiten</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="185"/>
+        <location filename="serverinfo.cpp" line="187"/>
         <source>Trying to query the server. Attempt: %1</source>
         <translation>Versuche den Server abzufragen. Versuch: %1</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="206"/>
+        <location filename="serverinfo.cpp" line="208"/>
         <source>The server is ready and waiting</source>
         <translation>Der Server ist verfügbar und wartet</translation>
     </message>

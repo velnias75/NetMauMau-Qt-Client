@@ -13,6 +13,7 @@ src/ui_*.h
 src/object_script.nmm-qt-client*
 src/*.qm
 nmm-qt-client.cppcheck
+UNO_cards_deck.svg
 src/debug-moc/
 src/debug-obj/
 src/debug-rcc/
