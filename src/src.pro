@@ -42,6 +42,7 @@ CONFIG(debug, debug|release) {
 	RCC_DIR = debug-rcc
 	MOC_DIR = debug-moc
 	OBJECTS_DIR = debug-obj
+	QMAKE_DISTCLEAN = $$UI_DIR/* $$RCC_DIR/* $$MOC_DIR/* $$OBJECTS_DIR/*
 	TARGET = nmm-qt-client-debug
 	DEFINES += _GLIBCXX_CONCEPT_CHECKS
 	INCLUDEPATH += "../../netmaumau/src/include"
@@ -61,6 +62,7 @@ CONFIG(debug, debug|release) {
 	RCC_DIR = release-rcc
 	MOC_DIR = release-moc
 	OBJECTS_DIR = release-obj
+	QMAKE_DISTCLEAN = $$UI_DIR/* $$RCC_DIR/* $$MOC_DIR/* $$OBJECTS_DIR/*
 	TARGET = nmm-qt-client
 	win32:CONFIG += static
 	DEFINES += NDEBUG QT_NO_DEBUG_OUTPUT
@@ -224,6 +226,7 @@ RESOURCES += cards.qrc \
 RC_FILE += appicon.rc
 
 DISTFILES += COPYING THANKS cards/* *.png *.ico nmm_qt_client.desktop lgpl-3.html *.gif
+QMAKE_DISTCLEAN += *.gz *.xz
 
 CODECFORTR = UTF-8
 
@@ -232,7 +235,18 @@ TRANSLATIONS += nmm_qt_client_de_DE.ts
 DIST_NAME = $$TARGET-$$VERSION
 
 # The 'make dist' target
-QMAKE_EXTRA_TARGETS += dist-xz
+QMAKE_EXTRA_TARGETS += orig-dist-xz dist-xz
+orig-dist-xz.depends = dist
+orig-dist-xz.target = orig-dist-xz
+orig-dist-xz.commands += mkdir -p /tmp/tmpxz-$$TARGET$$VERSION &&
+orig-dist-xz.commands += gzip -dc $$TARGET$$VERSION\\.tar\\.gz |
+orig-dist-xz.commands += tar --exclude=nmm_qt_client.ico --exclude=usr --exclude=*-moc \
+							 --exclude=*-rcc -C /tmp/tmpxz-$$TARGET$$VERSION -xf - ;
+orig-dist-xz.commands += tar --format=posix -C /tmp/tmpxz-$$TARGET$$VERSION -cf - $$TARGET$$VERSION |
+orig-dist-xz.commands += xz -e9zcf - > $$TARGET\\_$$VERSION\\.orig.tar\\.xz ;
+orig-dist-xz.commands += $(DEL_FILE) -r $$TARGET$$VERSION\\.tar\\.gz ;
+orig-dist-xz.commands += $(DEL_FILE) -r /tmp/tmpxz-$$TARGET$$VERSION ;
+orig-dist-xz.commands += $(DEL_FILE) -r $$TARGET$$VERSION
 dist-xz.depends = dist
 dist-xz.target = dist-xz
 dist-xz.commands += gzip -dc $$TARGET$$VERSION\\.tar\\.gz | xz -ec9 - > $$DIST_NAME\\.tar\\.xz;
