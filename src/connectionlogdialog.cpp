@@ -58,6 +58,8 @@ ConnectionLogDialog::ConnectionLogDialog(QWidget *p) : NetMauMauDialog(p, Qt::Wi
 					 logView, SLOT(scrollToBottom()));
 
 	logView->setModel(&m_model);
+	logView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	logView->horizontalHeader()->setStretchLastSection(true);
 
 	QObject::connect(logView, SIGNAL(customContextMenuRequested(QPoint)),
 					 this, SLOT(showContextMenu(QPoint)));
