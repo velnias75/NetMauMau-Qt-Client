@@ -22,13 +22,15 @@
 
 #include <QFile>
 
+#include "linkercontrol.h"
+
 class SingleAppLock {
 	Q_DISABLE_COPY(SingleAppLock)
 public:
 	explicit SingleAppLock();
 	~SingleAppLock();
 
-	bool isLocked() const;
+	bool isLocked() const _PURE;
 
 private:
 	QFile m_lockFile;

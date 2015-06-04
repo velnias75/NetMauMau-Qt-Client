@@ -845,9 +845,16 @@ void MainWindowPrivate::sortMyCards(SORTMODE mode) {
 
 		QWidget *prevLast = cards.last();
 
-		qSort(cards.begin(), cards.end(), mode == SUIT_RANK ? NetMauMau::Common::cardLess :
-															  NetMauMau::Common::cardGreater);
+		if(mode == SUIT_RANK) {
+			qSort(cards.begin(), cards.end(),
+				  NetMauMau::Common::cardLessThan<QList<CardWidget *>::value_type>());
+		} else {
+			qSort(cards.begin(), cards.end(),
+				  NetMauMau::Common::cardGreaterThan<QList<CardWidget *>::value_type>());
+		}
+
 		int k = 0;
+
 		foreach(CardWidget *i, cards) {
 			m_ui->myCardsLayout->addWidget(i, 0, Qt::AlignHCenter);
 			i->installEventFilter(q);
@@ -1444,6 +1451,8 @@ void MainWindowPrivate::clientPlayerJoined(const QString &p, const QImage &img) 
 	} else {
 		q->statusBar()->clearMessage();
 	}
+
+	qApp->processEvents();
 }
 
 void MainWindowPrivate::clientJackSuit(NetMauMau::Common::ICard::SUIT s) const {
