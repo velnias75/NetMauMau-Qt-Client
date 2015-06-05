@@ -30,6 +30,10 @@
 #include "client.h"
 #include "client_p.h"
 
+#if USE_ESPEAK
+#include "espeak.h"
+#endif
+
 #include "mainwindow.h"
 #include "base64bridge.h"
 
@@ -53,6 +57,11 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 	d_ptr(new ClientPrivate(this, w, cld, server, port)) {}
 
 Client::~Client() {
+
+#if USE_ESPEAK
+	ESpeak::getInstance().stop();
+#endif
+
 	emit offline(true);
 	QThread::disconnect();
 
@@ -132,6 +141,12 @@ NetMauMau::Common::ICard *Client::playCard(const CARDS &cards, std::size_t takeC
 														"SUSPEND")),
 			   ConnectionLogDialog::TO_SERVER);
 	}
+
+#if USE_ESPEAK
+	if(d->m_cardToPlay && d->m_cardToPlay->getRank() == NetMauMau::Common::ICard::SEVEN) {
+		ESpeak::getInstance().stop();
+	}
+#endif
 
 	return d->m_cardToPlay;
 }

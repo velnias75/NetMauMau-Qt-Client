@@ -462,24 +462,27 @@ QString MainWindowPrivate::winnerRank(GameState *gs) const {
 	}
 }
 
-void MainWindowPrivate::takeCardsMark(std::size_t count) const {
+CardWidget *MainWindowPrivate::getFirstSeven() const {
+	const QList<CardWidget *> &cards(gameState()->cards());
+	return NetMauMau::Common::findRank(NetMauMau::Common::ICard::SEVEN, cards.begin(), cards.end());
+}
 
-	GameState *gs = gameState();
+void MainWindowPrivate::takeCardsMark(std::size_t count) const {
 
 	const QString &me(myself());
 	const QList<QStandardItem *> &l(rowForPlayer(me));
+
 	QStandardItem *name = (l.isEmpty()) ? 0L : l.first();
 
 	if(name) {
 		name->setText(me);
-		name->setToolTip(playerToolTip(gs, me));
+		name->setToolTip(playerToolTip(gameState(), me));
 	}
 
 	if(count) {
 
-		const QList<CardWidget *> &cards(gs->cards());
-		const bool normal = NetMauMau::Common::findRank(NetMauMau::Common::ICard::SEVEN,
-														cards.begin(), cards.end());
+		const bool normal = getFirstSeven();
+
 		if(name && normal) {
 			name->setText(QString("<span style=\"color:%1;\">%2</span>").
 						  arg(QApplication::palette().link().color().name()).arg(me));
@@ -964,7 +967,7 @@ void MainWindowPrivate::serverAccept() {
 		const Client::PLAYERINFOS &pl(m_client->playerList(true));
 
 		foreach(const NetMauMau::Client::Connection::PLAYERINFO &i, pl) {
-			qApp->processEvents();
+			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 
 			const QString &pName(QString::fromUtf8(i.name.c_str()));
 
@@ -1222,7 +1225,7 @@ void MainWindowPrivate::clientCardAccepted(const QByteArray &ac) {
 		cw->setVisible(false);
 		gs->cards().removeOne(cw);
 		m_ui->myCardsLayout->removeWidget(cw);
-		qApp->processEvents();
+		qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 		QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
 		delete cw;
 	} else if(!gs->lastPlayedCard()) {
@@ -1233,6 +1236,11 @@ void MainWindowPrivate::clientCardAccepted(const QByteArray &ac) {
 }
 
 void MainWindowPrivate::clientPlayerSuspends(const QString &p) {
+
+#if USE_ESPEAK
+	ESpeak::getInstance().stop();
+#endif
+
 	updatePlayerStats(p, tr("suspended the turn"));
 }
 
@@ -1457,7 +1465,7 @@ void MainWindowPrivate::clientPlayerJoined(const QString &p, const QImage &img) 
 		q->statusBar()->clearMessage();
 	}
 
-	qApp->processEvents();
+	qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 }
 
 void MainWindowPrivate::clientJackSuit(NetMauMau::Common::ICard::SUIT s) const {
@@ -1515,14 +1523,30 @@ void MainWindowPrivate::suspend() {
 
 void MainWindowPrivate::clientChooseJackSuitRequest() {
 
-	CardWidget *lpc = gameState()->lastPlayedCard();
+	const GameState *gs = gameState();
+	CardWidget *lpc = gs->lastPlayedCard();
+	NetMauMau::Common::ICard::SUIT s = NetMauMau::Common::ICard::CLUBS;
 
-	if(lpc) lpc->hide();
+	if(lpc && gs->cards().size() > 2) {
 
-	m_jackChooseDialog->setSuite(lpc ? lpc->getSuit() : m_ui->openCard->rank() ==
-									   NetMauMau::Common::ICard::SEVEN ?
-										   m_ui->openCard->suit() :
-										   NetMauMau::Common::ICard::CLUBS);
+		lpc->hide();
+		s = lpc->getSuit();
+
+	} else if(gs->cards().size() > 2) {
+
+		const CardWidget *cw7 = getFirstSeven();
+		if(cw7) s = cw7->getSuit();
+
+	} else if(!gs->cards().size() == 2) {
+
+		CardWidget *cw = NetMauMau::Common::findRank(NetMauMau::Common::ICard::JACK,
+													 gs->cards().begin(), gs->cards().end());
+		const int idx = gs->cards().indexOf(cw);
+
+		if(idx != -1) s = gs->cards().at(idx == 0 ? 1 : 0)->getSuit();
+	}
+
+	m_jackChooseDialog->setSuite(s);
 	m_jackChooseDialog->exec();
 
 	const NetMauMau::Common::ICard::SUIT cs = m_jackChooseDialog->getChosenSuit();

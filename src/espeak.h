@@ -41,6 +41,7 @@ public:
 	static ESpeak &getInstance();
 
 	void speak(const QString &text, QString lang = QString::null);
+	void stop() const;
 
 	bool isDisabled() const _PURE;
 	int getVolume() const;

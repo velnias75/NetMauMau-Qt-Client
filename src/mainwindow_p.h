@@ -154,6 +154,9 @@ private slots:
 	void filterMyCards(bool);
 	void setOpenCard(const QByteArray &);
 
+private:
+	CardWidget *getFirstSeven() const;
+
 public:
 	typedef enum { PLAYERPIC = 0, NAME, CARDS, TURN, MESSAGE} MSGCOLS;
 

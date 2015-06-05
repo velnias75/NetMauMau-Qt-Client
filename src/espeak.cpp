@@ -62,10 +62,8 @@ ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt(), m_lang("de"),
 
 ESpeak::~ESpeak() {
 
-	if(m_enabled) espeak_Cancel();
-
+	stop();
 	espeak_Terminate();
-
 	free(m_path);
 }
 
@@ -103,6 +101,10 @@ void ESpeak::speak(const QString &text, const QString lang) {
 	}
 
 	speakNow();
+}
+
+void ESpeak::stop() const {
+	if(m_enabled) espeak_Cancel();
 }
 
 void ESpeak::speakNow() {

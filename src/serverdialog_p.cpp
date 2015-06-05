@@ -553,19 +553,20 @@ void ServerDialogPrivate::setPlayerImagePath(const QString &f, bool warn) {
 
 			QApplication::setOverrideCursor(Qt::WaitCursor);
 
-			qApp->processEvents();
+			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 
 			m_playerImage = convertToPNG(img.readAll());
 
 			if(m_playerImage.isEmpty()) m_playerImage = prevImgData;
 
-			qApp->processEvents();
+			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 
 			const bool ok = Client::isPlayerImageUploadable(reinterpret_cast<const unsigned char *>
 															(m_playerImage.constData()),
 															m_playerImage.size(),
 															new Base64Bridge());
-			qApp->processEvents();
+
+			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 
 			QApplication::restoreOverrideCursor();
 
