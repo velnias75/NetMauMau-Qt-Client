@@ -58,10 +58,12 @@ namespace {
 
 const char *TAGNAME = "\"tag_name\":";
 
+const QString CURRSPAN("<span style=\"font-weight:630;\">%1</span>");
 const QString PASTSPAN("<span style=\"font-variant:small-caps;\">%1</span>");
 
 struct scoresPlayer : public std::binary_function<Client::SCORE, std::string, bool> {
-	bool operator()(const Client::SCORE &x, const std::string& y) const {
+	inline result_type operator()(const first_argument_type &x,
+								  const second_argument_type &y) const {
 		return x.name == y;
 	}
 };
@@ -153,6 +155,8 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	QObject::connect(m_ui->actionReconnect, SIGNAL(triggered()), this, SLOT(serverAccept()));
 	QObject::connect(m_ui->actionDisconnect, SIGNAL(triggered()),
 					 this, SLOT(serverDisconnect()));
+	QObject::connect(m_ui->actionExit, SIGNAL(triggered()),
+					 this, SLOT(serverDisconnect()));
 	QObject::connect(m_ui->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 	QObject::connect(m_ui->actionAbout, SIGNAL(triggered()), this, SLOT(about()));
 	QObject::connect(m_ui->actionServer, SIGNAL(triggered()), m_serverDlg, SLOT(show()));
@@ -196,8 +200,9 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 #endif
 
 	QFont fnt("Monospace");
-	fnt.setStyleHint(QFont::TypeWriter);
 	fnt.setPointSize(11);
+	fnt.setStyleHint(QFont::TypeWriter);
+	fnt.setWeight(QFont::DemiBold);
 	m_ui->turnLabel->setFont(fnt);
 
 	fnt.setPointSize(9);
@@ -608,7 +613,7 @@ void MainWindowPrivate::updatePlayerStats(const QString &player, const QString &
 
 		if(!msgList.isEmpty()) {
 
-			QString m(msgList[0]);
+			QString m(CURRSPAN.arg(msgList[0]));
 
 			if(msgList.count() > 1 && msgList[1] != m) {
 
@@ -1514,7 +1519,10 @@ void MainWindowPrivate::clientChooseJackSuitRequest() {
 
 	if(lpc) lpc->hide();
 
-	m_jackChooseDialog->setSuite(lpc ? lpc->getSuit() : NetMauMau::Common::ICard::CLUBS);
+	m_jackChooseDialog->setSuite(lpc ? lpc->getSuit() : m_ui->openCard->rank() ==
+									   NetMauMau::Common::ICard::SEVEN ?
+										   m_ui->openCard->suit() :
+										   NetMauMau::Common::ICard::CLUBS);
 	m_jackChooseDialog->exec();
 
 	const NetMauMau::Common::ICard::SUIT cs = m_jackChooseDialog->getChosenSuit();

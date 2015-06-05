@@ -1,6 +1,7 @@
 nmm-qt-client*.tar.*
 .kdev4
 .svn
+core
 Makefile
 nmm-qt-client.kdev4
 nmm-qt-client.pro.user*
