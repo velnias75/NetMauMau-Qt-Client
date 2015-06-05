@@ -88,8 +88,8 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
 	case Qt::Key_9: d->clickCard(8, e); break;
 	case Qt::Key_0: d->clickCard(9, e); break;
 #if defined(USE_ESPEAK) && !defined(NDEBUG)
-	case Qt::Key_F11:
-		ESpeak::getInstance().speak(QString::fromUtf8("N\u00e4t MauMau"), "de"); break;
+	case Qt::Key_F11: ESpeak::getInstance().speak(QString::fromUtf8("N\u00e4t MauMau"), "de");
+		break;
 #endif
 	default: QMainWindow::keyReleaseEvent(e); break;
 	}

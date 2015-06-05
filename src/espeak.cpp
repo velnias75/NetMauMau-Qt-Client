@@ -19,6 +19,7 @@
 
 #include <QTimer>
 #include <QLocale>
+#include <QtCore/qmath.h>
 
 #ifdef _WIN32
 #include <QCoreApplication>
@@ -61,7 +62,6 @@ ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt(), m_lang("de"),
 }
 
 ESpeak::~ESpeak() {
-
 	stop();
 	espeak_Terminate();
 	free(m_path);

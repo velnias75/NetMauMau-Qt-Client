@@ -57,11 +57,6 @@ Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &pla
 	d_ptr(new ClientPrivate(this, w, cld, server, port)) {}
 
 Client::~Client() {
-
-#if USE_ESPEAK
-	ESpeak::getInstance().stop();
-#endif
-
 	emit offline(true);
 	QThread::disconnect();
 

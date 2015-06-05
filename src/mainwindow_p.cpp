@@ -1244,8 +1244,8 @@ void MainWindowPrivate::clientPlayerLost(const QString &p, std::size_t, std::siz
 	Q_Q(MainWindow);
 
 	updatePlayerStats(p, tr("<span style=\"color:%1;\">loses</span> " \
-							"with %n point(s) at hand", "", pt).
-					  arg(QApplication::palette().link().color().name()), true);
+							"with <span style=\"font:oblique bold\">%n</span> point(s) at hand",
+							"", pt).arg(QApplication::palette().link().color().name()), true);
 
 	if(isMe(p) && !NetMauMauMessageBox::isDisplayed()) {
 
@@ -1532,7 +1532,7 @@ void MainWindowPrivate::clientChooseJackSuitRequest() {
 		const CardWidget *cw7 = getFirstSeven();
 		if(cw7) s = cw7->getSuit();
 
-	} else if(!gs->cards().size() == 2) {
+	} else if(gs->cards().size() == 2) {
 
 		CardWidget *cw = NetMauMau::Common::findRank(NetMauMau::Common::ICard::JACK,
 													 gs->cards().begin(), gs->cards().end());
@@ -1670,6 +1670,11 @@ void MainWindowPrivate::lostWinConfirmed(int tryAgain) {
 }
 
 void MainWindowPrivate::serverDisconnect() {
+
+#if USE_ESPEAK
+	ESpeak::getInstance().stop();
+#endif
+
 	destroyClient(true);
 }
 

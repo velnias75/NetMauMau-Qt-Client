@@ -136,44 +136,44 @@
 <context>
     <name>Client</name>
     <message>
-        <location filename="client.cpp" line="83"/>
+        <location filename="client.cpp" line="78"/>
         <source>There is already a game running on this server</source>
         <translation>Es läuft bereits ein Spiel auf diesem Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="85"/>
+        <location filename="client.cpp" line="80"/>
         <source>Player name %1 is already in use</source>
         <translation>Der Spielername %1 wird bereits verwendet</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="87"/>
+        <location filename="client.cpp" line="82"/>
         <source>A timeout occured while connection to the server</source>
         <translation>Zeitüberschreitung während des Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="89"/>
+        <location filename="client.cpp" line="84"/>
         <source>An protocol error occured while connection to the server</source>
         <translation>Es gab einen Protokollfehler beim
 Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="91"/>
+        <location filename="client.cpp" line="86"/>
         <source>The server rejected the connection</source>
         <translation>Der Server hat die Verbindung zurückgewiesen</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="93"/>
+        <location filename="client.cpp" line="88"/>
         <source>The remote host seems not to be a NetMauMau server</source>
         <translation>Die Gegenstelle scheint kein NetMauMau-Server zu sein</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="95"/>
+        <location filename="client.cpp" line="90"/>
         <source>The server is in the progress of a shutdown</source>
         <oldsource>The server is in the progress of a ashutdown</oldsource>
         <translation>Der Server ist gerade dabei herunter zu fahren</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="97"/>
+        <location filename="client.cpp" line="92"/>
         <source>Client (version %1.%2) not supported.
 Server accepts at maximum version %3.%4</source>
         <translation>Klient (Version %1.%2) wird nicht unterstützt.
@@ -1096,11 +1096,11 @@ possible cards</oldsource>
     </message>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="1246"/>
-        <source>&lt;span style=&quot;color:%1;&quot;&gt;loses&lt;/span&gt; with %n point(s) at hand</source>
-        <oldsource>&lt;span style=&quot;color:blue;&quot;&gt;lost&lt;/span&gt; in turn %1 with %n point(s) at hand</oldsource>
+        <source>&lt;span style=&quot;color:%1;&quot;&gt;loses&lt;/span&gt; with &lt;span style=&quot;font:oblique bold&quot;&gt;%n&lt;/span&gt; point(s) at hand</source>
+        <oldsource>&lt;span style=&quot;color:%1;&quot;&gt;loses&lt;/span&gt; with %n point(s) at hand</oldsource>
         <translation>
-            <numerusform>&lt;span style=&quot;color:%1;&quot;&gt;verliert&lt;/span&gt; mit %n Punkt auf der Hand</numerusform>
-            <numerusform>&lt;span style=&quot;color:%1;&quot;&gt;verliert&lt;/span&gt; mit %n Punkten auf der Hand</numerusform>
+            <numerusform>&lt;span style=&quot;color:%1;&quot;&gt;verliert&lt;/span&gt; mit &lt;span style=&quot;font:oblique bold&quot;&gt;%n&lt;/span&gt; Punkt auf der Hand</numerusform>
+            <numerusform>&lt;span style=&quot;color:%1;&quot;&gt;verliert&lt;/span&gt; mit &lt;span style=&quot;font:oblique bold&quot;&gt;%n&lt;/span&gt; Punkten auf der Hand</numerusform>
         </translation>
     </message>
     <message>
@@ -1234,33 +1234,33 @@ Spieldauer: %2</translation>
         <translation>Eine %1 beginnen?</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1741"/>
+        <location filename="mainwindow_p.cpp" line="1746"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1782"/>
+        <location filename="mainwindow_p.cpp" line="1787"/>
         <source>starts a %1</source>
         <translation>beginnt eine %1</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1805"/>
-        <location filename="mainwindow_p.cpp" line="1808"/>
+        <location filename="mainwindow_p.cpp" line="1810"/>
+        <location filename="mainwindow_p.cpp" line="1813"/>
         <source>%1 of %2</source>
         <translation>%1 von %2</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1828"/>
+        <location filename="mainwindow_p.cpp" line="1833"/>
         <source>ends a %1</source>
         <translation>beendet die %1</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1831"/>
+        <location filename="mainwindow_p.cpp" line="1836"/>
         <source>%1 finished</source>
         <translation>%1 beendet</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1870"/>
+        <location filename="mainwindow_p.cpp" line="1875"/>
         <source>Version %1 is available!</source>
         <translation>Version %1 ist verfügbar!</translation>
     </message>
