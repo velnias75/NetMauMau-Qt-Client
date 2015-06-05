@@ -1236,11 +1236,6 @@ void MainWindowPrivate::clientCardAccepted(const QByteArray &ac) {
 }
 
 void MainWindowPrivate::clientPlayerSuspends(const QString &p) {
-
-#if USE_ESPEAK
-	ESpeak::getInstance().stop();
-#endif
-
 	updatePlayerStats(p, tr("suspended the turn"));
 }
 
