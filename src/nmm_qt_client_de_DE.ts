@@ -147,12 +147,14 @@
     </message>
     <message>
         <location filename="client.cpp" line="82"/>
-        <source>A timeout occured while connection to the server</source>
+        <source>A timeout occurred while connection to the server</source>
+        <oldsource>A timeout occured while connection to the server</oldsource>
         <translation>Zeitüberschreitung während des Verbindungsaufbau zum Server</translation>
     </message>
     <message>
         <location filename="client.cpp" line="84"/>
-        <source>An protocol error occured while connection to the server</source>
+        <source>An protocol error occurred while connection to the server</source>
+        <oldsource>An protocol error occured while connection to the server</oldsource>
         <translation>Es gab einen Protokollfehler beim
 Verbindungsaufbau zum Server</translation>
     </message>

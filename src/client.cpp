@@ -79,9 +79,9 @@ void Client::run() {
 	} catch(const NetMauMau::Client::Exception::PlayerlistException &e) {
 		emit cError(tr("Player name %1 is already in use").arg(QString::fromUtf8(e.what())), false);
 	} catch(const NetMauMau::Client::Exception::TimeoutException &e) {
-		emit cError(tr("A timeout occured while connection to the server"));
+		emit cError(tr("A timeout occurred while connection to the server"));
 	} catch(const NetMauMau::Client::Exception::ProtocolErrorException &e) {
-		emit cError(tr("An protocol error occured while connection to the server"));
+		emit cError(tr("An protocol error occurred while connection to the server"));
 	} catch(const NetMauMau::Client::Exception::ConnectionRejectedException &e) {
 		emit cError(tr("The server rejected the connection"));
 	} catch(const NetMauMau::Client::Exception::NoNetMauMauServerException &e) {
