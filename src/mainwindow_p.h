@@ -105,6 +105,7 @@ private slots:
 	void itemChanged(QStandardItem *);
 	void notifyClientUpdate();
 	void unmau();
+	void unborderCards();
 
 	void serverAccept();
 	void serverDisconnect();

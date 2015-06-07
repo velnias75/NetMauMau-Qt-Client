@@ -501,12 +501,16 @@ void MainWindowPrivate::takeCardsMark(std::size_t count) const {
 #endif
 		}
 
+		m_ui->myCardsScrollArea->setStyleSheet(normal ? QString::null :
+														QString("QScrollArea " \
+																"{ border: 2px ridge red; }"));
 		m_ui->takeCardsButton->setStyleSheet(normal ? QString::null :
 													  QString("QPushButton { color:red; }"));
 		m_ui->takeCardsButton->setDisabled(false);
 		m_ui->suspendButton->setDisabled(true);
 
 	} else {
+		m_ui->myCardsScrollArea->setStyleSheet(QString::null);
 		m_ui->takeCardsButton->setStyleSheet(QString::null);
 		m_ui->takeCardsButton->setDisabled(true);
 		m_ui->suspendButton->setDisabled(false);
@@ -1107,6 +1111,7 @@ void MainWindowPrivate::clientError(const QString &err, bool retry) {
 
 void MainWindowPrivate::clientCardSet(const Client::CARDS &c) {
 
+	const bool initial = gameState()->initial();
 	QList<CardWidget *> &cards(gameState()->cards());
 
 	int k = 0;
@@ -1114,6 +1119,12 @@ void MainWindowPrivate::clientCardSet(const Client::CARDS &c) {
 
 		if(card) {
 			cards.push_back(new CardWidget(m_ui->awidget, card->description().c_str(), true));
+
+			if(!initial) {
+				cards.back()->setStyleSheet("CardWidget { border: 1px solid red; }");
+				QTimer::singleShot(750, this, SLOT(unborderCards()));
+			}
+
 			m_ui->myCardsLayout->addWidget(cards.back(), 0, Qt::AlignHCenter);
 			addKeyShortcutTooltip(cards.back(), ++k);
 			QObject::connect(cards.back(), SIGNAL(chosen(CardWidget*)),
@@ -1130,6 +1141,13 @@ void MainWindowPrivate::clientCardSet(const Client::CARDS &c) {
 	updatePlayerStats(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
 	QTimer::singleShot(0, this, SLOT(scrollToLastCard()));
+}
+
+void MainWindowPrivate::unborderCards() {
+	for(int j = 0; j < m_ui->myCardsLayout->count(); ++j) {
+		CardWidget *w = static_cast<CardWidget *>(m_ui->myCardsLayout->itemAt(j)->widget());
+		if(w) w->setStyleSheet(QString::null);
+	}
 }
 
 void MainWindowPrivate::scrollToLastCard() {

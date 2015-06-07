@@ -110,6 +110,8 @@ class GameState {
 	bool isDrawn() const _PURE;
 	void setDrawn(bool b);
 
+	bool initial();
+
 private:
 	bool m_inGame;
 	QList<CardWidget *> m_cards;
@@ -137,6 +139,7 @@ private:
 	std::set<QStandardItem *> m_unmau;
 	QString m_initialCardCount;
 	bool m_drawn;
+	bool m_initial;
 };
 
 #endif // GAMESTATE_H
