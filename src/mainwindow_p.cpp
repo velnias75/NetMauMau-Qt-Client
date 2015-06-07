@@ -501,9 +501,10 @@ void MainWindowPrivate::takeCardsMark(std::size_t count) const {
 #endif
 		}
 
-		m_ui->myCardsScrollArea->setStyleSheet(normal ? QString::null :
-														QString("QScrollArea " \
-																"{ border: 2px ridge red; }"));
+		m_ui->myCardsScrollArea->setStyleSheet(normal ? QString("QScrollArea { border: 2px " \
+																"ridge palette(highlight); }") :
+														QString("QScrollArea { border: 2px " \
+																"ridge palette(link-visited ); }"));
 		m_ui->takeCardsButton->setStyleSheet(normal ? QString::null :
 													  QString("QPushButton { color:red; }"));
 		m_ui->takeCardsButton->setDisabled(false);
@@ -1121,7 +1122,7 @@ void MainWindowPrivate::clientCardSet(const Client::CARDS &c) {
 			cards.push_back(new CardWidget(m_ui->awidget, card->description().c_str(), true));
 
 			if(!initial) {
-				cards.back()->setStyleSheet("CardWidget { border: 1px solid red; }");
+				cards.back()->setStyleSheet("CardWidget { border: 1px solid palette(highlight); }");
 				QTimer::singleShot(750, this, SLOT(unborderCards()));
 			}
 
