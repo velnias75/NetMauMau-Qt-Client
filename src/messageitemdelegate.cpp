@@ -38,6 +38,7 @@ MessageItemDelegate::~MessageItemDelegate() {
 
 QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 										const QModelIndex &txt) const {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	QStyleOptionViewItemV4 opt(option);
 	initStyleOption(&opt, txt);
 
@@ -48,6 +49,13 @@ QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 
 QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItemV4 &opt,
 										const QModelIndex &) const {
+
+#else
+	QStyleOptionViewItem opt(option);
+	initStyleOption(&opt, txt);
+
+	if(m_cardDetect) Util::cardStyler(opt.text, opt.font);
+#endif
 
 	QTextOption tOpt(opt.displayAlignment|Qt::AlignVCenter);
 	tOpt.setWrapMode(QTextOption::NoWrap);

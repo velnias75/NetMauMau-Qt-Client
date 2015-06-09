@@ -39,7 +39,9 @@ protected:
 					   const QModelIndex &index) const;
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
+#if QT_VERSION <= QT_VERSION_CHECK(5, 0, 0)
 	QTextDocument *doc(const QStyleOptionViewItemV4 &option, const QModelIndex &txt) const;
+#endif
 	virtual QTextDocument *doc(const QStyleOptionViewItem &option, const QModelIndex &txt) const;
 
 private:

@@ -24,7 +24,10 @@
 
 class QModelIndex;
 class QAbstractItemModel;
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 class QStyleOptionViewItemV4;
+#endif
 
 class BaseItemDelegate {
 	DISALLOW_COPY_AND_ASSIGN(BaseItemDelegate)

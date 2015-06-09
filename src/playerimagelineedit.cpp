@@ -20,6 +20,10 @@
 #include <QUrl>
 #include <QDragEnterEvent>
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QMimeData>
+#endif
+
 #include "playerimagelineedit.h"
 
 PlayerImageLineEdit::PlayerImageLineEdit(QWidget *p) : QLineEdit(p) {

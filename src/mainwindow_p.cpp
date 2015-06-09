@@ -149,7 +149,11 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 					 this, SLOT(notifyClientUpdate()));
 
 	QObject::connect(m_ui->actionConnectionlog, SIGNAL(toggled(bool)),
+				 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 					 m_connectionLogDlg, SLOT(setShown(bool)));
+#else
+					 m_connectionLogDlg, SLOT(setVisible(bool)));
+#endif
 	QObject::connect(m_connectionLogDlg, SIGNAL(rejected()),
 					 m_ui->actionConnectionlog, SLOT(toggle()));
 	QObject::connect(m_ui->actionReconnect, SIGNAL(triggered()), this, SLOT(serverAccept()));
@@ -236,8 +240,14 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	m_ui->remotePlayersView->setItemDelegateForColumn(TURN, m_turnItemDelegate);
 	m_ui->remotePlayersView->setItemDelegateForColumn(MESSAGE, m_messageItemDelegate);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	m_ui->remotePlayersView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	m_ui->remotePlayersView->horizontalHeader()->setClickable(false);
+#else
+	m_ui->remotePlayersView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+	m_ui->remotePlayersView->horizontalHeader()->setSectionsClickable(false);
+#endif
+
 	m_ui->remotePlayersView->verticalHeader()->setVisible(false);
 	m_ui->remotePlayersView->setModel(&m_model);
 
@@ -261,7 +271,11 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	QObject::connect(m_lsov, SIGNAL(closed()),
 					 m_ui->actionNetMauMauServerOutput, SLOT(toggle()));
 	QObject::connect(m_ui->actionNetMauMauServerOutput, SIGNAL(toggled(bool)),
+				 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 					 m_lsov, SLOT(setShown(bool)));
+#else
+					 m_lsov, SLOT(setVisible(bool)));
+#endif
 
 	readSettings();
 

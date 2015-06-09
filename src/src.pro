@@ -1,5 +1,9 @@
 QT += svg network
 
+greaterThan(QT_MAJOR_VERSION, 4) {
+	QT += widgets
+}
+
 CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
@@ -44,7 +48,6 @@ CONFIG(debug, debug|release) {
 	OBJECTS_DIR = debug-obj
 	QMAKE_DISTCLEAN = $$UI_DIR/* $$RCC_DIR/* $$MOC_DIR/* $$OBJECTS_DIR/*
 	TARGET = nmm-qt-client-debug
-	DEFINES += _GLIBCXX_CONCEPT_CHECKS
 	INCLUDEPATH += "../../netmaumau/src/include"
 	QMAKE_CXXFLAGS += -g3 -O0 -fstrict-aliasing -ftrapv -fno-inline -Wcast-align -Wcast-qual \
 	-Wctor-dtor-privacy -Wdisabled-optimization -Wdouble-promotion -Wextra -Wformat=2 \

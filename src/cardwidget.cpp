@@ -19,6 +19,11 @@
 
 #include <QResizeEvent>
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QMimeData>
+#include <QDrag>
+#endif
+
 #include <cardtools.h>
 
 #include "cardwidget.h"

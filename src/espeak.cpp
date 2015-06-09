@@ -114,7 +114,11 @@ void ESpeak::speakNow() {
 	unsigned int uid;
 	void *udata = NULL;
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	QByteArray lng(m_lang.toAscii().constData());
+#else
+	QByteArray lng(m_lang.toLatin1().constData());
+#endif
 
 	espeak_VOICE voice;
 	std::memset(&voice, 0, sizeof(espeak_VOICE));

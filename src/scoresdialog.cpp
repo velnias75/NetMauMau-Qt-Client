@@ -28,9 +28,8 @@
 #include "client.h"
 
 ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : NetMauMauDialog(p), m_serverdialog(sd),
-	m_model(0, 2, this), m_server(QString::null), m_scoresDelegate(new MessageItemDelegate(&m_model,
-																						   this,
-																						   false)) {
+	m_model(0, 2, this), m_server(QString::null),
+	m_scoresDelegate(new MessageItemDelegate(&m_model, this, false)) {
 
 	setupUi(this);
 
@@ -50,10 +49,19 @@ ScoresDialog::ScoresDialog(ServerDialog *sd, QWidget *p) : NetMauMauDialog(p), m
 	scoresView->setModel(&m_model);
 	scoresView->setColumnWidth(0, 180);
 	scoresView->setColumnWidth(1, 0);
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	scoresView->verticalHeader()->setClickable(false);
 	scoresView->horizontalHeader()->setClickable(false);
 	scoresView->horizontalHeader()->setResizeMode(0, QHeaderView::Fixed);
 	scoresView->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch);
+#else
+	scoresView->verticalHeader()->setSectionsClickable(false);
+	scoresView->horizontalHeader()->setSectionsClickable(false);
+	scoresView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
+	scoresView->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+#endif
+
 	scoresView->horizontalHeader()->setStretchLastSection(true);
 
 	scoresView->setItemDelegateForColumn(0, m_scoresDelegate);

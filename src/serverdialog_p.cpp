@@ -148,7 +148,13 @@ ServerDialogPrivate::ServerDialogPrivate(QSplashScreen *splash, ServerDialog *p)
 	m_model.horizontalHeaderItem(0)->setSizeHint(QSize(300, -1));
 
 	q->availServerView->setModel(&m_model);
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	q->availServerView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+#else
+	q->availServerView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+#endif
+
 	q->availServerView->horizontalHeader()->setStretchLastSection(true);
 	q->availServerView->verticalHeader()->setVisible(false);
 

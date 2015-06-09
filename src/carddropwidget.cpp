@@ -20,6 +20,10 @@
 #include <QBoxLayout>
 #include <QDragEnterEvent>
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QMimeData>
+#endif
+
 #include "carddropwidget.h"
 
 #include "gamestate.h"
@@ -45,7 +49,11 @@ void CardDropWidget::dropEvent(QDropEvent *e) {
 
 	if(e->mimeData()->hasFormat("application/x-dndcardwidget")) {
 
+#if QT_VERSION <= QT_VERSION_CHECK(5, 0, 0)
 		QWidget *src = e->source();
+#else
+		QWidget *src = dynamic_cast<QWidget *>(e->source());
+#endif
 
 		if(src && e->mimeData()->data("application/x-dndcardwidget") ==
 				src->property("cardDescription").toByteArray()) {

@@ -35,6 +35,10 @@
 
 int main(int argc, char *argv[]) {
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+	qRegisterMetaType<QVector<int> >("QVector<int>");
+#endif
+
 	QCoreApplication::setOrganizationName("RANGUN");
 	QCoreApplication::setOrganizationDomain("rangun.de");
 	QCoreApplication::setApplicationName(PACKAGE_NAME);
