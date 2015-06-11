@@ -478,7 +478,7 @@ QString MainWindowPrivate::winnerRank(GameState *gs) const {
 
 CardWidget *MainWindowPrivate::getFirstSeven() const {
 	const QList<CardWidget *> &cards(gameState()->cards());
-	return NetMauMau::Common::findRank(NetMauMau::Common::ICard::SEVEN, cards.begin(), cards.end());
+	return NetMauMau::Common::find(NetMauMau::Common::ICard::SEVEN, cards.begin(), cards.end());
 }
 
 void MainWindowPrivate::takeCardsMark(std::size_t count) const {
@@ -552,8 +552,8 @@ void MainWindowPrivate::enableMyCards(bool b) {
 				if(m_ui->filterCards->isChecked()) {
 
 					if(!gs->noCardPossible()) {
-						w->setEnabled(NetMauMau::Common::findCard(w, gs->possibleCards().begin(),
-																  gs->possibleCards().end()) != 0L);
+						w->setEnabled(NetMauMau::Common::find(w, gs->possibleCards().begin(),
+															  gs->possibleCards().end()) != 0L);
 					} else {
 						w->setEnabled(false);
 					}
@@ -1567,8 +1567,8 @@ void MainWindowPrivate::clientChooseJackSuitRequest() {
 
 	} else if(gs->cards().size() == 2) {
 
-		CardWidget *cw = NetMauMau::Common::findRank(NetMauMau::Common::ICard::JACK,
-													 gs->cards().begin(), gs->cards().end());
+		CardWidget *cw = NetMauMau::Common::find(NetMauMau::Common::ICard::JACK,
+												 gs->cards().begin(), gs->cards().end());
 		const int idx = gs->cards().indexOf(cw);
 
 		if(idx != -1) s = gs->cards().at(idx == 0 ? 1 : 0)->getSuit();
