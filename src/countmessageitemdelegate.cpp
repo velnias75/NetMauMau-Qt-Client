@@ -26,11 +26,10 @@ CountMessageItemDelegate::~CountMessageItemDelegate() {}
 
 QTextDocument *CountMessageItemDelegate::doc(const QStyleOptionViewItem &option,
 											 const QModelIndex &index) const {
-
 	QStyleOptionViewItemV4 opt(option);
 	initStyleOption(&opt, index);
 
-	opt.text = "<b>" + opt.text + "</b>";
+	opt.text = "<span style=\"font-weight:bold;\">" + opt.text + "</span>";
 
-	return MessageItemDelegate::doc(opt, index);
+	return MessageItemDelegate::docEx(opt, index);
 }

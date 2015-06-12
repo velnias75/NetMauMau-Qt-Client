@@ -63,7 +63,7 @@ private:
 	QProcess m_process;
 	bool m_errFail;
 	LocalServerOutputView *m_lsov;
-	QString m_hostLabel;
+	const QString m_hostLabel;
 	ServerDialog *m_serverDlg;
 };
 

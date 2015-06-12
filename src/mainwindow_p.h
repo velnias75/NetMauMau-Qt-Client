@@ -182,11 +182,11 @@ public:
 	QProgressDialog *m_receivingPlayerImageProgress;
 	QLabel m_timeLabel;
 	QBasicTimer m_playTimer;
-	QDialog *m_licenseDialog;
+	const QDialog *m_licenseDialog;
 	QLabel m_aceRoundLabel;
 	mutable GameState *m_gameState;
 	ScoresDialog *m_scoresDialog;
-	FileDownloader *m_clientReleaseDownloader;
+	const FileDownloader *m_clientReleaseDownloader;
 	const QImage m_defaultPlayerImage;
 	QMenu *m_playerNameMenu;
 	QMovie *m_animLogo;

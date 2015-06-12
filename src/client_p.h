@@ -43,15 +43,15 @@ public:
 	Client *const q_ptr;
 	Q_DECLARE_PUBLIC(Client)
 
-	MainWindow *const m_mainWindow;
+	const MainWindow *const m_mainWindow;
 	bool m_disconnectNow;
 	mutable NetMauMau::Common::ICard *m_cardToPlay;
 	NetMauMau::Common::ICard::SUIT m_chosenSuit;
 	bool m_online;
 	ConnectionLogDialog *const m_connectionLogDialog;
 	bool m_aceRoundChoice;
-	QString m_server;
-	uint16_t m_port;
+	const QString m_server;
+	const uint16_t m_port;
 };
 
 #endif // CLIENTPRIVATE_H

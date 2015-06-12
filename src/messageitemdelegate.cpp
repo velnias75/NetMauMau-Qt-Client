@@ -38,25 +38,16 @@ MessageItemDelegate::~MessageItemDelegate() {
 
 QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItem &option,
 										const QModelIndex &txt) const {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	QStyleOptionViewItemV4 opt(option);
 	initStyleOption(&opt, txt);
 
 	if(m_cardDetect) Util::cardStyler(opt.text, opt.font);
 
-	return doc(opt, txt);
+	return docEx(opt, txt);
 }
 
-QTextDocument *MessageItemDelegate::doc(const QStyleOptionViewItemV4 &opt,
-										const QModelIndex &) const {
-
-#else
-	QStyleOptionViewItem opt(option);
-	initStyleOption(&opt, txt);
-
-	if(m_cardDetect) Util::cardStyler(opt.text, opt.font);
-#endif
-
+QTextDocument *MessageItemDelegate::docEx(const QStyleOptionViewItemV4 &opt,
+										  const QModelIndex &) const {
 	QTextOption tOpt(opt.displayAlignment|Qt::AlignVCenter);
 	tOpt.setWrapMode(QTextOption::NoWrap);
 
@@ -87,7 +78,7 @@ void MessageItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
-	QTextDocument *document = doc(option, index);
+	QTextDocument *document = this->doc(option, index);
 	const QPoint off(opt.rect.left(), opt.rect.top() +
 					 qCeil(qreal(opt.rect.height())/qreal(2.0f) -
 						   document->size().height()/qreal(2.0f)));

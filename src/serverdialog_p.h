@@ -84,12 +84,12 @@ public:
 	const QRegExpValidator *m_nameRexValidator;
 	QByteArray m_playerImage;
 	QTimer m_autoRefresh;
-	QMutex m_mutex;
+	const QMutex m_mutex;
 	bool m_blockAutoRefresh;
 	QSplashScreen *m_splash;
 	mutable QString m_lastPlayerName;
 	QString m_imageFormats;
-	AddServerDialog *m_addServerDialog;
+	const AddServerDialog *m_addServerDialog;
 	QMenu *m_ctxPopup;
 	QModelIndex m_ctxIndex;
 	mutable GameState::DIR m_direction;

@@ -50,8 +50,8 @@ public:
 	QString m_defaultStyleSheet;
 	bool m_dragable;
 	QPoint m_dragStartPosition;
-	QSize m_curSize;
-	std::string m_cardDesc;
+	const QSize m_curSize;
+	const std::string m_cardDesc;
 };
 
 #endif // CARDWIDGETPRIVATE_H

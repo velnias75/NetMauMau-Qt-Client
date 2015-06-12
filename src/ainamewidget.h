@@ -45,7 +45,7 @@ signals:
 	void textChanged(QString);
 
 private:
-	QValidator *m_nameValidator;
+	const QValidator *m_nameValidator;
 };
 
 #endif // AINAMEWIDGET_H
