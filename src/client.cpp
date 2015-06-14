@@ -23,6 +23,7 @@
 #include <playerlistexception.h>
 #include <gamerunningexception.h>
 #include <protocolerrorexception.h>
+#include <lostconnectionexception.h>
 #include <versionmismatchexception.h>
 #include <nonetmaumauserverexception.h>
 #include <connectionrejectedexception.h>
@@ -74,6 +75,8 @@ void Client::run() {
 		play();
 		emit offline(true);
 
+	} catch(const NetMauMau::Client::Exception::LostConnectionException &) {
+		emit cError(tr("Lost connection to a player."));
 	} catch(const NetMauMau::Client::Exception::GameRunningException &) {
 		emit cError(tr("There is already a game running on this server"));
 	} catch(const NetMauMau::Client::Exception::PlayerlistException &e) {

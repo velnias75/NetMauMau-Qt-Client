@@ -136,46 +136,51 @@
 <context>
     <name>Client</name>
     <message>
-        <location filename="client.cpp" line="78"/>
+        <location filename="client.cpp" line="79"/>
+        <source>Lost connection to a player.</source>
+        <translation>Es ist eine Verbindung zu einem Spieler verloren gegangen.</translation>
+    </message>
+    <message>
+        <location filename="client.cpp" line="81"/>
         <source>There is already a game running on this server</source>
         <translation>Es läuft bereits ein Spiel auf diesem Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="80"/>
+        <location filename="client.cpp" line="83"/>
         <source>Player name %1 is already in use</source>
         <translation>Der Spielername %1 wird bereits verwendet</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="82"/>
+        <location filename="client.cpp" line="85"/>
         <source>A timeout occurred while connection to the server</source>
         <oldsource>A timeout occured while connection to the server</oldsource>
         <translation>Zeitüberschreitung während des Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="84"/>
+        <location filename="client.cpp" line="87"/>
         <source>An protocol error occurred while connection to the server</source>
         <oldsource>An protocol error occured while connection to the server</oldsource>
         <translation>Es gab einen Protokollfehler beim
 Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="86"/>
+        <location filename="client.cpp" line="89"/>
         <source>The server rejected the connection</source>
         <translation>Der Server hat die Verbindung zurückgewiesen</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="88"/>
+        <location filename="client.cpp" line="91"/>
         <source>The remote host seems not to be a NetMauMau server</source>
         <translation>Die Gegenstelle scheint kein NetMauMau-Server zu sein</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="90"/>
+        <location filename="client.cpp" line="93"/>
         <source>The server is in the progress of a shutdown</source>
         <oldsource>The server is in the progress of a ashutdown</oldsource>
         <translation>Der Server ist gerade dabei herunter zu fahren</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="92"/>
+        <location filename="client.cpp" line="95"/>
         <source>Client (version %1.%2) not supported.
 Server accepts at maximum version %3.%4</source>
         <translation>Klient (Version %1.%2) wird nicht unterstützt.
