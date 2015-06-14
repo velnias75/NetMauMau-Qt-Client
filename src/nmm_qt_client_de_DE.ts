@@ -175,12 +175,14 @@ Verbindungsaufbau zum Server</translation>
     </message>
     <message>
         <location filename="client.cpp" line="93"/>
-        <source>The server is in the progress of a shutdown</source>
-        <oldsource>The server is in the progress of a ashutdown</oldsource>
-        <translation>Der Server ist gerade dabei herunter zu fahren</translation>
+        <source>The server is in the progress of shutting down.
+Try again later or contact the server administrator.</source>
+        <oldsource>The server is in the progress of a shutdown</oldsource>
+        <translation>Der Server ist gerade dabei herunter zu fahren.
+Versuche es später nochmals oder kontaktiere den Serveradministrator.</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="95"/>
+        <location filename="client.cpp" line="96"/>
         <source>Client (version %1.%2) not supported.
 Server accepts at maximum version %3.%4</source>
         <translation>Klient (Version %1.%2) wird nicht unterstützt.

@@ -90,7 +90,8 @@ void Client::run() {
 	} catch(const NetMauMau::Client::Exception::NoNetMauMauServerException &e) {
 		emit cError(tr("The remote host seems not to be a NetMauMau server"));
 	} catch(const NetMauMau::Client::Exception::ShutdownException &e) {
-		emit cError(tr("The server is in the progress of a shutdown"));
+		emit cError(tr("The server is in the progress of shutting down.\n" \
+					   "Try again later or contact the server administrator."));
 	} catch(const NetMauMau::Client::Exception::VersionMismatchException &e) {
 		emit cError(tr("Client (version %1.%2) not supported.\nServer accepts at " \
 					   "maximum version %3.%4")
