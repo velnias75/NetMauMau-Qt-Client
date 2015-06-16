@@ -112,6 +112,9 @@ class GameState {
 
 	bool initial();
 
+	bool isUltimate() const _PURE;
+	void setUltimate(bool b);
+
 private:
 	bool m_inGame;
 	QList<CardWidget *> m_cards;
@@ -140,6 +143,7 @@ private:
 	QString m_initialCardCount;
 	bool m_drawn;
 	bool m_initial;
+	bool m_ultimate;
 };
 
 #endif // GAMESTATE_H

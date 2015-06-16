@@ -85,6 +85,10 @@ void ServerInfo::run() {
 								.toULong();
 				retry = false;
 
+				const Client::CAPABILITIES::const_iterator &ultimate(caps.find("ULTIMATE"));
+				server->setData(ultimate != caps.end() ? (ultimate->second == "true" ?
+															  true : false) : false, ULTIMATE);
+
 				const std::string &sVer(caps.find("SERVER_VERSION")->second);
 				version->setText(QString::fromStdString(sVer));
 

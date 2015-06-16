@@ -107,6 +107,7 @@ private slots:
 	void unmau();
 	void unborderCards();
 
+	void gameOver();
 	void serverAccept();
 	void serverDisconnect();
 	void lostWinConfirmed(int);

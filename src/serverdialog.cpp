@@ -67,6 +67,19 @@ QString ServerDialog::getAcceptedServerAlias() const {
 	}
 }
 
+bool ServerDialog::isAcceptedServerUltimate() const {
+
+	Q_D(const ServerDialog);
+
+	const QModelIndexList &l(availServerView->selectionModel()->selection().indexes());
+
+	if(!l.isEmpty()) {
+		return d->m_model.itemFromIndex(l.first())->data(ServerInfo::ULTIMATE).toBool();
+	} else {
+		return false;
+	}
+}
+
 QString ServerDialog::getAcceptedServerVersion() const {
 
 	Q_D(const ServerDialog);

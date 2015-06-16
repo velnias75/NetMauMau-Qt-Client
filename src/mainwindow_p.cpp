@@ -959,6 +959,7 @@ void MainWindowPrivate::serverAccept() {
 
 	gs->setDirection(m_serverDlg->getDirection());
 	gs->setMaxPlayerCount(m_serverDlg->getMaxPlayerCount());
+	gs->setUltimate(m_serverDlg->isAcceptedServerUltimate());
 	gs->setInitialCardCount(m_serverDlg->getInitialCardCount());
 
 	Q_Q(MainWindow);
@@ -1018,7 +1019,7 @@ void MainWindowPrivate::serverAccept() {
 						 this, SLOT(clientPlayerJoined(QString,QImage)));
 		QObject::connect(m_client, SIGNAL(cStats(Client::STATS)),
 						 this, SLOT(clientStats(Client::STATS)));
-		QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(destroyClient()));
+		QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(gameOver()));
 		QObject::connect(q, SIGNAL(confirmLostWon(int)), this, SLOT(lostWinConfirmed(int)));
 		QObject::connect(m_client, SIGNAL(cInitialCard(QByteArray)),
 						 this, SLOT(setOpenCard(QByteArray)));
@@ -1280,9 +1281,9 @@ void MainWindowPrivate::clientPlayerLost(const QString &p, std::size_t, std::siz
 							"with <span style=\"font:oblique bold\">%n</span> point(s) at hand",
 							"", pt).arg(QApplication::palette().link().color().name()), true);
 
-	if(isMe(p) && !NetMauMauMessageBox::isDisplayed()) {
+	GameState *gs = gameState();
 
-		GameState *gs = gameState();
+	if(isMe(p) && !NetMauMauMessageBox::isDisplayed() && gs->isUltimate()) {
 
 		gs->setLostDisplaying(true);
 
@@ -1343,11 +1344,11 @@ void MainWindowPrivate::clientPlayerWins(const QString &p, std::size_t t) {
 
 	if(!isMe(p)) q->statusBar()->showMessage(tr("%1 wins!").arg(p), 10000);
 
-	if(NetMauMauMessageBox::isDisplayed()) return;
+	if(NetMauMauMessageBox::isDisplayed() || !gs->isUltimate()) return;
 
-	NetMauMauMessageBox gameOver(q);
+	NetMauMauMessageBox gOver(q);
 
-	gameOver.centerOver(m_ui->localPlayerDock);
+	gOver.centerOver(m_ui->localPlayerDock);
 
 	if(isMe(p) && !gs->lostWonConfirmed()) {
 
@@ -1361,51 +1362,51 @@ void MainWindowPrivate::clientPlayerWins(const QString &p, std::size_t t) {
 #endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
-		gameOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
-												QIcon(":/smile.png")).pixmap(48, 48));
+		gOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
+											 QIcon(":/smile.png")).pixmap(48, 48));
 #else
 		gameOver.setIconPixmap(QIcon(":/smile.png").pixmap(48, 48));
 #endif
 
-		gameOver.setWindowTitle(first ? tr("Congratulations") : winnerRank(gs));
-		gameOver.setText(tr("You have won!\n%1\nPlaying time: %2").arg(yourScore(gs, p)).
-						 arg(gs->playTime().toString("HH:mm:ss")));
+		gOver.setWindowTitle(first ? tr("Congratulations") : winnerRank(gs));
+		gOver.setText(tr("You have won!\n%1\nPlaying time: %2").arg(yourScore(gs, p)).
+					  arg(gs->playTime().toString("HH:mm:ss")));
 
 		QAbstractButton *tryBut = 0L;
 
 		if(m_model.rowCount() == 2) {
 			m_timeLabel.hide();
-			tryBut = gameOver.addButton(tr("Try &again"), QMessageBox::YesRole);
+			tryBut = gOver.addButton(tr("Try &again"), QMessageBox::YesRole);
 		}
 
-		gameOver.setEscapeButton(gameOver.addButton(QMessageBox::Ok));
+		gOver.setEscapeButton(gOver.addButton(QMessageBox::Ok));
 
-		gameOver.exec();
+		gOver.exec();
 
 		gs->incCountWonDisplayed();
 
 		emit q->confirmLostWon(m_model.rowCount() == 2 ?
-								   (tryBut && gameOver.clickedButton() == tryBut ?
+								   (tryBut && gOver.clickedButton() == tryBut ?
 										QMessageBox::YesRole : QMessageBox::AcceptRole) :
 								   QMessageBox::AcceptRole);
 
 	} else if(m_model.rowCount() > 2 && gs->maumauCount() ==
 			  static_cast<ulong>(m_model.rowCount() - 1) && !gs->lostDisplaying()) {
 
-		gameOver.setWindowTitle(gs->winningOrder().indexOf(myself()) > gs->winningOrder().
-								indexOf(p) ? tr("Sorry") : winnerRank(gs));
+		gOver.setWindowTitle(gs->winningOrder().indexOf(myself()) > gs->winningOrder().
+							 indexOf(p) ? tr("Sorry") : winnerRank(gs));
 #if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
-		gameOver.setIconPixmap(QIcon::fromTheme("face-plain", QIcon(":/plain.png")).pixmap(48, 48));
+		gOver.setIconPixmap(QIcon::fromTheme("face-plain", QIcon(":/plain.png")).pixmap(48, 48));
 #else
 		gameOver.setIconPixmap(QIcon(":/plain.png").pixmap(48, 48));
 #endif
-		gameOver.setText("<html><body>" + tr("<font color=\"blue\">%1</font> has won!" \
-											 "<br /><br />Playing time: %2").arg(p).
-						 arg(gs->playTime().toString("HH:mm:ss")) + "</body></html>");
+		gOver.setText("<html><body>" + tr("<font color=\"blue\">%1</font> has won!" \
+										  "<br /><br />Playing time: %2").arg(p).
+					  arg(gs->playTime().toString("HH:mm:ss")) + "</body></html>");
 
 		m_timeLabel.hide();
 
-		gameOver.exec();
+		gOver.exec();
 
 		gs->incCountWonDisplayed();
 
@@ -1702,6 +1703,21 @@ void MainWindowPrivate::lostWinConfirmed(int tryAgain) {
 	}
 }
 
+void MainWindowPrivate::gameOver() {
+
+	GameState *gs = gameState();
+
+	if(!gs->isUltimate()) {
+
+		Q_Q(MainWindow);
+		NetMauMauMessageBox gOver(q);
+		gOver.information(q, tr("Game Over"), tr("This game is over!\n\nPlaying time: %1").
+						  arg(gs->playTime().toString("HH:mm:ss")));
+	}
+
+	destroyClient(false);
+}
+
 void MainWindowPrivate::serverDisconnect() {
 
 #if USE_ESPEAK
@@ -1712,14 +1728,14 @@ void MainWindowPrivate::serverDisconnect() {
 }
 
 void MainWindowPrivate::destroyClientOffline(bool b) {
-	if(b) destroyClient(false);
+	if(b && gameState()->isUltimate()) destroyClient(false);
 }
 
 void MainWindowPrivate::destroyClient(bool force) {
 
 	GameState *gs = gameState();
 
-	if(force || gs->lostWonConfirmed()) {
+	if(force || gs->lostWonConfirmed() || !gs->isUltimate()) {
 
 		m_receivingPlayerImageProgress->cancel();
 
@@ -1736,7 +1752,7 @@ void MainWindowPrivate::destroyClient(bool force) {
 			const ulong waitTime = 2000L;
 #endif
 
-			if(!m_client->wait(waitTime)) {
+			if(m_client && !m_client->wait(waitTime)) {
 #ifndef _WIN32
 				qWarning("Client thread didn't stopped within 1 second. Forcing termination...");
 				if(m_client) QObject::connect(m_client, SIGNAL(terminated()),
@@ -1762,7 +1778,7 @@ void MainWindowPrivate::clientDestroyed() {
 
 	m_playTimer.stop();
 
-	m_client->QThread::disconnect();
+	if(m_client) m_client->QThread::disconnect();
 
 	delete m_client;
 	m_client = 0L;

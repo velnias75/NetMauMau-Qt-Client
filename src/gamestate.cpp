@@ -27,7 +27,7 @@ GameState::GameState() : m_inGame(false), m_cards(), m_lastPlayedCard(0L), m_las
 	m_noCardPossible(false), m_turn(1), m_maxPlayerCount(0), m_possibleCards(), m_curReceiving(),
 	m_aceRoundActive(), m_playTime(0, 0, 0), m_lostDisplaying(false),
 	m_aceRoundRank(NetMauMau::Common::ICard::ACE), m_direction(NONE), m_winningOrder(), m_unmau(),
-	m_initialCardCount("5"), m_drawn(false), m_initial(true) {}
+	m_initialCardCount("5"), m_drawn(false), m_initial(true), m_ultimate(false) {}
 
 bool GameState::inGame() const {
 	return m_inGame;
@@ -225,4 +225,12 @@ bool GameState::initial() {
 	const bool i = m_initial;
 	m_initial = false;
 	return i;
+}
+
+bool GameState::isUltimate() const {
+	return m_ultimate;
+}
+
+void GameState::setUltimate(bool b) {
+	m_ultimate = b;
 }
