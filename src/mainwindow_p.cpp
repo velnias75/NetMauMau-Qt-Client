@@ -1365,7 +1365,7 @@ void MainWindowPrivate::clientPlayerWins(const QString &p, std::size_t t) {
 		gOver.setIconPixmap(QIcon::fromTheme("face-smile-big",
 											 QIcon(":/smile.png")).pixmap(48, 48));
 #else
-		gameOver.setIconPixmap(QIcon(":/smile.png").pixmap(48, 48));
+		gOver.setIconPixmap(QIcon(":/smile.png").pixmap(48, 48));
 #endif
 
 		gOver.setWindowTitle(first ? tr("Congratulations") : winnerRank(gs));
@@ -1398,7 +1398,7 @@ void MainWindowPrivate::clientPlayerWins(const QString &p, std::size_t t) {
 #if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
 		gOver.setIconPixmap(QIcon::fromTheme("face-plain", QIcon(":/plain.png")).pixmap(48, 48));
 #else
-		gameOver.setIconPixmap(QIcon(":/plain.png").pixmap(48, 48));
+		gOver.setIconPixmap(QIcon(":/plain.png").pixmap(48, 48));
 #endif
 		gOver.setText("<html><body>" + tr("<font color=\"blue\">%1</font> has won!" \
 										  "<br /><br />Playing time: %2").arg(p).
