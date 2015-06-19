@@ -984,20 +984,6 @@ void MainWindowPrivate::serverAccept() {
 
 	try {
 
-		const Client::PLAYERINFOS &pl(m_client->playerList(true));
-
-		foreach(const NetMauMau::Client::Connection::PLAYERINFO &i, pl) {
-			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-
-			const QString &pName(QString::fromUtf8(i.name.c_str()));
-
-			clientPlayerJoined(pName, i.pngDataLen ?  QImage::fromData(i.pngData,
-																	   i.pngDataLen) : QImage());
-			delete [] i.pngData;
-		}
-
-		updatePlayerScores(gs, pl);
-
 		QObject::connect(m_client, SIGNAL(cPlayCard(Client::CARDS,std::size_t)),
 						 this, SLOT(clientPlayCardRequest(Client::CARDS,std::size_t)));
 		QObject::connect(m_client, SIGNAL(cGetJackSuitChoice()),
@@ -1073,11 +1059,24 @@ void MainWindowPrivate::serverAccept() {
 		m_ui->remoteGroup->setTitle(tr("%1 on %2 (%3)").arg(m_ui->remoteGroup->title()).
 									arg(alias).arg(version));
 
+		m_connectionLogDlg->clear();
+
+		const Client::PLAYERINFOS &pl(m_client->playerList(true));
+
+		foreach(const NetMauMau::Client::Connection::PLAYERINFO &i, pl) {
+
+			const QString &pName(QString::fromUtf8(i.name.c_str()));
+
+			clientPlayerJoined(pName, i.pngDataLen ?  QImage::fromData(i.pngData,
+																	   i.pngDataLen) : QImage());
+			delete [] i.pngData;
+		}
+
+		updatePlayerScores(gs, pl);
+
 		gs->setPlayTime(0, 0, 0);
 		m_timeLabel.setText(gs->playTime().toString("HH:mm:ss"));
 		m_timeLabel.show();
-
-		m_connectionLogDlg->clear();
 
 		m_client->start(QThread::LowestPriority);
 
@@ -1494,6 +1493,8 @@ void MainWindowPrivate::clientPlayerJoined(const QString &p, const QImage &img) 
 		q->statusBar()->clearMessage();
 	}
 
+	m_ui->remotePlayersView->resizeColumnToContents(0);
+	m_ui->remotePlayersView->resizeColumnToContents(1);
 	qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 }
 
