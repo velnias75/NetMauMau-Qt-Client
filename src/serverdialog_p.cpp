@@ -40,7 +40,6 @@
 #include "serverdialog_p.h"
 
 #include "serverinfo.h"
-#include "base64bridge.h"
 #include "serverdialog.h"
 #include "namevalidator.h"
 #include "addserverdialog.h"
@@ -569,8 +568,7 @@ void ServerDialogPrivate::setPlayerImagePath(const QString &f, bool warn) {
 
 			const bool ok = Client::isPlayerImageUploadable(reinterpret_cast<const unsigned char *>
 															(m_playerImage.constData()),
-															m_playerImage.size(),
-															new Base64Bridge());
+															m_playerImage.size());
 
 			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 

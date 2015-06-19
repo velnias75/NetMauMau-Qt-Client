@@ -100,7 +100,6 @@ SOURCES += \
 	addserverwidget.cpp \
 	addserverwidget_p.cpp \
 	ainamewidget.cpp \
-	base64bridge.cpp \
 	baseitemdelegate.cpp \
 	carddropwidget.cpp \
 	cardlabel.cpp \
@@ -154,7 +153,6 @@ HEADERS += \
 	addserverwidget.h \
 	addserverwidget_p.h \
 	ainamewidget.h \
-	base64bridge.h \
 	baseitemdelegate.h \
 	carddropwidget.h \
 	cardlabel.h \

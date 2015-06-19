@@ -36,7 +36,6 @@
 #endif
 
 #include "mainwindow.h"
-#include "base64bridge.h"
 
 // in release builds we get the correct client version via pkg-config
 #ifndef CLIENTVERSION
@@ -46,15 +45,14 @@
 
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port) : QThread(),
-	NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server, port,
-									  CLIENTVERSION, new Base64Bridge()),
+	NetMauMau::Client::AbstractClient(player.toUtf8().constData(), server, port, CLIENTVERSION),
 	d_ptr(new ClientPrivate(this, w, cld, server, port)) {}
 
 Client::Client(MainWindow *const w, ConnectionLogDialog *cld, const QString &player,
 			   const std::string &server, uint16_t port, const QByteArray &buf) : QThread(),
 	NetMauMau::Client::AbstractClient(player.toUtf8().constData(),
 									  reinterpret_cast<const unsigned char *>(buf.constData()),
-									  buf.size(), server, port, CLIENTVERSION, new Base64Bridge()),
+									  buf.size(), server, port, CLIENTVERSION),
 	d_ptr(new ClientPrivate(this, w, cld, server, port)) {}
 
 Client::~Client() {
