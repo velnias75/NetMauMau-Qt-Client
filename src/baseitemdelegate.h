@@ -31,8 +31,8 @@ class QStyleOptionViewItemV4;
 
 class BaseItemDelegate {
 	DISALLOW_COPY_AND_ASSIGN(BaseItemDelegate)
-	public:
-		virtual ~BaseItemDelegate();
+public:
+	virtual ~BaseItemDelegate() _CONST;
 
 	void highlight(QStyleOptionViewItemV4 &opt, const QModelIndex &index) const;
 
