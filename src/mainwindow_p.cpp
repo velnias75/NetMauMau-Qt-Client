@@ -441,7 +441,8 @@ bool MainWindowPrivate::isMe(const QString &player) const {
 }
 
 QList<QStandardItem *> MainWindowPrivate::rowForPlayer(const QString &p) const {
-	return m_model.findItems(".*" + p + ".*", Qt::MatchRegExp, NAME);
+	return m_model.findItems("(<span[^>]*>)?" + p +"(</span>)?",
+							 Qt::MatchRegExp|Qt::MatchCaseSensitive, NAME);
 }
 
 QString MainWindowPrivate::yourScore(GameState *gs, const QString &p) {
@@ -1470,10 +1471,12 @@ void MainWindowPrivate::clientPlayerJoined(const QString &p, const QImage &img) 
 
 	QTimer::singleShot(500, m_receivingPlayerImageProgress, SLOT(hide()));
 
+	GameState *gs = gameState();
+
 	si.push_back(new QStandardItem(p));
-	si.push_back(new QStandardItem(gameState()->initialCardCount()));
+	si.push_back(new QStandardItem(gs->initialCardCount()));
 	si.back()->setTextAlignment(Qt::AlignCenter);
-	si.push_back(new QStandardItem("1"));
+	si.push_back(new QStandardItem(QString::number(gs->turn(), 10)));
 	si.back()->setTextAlignment(Qt::AlignCenter);
 	si.push_back(new QStandardItem(tr("Player <span style=\"color:%1;\">%2</span> "\
 									  "joined the game").
@@ -1483,7 +1486,7 @@ void MainWindowPrivate::clientPlayerJoined(const QString &p, const QImage &img) 
 	QObject::connect(&m_model, SIGNAL(itemChanged(QStandardItem*)),
 					 this, SLOT(itemChanged(QStandardItem*)));
 
-	const long np = static_cast<long>(gameState()->maxPlayerCount()) - m_model.rowCount();
+	const long np = static_cast<long>(gs->maxPlayerCount()) - m_model.rowCount();
 
 	Q_Q(const MainWindow);
 
@@ -1514,8 +1517,8 @@ void MainWindowPrivate::clientNextPlayer(const QString &player) {
 		}
 	}
 
-	m_ui->remotePlayersView->scrollTo(m_model.indexFromItem(ml.front()),
-									  QAbstractItemView::PositionAtBottom);
+	if(row != -1) m_ui->remotePlayersView->scrollTo(m_model.indexFromItem(ml.front()),
+													QAbstractItemView::PositionAtBottom);
 }
 
 void MainWindowPrivate::clientPlayCardRequest(const Client::CARDS &cards, std::size_t takeCount) {
