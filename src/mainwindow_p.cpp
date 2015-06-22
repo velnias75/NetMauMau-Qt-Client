@@ -620,7 +620,10 @@ void MainWindowPrivate::updatePlayerStats(const QString &player, const QString &
 													  : QString("")) : ""));
 
 #ifdef USE_ESPEAK
-				if(isMe(player) && count == 1) ESpeak::getInstance().speak("Mau", "de");
+				if(isMe(player) && count == 1 && gs->mauSpokenInTurn()[player] != gs->turn()) {
+					ESpeak::getInstance().speak("Mau", "de");
+					gs->mauSpokenInTurn()[player] = gs->turn();
+				}
 #endif
 
 			} else {
@@ -1203,9 +1206,16 @@ void MainWindowPrivate::clientStats(const Client::STATS &s) {
 		updatePlayerStats(pName);
 
 #ifdef USE_ESPEAK
-		if(!(mau)) mau = i.cardCount == 1 &&
-						 (gameState()->playerCardCounts()[pName].first !=
-				gameState()->playerCardCounts()[pName].second);
+		if(!mau) {
+			GameState *gs = gameState();
+
+			if(!(mau = !isMe(pName) && i.cardCount == 1 &&
+					gs->mauSpokenInTurn()[pName] != gs->turn() &&
+					(gs->playerCardCounts()[pName].first !=
+					 gs->playerCardCounts()[pName].second))) {
+				gs->mauSpokenInTurn()[pName] = gs->turn();
+			}
+		}
 #endif
 
 	}

@@ -22,12 +22,13 @@
 #include "gamestate.h"
 
 GameState::GameState() : m_inGame(false), m_cards(), m_lastPlayedCard(0L), m_lastPlayedCardIdx(-1),
-	m_playerStatMsg(), m_playerScores(), m_playerCardCounts(), m_clientDestroyRequested(false),
-	m_countWonDisplayed(0), m_lostWonConfirmed(false), m_mmCnt(0), m_pickCardPrepended(false),
-	m_noCardPossible(false), m_turn(1), m_maxPlayerCount(0), m_possibleCards(), m_curReceiving(),
-	m_aceRoundActive(), m_playTime(0, 0, 0), m_lostDisplaying(false),
-	m_aceRoundRank(NetMauMau::Common::ICard::ACE), m_direction(NONE), m_winningOrder(), m_unmau(),
-	m_initialCardCount("5"), m_drawn(false), m_initial(true), m_ultimate(false) {}
+	m_playerStatMsg(), m_playerScores(), m_mauSpokenInTurn(), m_playerCardCounts(),
+	m_clientDestroyRequested(false), m_countWonDisplayed(0), m_lostWonConfirmed(false), m_mmCnt(0),
+	m_pickCardPrepended(false), m_noCardPossible(false), m_turn(1), m_maxPlayerCount(0),
+	m_possibleCards(), m_curReceiving(), m_aceRoundActive(), m_playTime(0, 0, 0),
+	m_lostDisplaying(false), m_aceRoundRank(NetMauMau::Common::ICard::ACE), m_direction(NONE),
+	m_winningOrder(), m_unmau(), m_initialCardCount("5"), m_drawn(false), m_initial(true),
+	m_ultimate(false) {}
 
 bool GameState::inGame() const {
 	return m_inGame;
@@ -115,6 +116,10 @@ QMap<QString, QStringList> &GameState::playerStatMsg() {
 
 QMap<QString, qlonglong> &GameState::playerScores() {
 	return m_playerScores;
+}
+
+QMap<QString, std::size_t> &GameState::mauSpokenInTurn() {
+	return m_mauSpokenInTurn;
 }
 
 QMap<QString, QPair<std::size_t, std::size_t> > &GameState::playerCardCounts() {

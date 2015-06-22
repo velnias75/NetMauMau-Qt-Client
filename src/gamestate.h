@@ -71,6 +71,7 @@ class GameState {
 
 	QMap<QString, QStringList> &playerStatMsg() _CONST;
 	QMap<QString, qlonglong> &playerScores() _CONST;
+	QMap<QString, std::size_t> &mauSpokenInTurn() _CONST;
 	QMap<QString, QPair<std::size_t, std::size_t> > &playerCardCounts() _CONST;
 
 	QList<CardWidget *> &cards() _CONST;
@@ -122,6 +123,7 @@ private:
 	int m_lastPlayedCardIdx;
 	QMap<QString, QStringList> m_playerStatMsg;
 	QMap<QString, qlonglong> m_playerScores;
+	QMap<QString, std::size_t> m_mauSpokenInTurn;
 	QMap<QString, QPair<std::size_t, std::size_t> > m_playerCardCounts;
 	bool m_clientDestroyRequested;
 	int m_countWonDisplayed;

@@ -8,7 +8,7 @@ CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
 
-VERSION = 0.22
+VERSION = 0.23
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
 DEFINES += _GLIBCXX_VISIBILITY=0 QT_NO_CAST_FROM_BYTEARRAY QT_NO_CAST_TO_ASCII \
@@ -217,7 +217,8 @@ FORMS += addserverdialog.ui \
 	espeakvolumedialog.ui \
 	ainamewidget.ui
 
-RESOURCES += cards.qrc \
+RESOURCES += \
+	cards.qrc \
 	icons.qrc \
 	license.qrc \
 	movies.qrc \
