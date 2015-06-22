@@ -199,8 +199,10 @@ unix:HEADERS += singleapplock.h
 
 espeak:HEADERS += espeak.h espeakvolumedialog.h
 
-FORMS += addserverdialog.ui \
+FORMS += \
+	addserverdialog.ui \
 	addserverwidget.ui \
+	ainamewidget.ui \
 	cardwidget.ui \
 	connectionlogdialog.ui \
 	deleteserversdialog.ui \
@@ -213,9 +215,9 @@ FORMS += addserverdialog.ui \
 	scoresdialog.ui \
 	serverdialog.ui \
 	suitlabel.ui \
-	suitradiobutton.ui \
-	espeakvolumedialog.ui \
-	ainamewidget.ui
+	suitradiobutton.ui
+
+espeak:FORMS += espeakvolumedialog.ui
 
 RESOURCES += \
 	cards.qrc \
