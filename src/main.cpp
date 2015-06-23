@@ -23,7 +23,7 @@
 #include <QLocale>
 #include <QStyle>
 
-#ifdef _WIN32
+#ifdef Q_OS_WIN
 #include <QSettings>
 #else
 #include "singleapplock.h"
@@ -46,12 +46,12 @@ int main(int argc, char *argv[]) {
 
 	NetMauMauApplication a(argc, argv);
 
-#ifdef _WIN32
+#ifdef Q_OS_WIN
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 #endif
 
 	QTranslator qtTranslator;
-#ifndef _WIN32
+#if !defined(Q_OS_WIN)
 	qtTranslator.load("qt_" + QLocale::system().name(),
 					  QLibraryInfo::location(QLibraryInfo::TranslationsPath));
 #else
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 	a.installTranslator(&qtTranslator);
 	a.processEvents();
 
-#if defined(NDEBUG) && !defined(_WIN32)
+#if defined(NDEBUG) && !defined(Q_OS_WIN)
 	QString locDir("/usr/share/nmm-qt-client");
 #else
 	QString locDir;
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 	a.installTranslator(&myappTranslator);
 	a.processEvents();
 
-#ifndef _WIN32
+#if !defined(Q_OS_WIN)
 
 	SingleAppLock lock;
 

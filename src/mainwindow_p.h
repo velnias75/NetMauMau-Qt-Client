@@ -89,7 +89,7 @@ public:
 	void writeSettings() const;
 	void readSettings();
 
-#ifdef _WIN32
+#ifdef Q_OS_WIN
 	bool espeakInstalled() const;
 #endif
 

@@ -45,7 +45,7 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window
 
 	setAttribute(Qt::WA_QuitOnClose, false);
 
-#if _WIN32
+#ifdef Q_OS_WIN
 	log->viewport()->unsetCursor();
 	QFont tf("Fixedsys");
 #else
@@ -54,7 +54,7 @@ LocalServerOutputView::LocalServerOutputView(QWidget *p) : QWidget(p, Qt::Window
 
 	QPalette pal(log->palette());
 
-#if _WIN32
+#ifdef Q_OS_WIN
 	pal.setColor(QPalette::Text, QColor(192, 192, 192, 255));
 #endif
 

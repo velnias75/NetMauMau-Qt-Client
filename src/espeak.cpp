@@ -21,7 +21,7 @@
 #include <QLocale>
 #include <QtCore/qmath.h>
 
-#ifdef _WIN32
+#ifdef Q_OS_WIN
 #include <QCoreApplication>
 #endif
 
@@ -38,7 +38,7 @@ ESpeak::ESpeak(QObject *p) : QObject(p), m_speakTxt(), m_lang("de"),
 	m_systemLang(QLocale::system().name().left(QLocale::system().name().indexOf('_')).
 				 #endif
 				 toLatin1().constData()),
-	#ifdef _WIN32
+	#ifdef Q_OS_WIN
 	m_path(strdup(QCoreApplication::applicationDirPath().toLocal8Bit().constData()))
   #else
 	m_path(NULL)

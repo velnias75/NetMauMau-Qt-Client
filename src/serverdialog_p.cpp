@@ -27,11 +27,11 @@
 #include <QImageReader>
 #include <QSplashScreen>
 
-#if !defined(_WIN32) && (_POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _BSD_SOURCE || _SVID_SOURCE \
+#if !defined(Q_OS_WIN) && (_POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _BSD_SOURCE || _SVID_SOURCE \
 	|| _POSIX_SOURCE)
 #include <sys/types.h>
 #include <pwd.h>
-#elif defined(_WIN32)
+#elif defined(Q_OS_WIN)
 #include <windows.h>
 #include <security.h>
 #include <lmcons.h>
@@ -96,7 +96,7 @@ ServerDialogPrivate::ServerDialogPrivate(QSplashScreen *splash, ServerDialog *p)
 	QSettings settings;
 	settings.beginGroup("Servers");
 
-#if _WIN32
+#ifdef Q_OS_WIN
 	const QString &localhost(getenv("COMPUTERNAME"));
 #else
 	const QString &localhost("localhost");
@@ -125,7 +125,7 @@ ServerDialogPrivate::ServerDialogPrivate(QSplashScreen *splash, ServerDialog *p)
 	setPlayerImagePath(settings.value("playerImage").toString());
 	settings.endGroup();
 
-#if defined(_WIN32)
+#if defined(Q_OS_WIN)
 
 	const QString &wun(getUserName());
 
@@ -612,7 +612,7 @@ void ServerDialogPrivate::setPlayerImagePath(const QString &f, bool warn) {
 
 QString ServerDialogPrivate::getPlayerDefaultName() const {
 
-#if !defined(_WIN32) && (_POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _BSD_SOURCE || _SVID_SOURCE \
+#if !defined(Q_OS_WIN) && (_POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _BSD_SOURCE || _SVID_SOURCE \
 	|| _POSIX_SOURCE)
 
 	const QByteArray username(qgetenv("USER"));
@@ -631,7 +631,7 @@ QString ServerDialogPrivate::getPlayerDefaultName() const {
 		}
 	}
 
-#elif defined(_WIN32)
+#elif defined(Q_OS_WIN)
 
 	DWORD ulen = UNLEN + 1;
 	TCHAR uname[ulen];
@@ -645,7 +645,7 @@ QString ServerDialogPrivate::getPlayerDefaultName() const {
 	return "Phoenix";
 }
 
-#if defined(_WIN32)
+#if defined(Q_OS_WIN)
 QString ServerDialogPrivate::getUserName() const {
 
 	DWORD ulen = UNLEN + 1;

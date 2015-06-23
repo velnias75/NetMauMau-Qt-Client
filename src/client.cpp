@@ -97,7 +97,7 @@ void Client::run() {
 					.arg(VERSION_MAJ(e.getServerVersion()))
 					.arg(VERSION_MIN(e.getServerVersion())), false);
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
-#ifndef _WIN32
+#if !defined(Q_OS_WIN)
 		emit cError(QString::fromUtf8(e.what()));
 #else
 		emit cError(QString::fromLocal8Bit(e.what()));

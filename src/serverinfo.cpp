@@ -195,7 +195,7 @@ void ServerInfo::run() {
 
 			} catch(const NetMauMau::Common::Exception::SocketException &e) {
 
-#ifndef _WIN32
+#if !defined(Q_OS_WIN)
 				setError(ai, players, version, server, host, serverTooltip +
 						 QString::fromUtf8(e.what()) + "</body></html>");
 #else

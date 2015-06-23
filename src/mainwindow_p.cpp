@@ -173,7 +173,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	m_lsov->addLaunchAction(m_ui->actionLaunchServer);
 
 #ifdef USE_ESPEAK
-#ifdef _WIN32
+#ifdef Q_OS_WIN
 	if(espeakInstalled()) {
 		QObject::connect(m_ui->actionMute, SIGNAL(toggled(bool)),
 						 m_volumeDialog, SLOT(setMute(bool)));
@@ -336,7 +336,7 @@ MainWindowPrivate::~MainWindowPrivate() {
 	delete m_ui;
 }
 
-#ifdef _WIN32
+#ifdef Q_OS_WIN
 bool MainWindowPrivate::espeakInstalled() const {
 	QSettings useEspeak("HKEY_LOCAL_MACHINE\\SOFTWARE\\RANGUN\\NetMauMau", QSettings::NativeFormat);
 	return useEspeak.value("USE_ESPEAK").toInt();
@@ -1095,7 +1095,7 @@ void MainWindowPrivate::serverAccept() {
 		clientError(tr("Couldn't get player list from server"));
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 		clientError(tr("While connecting to <b>%1</b>: <i>%2</i>")
-			#ifndef _WIN32
+			#if !defined(Q_OS_WIN)
 					.arg(as).arg(QString::fromUtf8(e.what())));
 #else
 					.arg(as).arg(QString::fromLocal8Bit(e.what())));
@@ -1760,14 +1760,14 @@ void MainWindowPrivate::destroyClient(bool force) {
 			Q_Q(const MainWindow);
 			emit q->disconnectNow();
 
-#ifndef _WIN32
+#if !defined(Q_OS_WIN)
 			const ulong waitTime = 1000L;
 #else
 			const ulong waitTime = 2000L;
 #endif
 
 			if(m_client && !m_client->wait(waitTime)) {
-#ifndef _WIN32
+#if !defined(Q_OS_WIN)
 				qWarning("Client thread didn't stopped within 1 second. Forcing termination...");
 				if(m_client) QObject::connect(m_client, SIGNAL(terminated()),
 											  this, SLOT(clientDestroyed()));
@@ -1997,7 +1997,7 @@ void MainWindowPrivate::showPlayerNameSelectMenu(const QPoint &p) {
 
 #ifdef USE_ESPEAK
 	m_playerNameMenu->addSeparator();
-#if _WIN32
+#ifdef Q_OS_WIN
 	if(espeakInstalled()) {
 		m_playerNameMenu->addAction(m_ui->actionVolume);
 		m_playerNameMenu->addAction(m_ui->actionMute);

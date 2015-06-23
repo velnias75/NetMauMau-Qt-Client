@@ -51,7 +51,7 @@ public:
 	void setPlayerImagePath(const QString &f, bool warn = false);
 	QString getPlayerDefaultName() const;
 
-#if defined(_WIN32)
+#if defined(Q_OS_WIN)
 	QString getUserName() const;
 #endif
 

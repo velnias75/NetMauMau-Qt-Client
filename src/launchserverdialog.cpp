@@ -130,7 +130,7 @@ LaunchServerDialog::~LaunchServerDialog() {
 
 	if(m_process.state() == QProcess::Running) {
 
-#ifndef _WIN32
+#if !defined(Q_OS_WIN)
 		m_process.terminate();
 #else
 		m_process.kill();
@@ -283,7 +283,7 @@ void LaunchServerDialog::launch() {
 	QObject::connect(&m_process, SIGNAL(stateChanged(QProcess::ProcessState)),
 					 this, SLOT(stateChanged(QProcess::ProcessState)));
 
-#ifndef _WIN32
+#if !defined(Q_OS_WIN)
 
 	QStringList args;
 
@@ -360,7 +360,7 @@ void LaunchServerDialog::error(QProcess::ProcessError) {
 
 void LaunchServerDialog::browse() {
 
-#ifndef _WIN32
+#if !defined(Q_OS_WIN)
 	const QString filter(QString::null);
 #else
 	const QString filter("*.exe");
@@ -378,7 +378,7 @@ void LaunchServerDialog::updateViewer() {
 }
 
 void LaunchServerDialog::terminate() {
-#ifdef _WIN32
+#ifdef Q_OS_WIN
 
 	QObject::disconnect(&m_process, SIGNAL(finished(int)), this, SLOT(finished(int)));
 	QObject::disconnect(&m_process, SIGNAL(error(QProcess::ProcessError)),
