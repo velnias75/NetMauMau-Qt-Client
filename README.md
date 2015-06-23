@@ -11,7 +11,7 @@ It requires Qt in at least version 4.4 or Qt5
 (for Qt versions < 4.6 in `mainwindow.ui` you'll need to replace all occurences of 
 `Qt::ToolButtonFollowStyle` to `Qt::ToolButtonTextUnderIcon`)
 
-* for connecting and parsing the release information from the GitHub API you'll need (*currently optional*) [QJson](http://qjson.sourceforge.net/)
+* for parsing the release information from the GitHub API you'll need (*currently optional*) [QJson](http://qjson.sourceforge.net/)
 * for the speech support you'll need [eSpeak](http://espeak.sourceforge.net)
 
 Building
