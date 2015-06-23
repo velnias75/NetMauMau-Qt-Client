@@ -6,12 +6,13 @@ A Qt client for the [NetMauMau server](https://github.com/velnias75/NetMauMau).
 Requirements
 ------------
 
-It requires Qt in at least version 4.4
+It requires Qt in at least version 4.4 or Qt5
 
 (for Qt versions < 4.6 in `mainwindow.ui` you'll need to replace all occurences of 
 `Qt::ToolButtonFollowStyle` to `Qt::ToolButtonTextUnderIcon`)
 
-For the speech support you'll need [eSpeak](http://espeak.sourceforge.net) and Qt >= 4.8
+* for connecting and parsing the release information from the GitHub API you'll need (*currently optional*) [QJson](http://qjson.sourceforge.net/)
+* for the speech support you'll need [eSpeak](http://espeak.sourceforge.net)
 
 Building
 --------
