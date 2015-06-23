@@ -8,6 +8,11 @@ CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
 
+packagesExist(QJson) {
+	DEFINES += HAVE_QJSON=1
+	PKGCONFIG += QJson
+}
+
 VERSION = 0.23
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""

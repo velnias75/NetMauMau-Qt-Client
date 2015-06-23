@@ -23,6 +23,10 @@
 #include <QSettings>
 #include <QSplashScreen>
 
+#ifdef HAVE_QJSON
+#include <qjson/parser.h>
+#endif
+
 #include <cardtools.h>
 #include <scoresexception.h>
 #include <defaultplayerimage.h>
@@ -56,7 +60,9 @@
 
 namespace {
 
+#if !defined(HAVE_QJSON)
 const char *TAGNAME = "\"tag_name\":";
+#endif
 
 const QString CURRSPAN("<span style=\"font-weight:630;\">%1</span>");
 const QString PASTSPAN("<span style=\"font-variant:small-caps;\">%1</span>");
@@ -1210,9 +1216,9 @@ void MainWindowPrivate::clientStats(const Client::STATS &s) {
 			GameState *gs = gameState();
 
 			if(!(mau = !isMe(pName) && i.cardCount == 1 &&
-					gs->mauSpokenInTurn()[pName] != gs->turn() &&
-					(gs->playerCardCounts()[pName].first !=
-					 gs->playerCardCounts()[pName].second))) {
+				 gs->mauSpokenInTurn()[pName] != gs->turn() &&
+				 (gs->playerCardCounts()[pName].first !=
+				  gs->playerCardCounts()[pName].second))) {
 				gs->mauSpokenInTurn()[pName] = gs->turn();
 			}
 		}
@@ -1923,15 +1929,35 @@ void MainWindowPrivate::about() {
 void MainWindowPrivate::notifyClientUpdate() {
 
 	const QByteArray &dld(m_clientReleaseDownloader->downloadedData());
+
+#ifdef HAVE_QJSON
+
+	QJson::Parser parser;
+	bool ok = false;
+
+	const QVariantList &vdata(parser.parse(dld, &ok).toList());
+	const QString &rel(ok && !vdata.empty() ? vdata.first().toMap()["tag_name"].toString().mid(1) :
+		"0.0");
+
+	if(!ok) {
+		qWarning("QJson: %s", parser.errorString().toStdString().c_str());
+	} else {
+		qDebug("QJson: name=%s", vdata[0].toMap()["name"].toString().toStdString().c_str());
+	}
+
+#else
+
 	const int idx = dld.indexOf(TAGNAME), idxl = idx + qstrlen(TAGNAME);
 	const QString &rel(idx > 0 ? dld.mid(idxl + 2, dld.indexOf(",", idxl) - idxl - 3).constData() :
 								 "0.0");
+#endif
 
-	const uint32_t savail  = Client::parseProtocolVersion(rel.toStdString()),
-			avail = MAKE_VERSION_REL(VERSION_MAJ(savail), VERSION_MIN(savail), VERSION_REL(savail));
 	const uint32_t sactual = Client::parseProtocolVersion(PACKAGE_VERSION),
 			actual = MAKE_VERSION_REL(VERSION_MAJ(sactual), VERSION_MIN(sactual),
 									  VERSION_REL(sactual));
+	const uint32_t savail  = Client::parseProtocolVersion(rel.toStdString()),
+			avail = MAKE_VERSION_REL(VERSION_MAJ(savail), VERSION_MIN(savail), VERSION_REL(savail));
+
 	if(avail > actual) {
 		QLabel *url = new QLabel(QString("<html><body><a href=\"https://sourceforge.net/projects" \
 										 "/netmaumau/\">%1</a></body></html>").
