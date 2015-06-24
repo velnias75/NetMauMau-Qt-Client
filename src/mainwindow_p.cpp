@@ -1937,12 +1937,12 @@ void MainWindowPrivate::notifyClientUpdate() {
 
 	const QVariantList &vdata(parser.parse(dld, &ok).toList());
 	const QString &rel(ok && !vdata.empty() ? vdata.first().toMap()["tag_name"].toString().mid(1) :
-		"0.0");
+					   "0.0");
 
 	if(!ok) {
 		qWarning("QJson: %s", parser.errorString().toStdString().c_str());
-	} else {
-		qDebug("QJson: name=%s", vdata[0].toMap()["name"].toString().toStdString().c_str());
+	} else if(!vdata.empty()) {
+		qDebug("QJson: name=%s", vdata.first().toMap()["name"].toString().toStdString().c_str());
 	}
 
 #else
