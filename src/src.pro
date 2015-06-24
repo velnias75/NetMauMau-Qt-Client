@@ -9,8 +9,13 @@ CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
 
 packagesExist(QJson) {
-	DEFINES += HAVE_QJSON=1
+	DEFINES += HAVE_QJSON
 	PKGCONFIG += QJson
+
+	exists(/usr/include/mkdio.h) {
+		DEFINES += HAVE_MKDIO_H
+		LIBS += -lmarkdown
+	}
 }
 
 VERSION = 0.23

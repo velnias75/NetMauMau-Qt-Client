@@ -25,6 +25,12 @@
 
 #ifdef HAVE_QJSON
 #include <qjson/parser.h>
+#ifdef HAVE_MKDIO_H
+#include <QTemporaryFile>
+extern "C" {
+#include <mkdio.h>
+}
+#endif
 #endif
 
 #include <cardtools.h>
@@ -1942,7 +1948,20 @@ void MainWindowPrivate::notifyClientUpdate() {
 	if(!ok) {
 		qWarning("QJson: %s", parser.errorString().toStdString().c_str());
 	} else if(!vdata.empty()) {
+
 		qDebug("QJson: name=%s", vdata.first().toMap()["name"].toString().toStdString().c_str());
+
+#ifdef HAVE_MKDIO_H
+		const QString body(vdata.first().toMap()["body"].toString());
+		char *inBody = strdup(body.toStdString().c_str()), *html = 0L;
+
+		if(mkd_line(inBody, body.size(), &html, 0)) {
+			qDebug("HTML-Body:\n%s", html);
+			free(html);
+		}
+
+		free(inBody);
+#endif
 	}
 
 #else
