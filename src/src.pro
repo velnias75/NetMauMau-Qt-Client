@@ -12,7 +12,7 @@ packagesExist(QJson) {
 	DEFINES += HAVE_QJSON
 	PKGCONFIG += QJson
 
-	exists(/usr/include/mkdio.h) {
+	unix:exists(/usr/include/mkdio.h) {
 		DEFINES += HAVE_MKDIO_H
 		LIBS += -lmarkdown
 	}
@@ -89,7 +89,7 @@ CONFIG(debug, debug|release) {
 	unix:icon.files = nmm_qt_client.png
 	unix:INSTALLS += qmfiles desktop icon target
 	win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
-	win32:DEFINES += _WIN32_WINNT=0x0500 CLIENTVERSION=15 HAVE_QJSON=1 QJSON_STATIC
+	win32:DEFINES += _WIN32_WINNT=0x0500 CLIENTVERSION=15 HAVE_MKDIO HAVE_QJSON QJSON_STATIC
 	devrelease:DEFINES -= NDEBUG QT_NO_DEBUG_OUTPUT
 	devrelease:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing \
 	-Wformat -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \
@@ -101,7 +101,8 @@ CONFIG(debug, debug|release) {
 	-fvisibility=internal -fvisibility-inlines-hidden -fstrict-aliasing -fexceptions -mthreads
 	win32:LIBS += -lsecur32 /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
 							/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a \
-							/usr/i686-pc-mingw32/usr/lib/libqjson.a
+							/usr/i686-pc-mingw32/usr/lib/libqjson.a \
+							/usr/i686-pc-mingw32/usr/lib/libmarkdown_windows_x86.a
 	win32:QMAKE_LFLAGS += -Wl,--gc-sections -Wl,-O1 -Wl,--sort-common
 }
 

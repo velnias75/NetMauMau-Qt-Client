@@ -26,7 +26,6 @@
 #ifdef HAVE_QJSON
 #include <qjson/parser.h>
 #ifdef HAVE_MKDIO_H
-#include <QTemporaryFile>
 extern "C" {
 #include <mkdio.h>
 }
@@ -1953,14 +1952,14 @@ void MainWindowPrivate::notifyClientUpdate() {
 
 #ifdef HAVE_MKDIO_H
 		const QString body(vdata.first().toMap()["body"].toString());
-		char *inBody = strdup(body.toStdString().c_str()), *html = 0L;
+		char *inBody = qstrdup(body.toStdString().c_str()), *html = 0L;
 
-		if(mkd_line(inBody, body.size(), &html, 0)) {
+		if(mkd_line(inBody, body.size(), &html, 0)) { // returns size
 			qDebug("HTML-Body:\n%s", html);
-			free(html);
+//			if(html) free(html); // gives a double free :-/
 		}
 
-		free(inBody);
+		delete [] inBody;
 #endif
 	}
 
