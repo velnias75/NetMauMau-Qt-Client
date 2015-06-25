@@ -15,6 +15,9 @@ packagesExist(QJson) {
 	unix:exists(/usr/include/mkdio.h) {
 		DEFINES += HAVE_MKDIO_H
 		LIBS += -lmarkdown
+		FORMS += releaseinfodialog.ui
+		SOURCES += releaseinfodialog.cpp
+		HEADERS += releaseinfodialog.h
 	}
 }
 

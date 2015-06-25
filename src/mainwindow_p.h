@@ -21,6 +21,7 @@
 #define MAINWINDOWPRIVATE_H
 
 #include <QLabel>
+#include <QDateTime>
 #include <QBasicTimer>
 #include <QStandardItemModel>
 
@@ -106,6 +107,10 @@ private slots:
 	void notifyClientUpdate();
 	void unmau();
 	void unborderCards();
+
+#if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+	void updateLinkActivated(const QString &);
+#endif
 
 	void gameOver();
 	void serverAccept();
@@ -194,6 +199,15 @@ public:
 	QActionGroup *m_playerNamesActionGroup;
 #ifdef USE_ESPEAK
 	ESpeakVolumeDialog *m_volumeDialog;
+#endif
+#if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+	typedef struct {
+		QString name;
+		QByteArray html;
+		QDateTime date;
+	} RELEASEINFO;
+
+	RELEASEINFO m_releaseInfo;
 #endif
 };
 

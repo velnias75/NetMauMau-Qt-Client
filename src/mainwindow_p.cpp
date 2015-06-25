@@ -63,6 +63,10 @@ extern "C" {
 #include "countmessageitemdelegate.h"
 #include "playerimageprogressdialog.h"
 
+#if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+#include "releaseinfodialog.h"
+#endif
+
 namespace {
 
 #if !defined(HAVE_QJSON)
@@ -107,6 +111,9 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	m_playerNameMenu(0L), m_animLogo(new QMovie(":/anim-logo.gif")), m_playerNamesActionGroup(0L)
   #ifdef USE_ESPEAK
   , m_volumeDialog(new ESpeakVolumeDialog())
+  #endif
+  #if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+  , m_releaseInfo()
   #endif
 {
 	Q_Q(MainWindow);
@@ -1946,17 +1953,17 @@ void MainWindowPrivate::notifyClientUpdate() {
 
 	if(!ok) {
 		qWarning("QJson: %s", parser.errorString().toStdString().c_str());
+#ifdef HAVE_MKDIO_H
 	} else if(!vdata.empty()) {
 
-		qDebug("QJson: name=%s", vdata.first().toMap()["name"].toString().toStdString().c_str());
-
-#ifdef HAVE_MKDIO_H
 		const QString body(vdata.first().toMap()["body"].toString());
 		char *inBody = qstrdup(body.toStdString().c_str()), *html = 0L;
 
-		if(mkd_line(inBody, body.size(), &html, 0)) { // returns size
-			qDebug("HTML-Body:\n%s", html);
-//			if(html) free(html); // gives a double free :-/
+		if(mkd_line(inBody, body.size(), &html, MKD_AUTOLINK|MKD_NOEXT|MKD_NOIMAGE)) {
+			m_releaseInfo.name = vdata.first().toMap()["name"].toString();
+			m_releaseInfo.html = html;
+			m_releaseInfo.date = vdata.first().toMap()["published_at"].toDateTime();
+			//	if(html) free(html); // gives a double free :-/
 		}
 
 		delete [] inBody;
@@ -1980,9 +1987,21 @@ void MainWindowPrivate::notifyClientUpdate() {
 		QLabel *url = new QLabel(QString("<html><body><a href=\"https://sourceforge.net/projects" \
 										 "/netmaumau/\">%1</a></body></html>").
 								 arg(tr("Version %1 is available!").arg(rel)));
+
+#if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+		if(!m_releaseInfo.html.isEmpty()) {
+			QObject::connect(url, SIGNAL(linkActivated(QString)), this,
+							 SLOT(updateLinkActivated(QString)));
+		} else {
+			url->setOpenExternalLinks(true);
+		}
+#else
 		url->setOpenExternalLinks(true);
+#endif
+
 		Q_Q(const MainWindow);
 		q->statusBar()->insertPermanentWidget(0, url);
+
 	} else {
 		qDebug("Current version: %u.%u.%u (%u)", VERSION_MAJ(actual), VERSION_MIN(actual),
 			   VERSION_REL(actual), actual);
@@ -1990,6 +2009,21 @@ void MainWindowPrivate::notifyClientUpdate() {
 			   VERSION_REL(avail), avail);
 	}
 }
+
+#if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+void MainWindowPrivate::updateLinkActivated(const QString &u) {
+
+	Q_Q(MainWindow);
+
+	ReleaseInfoDialog rid(q);
+
+	rid.setWindowTitle(m_releaseInfo.name);
+	rid.setReleaseText(m_releaseInfo.html);
+	rid.setReleaseDate(m_releaseInfo.date);
+	rid.setDlUrl(QUrl("https://sourceforge.net/projects/netmaumau/"));
+	rid.exec();
+}
+#endif
 
 void MainWindowPrivate::changePlayerName(QAction *act) {
 	if(!(act == m_ui->actionShowCardTooltips ||
