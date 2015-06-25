@@ -73,6 +73,8 @@ namespace {
 const char *TAGNAME = "\"tag_name\":";
 #endif
 
+const QUrl RDLURL("https://sourceforge.net/projects/netmaumau/");
+
 const QString CURRSPAN("<span style=\"font-weight:630;\">%1</span>");
 const QString PASTSPAN("<span style=\"font-variant:small-caps;\">%1</span>");
 
@@ -187,6 +189,13 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	QObject::connect(m_ui->actionLicense, SIGNAL(triggered()), m_licenseDialog, SLOT(exec()));
 	QObject::connect(m_ui->actionHallOfFame, SIGNAL(triggered()),
 					 m_scoresDialog, SLOT(exec()));
+
+#if !defined(HAVE_QJSON) || !defined(HAVE_MKDIO_H)
+	m_ui->menu_Help->removeAction(m_ui->actionReleaseInformation);
+#else
+	QObject::connect(m_ui->actionReleaseInformation, SIGNAL(triggered()),
+					 this, SLOT(showReleaseInformation()));
+#endif
 
 	m_lsov->addLaunchAction(m_ui->actionLaunchServer);
 
@@ -1957,17 +1966,23 @@ void MainWindowPrivate::notifyClientUpdate() {
 	} else if(!vdata.empty()) {
 
 		const QString body(vdata.first().toMap()["body"].toString());
-		char *inBody = qstrdup(body.toStdString().c_str()), *html = 0L;
+		char *html = 0L;
 
-		if(mkd_line(inBody, body.size(), &html, MKD_AUTOLINK|MKD_NOEXT|MKD_NOIMAGE)) {
+		MMIOT *doc = mkd_string(body.toStdString().c_str(), body.length(),
+								MKD_TOC|MKD_AUTOLINK|MKD_NOEXT|MKD_NOHEADER|MKD_NOIMAGE);
+		if(doc && mkd_compile(doc, MKD_TOC|MKD_AUTOLINK|MKD_NOEXT|MKD_NOHEADER|MKD_NOIMAGE) != EOF
+				&& mkd_document(doc, &html) != EOF) {
+			m_releaseInfo.date = vdata.first().toMap()["published_at"].toDateTime();
 			m_releaseInfo.name = vdata.first().toMap()["name"].toString();
 			m_releaseInfo.html = html;
-			m_releaseInfo.date = vdata.first().toMap()["published_at"].toDateTime();
-			//	if(html) free(html); // gives a double free :-/
+			mkd_cleanup(doc);
+			m_ui->actionReleaseInformation->setEnabled(true);
+		} else {
+			qWarning("libmarkdown: parsing failed");
 		}
-
-		delete [] inBody;
 #endif
+	} else {
+		qWarning("QJson: no valid Json data received");
 	}
 
 #else
@@ -1984,8 +1999,8 @@ void MainWindowPrivate::notifyClientUpdate() {
 			avail = MAKE_VERSION_REL(VERSION_MAJ(savail), VERSION_MIN(savail), VERSION_REL(savail));
 
 	if(avail > actual) {
-		QLabel *url = new QLabel(QString("<html><body><a href=\"https://sourceforge.net/projects" \
-										 "/netmaumau/\">%1</a></body></html>").
+		QLabel *url = new QLabel(QString("<html><body><a href=\"") + RDLURL.toString() +
+								 QString("\">%1</a></body></html>").
 								 arg(tr("Version %1 is available!").arg(rel)));
 
 #if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
@@ -2020,8 +2035,13 @@ void MainWindowPrivate::updateLinkActivated(const QString &u) {
 	rid.setWindowTitle(m_releaseInfo.name);
 	rid.setReleaseText(m_releaseInfo.html);
 	rid.setReleaseDate(m_releaseInfo.date);
-	rid.setDlUrl(QUrl("https://sourceforge.net/projects/netmaumau/"));
+	rid.setDlUrl(QUrl(u));
+
 	rid.exec();
+}
+
+void MainWindowPrivate::showReleaseInformation() {
+	updateLinkActivated(RDLURL.toString());
 }
 #endif
 

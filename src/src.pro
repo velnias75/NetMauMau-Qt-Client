@@ -26,7 +26,7 @@ VERSION = 0.23
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
 DEFINES += _GLIBCXX_VISIBILITY=0 QT_NO_CAST_FROM_BYTEARRAY QT_NO_CAST_TO_ASCII \
 		   QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION QT_NO_WHATSTHIS \
-		   QT_STRICT_ITERATORS
+		   QT_STRICT_ITERATORS QT_NO_URL_CAST_FROM_STRING
 
 QMAKE_RESOURCE_FLAGS += -compress 9
 
@@ -92,7 +92,7 @@ CONFIG(debug, debug|release) {
 	unix:icon.files = nmm_qt_client.png
 	unix:INSTALLS += qmfiles desktop icon target
 	win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
-	win32:DEFINES += _WIN32_WINNT=0x0500 CLIENTVERSION=15 HAVE_MKDIO HAVE_QJSON QJSON_STATIC
+	win32:DEFINES += _WIN32_WINNT=0x0500 CLIENTVERSION=15 HAVE_MKDIO_H HAVE_QJSON QJSON_STATIC
 	devrelease:DEFINES -= NDEBUG QT_NO_DEBUG_OUTPUT
 	devrelease:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing \
 	-Wformat -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \

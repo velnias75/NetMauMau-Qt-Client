@@ -148,6 +148,7 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="actionLicense"/>
+    <addaction name="actionReleaseInformation"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQt"/>
@@ -924,6 +925,14 @@ possible cards</string>
     <string notr="true">Ctrl+M</string>
    </property>
   </action>
+  <action name="actionReleaseInformation">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Release information</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -953,8 +962,8 @@ possible cards</string>
   <tabstop>suspendButton</tabstop>
  </tabstops>
  <resources>
-  <include location="icons.qrc"/>
   <include location="nuoveXT2.qrc"/>
+  <include location="icons.qrc"/>
  </resources>
  <connections>
   <connection>

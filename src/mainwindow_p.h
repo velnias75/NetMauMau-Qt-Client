@@ -110,6 +110,7 @@ private slots:
 
 #if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
 	void updateLinkActivated(const QString &);
+	void showReleaseInformation();
 #endif
 
 	void gameOver();

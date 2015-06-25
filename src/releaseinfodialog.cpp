@@ -32,9 +32,9 @@ void ReleaseInfoDialog::setReleaseText(const QString &html) {
 						 "\"http://www.w3.org/TR/REC-html40/strict.dtd\"> " \
 						 "<html><head><meta name=\"qrichtext\" content=\"1\" />" \
 						 "<style type=\"text/css\">p, li { white-space: pre-wrap; } " \
-						 "</style></head><body style=\" font-family:'DejaVu Sans'; " \
+						 "</style></head><body style=\"font-family:'DejaVu Sans'; " \
 						 "font-size:9pt; font-weight:400; font-style:normal;\">" +
-						 QString(html).replace('\r', "<br />") + "</body></html>");
+						 QString(html).replace('\n', ' ') + "</body></html>");
 }
 
 QDateTime ReleaseInfoDialog::releaseDate() const {
@@ -46,7 +46,7 @@ void ReleaseInfoDialog::setReleaseDate(const QDateTime &rd) {
 }
 
 QUrl ReleaseInfoDialog::dlUrl() const {
-	return dlUrlLabel->text();
+	return QUrl(dlUrlLabel->text());
 }
 
 void ReleaseInfoDialog::setDlUrl(const QUrl &u) {
