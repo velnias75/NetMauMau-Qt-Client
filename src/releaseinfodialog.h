@@ -20,9 +20,11 @@
 #ifndef RELEASEINFODIALOG_H
 #define RELEASEINFODIALOG_H
 
+#include "netmaumaudialog.h"
+
 #include "ui_releaseinfodialog.h"
 
-class ReleaseInfoDialog : public QDialog, private Ui::ReleaseInfoDialog {
+class ReleaseInfoDialog : public NetMauMauDialog, private Ui::ReleaseInfoDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(ReleaseInfoDialog)
 	Q_PROPERTY(QString releaseText READ releaseText WRITE setReleaseText)

@@ -19,7 +19,7 @@
 
 #include "releaseinfodialog.h"
 
-ReleaseInfoDialog::ReleaseInfoDialog(QWidget *p) : QDialog(p) {
+ReleaseInfoDialog::ReleaseInfoDialog(QWidget *p) : NetMauMauDialog(p) {
 	setupUi(this);
 }
 

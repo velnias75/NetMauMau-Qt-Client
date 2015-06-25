@@ -19,16 +19,23 @@
 
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QSslConfiguration>
 
 #include "filedownloader.h"
 
-FileDownloader::FileDownloader(const QUrl &url, QObject *p) : QObject(p) {
+FileDownloader::FileDownloader(const QUrl &url, QObject *p) : QObject(p), m_WebCtrl(),
+	m_DownloadedData() {
 
 	QObject::connect(&m_WebCtrl, SIGNAL(finished(QNetworkReply*)),
 					 SLOT(fileDownloaded(QNetworkReply*)));
 
 	QNetworkRequest request(url);
+	QSslConfiguration cnf(request.sslConfiguration());
 
+	cnf.setPeerVerifyMode(QSslSocket::VerifyNone);
+	cnf.setProtocol(QSsl::AnyProtocol);
+
+	request.setSslConfiguration(cnf);
 	request.setAttribute(QNetworkRequest::CacheLoadControlAttribute,
 						 QNetworkRequest::AlwaysNetwork);
 
@@ -38,6 +45,10 @@ FileDownloader::FileDownloader(const QUrl &url, QObject *p) : QObject(p) {
 FileDownloader::~FileDownloader() {}
 
 void FileDownloader::fileDownloaded(QNetworkReply *pReply) {
+
+	if(pReply->error() != QNetworkReply::NoError) {
+		qWarning("%s", pReply->errorString().toStdString().c_str());
+	}
 
 	m_DownloadedData = pReply->readAll();
 

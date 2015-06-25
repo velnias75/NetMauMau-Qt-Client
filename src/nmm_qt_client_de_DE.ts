@@ -1326,22 +1326,22 @@ Spieldauer: %1</translation>
 <context>
     <name>ReleaseInfoDialog</name>
     <message>
-        <location filename="releaseinfodialog.ui" line="20"/>
+        <location filename="releaseinfodialog.ui" line="12"/>
         <source>Release information</source>
         <translation>Informationen zur Veröffentlichung</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.ui" line="26"/>
+        <location filename="releaseinfodialog.ui" line="27"/>
         <source>Release date:</source>
         <translation>Veröffentlichungsdatum:</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.ui" line="61"/>
+        <location filename="releaseinfodialog.ui" line="40"/>
         <source>Download:</source>
         <translation>Download:</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.ui" line="94"/>
+        <location filename="releaseinfodialog.ui" line="82"/>
         <source>Release notes:</source>
         <translation>Freigabevermerke:</translation>
     </message>
