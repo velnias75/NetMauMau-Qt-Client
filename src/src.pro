@@ -234,6 +234,10 @@ FORMS += \
 
 espeak:FORMS += espeakvolumedialog.ui
 
+win32:FORMS   += releaseinfodialog.ui
+win32:SOURCES += releaseinfodialog.cpp
+win32:HEADERS += releaseinfodialog.h
+
 RESOURCES += \
 	cards.qrc \
 	icons.qrc \
