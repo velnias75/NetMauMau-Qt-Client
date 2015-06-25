@@ -1967,14 +1967,15 @@ void MainWindowPrivate::notifyClientUpdate() {
 
 		const QString body(vdata.first().toMap()["body"].toString());
 		char *html = 0L;
+		int dlen;
 
 		MMIOT *doc = mkd_string(body.toStdString().c_str(), body.length(),
 								MKD_TOC|MKD_AUTOLINK|MKD_NOEXT|MKD_NOHEADER|MKD_NOIMAGE);
 		if(doc && mkd_compile(doc, MKD_TOC|MKD_AUTOLINK|MKD_NOEXT|MKD_NOHEADER|MKD_NOIMAGE) != EOF
-				&& mkd_document(doc, &html) != EOF) {
+				&& (dlen = mkd_document(doc, &html)) != EOF) {
 			m_releaseInfo.date = vdata.first().toMap()["published_at"].toDateTime();
 			m_releaseInfo.name = vdata.first().toMap()["name"].toString();
-			m_releaseInfo.html = html;
+			m_releaseInfo.html = QByteArray(html, dlen);
 			mkd_cleanup(doc);
 			m_ui->actionReleaseInformation->setEnabled(true);
 		} else {

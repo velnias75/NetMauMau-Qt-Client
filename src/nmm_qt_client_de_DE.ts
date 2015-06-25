@@ -1288,7 +1288,7 @@ Spieldauer: %1</translation>
         <translation>%1 beendet</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="2004"/>
+        <location filename="mainwindow_p.cpp" line="2005"/>
         <source>Version %1 is available!</source>
         <translation>Version %1 ist verfügbar!</translation>
     </message>
