@@ -8,9 +8,10 @@ CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
 
-greaterThan(QT_MAJOR_VERSION, 4) || packagesExist(QJson) {
+greaterThan(QT_MAJOR_VERSION, 4) || unix:packagesExist(QJson) {
 
 	lessThan(QT_MAJOR_VERSION, 5) {
+		message("Found QJson")
 		DEFINES += HAVE_QJSON
 		PKGCONFIG += QJson
 	}
@@ -24,6 +25,7 @@ greaterThan(QT_MAJOR_VERSION, 4) || packagesExist(QJson) {
 	}
 
 	unix:exists($$MKDIO_H_LOC) {
+		message("Found $$MKDIO_H_LOC, will enable markdown support")
 		DEFINES += HAVE_MKDIO_H
 		LIBS += -lmarkdown
 		FORMS += releaseinfodialog.ui

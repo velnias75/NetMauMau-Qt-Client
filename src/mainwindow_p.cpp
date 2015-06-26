@@ -1987,7 +1987,7 @@ void MainWindowPrivate::notifyClientUpdate() {
 		mkd_flag_t f = MKD_TOC|MKD_AUTOLINK|MKD_NOEXT|MKD_NOHEADER|MKD_NOIMAGE;
 		MMIOT *doc = 0L;
 		char *html = 0L;
-		int dlen;
+		int dlen   = EOF;
 
 		if((doc = mkd_string(body.toStdString().c_str(), body.length(), f)) &&
 				mkd_compile(doc, f) != EOF && (dlen = mkd_document(doc, &html)) != EOF) {
