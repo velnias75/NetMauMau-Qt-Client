@@ -8,11 +8,14 @@ CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
 
-packagesExist(QJson) {
-	DEFINES += HAVE_QJSON
-	PKGCONFIG += QJson
+greaterThan(QT_MAJOR_VERSION, 4) || packagesExist(QJson) {
 
-	unix:exists(/usr/include/mkdio.h) {
+	lessThan(QT_MAJOR_VERSION, 5) {
+		DEFINES += HAVE_QJSON
+		PKGCONFIG += QJson
+	}
+
+	unix:exists(/usr/include/mkdio.h) || unix:exists(/usr/include/$$(MULTILIB)/mkdio.h) {
 		DEFINES += HAVE_MKDIO_H
 		LIBS += -lmarkdown
 		FORMS += releaseinfodialog.ui

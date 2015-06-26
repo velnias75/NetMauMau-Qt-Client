@@ -108,7 +108,7 @@ private slots:
 	void unmau();
 	void unborderCards();
 
-#if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
 	void updateLinkActivated(const QString &);
 	void showReleaseInformation();
 #endif
@@ -201,7 +201,7 @@ public:
 #ifdef USE_ESPEAK
 	ESpeakVolumeDialog *m_volumeDialog;
 #endif
-#if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
 	typedef struct {
 		QString name;
 		QByteArray html;

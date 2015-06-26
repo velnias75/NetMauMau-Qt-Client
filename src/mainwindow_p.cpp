@@ -23,8 +23,12 @@
 #include <QSettings>
 #include <QSplashScreen>
 
-#ifdef HAVE_QJSON
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+#include <QJsonDocument>
+#else
 #include <qjson/parser.h>
+#endif
 #ifdef HAVE_MKDIO_H
 extern "C" {
 #include <mkdio.h>
@@ -63,13 +67,13 @@ extern "C" {
 #include "countmessageitemdelegate.h"
 #include "playerimageprogressdialog.h"
 
-#if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
 #include "releaseinfodialog.h"
 #endif
 
 namespace {
 
-#if !defined(HAVE_QJSON)
+#if !(QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON))
 const char *TAGNAME = "\"tag_name\":";
 #endif
 
@@ -114,7 +118,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
   #ifdef USE_ESPEAK
   , m_volumeDialog(new ESpeakVolumeDialog())
   #endif
-  #if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+  #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
   , m_releaseInfo()
   #endif
 {
@@ -190,7 +194,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	QObject::connect(m_ui->actionHallOfFame, SIGNAL(triggered()),
 					 m_scoresDialog, SLOT(exec()));
 
-#if !defined(HAVE_QJSON) || !defined(HAVE_MKDIO_H)
+#if !((QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H))
 	m_ui->menu_Help->removeAction(m_ui->actionReleaseInformation);
 #else
 	QObject::connect(m_ui->actionReleaseInformation, SIGNAL(triggered()),
@@ -271,7 +275,8 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	m_ui->remotePlayersView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	m_ui->remotePlayersView->horizontalHeader()->setClickable(false);
 #else
-	m_ui->remotePlayersView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+	m_ui->remotePlayersView->horizontalHeader()->
+			setSectionResizeMode(QHeaderView::ResizeToContents);
 	m_ui->remotePlayersView->horizontalHeader()->setSectionsClickable(false);
 #endif
 
@@ -1951,17 +1956,31 @@ void MainWindowPrivate::notifyClientUpdate() {
 
 	const QByteArray &dld(m_clientReleaseDownloader->downloadedData());
 
-#ifdef HAVE_QJSON
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	QJson::Parser parser;
 	bool ok = false;
+#else
+	QJsonParseError ok;
+#endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+	const QVariantList &vdata(QJsonDocument::fromJson(dld, &ok).toVariant().toList());
+	const QString &rel(ok.error == QJsonParseError::NoError && !vdata.empty() ?
+						   vdata.first().toMap()["tag_name"].toString().mid(1) : "0.0");
+#else
 	const QVariantList &vdata(parser.parse(dld, &ok).toList());
 	const QString &rel(ok && !vdata.empty() ? vdata.first().toMap()["tag_name"].toString().mid(1) :
 					   "0.0");
+#endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+	if(ok.error != QJsonParseError::NoError) {
+		qWarning("QJson: %s", ok.errorString().toStdString().c_str());
+#else
 	if(!ok) {
 		qWarning("QJson: %s", parser.errorString().toStdString().c_str());
+#endif
 #ifdef HAVE_MKDIO_H
 	} else if(!vdata.empty()) {
 
@@ -2004,7 +2023,7 @@ void MainWindowPrivate::notifyClientUpdate() {
 								 QString("\">%1</a></body></html>").
 								 arg(tr("Version %1 is available!").arg(rel)));
 
-#if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
 		if(!m_releaseInfo.html.isEmpty()) {
 			QObject::connect(url, SIGNAL(linkActivated(QString)), this,
 							 SLOT(updateLinkActivated(QString)));
@@ -2026,7 +2045,7 @@ void MainWindowPrivate::notifyClientUpdate() {
 	}
 }
 
-#if defined(HAVE_QJSON) && defined(HAVE_MKDIO_H)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
 void MainWindowPrivate::updateLinkActivated(const QString &u) {
 
 	Q_Q(MainWindow);

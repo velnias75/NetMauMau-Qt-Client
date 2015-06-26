@@ -900,74 +900,74 @@ possible cards</oldsource>
 <context>
     <name>MainWindowPrivate</name>
     <message>
-        <location filename="mainwindow_p.cpp" line="103"/>
+        <location filename="mainwindow_p.cpp" line="107"/>
         <source>Client library version</source>
         <translation>Version der Klientenbibliothek</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="256"/>
+        <location filename="mainwindow_p.cpp" line="260"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="257"/>
+        <location filename="mainwindow_p.cpp" line="261"/>
         <source>Cards</source>
         <translation>Karten</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="258"/>
+        <location filename="mainwindow_p.cpp" line="262"/>
         <source>Turn</source>
         <translation>Runde</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="259"/>
+        <location filename="mainwindow_p.cpp" line="263"/>
         <source>Message</source>
         <translation>Nachricht</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="484"/>
+        <location filename="mainwindow_p.cpp" line="489"/>
         <source>Your score: %1</source>
         <translation>Deine Punktzahl: %1</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="495"/>
+        <location filename="mainwindow_p.cpp" line="500"/>
         <source>First rank</source>
         <translation>Erster Platz</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="496"/>
+        <location filename="mainwindow_p.cpp" line="501"/>
         <source>Second rank</source>
         <translation>Zweiter Platz</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="497"/>
+        <location filename="mainwindow_p.cpp" line="502"/>
         <source>Third rank</source>
         <translation>Dritter Platz</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="498"/>
+        <location filename="mainwindow_p.cpp" line="503"/>
         <source>Fourth rank</source>
         <translation>Vierter Platz</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="499"/>
+        <location filename="mainwindow_p.cpp" line="504"/>
         <source>Fifth rank</source>
         <translation>Fünfter Platz</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="500"/>
+        <location filename="mainwindow_p.cpp" line="505"/>
         <source>%1. rank</source>
         <translation>%1. Platz</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="503"/>
-        <location filename="mainwindow_p.cpp" line="1334"/>
-        <location filename="mainwindow_p.cpp" line="1434"/>
+        <location filename="mainwindow_p.cpp" line="508"/>
+        <location filename="mainwindow_p.cpp" line="1339"/>
+        <location filename="mainwindow_p.cpp" line="1439"/>
         <source>Sorry</source>
         <translation>Entschuldigung</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow_p.cpp" line="531"/>
+        <location filename="mainwindow_p.cpp" line="536"/>
         <source>You can play another &lt;i&gt;Seven&lt;/i&gt; or take %n card(s)</source>
         <translation>
             <numerusform>Du kannst eine andere &lt;i&gt;Sieben&lt;/i&gt; legen oder %n Karte ziehen</numerusform>
@@ -975,7 +975,7 @@ possible cards</oldsource>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow_p.cpp" line="534"/>
+        <location filename="mainwindow_p.cpp" line="539"/>
         <source>Take %n cards. Or play another SEVEN</source>
         <translation>
             <numerusform>Ziehe %n Karte. Oder lege eine SIEBEN</numerusform>
@@ -983,7 +983,7 @@ possible cards</oldsource>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow_p.cpp" line="539"/>
+        <location filename="mainwindow_p.cpp" line="544"/>
         <source>You have no &lt;i&gt;Seven&lt;/i&gt; to play over. You must take %n card(s)</source>
         <translation>
             <numerusform>Du hast keine &lt;i&gt;Sieben&lt;/i&gt; zu legen. Du musst %n Karte ziehen</numerusform>
@@ -991,7 +991,7 @@ possible cards</oldsource>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow_p.cpp" line="542"/>
+        <location filename="mainwindow_p.cpp" line="547"/>
         <source>Take %n cards</source>
         <translation>
             <numerusform>Ziehe %n Karte</numerusform>
@@ -999,12 +999,12 @@ possible cards</oldsource>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="611"/>
+        <location filename="mainwindow_p.cpp" line="616"/>
         <source>Shortcut</source>
         <translation>Schnellwahl</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow_p.cpp" line="660"/>
+        <location filename="mainwindow_p.cpp" line="665"/>
         <source>%n card(s)</source>
         <translation>
             <numerusform>%n Karte</numerusform>
@@ -1012,104 +1012,104 @@ possible cards</oldsource>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="700"/>
+        <location filename="mainwindow_p.cpp" line="705"/>
         <source>Current score: %1</source>
         <translation>Gegenwärtige Punktzahl: %1</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="713"/>
-        <location filename="mainwindow_p.cpp" line="740"/>
-        <location filename="mainwindow_p.cpp" line="743"/>
+        <location filename="mainwindow_p.cpp" line="718"/>
+        <location filename="mainwindow_p.cpp" line="745"/>
+        <location filename="mainwindow_p.cpp" line="748"/>
         <source>Ace round</source>
         <translation>Assrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="713"/>
-        <location filename="mainwindow_p.cpp" line="740"/>
-        <location filename="mainwindow_p.cpp" line="743"/>
+        <location filename="mainwindow_p.cpp" line="718"/>
+        <location filename="mainwindow_p.cpp" line="745"/>
+        <location filename="mainwindow_p.cpp" line="748"/>
         <source>ace round</source>
         <translation>Assrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="724"/>
         <location filename="mainwindow_p.cpp" line="729"/>
+        <location filename="mainwindow_p.cpp" line="734"/>
         <source>Queen round</source>
         <translation>Damenrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="724"/>
         <location filename="mainwindow_p.cpp" line="729"/>
+        <location filename="mainwindow_p.cpp" line="734"/>
         <source>queen round</source>
         <translation>Damenrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="733"/>
         <location filename="mainwindow_p.cpp" line="738"/>
+        <location filename="mainwindow_p.cpp" line="743"/>
         <source>King round</source>
         <translation>Königsrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="733"/>
         <location filename="mainwindow_p.cpp" line="738"/>
+        <location filename="mainwindow_p.cpp" line="743"/>
         <source>king round</source>
         <translation>Königsrunde</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="749"/>
+        <location filename="mainwindow_p.cpp" line="754"/>
         <source>Reconnect to </source>
         <translation>Verbinde wieder zu </translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="953"/>
+        <location filename="mainwindow_p.cpp" line="958"/>
         <source>Receiving player image for &quot;%1&quot;...</source>
         <translation>Empfange Bild für Spieler &quot;%1&quot;…</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1090"/>
+        <location filename="mainwindow_p.cpp" line="1095"/>
         <source>%1 on %2 (%3)</source>
         <translation>%1 auf %2 (%3)</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1120"/>
+        <location filename="mainwindow_p.cpp" line="1125"/>
         <source>Couldn&apos;t get scores from server</source>
         <translation>Konnte die Punktzahlen nicht vom Server beziehen</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1122"/>
+        <location filename="mainwindow_p.cpp" line="1127"/>
         <source>Couldn&apos;t get player list from server</source>
         <translation>Konnte die Spielerliste nicht vom Server beziehen</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1124"/>
+        <location filename="mainwindow_p.cpp" line="1129"/>
         <source>While connecting to &lt;b&gt;%1&lt;/b&gt;: &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>Beim Verbindungsaufbau zu &lt;b&gt;%1&lt;/b&gt;: &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1146"/>
-        <location filename="mainwindow_p.cpp" line="1149"/>
-        <location filename="mainwindow_p.cpp" line="1153"/>
+        <location filename="mainwindow_p.cpp" line="1151"/>
+        <location filename="mainwindow_p.cpp" line="1154"/>
+        <location filename="mainwindow_p.cpp" line="1158"/>
         <source>Server Error</source>
         <translation>Serverfehler</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1278"/>
-        <location filename="mainwindow_p.cpp" line="1282"/>
+        <location filename="mainwindow_p.cpp" line="1283"/>
+        <location filename="mainwindow_p.cpp" line="1287"/>
         <source>Card rejected</source>
         <translation>Karte zurückgewiesen</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1278"/>
-        <location filename="mainwindow_p.cpp" line="1282"/>
+        <location filename="mainwindow_p.cpp" line="1283"/>
+        <location filename="mainwindow_p.cpp" line="1287"/>
         <source>You cannot play card %1!</source>
         <translation>Du kannst die Karte %1 nicht legen!</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1310"/>
+        <location filename="mainwindow_p.cpp" line="1315"/>
         <source>suspended the turn</source>
         <translation>hat die Runde ausgesetzt</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow_p.cpp" line="1317"/>
+        <location filename="mainwindow_p.cpp" line="1322"/>
         <source>&lt;span style=&quot;color:%1;&quot;&gt;loses&lt;/span&gt; with &lt;span style=&quot;font:oblique bold&quot;&gt;%n&lt;/span&gt; point(s) at hand</source>
         <oldsource>&lt;span style=&quot;color:%1;&quot;&gt;loses&lt;/span&gt; with %n point(s) at hand</oldsource>
         <translation>
@@ -1118,7 +1118,7 @@ possible cards</oldsource>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1335"/>
+        <location filename="mainwindow_p.cpp" line="1340"/>
         <source>You have lost!
 %1
 Playing time: %2</source>
@@ -1127,49 +1127,49 @@ Playing time: %2</source>
 Spieldauer: %2</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1337"/>
+        <location filename="mainwindow_p.cpp" line="1342"/>
         <source>Your deduction of points: %1</source>
         <translation>Dein Punktabzug: %1</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1350"/>
-        <location filename="mainwindow_p.cpp" line="1416"/>
+        <location filename="mainwindow_p.cpp" line="1355"/>
+        <location filename="mainwindow_p.cpp" line="1421"/>
         <source>Try &amp;again</source>
         <translation>Nochmals &amp;versuchen</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1365"/>
+        <location filename="mainwindow_p.cpp" line="1370"/>
         <source>%1 lost!</source>
         <translation>%1 hat verloren!</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1379"/>
+        <location filename="mainwindow_p.cpp" line="1384"/>
         <source>&lt;span style=&quot;color:%1;&quot;&gt;wins&lt;/span&gt; in turn %2</source>
         <translation>&lt;span style=&quot;color:%1;&quot;&gt;gewinnt&lt;/span&gt; in Runde %2</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1518"/>
+        <location filename="mainwindow_p.cpp" line="1523"/>
         <source>Player &lt;span style=&quot;color:%1;&quot;&gt;%2&lt;/span&gt; joined the game</source>
         <translation>Spieler &lt;span style=&quot;color:%1;&quot;&gt;%2&lt;/span&gt; ist dem Spiel beigetreten</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1382"/>
+        <location filename="mainwindow_p.cpp" line="1387"/>
         <source>%1 wins!</source>
         <translation>%1 hat gewonnen!</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1395"/>
-        <location filename="mainwindow_p.cpp" line="1396"/>
+        <location filename="mainwindow_p.cpp" line="1400"/>
+        <location filename="mainwindow_p.cpp" line="1401"/>
         <source>Congratulations! You have won!</source>
         <translation>Gratulation! Du hast gewonnen!</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1408"/>
+        <location filename="mainwindow_p.cpp" line="1413"/>
         <source>Congratulations</source>
         <translation>Gratulation</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1409"/>
+        <location filename="mainwindow_p.cpp" line="1414"/>
         <source>You have won!
 %1
 Playing time: %2</source>
@@ -1178,17 +1178,17 @@ Playing time: %2</source>
 Spieldauer: %2</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1440"/>
+        <location filename="mainwindow_p.cpp" line="1445"/>
         <source>&lt;font color=&quot;blue&quot;&gt;%1&lt;/font&gt; has won!&lt;br /&gt;&lt;br /&gt;Playing time: %2</source>
         <translation>&lt;font color=&quot;blue&quot;&gt;%1&lt;/font&gt; hat gewonnen!&lt;br /&gt;&lt;br /&gt;Spieldauer: %2</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1455"/>
+        <location filename="mainwindow_p.cpp" line="1460"/>
         <source>picks up a card</source>
         <translation>zieht eine Karte</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow_p.cpp" line="1460"/>
+        <location filename="mainwindow_p.cpp" line="1465"/>
         <source>picks up %n card(s)</source>
         <translation>
             <numerusform>zieht %n Karte</numerusform>
@@ -1196,12 +1196,12 @@ Spieldauer: %2</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1464"/>
+        <location filename="mainwindow_p.cpp" line="1469"/>
         <source>You %1</source>
         <translation>Du %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow_p.cpp" line="1464"/>
+        <location filename="mainwindow_p.cpp" line="1469"/>
         <source>picked up %n card(s)</source>
         <comment>playerPick</comment>
         <translation>
@@ -1210,12 +1210,12 @@ Spieldauer: %2</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1472"/>
+        <location filename="mainwindow_p.cpp" line="1477"/>
         <source>plays %1</source>
         <translation>legt %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="mainwindow_p.cpp" line="1531"/>
+        <location filename="mainwindow_p.cpp" line="1536"/>
         <source>Waiting for %n more player(s)...</source>
         <translation>
             <numerusform>Warte auf %n weiteren Spieler…</numerusform>
@@ -1223,37 +1223,37 @@ Spieldauer: %2</translation>
         </translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1563"/>
+        <location filename="mainwindow_p.cpp" line="1568"/>
         <source>Play your card...</source>
         <translation>Lege Deine Karte…</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1578"/>
+        <location filename="mainwindow_p.cpp" line="1583"/>
         <source>Dra&amp;w</source>
         <translation>A&amp;ufnehmen</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1578"/>
+        <location filename="mainwindow_p.cpp" line="1583"/>
         <source>&amp;Suspend</source>
         <translation>A&amp;ussetzen</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1641"/>
+        <location filename="mainwindow_p.cpp" line="1646"/>
         <source>Continue current %1?</source>
         <translation>%1 weiterführen?</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1642"/>
+        <location filename="mainwindow_p.cpp" line="1647"/>
         <source>Start %1?</source>
         <translation>Eine %1 beginnen?</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1755"/>
+        <location filename="mainwindow_p.cpp" line="1760"/>
         <source>Game Over</source>
         <translation>Game Over</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1755"/>
+        <location filename="mainwindow_p.cpp" line="1760"/>
         <source>This game is over!
 
 Playing time: %1</source>
@@ -1262,33 +1262,33 @@ Playing time: %1</source>
 Spieldauer: %1</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1836"/>
+        <location filename="mainwindow_p.cpp" line="1841"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1877"/>
+        <location filename="mainwindow_p.cpp" line="1882"/>
         <source>starts a %1</source>
         <translation>beginnt eine %1</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1900"/>
-        <location filename="mainwindow_p.cpp" line="1903"/>
+        <location filename="mainwindow_p.cpp" line="1905"/>
+        <location filename="mainwindow_p.cpp" line="1908"/>
         <source>%1 of %2</source>
         <translation>%1 von %2</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1923"/>
+        <location filename="mainwindow_p.cpp" line="1928"/>
         <source>ends a %1</source>
         <translation>beendet die %1</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1926"/>
+        <location filename="mainwindow_p.cpp" line="1931"/>
         <source>%1 finished</source>
         <translation>%1 beendet</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="2005"/>
+        <location filename="mainwindow_p.cpp" line="2024"/>
         <source>Version %1 is available!</source>
         <translation>Version %1 ist verfügbar!</translation>
     </message>
