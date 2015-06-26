@@ -77,7 +77,7 @@ namespace {
 const char *TAGNAME = "\"tag_name\":";
 #endif
 
-const QUrl RDLURL("https://sourceforge.net/projects/netmaumau/");
+const QUrl RDLURL(DLURL);
 
 const QString CURRSPAN("<span style=\"font-weight:630;\">%1</span>");
 const QString PASTSPAN("<span style=\"font-variant:small-caps;\">%1</span>");
@@ -165,9 +165,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	q->setWindowTitle(QCoreApplication::applicationName() + " " +
 					  QCoreApplication::applicationVersion());
 
-	m_clientReleaseDownloader =
-			new FileDownloader(QUrl("https://api.github.com/repos/velnias75/" \
-									"NetMauMau-Qt-Client/releases?per_page=1"));
+	m_clientReleaseDownloader = new FileDownloader(QUrl(APIURL));
 
 	QObject::connect(m_clientReleaseDownloader, SIGNAL(downloaded()),
 					 this, SLOT(notifyClientUpdate()));
@@ -1985,13 +1983,14 @@ void MainWindowPrivate::notifyClientUpdate() {
 	} else if(!vdata.empty()) {
 
 		const QString body(vdata.first().toMap()["body"].toString());
+
+		mkd_flag_t f = MKD_TOC|MKD_AUTOLINK|MKD_NOEXT|MKD_NOHEADER|MKD_NOIMAGE;
+		MMIOT *doc = 0L;
 		char *html = 0L;
 		int dlen;
 
-		MMIOT *doc = mkd_string(body.toStdString().c_str(), body.length(),
-								MKD_TOC|MKD_AUTOLINK|MKD_NOEXT|MKD_NOHEADER|MKD_NOIMAGE);
-		if(doc && mkd_compile(doc, MKD_TOC|MKD_AUTOLINK|MKD_NOEXT|MKD_NOHEADER|MKD_NOIMAGE) != EOF
-				&& (dlen = mkd_document(doc, &html)) != EOF) {
+		if((doc = mkd_string(body.toStdString().c_str(), body.length(), f)) &&
+				mkd_compile(doc, f) != EOF && (dlen = mkd_document(doc, &html)) != EOF) {
 			m_releaseInfo.date = vdata.first().toMap()["published_at"].toDateTime();
 			m_releaseInfo.name = vdata.first().toMap()["name"].toString();
 			m_releaseInfo.html = QByteArray(html, dlen);

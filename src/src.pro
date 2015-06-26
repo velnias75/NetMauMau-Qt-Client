@@ -38,6 +38,8 @@ DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\
 DEFINES += _GLIBCXX_VISIBILITY=0 QT_NO_CAST_FROM_BYTEARRAY QT_NO_CAST_TO_ASCII \
 		   QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION QT_NO_WHATSTHIS \
 		   QT_STRICT_ITERATORS QT_NO_URL_CAST_FROM_STRING
+DEFINES += "DLURL=\"\\\"https://sourceforge.net/projects/netmaumau/\\\"\"" \
+		   "APIURL=\"\\\"https://api.github.com/repos/velnias75/NetMauMau-Qt-Client/releases?per_page=1\\\"\""
 
 QMAKE_RESOURCE_FLAGS += -compress 9
 
