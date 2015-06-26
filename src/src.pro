@@ -15,7 +15,9 @@ greaterThan(QT_MAJOR_VERSION, 4) || packagesExist(QJson) {
 		PKGCONFIG += QJson
 	}
 
-	unix:isEmpty($$(MULTILIB)) {
+	MKDIO_H_MULTILIB = $$(MULTILIB)
+
+	unix:isEmpty(MKDIO_H_MULTILIB) {
 		MKDIO_H_LOC="/usr/include/mkdio.h"
 	} else {
 		MKDIO_H_LOC="/usr/include/$$(MULTILIB)/mkdio.h"
