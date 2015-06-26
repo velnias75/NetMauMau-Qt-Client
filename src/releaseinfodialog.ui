@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>ReleaseInfoDialog</class>
  <widget class="QDialog" name="ReleaseInfoDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>712</width>
+    <height>647</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string notr="true">Dialog</string>
   </property>
@@ -84,7 +92,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QTextBrowser" name="releaseHtml">
+       <widget class="NetMauMauTextBrowser" name="releaseHtml">
         <property name="minimumSize">
          <size>
           <width>690</width>
@@ -114,6 +122,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>NetMauMauTextBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>netmaumautextbrowser.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

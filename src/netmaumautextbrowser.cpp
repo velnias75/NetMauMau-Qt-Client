@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,27 +17,19 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QFile>
-#include <QPushButton>
-#include <QDesktopServices>
+#include "netmaumautextbrowser.h"
 
-#include "licensedialog.h"
-
-LicenseDialog::LicenseDialog(QWidget *p) : NetMauMauDialog(p) {
-
-	setupUi(this);
-
-	QFile lichtml(":/LICENSE");
-
-	if(lichtml.open(QIODevice::ReadOnly)) {
-		textBrowser->setHtmlWithHeader(QString::fromUtf8(lichtml.readAll().constData()));
-	}
-
-	QObject::connect(textBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(anchorClicked(QUrl)));
-
-	static_cast<QPushButton *>(buttonBox->buttons()[0])->setDefault(true);
+namespace {
+const QString HEADER("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" " \
+					 "\"http://www.w3.org/TR/REC-html40/strict.dtd\"> " \
+					 "<html><head><meta name=\"qrichtext\" content=\"1\" />" \
+					 "<style type=\"text/css\">p, li { white-space: pre-wrap; } " \
+					 "</style></head><body style=\"font-family:'DejaVu Sans'; " \
+					 "font-size:9pt; font-weight:400; font-style:normal;\">%1</body></html>");
 }
 
-void LicenseDialog::anchorClicked(const QUrl &url) {
-	QDesktopServices::openUrl(url);
+NetMauMauTextBrowser::NetMauMauTextBrowser(QWidget *p) : QTextBrowser(p) {}
+
+void NetMauMauTextBrowser::setHtmlWithHeader(const QString & text) {
+	setHtml(HEADER.arg(text));
 }

@@ -148,6 +148,7 @@ SOURCES += \
 	netmaumauapplication.cpp \
 	netmaumaudialog.cpp \
 	netmaumaumessagebox.cpp \
+	netmaumautextbrowser.cpp \
 	playerimagedelegate.cpp \
 	playerimagelineedit.cpp \
 	playerimageprogressdialog.cpp \
@@ -200,6 +201,7 @@ HEADERS += \
 	netmaumauapplication.h \
 	netmaumaudialog.h \
 	netmaumaumessagebox.h \
+	netmaumautextbrowser.h \
 	playerimagedelegate.h \
 	playerimagelineedit.h \
 	playerimageprogressdialog.h \

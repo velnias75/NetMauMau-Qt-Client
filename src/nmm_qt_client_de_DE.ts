@@ -528,11 +528,6 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <source>License</source>
         <translation>Lizenz</translation>
     </message>
-    <message>
-        <location filename="licensedialog.ui" line="37"/>
-        <source>qrc:/LICENSE</source>
-        <translation></translation>
-    </message>
 </context>
 <context>
     <name>LocalServerOutputSettingsDialog</name>
@@ -1326,22 +1321,22 @@ Spieldauer: %1</translation>
 <context>
     <name>ReleaseInfoDialog</name>
     <message>
-        <location filename="releaseinfodialog.ui" line="12"/>
+        <location filename="releaseinfodialog.ui" line="20"/>
         <source>Release information</source>
         <translation>Informationen zur Veröffentlichung</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.ui" line="27"/>
+        <location filename="releaseinfodialog.ui" line="35"/>
         <source>Release date:</source>
         <translation>Veröffentlichungsdatum:</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.ui" line="40"/>
+        <location filename="releaseinfodialog.ui" line="48"/>
         <source>Download:</source>
         <translation>Download:</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.ui" line="82"/>
+        <location filename="releaseinfodialog.ui" line="90"/>
         <source>Release notes:</source>
         <translation>Freigabevermerke:</translation>
     </message>

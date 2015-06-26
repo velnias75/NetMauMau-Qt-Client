@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 by Heiko Schäfer <heiko@rangun.de>
+ * Copyright 2015 by Heiko Schäfer <heiko@rangun.de>
  *
  * This file is part of NetMauMau Qt Client.
  *
@@ -17,27 +17,18 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QFile>
-#include <QPushButton>
-#include <QDesktopServices>
+#ifndef NETMAUMAUTEXTBROWSER_H
+#define NETMAUMAUTEXTBROWSER_H
 
-#include "licensedialog.h"
+#include <QTextBrowser>
 
-LicenseDialog::LicenseDialog(QWidget *p) : NetMauMauDialog(p) {
+class NetMauMauTextBrowser : public QTextBrowser {
+	Q_OBJECT
+	Q_DISABLE_COPY(NetMauMauTextBrowser)
+public:
+	explicit NetMauMauTextBrowser(QWidget *parent = 0);
 
-	setupUi(this);
+	void setHtmlWithHeader(const QString & text);
+};
 
-	QFile lichtml(":/LICENSE");
-
-	if(lichtml.open(QIODevice::ReadOnly)) {
-		textBrowser->setHtmlWithHeader(QString::fromUtf8(lichtml.readAll().constData()));
-	}
-
-	QObject::connect(textBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(anchorClicked(QUrl)));
-
-	static_cast<QPushButton *>(buttonBox->buttons()[0])->setDefault(true);
-}
-
-void LicenseDialog::anchorClicked(const QUrl &url) {
-	QDesktopServices::openUrl(url);
-}
+#endif // NETMAUMAUTEXTBROWSER_H
