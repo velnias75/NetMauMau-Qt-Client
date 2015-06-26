@@ -194,11 +194,11 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	QObject::connect(m_ui->actionHallOfFame, SIGNAL(triggered()),
 					 m_scoresDialog, SLOT(exec()));
 
-#if !((QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H))
-	m_ui->menu_Help->removeAction(m_ui->actionReleaseInformation);
-#else
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
 	QObject::connect(m_ui->actionReleaseInformation, SIGNAL(triggered()),
 					 this, SLOT(showReleaseInformation()));
+#else
+	m_ui->menu_Help->removeAction(m_ui->actionReleaseInformation);
 #endif
 
 	m_lsov->addLaunchAction(m_ui->actionLaunchServer);

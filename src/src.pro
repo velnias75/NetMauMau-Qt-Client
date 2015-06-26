@@ -15,7 +15,13 @@ greaterThan(QT_MAJOR_VERSION, 4) || packagesExist(QJson) {
 		PKGCONFIG += QJson
 	}
 
-	unix:exists(/usr/include/mkdio.h) || unix:exists(/usr/include/$$(MULTILIB)/mkdio.h) {
+	unix:isEmpty($$(MULTILIB)) {
+		MKDIO_H_LOC="/usr/include/mkdio.h"
+	} else {
+		MKDIO_H_LOC="/usr/include/$$(MULTILIB)/mkdio.h"
+	}
+
+	unix:exists($$MKDIO_H_LOC) {
 		DEFINES += HAVE_MKDIO_H
 		LIBS += -lmarkdown
 		FORMS += releaseinfodialog.ui
