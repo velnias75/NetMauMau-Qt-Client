@@ -8,7 +8,7 @@ CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
 
-greaterThan(QT_MAJOR_VERSION, 4) || unix:packagesExist(QJson) {
+greaterThan(QT_MAJOR_VERSION, 4) || packagesExist(QJson) {
 
 	lessThan(QT_MAJOR_VERSION, 5) {
 		message("Found QJson")
@@ -18,13 +18,13 @@ greaterThan(QT_MAJOR_VERSION, 4) || unix:packagesExist(QJson) {
 
 	MKDIO_H_MULTILIB = $$(MULTILIB)
 
-	unix:isEmpty(MKDIO_H_MULTILIB) {
+	isEmpty(MKDIO_H_MULTILIB) {
 		MKDIO_H_LOC="/usr/include/mkdio.h"
 	} else {
 		MKDIO_H_LOC="/usr/include/$$(MULTILIB)/mkdio.h"
 	}
 
-	unix:exists($$MKDIO_H_LOC) {
+	exists($$MKDIO_H_LOC) {
 		message("Found $$MKDIO_H_LOC, will enable markdown support")
 		DEFINES += HAVE_MKDIO_H
 		LIBS += -lmarkdown
