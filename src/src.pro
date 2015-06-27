@@ -12,8 +12,8 @@ greaterThan(QT_MAJOR_VERSION, 4) || packagesExist(QJson) {
 
 	lessThan(QT_MAJOR_VERSION, 5) {
 		message("Found QJson")
-		DEFINES += HAVE_QJSON
-		PKGCONFIG += QJson
+		unix:DEFINES += HAVE_QJSON
+		unix:PKGCONFIG += QJson
 	}
 
 	MKDIO_H_MULTILIB = $$(MULTILIB)
@@ -26,12 +26,16 @@ greaterThan(QT_MAJOR_VERSION, 4) || packagesExist(QJson) {
 
 	exists($$MKDIO_H_LOC) {
 		message("Found $$MKDIO_H_LOC, will enable markdown support")
-		DEFINES += HAVE_MKDIO_H
-		LIBS += -lmarkdown
-		FORMS += releaseinfodialog.ui
-		SOURCES += releaseinfodialog.cpp
-		HEADERS += releaseinfodialog.h
+		unix:DEFINES += HAVE_MKDIO_H
+		unix:LIBS += -lmarkdown
+		unix:FORMS += releaseinfodialog.ui
+		unix:SOURCES += releaseinfodialog.cpp
+		unix:HEADERS += releaseinfodialog.h
+	} else {
+		unix:error("No mkdio.h (part of the discount package) found on the system")
 	}
+} else {
+   unix:error("No QJson found on the system")
 }
 
 VERSION = 0.23
@@ -165,6 +169,8 @@ SOURCES += \
 	playerimagelineedit.cpp \
 	playerimageprogressdialog.cpp \
 	portspin.cpp \
+	qgithubrelease.cpp \
+	qgithubrelease_p.cpp \
 	scoresdialog.cpp \
 	serverdialog.cpp \
 	serverdialog_p.cpp \
@@ -218,6 +224,8 @@ HEADERS += \
 	playerimagelineedit.h \
 	playerimageprogressdialog.h \
 	portspin.h \
+	qgithubrelease.h \
+	qgithubrelease_p.h \
 	scoresdialog.h \
 	serverdialog.h \
 	serverdialog_p.h \

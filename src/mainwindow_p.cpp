@@ -23,19 +23,6 @@
 #include <QSettings>
 #include <QSplashScreen>
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-#include <QJsonDocument>
-#else
-#include <qjson/parser.h>
-#endif
-#ifdef HAVE_MKDIO_H
-extern "C" {
-#include <mkdio.h>
-}
-#endif
-#endif
-
 #include <cardtools.h>
 #include <scoresexception.h>
 #include <defaultplayerimage.h>
@@ -56,7 +43,7 @@ extern "C" {
 #include "scoresdialog.h"
 #include "licensedialog.h"
 #include "ui_mainwindow.h"
-#include "filedownloader.h"
+#include "qgithubrelease.h"
 #include "jackchoosedialog.h"
 #include "launchserverdialog.h"
 #include "netmaumaumessagebox.h"
@@ -67,7 +54,7 @@ extern "C" {
 #include "countmessageitemdelegate.h"
 #include "playerimageprogressdialog.h"
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
+#if JSONMKDIO
 #include "releaseinfodialog.h"
 #endif
 
@@ -110,7 +97,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 			   .arg(VERSION_REL(Client::getClientLibraryVersion()))),
 	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(p)), m_timeLabel(), m_playTimer(),
 	m_licenseDialog(new LicenseDialog(p)), m_aceRoundLabel(), m_gameState(0L),
-	m_scoresDialog(new ScoresDialog(m_serverDlg, p)), m_clientReleaseDownloader(0L),
+	m_scoresDialog(new ScoresDialog(m_serverDlg, p)), m_gitHubReleaseAPI(0L),
 	m_defaultPlayerImage(QImage::fromData
 						 (QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
 									 NetMauMau::Common::DefaultPlayerImage.length()))),
@@ -118,7 +105,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
   #ifdef USE_ESPEAK
   , m_volumeDialog(new ESpeakVolumeDialog())
   #endif
-  #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
+  #if JSONMKDIO
   , m_releaseInfo()
   #endif
 {
@@ -165,10 +152,11 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	q->setWindowTitle(QCoreApplication::applicationName() + " " +
 					  QCoreApplication::applicationVersion());
 
-	m_clientReleaseDownloader = new FileDownloader(QUrl(APIURL));
+	m_gitHubReleaseAPI = new QGitHubRelease(QUrl(APIURL));
 
-	QObject::connect(m_clientReleaseDownloader, SIGNAL(downloaded()),
-					 this, SLOT(notifyClientUpdate()));
+	QObject::connect(m_gitHubReleaseAPI, SIGNAL(available()), this, SLOT(notifyClientUpdate()));
+	QObject::connect(m_gitHubReleaseAPI, SIGNAL(error(QString)),
+					 this, SLOT(notifyClientUpdateError(QString)));
 
 	QObject::connect(m_ui->actionConnectionlog, SIGNAL(toggled(bool)),
 				 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -192,7 +180,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	QObject::connect(m_ui->actionHallOfFame, SIGNAL(triggered()),
 					 m_scoresDialog, SLOT(exec()));
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
+#if JSONMKDIO
 	QObject::connect(m_ui->actionReleaseInformation, SIGNAL(triggered()),
 					 this, SLOT(showReleaseInformation()));
 #else
@@ -354,7 +342,7 @@ MainWindowPrivate::~MainWindowPrivate() {
 	delete m_turnItemDelegate;
 	delete m_messageItemDelegate;
 	delete m_receivingPlayerImageProgress;
-	delete m_clientReleaseDownloader;
+	delete m_gitHubReleaseAPI;
 	delete m_playerNameMenu;
 	delete m_gameState;
 	delete m_animLogo;
@@ -1951,100 +1939,56 @@ void MainWindowPrivate::about() {
 }
 
 void MainWindowPrivate::notifyClientUpdate() {
+#if JSONMKDIO
+	if(m_gitHubReleaseAPI->entries() > 0) {
 
-	const QByteArray &dld(m_clientReleaseDownloader->downloadedData());
+		m_releaseInfo.date = m_gitHubReleaseAPI->publishedAt();
+		m_releaseInfo.name = m_gitHubReleaseAPI->name();
+		m_releaseInfo.html = m_gitHubReleaseAPI->body();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-	QJson::Parser parser;
-	bool ok = false;
-#else
-	QJsonParseError ok;
-#endif
+		m_ui->actionReleaseInformation->setEnabled(true);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-	const QVariantList &vdata(QJsonDocument::fromJson(dld, &ok).toVariant().toList());
-	const QString &rel(ok.error == QJsonParseError::NoError && !vdata.empty() ?
-						   vdata.first().toMap()["tag_name"].toString().mid(1) : "0.0");
-#else
-	const QVariantList &vdata(parser.parse(dld, &ok).toList());
-	const QString &rel(ok && !vdata.empty() ? vdata.first().toMap()["tag_name"].toString().mid(1) :
-					   "0.0");
-#endif
+		const QString &relTag(m_gitHubReleaseAPI->tagName());
+		const QString &rel(!relTag.isEmpty() ? relTag.mid(1) : "0.0");
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-	if(ok.error != QJsonParseError::NoError) {
-		qWarning("QJson: %s", ok.errorString().toStdString().c_str());
-#else
-	if(!ok) {
-		qWarning("QJson: %s", parser.errorString().toStdString().c_str());
-#endif
-#ifdef HAVE_MKDIO_H
-	} else if(!vdata.empty()) {
+		const uint32_t sactual = Client::parseProtocolVersion(PACKAGE_VERSION),
+				actual = MAKE_VERSION_REL(VERSION_MAJ(sactual), VERSION_MIN(sactual),
+										  VERSION_REL(sactual));
+		const uint32_t savail  = Client::parseProtocolVersion(rel.toStdString()),
+				avail = MAKE_VERSION_REL(VERSION_MAJ(savail), VERSION_MIN(savail),
+										 VERSION_REL(savail));
 
-		const QString body(vdata.first().toMap()["body"].toString());
+		if(avail > actual) {
 
-		mkd_flag_t f = MKD_TOC|MKD_AUTOLINK|MKD_NOEXT|MKD_NOHEADER|MKD_NOIMAGE;
-		MMIOT *doc = 0L;
-		char *html = 0L;
-		int dlen   = EOF;
+			QLabel *url = new QLabel(QString("<html><body><a href=\"") + RDLURL.toString() +
+									 QString("\">%1</a></body></html>").
+									 arg(tr("Version %1 is available!").arg(rel)));
 
-		if((doc = mkd_string(body.toStdString().c_str(), body.length(), f)) &&
-				mkd_compile(doc, f) != EOF && (dlen = mkd_document(doc, &html)) != EOF) {
-			m_releaseInfo.date = vdata.first().toMap()["published_at"].toDateTime();
-			m_releaseInfo.name = vdata.first().toMap()["name"].toString();
-			m_releaseInfo.html = QByteArray(html, dlen);
-			mkd_cleanup(doc);
-			m_ui->actionReleaseInformation->setEnabled(true);
+			if(!m_releaseInfo.html.isEmpty()) {
+				QObject::connect(url, SIGNAL(linkActivated(QString)), this,
+								 SLOT(updateLinkActivated(QString)));
+			} else {
+				url->setOpenExternalLinks(true);
+			}
+
+			Q_Q(const MainWindow);
+			q->statusBar()->insertPermanentWidget(0, url);
+
 		} else {
-			qWarning("libmarkdown: parsing failed");
+			qDebug("Current version: %u.%u.%u (%u)", VERSION_MAJ(actual), VERSION_MIN(actual),
+				   VERSION_REL(actual), actual);
+			qDebug("Current release: %u.%u.%u (%u)", VERSION_MAJ(avail), VERSION_MIN(avail),
+				   VERSION_REL(avail), avail);
 		}
-#endif
-	} else {
-		qWarning("QJson: no valid Json data received");
 	}
-
-#else
-
-	const int idx = dld.indexOf(TAGNAME), idxl = idx + qstrlen(TAGNAME);
-	const QString &rel(idx > 0 ? dld.mid(idxl + 2, dld.indexOf(",", idxl) - idxl - 3).constData() :
-								 "0.0");
 #endif
-
-	const uint32_t sactual = Client::parseProtocolVersion(PACKAGE_VERSION),
-			actual = MAKE_VERSION_REL(VERSION_MAJ(sactual), VERSION_MIN(sactual),
-									  VERSION_REL(sactual));
-	const uint32_t savail  = Client::parseProtocolVersion(rel.toStdString()),
-			avail = MAKE_VERSION_REL(VERSION_MAJ(savail), VERSION_MIN(savail), VERSION_REL(savail));
-
-	if(avail > actual) {
-		QLabel *url = new QLabel(QString("<html><body><a href=\"") + RDLURL.toString() +
-								 QString("\">%1</a></body></html>").
-								 arg(tr("Version %1 is available!").arg(rel)));
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
-		if(!m_releaseInfo.html.isEmpty()) {
-			QObject::connect(url, SIGNAL(linkActivated(QString)), this,
-							 SLOT(updateLinkActivated(QString)));
-		} else {
-			url->setOpenExternalLinks(true);
-		}
-#else
-		url->setOpenExternalLinks(true);
-#endif
-
-		Q_Q(const MainWindow);
-		q->statusBar()->insertPermanentWidget(0, url);
-
-	} else {
-		qDebug("Current version: %u.%u.%u (%u)", VERSION_MAJ(actual), VERSION_MIN(actual),
-			   VERSION_REL(actual), actual);
-		qDebug("Current release: %u.%u.%u (%u)", VERSION_MAJ(avail), VERSION_MIN(avail),
-			   VERSION_REL(avail), avail);
-	}
 }
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
+void MainWindowPrivate::notifyClientUpdateError(const QString &err) {
+	qWarning("%s", err.toStdString().c_str());
+}
+
+#if JSONMKDIO
 void MainWindowPrivate::updateLinkActivated(const QString &u) {
 
 	Q_Q(MainWindow);

@@ -27,6 +27,9 @@
 
 #include "client.h"
 
+#define JSONMKDIO \
+	(QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
+
 namespace Ui {
 class MainWindow;
 }
@@ -39,7 +42,7 @@ class QActionGroup;
 class ScoresDialog;
 class ServerDialog;
 class QSplashScreen;
-class FileDownloader;
+class QGitHubRelease;
 class QProgressDialog;
 class JackChooseDialog;
 class LaunchServerDialog;
@@ -104,11 +107,13 @@ private slots:
 	void receivedPlayerImage(const QString &);
 	void showReceiveProgress() const;
 	void itemChanged(QStandardItem *);
-	void notifyClientUpdate();
 	void unmau();
 	void unborderCards();
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
+	void notifyClientUpdate();
+	void notifyClientUpdateError(const QString &err);
+
+#if JSONMKDIO
 	void updateLinkActivated(const QString &);
 	void showReleaseInformation();
 #endif
@@ -193,7 +198,7 @@ public:
 	QLabel m_aceRoundLabel;
 	mutable GameState *m_gameState;
 	ScoresDialog *m_scoresDialog;
-	const FileDownloader *m_clientReleaseDownloader;
+	const QGitHubRelease *m_gitHubReleaseAPI;
 	const QImage m_defaultPlayerImage;
 	QMenu *m_playerNameMenu;
 	QMovie *m_animLogo;
@@ -201,10 +206,10 @@ public:
 #ifdef USE_ESPEAK
 	ESpeakVolumeDialog *m_volumeDialog;
 #endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
+#if JSONMKDIO
 	typedef struct {
 		QString name;
-		QByteArray html;
+		QString html;
 		QDateTime date;
 	} RELEASEINFO;
 
