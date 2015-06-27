@@ -23,6 +23,10 @@
 #include <QLocale>
 #include <QStyle>
 
+#ifdef HAVE_NOTIFICATION_H
+#include <notify-qt/Notification.h>
+#endif
+
 #ifdef Q_OS_WIN
 #include <QSettings>
 #else
@@ -93,6 +97,10 @@ int main(int argc, char *argv[]) {
 
 	splash.show();
 	a.processEvents();
+
+#ifdef HAVE_NOTIFICATION_H
+	Notification::init(QCoreApplication::applicationName());
+#endif
 
 	MainWindow w(&splash);
 	a.processEvents();

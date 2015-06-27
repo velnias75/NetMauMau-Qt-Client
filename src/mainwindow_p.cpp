@@ -108,6 +108,9 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
   #if JSONMKDIO
   , m_releaseInfo()
   #endif
+  #ifdef HAVE_NOTIFICATION_H
+  , m_updateAvailableNotification(QCoreApplication::applicationName())
+  #endif
 {
 	Q_Q(MainWindow);
 
@@ -1959,20 +1962,40 @@ void MainWindowPrivate::notifyClientUpdate() {
 										 VERSION_REL(savail));
 
 		if(avail > actual) {
+//		if(1) { // for testing
 
-			QLabel *url = new QLabel(QString("<html><body><a href=\"") + RDLURL.toString() +
-									 QString("\">%1</a></body></html>").
-									 arg(tr("Version %1 is available!").arg(rel)));
+#ifdef HAVE_NOTIFICATION_H
+			if(Notification::isInitted()) {
 
-			if(!m_releaseInfo.html.isEmpty()) {
-				QObject::connect(url, SIGNAL(linkActivated(QString)), this,
-								 SLOT(updateLinkActivated(QString)));
+				m_updateAvailableNotification.setAutoDelete(false);
+				m_updateAvailableNotification.setIconName("dialog-information");
+				m_updateAvailableNotification.setBody(tr("Version %1 is available!").arg(rel));
+				m_updateAvailableNotification.addAction("more_info", tr("More info"));
+
+				QObject::connect(&m_updateAvailableNotification, SIGNAL(actionInvoked(QString)),
+								 this, SLOT(showReleaseInformation()));
+
+				m_updateAvailableNotification.show();
+
 			} else {
-				url->setOpenExternalLinks(true);
-			}
+#endif
+				QLabel *url = new QLabel(QString("<html><body><a href=\"") + RDLURL.toString() +
+										 QString("\">%1</a></body></html>").
+										 arg(tr("Version %1 is available!").arg(rel)));
 
-			Q_Q(const MainWindow);
-			q->statusBar()->insertPermanentWidget(0, url);
+				if(!m_releaseInfo.html.isEmpty()) {
+					QObject::connect(url, SIGNAL(linkActivated(QString)), this,
+									 SLOT(updateLinkActivated(QString)));
+				} else {
+					url->setOpenExternalLinks(true);
+				}
+
+				Q_Q(const MainWindow);
+				q->statusBar()->insertPermanentWidget(0, url);
+
+#ifdef HAVE_NOTIFICATION_H
+			}
+#endif
 
 		} else {
 			qDebug("Current version: %u.%u.%u (%u)", VERSION_MAJ(actual), VERSION_MIN(actual),
@@ -2004,6 +2027,11 @@ void MainWindowPrivate::updateLinkActivated(const QString &u) {
 }
 
 void MainWindowPrivate::showReleaseInformation() {
+
+#ifdef HAVE_NOTIFICATION_H
+	m_updateAvailableNotification.close();
+#endif
+
 	updateLinkActivated(RDLURL.toString());
 }
 #endif

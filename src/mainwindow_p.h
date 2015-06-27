@@ -25,6 +25,10 @@
 #include <QBasicTimer>
 #include <QStandardItemModel>
 
+#ifdef HAVE_NOTIFICATION_H
+#include <notify-qt/Notification.h>
+#endif
+
 #include "client.h"
 
 #define JSONMKDIO \
@@ -214,6 +218,9 @@ public:
 	} RELEASEINFO;
 
 	RELEASEINFO m_releaseInfo;
+#endif
+#ifdef HAVE_NOTIFICATION_H
+	Notification m_updateAvailableNotification;
 #endif
 };
 

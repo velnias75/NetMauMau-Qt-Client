@@ -38,6 +38,12 @@ greaterThan(QT_MAJOR_VERSION, 4) || packagesExist(QJson) {
    unix:error("No QJson found on the system")
 }
 
+unix:exists(/usr/include/notify-qt/Notification.h) {
+	message("Found libnotify-qt")
+	unix:DEFINES += HAVE_NOTIFICATION_H
+	unix:LIBS += -lnotify-qt
+}
+
 VERSION = 0.23
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
