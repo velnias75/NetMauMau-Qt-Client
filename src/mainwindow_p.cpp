@@ -146,7 +146,12 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	q->setWindowTitle(QCoreApplication::applicationName() + " " +
 					  QCoreApplication::applicationVersion());
 
-	m_gitHubReleaseAPI = new QGitHubReleaseAPI("velnias75", "NetMauMau-Qt-Client", 1);
+#ifdef HAVE_NOTIFICATION_H
+	m_updateAvailableNotification.setAutoDelete(false);
+#endif
+
+	m_gitHubReleaseAPI = new QGitHubReleaseAPI(GITUSER, GITREPO, 1);
+	qDebug("API-URL: %s", m_gitHubReleaseAPI->url().toString().toStdString().c_str());
 
 	QObject::connect(m_gitHubReleaseAPI, SIGNAL(available()), this, SLOT(notifyClientUpdate()));
 	QObject::connect(m_gitHubReleaseAPI, SIGNAL(error(QString)),
@@ -285,8 +290,6 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 #endif
 
 	readSettings();
-
-	m_updateAvailableNotification.setAutoDelete(false);
 
 	m_playTimer.stop();
 
@@ -1950,7 +1953,7 @@ void MainWindowPrivate::notifyClientUpdate() {
 										 VERSION_REL(savail));
 
 		if(avail > actual) {
-//		if(1) { // for testing
+			//		if(1) { // for testing
 
 			if(Notification::isInitted()) {
 

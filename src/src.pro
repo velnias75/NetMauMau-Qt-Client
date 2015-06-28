@@ -21,6 +21,7 @@ DEFINES += _GLIBCXX_VISIBILITY=0 QT_NO_CAST_FROM_BYTEARRAY QT_NO_CAST_TO_ASCII \
 		   QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION QT_NO_WHATSTHIS \
 		   QT_STRICT_ITERATORS QT_NO_URL_CAST_FROM_STRING
 DEFINES += "DLURL=\"\\\"https://sourceforge.net/projects/netmaumau/\\\"\""
+DEFINES += GITREPO=\"\\\"NetMauMau-Qt-Client\\\"\" GITUSER=\"\\\"velnias75\\\"\"
 
 QMAKE_RESOURCE_FLAGS += -compress 9
 
@@ -65,8 +66,7 @@ CONFIG(debug, debug|release) {
 	-Wold-style-cast -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wreturn-type -Wshadow \
 	-Wsign-compare -Wstrict-null-sentinel -Wstrict-overflow=5 -Wtrampolines -Wuninitialized \
 	-Wunreachable-code -Wunused -Wvariadic-macros
-	LIBS += -lmarkdown -lqjson \
-			../../QGitHubReleaseAPI/build/libqgithubreleaseapi_static.a \
+	LIBS += -L../../QGitHubReleaseAPI/build -lqgithubreleaseapi \
 			../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
 			../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
