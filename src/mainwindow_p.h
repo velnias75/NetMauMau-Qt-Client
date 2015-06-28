@@ -31,9 +31,6 @@
 
 #include "client.h"
 
-#define JSONMKDIO \
-	(QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
-
 namespace Ui {
 class MainWindow;
 }
@@ -46,9 +43,9 @@ class QActionGroup;
 class ScoresDialog;
 class ServerDialog;
 class QSplashScreen;
-class QGitHubRelease;
 class QProgressDialog;
 class JackChooseDialog;
+class QGitHubReleaseAPI;
 class LaunchServerDialog;
 class LocalServerOutputView;
 class QAbstractItemDelegate;
@@ -116,11 +113,8 @@ private slots:
 
 	void notifyClientUpdate();
 	void notifyClientUpdateError(const QString &err);
-
-#if JSONMKDIO
 	void updateLinkActivated(const QString &);
 	void showReleaseInformation();
-#endif
 
 	void gameOver();
 	void serverAccept();
@@ -202,7 +196,7 @@ public:
 	QLabel m_aceRoundLabel;
 	mutable GameState *m_gameState;
 	ScoresDialog *m_scoresDialog;
-	const QGitHubRelease *m_gitHubReleaseAPI;
+	const QGitHubReleaseAPI *m_gitHubReleaseAPI;
 	const QImage m_defaultPlayerImage;
 	QMenu *m_playerNameMenu;
 	QMovie *m_animLogo;
@@ -210,7 +204,6 @@ public:
 #ifdef USE_ESPEAK
 	ESpeakVolumeDialog *m_volumeDialog;
 #endif
-#if JSONMKDIO
 	typedef struct {
 		QString name;
 		QString html;
@@ -218,7 +211,6 @@ public:
 	} RELEASEINFO;
 
 	RELEASEINFO m_releaseInfo;
-#endif
 #ifdef HAVE_NOTIFICATION_H
 	Notification m_updateAvailableNotification;
 #endif

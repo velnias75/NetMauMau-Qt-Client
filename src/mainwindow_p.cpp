@@ -43,8 +43,9 @@
 #include "scoresdialog.h"
 #include "licensedialog.h"
 #include "ui_mainwindow.h"
-#include "qgithubrelease.h"
 #include "jackchoosedialog.h"
+#include "releaseinfodialog.h"
+#include "qgithubreleaseapi.h"
 #include "launchserverdialog.h"
 #include "netmaumaumessagebox.h"
 #include "connectionlogdialog.h"
@@ -54,15 +55,7 @@
 #include "countmessageitemdelegate.h"
 #include "playerimageprogressdialog.h"
 
-#if JSONMKDIO
-#include "releaseinfodialog.h"
-#endif
-
 namespace {
-
-#if !(QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON))
-const char *TAGNAME = "\"tag_name\":";
-#endif
 
 const QUrl RDLURL(DLURL);
 
@@ -105,9 +98,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
   #ifdef USE_ESPEAK
   , m_volumeDialog(new ESpeakVolumeDialog())
   #endif
-  #if JSONMKDIO
   , m_releaseInfo()
-  #endif
   #ifdef HAVE_NOTIFICATION_H
   , m_updateAvailableNotification(QCoreApplication::applicationName())
   #endif
@@ -155,7 +146,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	q->setWindowTitle(QCoreApplication::applicationName() + " " +
 					  QCoreApplication::applicationVersion());
 
-	m_gitHubReleaseAPI = new QGitHubRelease(QUrl(APIURL));
+	m_gitHubReleaseAPI = new QGitHubReleaseAPI("velnias75", "NetMauMau-Qt-Client", 1);
 
 	QObject::connect(m_gitHubReleaseAPI, SIGNAL(available()), this, SLOT(notifyClientUpdate()));
 	QObject::connect(m_gitHubReleaseAPI, SIGNAL(error(QString)),
@@ -182,13 +173,8 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	QObject::connect(m_ui->actionLicense, SIGNAL(triggered()), m_licenseDialog, SLOT(exec()));
 	QObject::connect(m_ui->actionHallOfFame, SIGNAL(triggered()),
 					 m_scoresDialog, SLOT(exec()));
-
-#if JSONMKDIO
 	QObject::connect(m_ui->actionReleaseInformation, SIGNAL(triggered()),
 					 this, SLOT(showReleaseInformation()));
-#else
-	m_ui->menu_Help->removeAction(m_ui->actionReleaseInformation);
-#endif
 
 	m_lsov->addLaunchAction(m_ui->actionLaunchServer);
 
@@ -299,6 +285,8 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 #endif
 
 	readSettings();
+
+	m_updateAvailableNotification.setAutoDelete(false);
 
 	m_playTimer.stop();
 
@@ -1942,7 +1930,7 @@ void MainWindowPrivate::about() {
 }
 
 void MainWindowPrivate::notifyClientUpdate() {
-#if JSONMKDIO
+
 	if(m_gitHubReleaseAPI->entries() > 0) {
 
 		m_releaseInfo.date = m_gitHubReleaseAPI->publishedAt();
@@ -1964,10 +1952,8 @@ void MainWindowPrivate::notifyClientUpdate() {
 		if(avail > actual) {
 //		if(1) { // for testing
 
-#ifdef HAVE_NOTIFICATION_H
 			if(Notification::isInitted()) {
 
-				m_updateAvailableNotification.setAutoDelete(false);
 				m_updateAvailableNotification.setIconName("dialog-information");
 				m_updateAvailableNotification.setBody(tr("Version %1 is available!").arg(rel));
 				m_updateAvailableNotification.addAction("more_info", tr("More info"));
@@ -1978,7 +1964,7 @@ void MainWindowPrivate::notifyClientUpdate() {
 				m_updateAvailableNotification.show();
 
 			} else {
-#endif
+
 				QLabel *url = new QLabel(QString("<html><body><a href=\"") + RDLURL.toString() +
 										 QString("\">%1</a></body></html>").
 										 arg(tr("Version %1 is available!").arg(rel)));
@@ -2004,14 +1990,12 @@ void MainWindowPrivate::notifyClientUpdate() {
 				   VERSION_REL(avail), avail);
 		}
 	}
-#endif
 }
 
 void MainWindowPrivate::notifyClientUpdateError(const QString &err) {
 	qWarning("%s", err.toStdString().c_str());
 }
 
-#if JSONMKDIO
 void MainWindowPrivate::updateLinkActivated(const QString &u) {
 
 	Q_Q(MainWindow);
@@ -2034,7 +2018,6 @@ void MainWindowPrivate::showReleaseInformation() {
 
 	updateLinkActivated(RDLURL.toString());
 }
-#endif
 
 void MainWindowPrivate::changePlayerName(QAction *act) {
 	if(!(act == m_ui->actionShowCardTooltips ||
