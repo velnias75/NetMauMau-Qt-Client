@@ -1969,6 +1969,7 @@ void MainWindowPrivate::notifyClientUpdate(const QGitHubReleaseAPI &api) {
 		if(avail > actual) {
 			//		if(1) { // for testing
 
+#ifdef HAVE_NOTIFICATION_H
 			if(Notification::isInitted()) {
 
 				m_updateAvailableNotification.setIconName("dialog-information");
@@ -1981,7 +1982,7 @@ void MainWindowPrivate::notifyClientUpdate(const QGitHubReleaseAPI &api) {
 				m_updateAvailableNotification.show();
 
 			} else {
-
+#endif
 				QLabel *url = new QLabel(QString("<html><body><a href=\"") + RDLURL.toString() +
 										 QString("\">%1</a></body></html>").
 										 arg(tr("Version %1 is available!").arg(rel)));

@@ -57,13 +57,18 @@ void ReleaseInfoDialog::progress(qint64 bytesReceived, qint64 bytesTotal) {
 		m_progress->setMaximum(0);
 	}
 
+	qApp->processEvents();
+
 	if(!m_progress->isVisible()) m_progress->show();
 }
 
 void ReleaseInfoDialog::error(const QString &e) {
+
 	m_progress->reset();
 	m_hasError = true;
 	qApp->restoreOverrideCursor();
+	qApp->processEvents();
+
 	NetMauMauMessageBox::critical(this, tr("Error while downloading"), e);
 }
 
@@ -102,6 +107,8 @@ void ReleaseInfoDialog::downloadTar() {
 }
 
 void ReleaseInfoDialog::save(const QString &fn, const QString &filter, const QByteArray &ba) {
+
+	qApp->processEvents();
 
 	QString cfn(QFileDialog::getSaveFileName(this, tr("Choose where to save %1...").arg(fn), fn,
 											 filter));
