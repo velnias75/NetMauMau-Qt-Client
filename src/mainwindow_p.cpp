@@ -28,6 +28,8 @@
 #include <defaultplayerimage.h>
 #include <playerlistexception.h>
 
+#include <qgithubreleaseapi.h>
+
 #include "mainwindow_p.h"
 #include "mainwindow.h"
 
@@ -45,7 +47,6 @@
 #include "ui_mainwindow.h"
 #include "jackchoosedialog.h"
 #include "releaseinfodialog.h"
-#include "qgithubreleaseapi.h"
 #include "launchserverdialog.h"
 #include "netmaumaumessagebox.h"
 #include "connectionlogdialog.h"
