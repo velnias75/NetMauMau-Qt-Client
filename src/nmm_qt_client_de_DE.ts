@@ -1398,7 +1398,7 @@ Spieldauer: %1</translation>
     <message>
         <location filename="releaseinfodialog.cpp" line="106"/>
         <source>Choose where to save %1...</source>
-        <translation>Wähle wohin soll %1 gesichert werden soll...</translation>
+        <translation>Wähle wohin %1 gesichert werden soll...</translation>
     </message>
     <message>
         <location filename="releaseinfodialog.cpp" line="117"/>
