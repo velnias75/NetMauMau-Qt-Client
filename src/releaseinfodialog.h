@@ -24,14 +24,19 @@
 
 #include "ui_releaseinfodialog.h"
 
+class QProgressDialog;
+class QGitHubReleaseAPI;
+
 class ReleaseInfoDialog : public NetMauMauDialog, private Ui::ReleaseInfoDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(ReleaseInfoDialog)
 	Q_PROPERTY(QString releaseText READ releaseText WRITE setReleaseText)
 	Q_PROPERTY(QDateTime releaseDate READ releaseDate WRITE setReleaseDate)
 	Q_PROPERTY(QUrl dlUrl READ dlUrl WRITE setDlUrl)
+	Q_PROPERTY(QImage avatar READ avatar WRITE setAvatar)
+	Q_PROPERTY(QString login READ login WRITE setLogin)
 public:
-	explicit ReleaseInfoDialog(QWidget *parent = 0);
+	explicit ReleaseInfoDialog(const QGitHubReleaseAPI *api, QWidget *parent = 0);
 
 	QString releaseText() const;
 	void setReleaseText(const QString &releaseText);
@@ -41,6 +46,27 @@ public:
 
 	QUrl dlUrl() const;
 	void setDlUrl(const QUrl &u);
+
+	QImage avatar() const;
+	void setAvatar(const QImage &a);
+
+	QString login() const;
+	void setLogin(const QString &);
+
+private slots:
+	void progress(qint64 bytesReceived, qint64 bytesTotal);
+	void error(const QString &);
+	void downloadZip();
+	void downloadTar();
+
+private:
+	void save(const QString &fn, const QString &filter, const QByteArray &ba);
+
+private:
+	QString m_login;
+	QProgressDialog *m_progress;
+	const QGitHubReleaseAPI *m_api;
+	bool m_hasError;
 };
 
 #endif // RELEASEINFODIALOG_H

@@ -150,12 +150,16 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	m_updateAvailableNotification.setAutoDelete(false);
 #endif
 
-	m_gitHubReleaseAPI = new QGitHubReleaseAPI(GITUSER, GITREPO, 1);
-	qDebug("API-URL: %s", m_gitHubReleaseAPI->url().toString().toStdString().c_str());
+	QGitHubReleaseAPI::setUserAgent(QCoreApplication::applicationName().toLatin1().constData());
+	m_gitHubReleaseAPI = new QGitHubReleaseAPI(GITUSER, GITREPO);
+	qDebug("API-URL: %s", m_gitHubReleaseAPI->apiUrl().toString().toStdString().c_str());
 
-	QObject::connect(m_gitHubReleaseAPI, SIGNAL(available()), this, SLOT(notifyClientUpdate()));
+	QObject::connect(m_gitHubReleaseAPI, SIGNAL(available(QGitHubReleaseAPI)),
+					 this, SLOT(notifyClientUpdate(QGitHubReleaseAPI)));
 	QObject::connect(m_gitHubReleaseAPI, SIGNAL(error(QString)),
 					 this, SLOT(notifyClientUpdateError(QString)));
+	QObject::connect(m_gitHubReleaseAPI, SIGNAL(progress(qint64,qint64)),
+					 this, SLOT(apiProgress(qint64,qint64)));
 
 	QObject::connect(m_ui->actionConnectionlog, SIGNAL(toggled(bool)),
 				 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -1932,17 +1936,27 @@ void MainWindowPrivate::about() {
 	QMessageBox::about(q, QCoreApplication::applicationName(), m_aboutTxt);
 }
 
-void MainWindowPrivate::notifyClientUpdate() {
+void MainWindowPrivate::notifyClientUpdate(const QGitHubReleaseAPI &api) {
 
-	if(m_gitHubReleaseAPI->entries() > 0) {
+	qDebug("Url: %s", api.avatarUrl().toString().toLatin1().constData());
+	qDebug("RateLimit: %u", api.rateLimit());
+	qDebug("RateLimitRem: %u", api.rateLimitRemaining());
+	qDebug("RateLimitRes: %s", api.rateLimitReset().toString().
+		   toStdString().c_str());
 
-		m_releaseInfo.date = m_gitHubReleaseAPI->publishedAt();
-		m_releaseInfo.name = m_gitHubReleaseAPI->name();
-		m_releaseInfo.html = m_gitHubReleaseAPI->body();
+	if(api.entries() > 0) {
+
+		m_releaseInfo.date    = api.publishedAt();
+		m_releaseInfo.name    = api.name();
+		m_releaseInfo.html    = api.body();
+		m_releaseInfo.avatar  = api.avatar();
+		m_releaseInfo.login   = api.login();
+		m_releaseInfo.tarBall = api.tarBallUrl();
+		m_releaseInfo.zipBall = api.zipBallUrl();
 
 		m_ui->actionReleaseInformation->setEnabled(true);
 
-		const QString &relTag(m_gitHubReleaseAPI->tagName());
+		const QString &relTag(api.tagName());
 		const QString &rel(!relTag.isEmpty() ? relTag.mid(1) : "0.0");
 
 		const uint32_t sactual = Client::parseProtocolVersion(PACKAGE_VERSION),
@@ -2002,15 +2016,20 @@ void MainWindowPrivate::notifyClientUpdateError(const QString &err) {
 void MainWindowPrivate::updateLinkActivated(const QString &u) {
 
 	Q_Q(MainWindow);
-
-	ReleaseInfoDialog rid(q);
+	ReleaseInfoDialog rid(m_gitHubReleaseAPI, q);
 
 	rid.setWindowTitle(m_releaseInfo.name);
 	rid.setReleaseText(m_releaseInfo.html);
 	rid.setReleaseDate(m_releaseInfo.date);
+	rid.setAvatar(m_releaseInfo.avatar);
+	rid.setLogin(m_releaseInfo.login);
 	rid.setDlUrl(QUrl(u));
 
 	rid.exec();
+}
+
+void MainWindowPrivate::apiProgress(qint64 bytesReceived, qint64 bytesTotal) {
+	qDebug("Received %lld/%lld bytes", bytesReceived, bytesTotal);
 }
 
 void MainWindowPrivate::showReleaseInformation() {

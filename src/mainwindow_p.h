@@ -20,6 +20,7 @@
 #ifndef MAINWINDOWPRIVATE_H
 #define MAINWINDOWPRIVATE_H
 
+#include <QUrl>
 #include <QLabel>
 #include <QDateTime>
 #include <QBasicTimer>
@@ -111,10 +112,11 @@ private slots:
 	void unmau();
 	void unborderCards();
 
-	void notifyClientUpdate();
+	void notifyClientUpdate(const QGitHubReleaseAPI &);
 	void notifyClientUpdateError(const QString &err);
 	void updateLinkActivated(const QString &);
 	void showReleaseInformation();
+	void apiProgress(qint64 bytesReceived, qint64 bytesTotal);
 
 	void gameOver();
 	void serverAccept();
@@ -208,6 +210,10 @@ public:
 		QString name;
 		QString html;
 		QDateTime date;
+		QImage avatar;
+		QString login;
+		QUrl tarBall;
+		QUrl zipBall;
 	} RELEASEINFO;
 
 	RELEASEINFO m_releaseInfo;
