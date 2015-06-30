@@ -70,7 +70,7 @@ CONFIG(debug, debug|release) {
 			../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
 			../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
-	unix:PKGCONFIG += netmaumau
+	unix:PKGCONFIG += netmaumau qgithubreleaseapi
 	UI_DIR = release-ui
 	RCC_DIR = release-rcc
 	MOC_DIR = release-moc

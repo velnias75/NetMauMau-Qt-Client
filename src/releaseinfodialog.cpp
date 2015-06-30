@@ -46,6 +46,8 @@ ReleaseInfoDialog::ReleaseInfoDialog(const QGitHubReleaseAPI *api, QWidget *p) :
 	QObject::connect(api, SIGNAL(error(QString)), this, SLOT(error(QString)));
 	QObject::connect(dlTar, SIGNAL(clicked()), this, SLOT(downloadTar()));
 	QObject::connect(dlZip, SIGNAL(clicked()), this, SLOT(downloadZip()));
+
+	avatarLabel->setVisible(false);
 }
 
 void ReleaseInfoDialog::progress(qint64 bytesReceived, qint64 bytesTotal) {
@@ -86,7 +88,7 @@ void ReleaseInfoDialog::downloadZip() {
 	dlZip->setEnabled(true);
 	qApp->restoreOverrideCursor();
 
-	if(!m_hasError) save(m_api->name() + ".zip", "Zipball (*.zip)", ba);
+	if(!m_hasError) save(m_api->tagName() + ".zip", "Zipball (*.zip)", ba);
 }
 
 void ReleaseInfoDialog::downloadTar() {
@@ -103,7 +105,7 @@ void ReleaseInfoDialog::downloadTar() {
 	dlTar->setEnabled(true);
 	qApp->restoreOverrideCursor();
 
-	if(!m_hasError) save(m_api->name() + ".tar.gz", "Tarball (*.tar.gz)", ba);
+	if(!m_hasError) save(m_api->tagName() + ".tar.gz", "Tarball (*.tar.gz)", ba);
 }
 
 void ReleaseInfoDialog::save(const QString &fn, const QString &filter, const QByteArray &ba) {
@@ -162,6 +164,7 @@ QImage ReleaseInfoDialog::avatar() const {
 }
 
 void ReleaseInfoDialog::setAvatar(const QImage &a) {
+	avatarLabel->setVisible(!a.isNull());
 	avatarLabel->setPixmap(QPixmap::fromImage(a.scaledToHeight(avatarLabel->geometry().height())));
 }
 
