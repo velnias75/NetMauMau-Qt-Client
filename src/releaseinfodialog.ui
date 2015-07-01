@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>ReleaseInfoDialog</class>
  <widget class="QDialog" name="ReleaseInfoDialog">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -272,7 +275,7 @@
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>ReleaseInfoDialog</receiver>
-   <slot>close()</slot>
+   <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>348</x>

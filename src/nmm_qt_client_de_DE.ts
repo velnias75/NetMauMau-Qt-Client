@@ -895,27 +895,27 @@ possible cards</oldsource>
 <context>
     <name>MainWindowPrivate</name>
     <message>
-        <location filename="mainwindow_p.cpp" line="88"/>
+        <location filename="mainwindow_p.cpp" line="86"/>
         <source>Client library version</source>
         <translation>Version der Klientenbibliothek</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="248"/>
+        <location filename="mainwindow_p.cpp" line="247"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="249"/>
+        <location filename="mainwindow_p.cpp" line="248"/>
         <source>Cards</source>
         <translation>Karten</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="250"/>
+        <location filename="mainwindow_p.cpp" line="249"/>
         <source>Turn</source>
         <translation>Runde</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="251"/>
+        <location filename="mainwindow_p.cpp" line="250"/>
         <source>Message</source>
         <translation>Nachricht</translation>
     </message>
@@ -1153,6 +1153,11 @@ Spieldauer: %2</translation>
         <translation>Mehr Infos</translation>
     </message>
     <message>
+        <location filename="mainwindow_p.cpp" line="2136"/>
+        <source>Error while downloading</source>
+        <translation>Fehler beim Herunterladen</translation>
+    </message>
+    <message>
         <location filename="mainwindow_p.cpp" line="1377"/>
         <source>%1 wins!</source>
         <translation>%1 hat gewonnen!</translation>
@@ -1325,87 +1330,59 @@ Spieldauer: %1</translation>
     </message>
 </context>
 <context>
-    <name>QGitHubReleasePrivate</name>
-    <message>
-        <source>Index %1 &gt;= %2 (out of bounds)</source>
-        <translation type="obsolete">Index %1 &gt;= %2 (außerhalb der Grenzen)</translation>
-    </message>
-    <message>
-        <source>No data available</source>
-        <translation type="obsolete">Keine Daten vorhanden</translation>
-    </message>
-    <message>
-        <source>libmarkdown: parsing failed</source>
-        <translation type="obsolete">libmarkdown: parsen fehlgeschlagen</translation>
-    </message>
-    <message>
-        <source>No libmarkdown installed, body not available</source>
-        <translation type="obsolete">libmarkdown ist nicht installiert, body ist nicht verfügbar</translation>
-    </message>
-</context>
-<context>
     <name>ReleaseInfoDialog</name>
     <message>
-        <location filename="releaseinfodialog.ui" line="20"/>
+        <location filename="releaseinfodialog.ui" line="23"/>
         <source>Release information</source>
         <translation>Informationen zur Veröffentlichung</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.ui" line="41"/>
+        <location filename="releaseinfodialog.ui" line="44"/>
         <source>Release date:</source>
         <translation>Veröffentlichungsdatum:</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.ui" line="76"/>
+        <location filename="releaseinfodialog.ui" line="79"/>
         <source>Download:</source>
         <translation>Download:</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.ui" line="143"/>
+        <location filename="releaseinfodialog.ui" line="146"/>
         <source>Release notes:</source>
         <translation>Freigabevermerke:</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.ui" line="169"/>
+        <location filename="releaseinfodialog.ui" line="172"/>
         <source> Source balls from GitHub</source>
         <translation>Quellarchive von GitHub</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="85"/>
-        <source>Error while downloading</source>
-        <translation>Fehler beim Herunterladen</translation>
-    </message>
-    <message>
-        <location filename="releaseinfodialog.cpp" line="90"/>
+        <location filename="releaseinfodialog.cpp" line="101"/>
         <source>Zipball download</source>
         <translation>Herunterladen des Zip-Archivs</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="91"/>
+        <location filename="releaseinfodialog.cpp" line="102"/>
         <source>Downloading zipball...</source>
         <translation>Lade Zip-Archiv herunter...</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="96"/>
+        <location filename="releaseinfodialog.cpp" line="107"/>
         <source>Tarball download</source>
         <translation>Herunterladen des Tar-Archivs</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="97"/>
+        <location filename="releaseinfodialog.cpp" line="108"/>
         <source>Downloading tarball...</source>
         <translation>Lade Tar-Archiv herunter...</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.h" line="74"/>
+        <location filename="releaseinfodialog.h" line="81"/>
         <source>Choose where to save %1...</source>
         <translation>Wähle wohin %1 gesichert werden soll...</translation>
     </message>
     <message>
-        <source>Error saving %1</source>
-        <translation type="obsolete">Fehler beim Speichern von %1</translation>
-    </message>
-    <message>
-        <location filename="releaseinfodialog.cpp" line="140"/>
+        <location filename="releaseinfodialog.cpp" line="151"/>
         <source>Brought to you by %1</source>
         <translation>Zur Verfügung gestellt von %1</translation>
     </message>

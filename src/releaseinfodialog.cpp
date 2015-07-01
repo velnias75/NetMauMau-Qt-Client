@@ -17,72 +17,83 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QCloseEvent>
+
+#include "mainwindow.h"
 #include "releaseinfodialog.h"
 #include "netmaumaumessagebox.h"
 
-ReleaseInfoDialog::ReleaseInfoDialog(const QGitHubReleaseAPI *api, QProgressDialog *pgd,
-									 QWidget *p) : NetMauMauDialog(p), m_login(), m_progress(pgd),
-	m_api(api), m_hasError(false) {
+ReleaseInfoDialog::ReleaseInfoDialog(const QGitHubReleaseAPI *api, QProgressDialog **pgd,
+									 MainWindow *p) : NetMauMauDialog(p), m_mainWindow(p),
+	m_login(), m_progress(pgd), m_api(api) {
 
 	setupUi(this);
 
-	if(m_progress) {
-
-		QIcon icon;
-		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
-
-		m_progress->setMinimum(0);
-		m_progress->setModal(false);
-		m_progress->setAutoClose(true);
-		m_progress->setAutoReset(true);
-		m_progress->setWindowIcon(icon);
-		m_progress->setCancelButton(0L);
-		m_progress->setMinimumDuration(1000);
-		m_progress->setAttribute(Qt::WA_QuitOnClose, false);
-
-		Qt::WindowFlags wf(m_progress->windowFlags());
-		wf &= ~Qt::WindowContextHelpButtonHint;
-		wf &= ~Qt::WindowMinMaxButtonsHint;
-		wf &= ~Qt::WindowCloseButtonHint;
-		wf &= ~Qt::WindowSystemMenuHint;
-		wf |= Qt::WindowStaysOnTopHint;
-		wf |= Qt::CustomizeWindowHint | Qt::WindowTitleHint;
-		m_progress->setWindowFlags(wf);
-	}
-
-	QObject::connect(api, SIGNAL(progress(qint64,qint64)), this, SLOT(progress(qint64,qint64)));
-	QObject::connect(api, SIGNAL(error(QString)), this, SLOT(error(QString)));
+	QObject::connect(api, SIGNAL(progress(qint64,qint64)), p,
+					 SLOT(sourceBallProgress(qint64,qint64)));
+	QObject::connect(api, SIGNAL(error(QString)), p, SLOT(sourceBallError(QString)));
 	QObject::connect(dlTar, SIGNAL(clicked()), this, SLOT(downloadTar()));
 	QObject::connect(dlZip, SIGNAL(clicked()), this, SLOT(downloadZip()));
 
 	avatarLabel->setVisible(false);
 }
 
-void ReleaseInfoDialog::progress(qint64 bytesReceived, qint64 bytesTotal) {
+void ReleaseInfoDialog::closeEvent(QCloseEvent *e) {
 
-	qApp->processEvents();
+	if(m_progress && *m_progress) {
 
-	if(m_progress) {
+		const QRect wg((*m_progress)->geometry());
 
-		if(bytesTotal >= 0) {
-			m_progress->setMaximum(bytesTotal);
-			m_progress->setValue(bytesReceived);
-		} else {
-			m_progress->setMaximum(0);
-		}
+		(*m_progress)->setParent(0L);
+		(*m_progress)->setGeometry(wg);
+		(*m_progress)->show();
+	}
 
-		if(bytesReceived > 0 && !m_progress->isVisible()) m_progress->show();
+	e->accept();
+}
+
+QProgressDialog **ReleaseInfoDialog::createProgressDialog() {
+
+	if(m_progress && (*m_progress = new QProgressDialog(this))) {
+
+		QIcon icon;
+		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
+
+		(*m_progress)->setMinimum(0);
+		(*m_progress)->setModal(false);
+		(*m_progress)->setAutoClose(true);
+		(*m_progress)->setAutoReset(true);
+		(*m_progress)->setWindowIcon(icon);
+		(*m_progress)->setMinimumDuration(500);
+		(*m_progress)->setWindowModality(Qt::NonModal);
+		(*m_progress)->setAttribute(Qt::WA_QuitOnClose, false);
+
+		Qt::WindowFlags wf((*m_progress)->windowFlags());
+		wf &= ~Qt::WindowContextHelpButtonHint;
+		wf &= ~Qt::WindowMinMaxButtonsHint;
+		wf &= ~Qt::WindowCloseButtonHint;
+		wf &= ~Qt::WindowSystemMenuHint;
+		wf |= Qt::WindowStaysOnTopHint;
+		wf |= Qt::CustomizeWindowHint | Qt::WindowTitleHint;
+		(*m_progress)->setWindowFlags(wf);
+
+		QObject::connect(*m_progress, SIGNAL(canceled()), m_api, SLOT(cancel()));
+
+		return m_progress;
+	}
+
+	return 0L;
+}
+
+void ReleaseInfoDialog::deleteProgressDialog() {
+	if(m_progress && *m_progress) {
+		delete (*m_progress);
+		*m_progress = 0L;
 	}
 }
 
-void ReleaseInfoDialog::error(const QString &e) {
-
-	if(m_progress) m_progress->reset();
-
-	m_hasError = true;
-	qApp->processEvents();
-
-	NetMauMauMessageBox::critical(this, tr("Error while downloading"), e);
+void ReleaseInfoDialog::canceled() {
+	deleteProgressDialog();
 }
 
 void ReleaseInfoDialog::downloadZip() {

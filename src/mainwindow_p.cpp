@@ -28,8 +28,6 @@
 #include <defaultplayerimage.h>
 #include <playerlistexception.h>
 
-#include <qgithubreleaseapi.h>
-
 #include "mainwindow_p.h"
 #include "mainwindow.h"
 
@@ -74,7 +72,7 @@ struct scoresPlayer : public std::binary_function<Client::SCORE, std::string, bo
 
 MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QObject(p), q_ptr(p),
 	m_client(0L), m_ui(new Ui::MainWindow), m_serverDlg(new ServerDialog(splash, p)),
-	m_lsov(new LocalServerOutputView()),
+	m_lsov(new LocalServerOutputView()), m_releaseInfoDlg(0L),
 	m_launchDlg(new LaunchServerDialog(m_lsov, m_serverDlg, p)), m_model(0, 5, p),
 	m_jackChooseDialog(new JackChooseDialog(p)), m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_remotePlayersHeader(0L), m_playerImageDelegate(new PlayerImageDelegate(&m_model, p)),
@@ -90,7 +88,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 			   .arg(VERSION_MIN(Client::getClientLibraryVersion()))
 			   .arg(VERSION_REL(Client::getClientLibraryVersion()))),
 	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(p)),
-	m_sourceBallDownloadProgress(new QProgressDialog(p)), m_timeLabel(), m_playTimer(),
+	m_sourceBallDownloadProgress(0L), m_timeLabel(), m_playTimer(),
 	m_licenseDialog(new LicenseDialog(p)), m_aceRoundLabel(), m_gameState(0L),
 	m_scoresDialog(new ScoresDialog(m_serverDlg, p)), m_gitHubReleaseAPI(0L),
 	m_userAgent(qstrdup(QString(PACKAGE_NAME).append(" v").append(PACKAGE_VERSION).
@@ -155,6 +153,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 
 	QGitHubReleaseAPI::setUserAgent(m_userAgent);
 	m_gitHubReleaseAPI = new QGitHubReleaseAPI(GITUSER, GITREPO);
+	m_releaseInfoDlg = new ReleaseInfoDialog(m_gitHubReleaseAPI, &m_sourceBallDownloadProgress, q);
 
 	qDebug("API-URL: %s", m_gitHubReleaseAPI->apiUrl().toString().toStdString().c_str());
 
@@ -355,6 +354,7 @@ MainWindowPrivate::~MainWindowPrivate() {
 #ifdef USE_ESPEAK
 	delete m_volumeDialog;
 #endif
+	delete m_releaseInfoDlg;
 	delete m_ui;
 }
 
@@ -2021,17 +2021,13 @@ void MainWindowPrivate::notifyClientUpdateError(const QString &err) {
 
 void MainWindowPrivate::updateLinkActivated(const QString &u) {
 
-	Q_Q(MainWindow);
-	ReleaseInfoDialog rid(m_gitHubReleaseAPI, m_sourceBallDownloadProgress, q);
-
-	rid.setWindowTitle(m_releaseInfo.name);
-	rid.setReleaseText(m_releaseInfo.html);
-	rid.setReleaseDate(m_releaseInfo.date);
-	rid.setAvatar(m_releaseInfo.avatar);
-	rid.setLogin(m_releaseInfo.login);
-	rid.setDlUrl(QUrl(u));
-
-	rid.exec();
+	m_releaseInfoDlg->setWindowTitle(m_releaseInfo.name);
+	m_releaseInfoDlg->setReleaseText(m_releaseInfo.html);
+	m_releaseInfoDlg->setReleaseDate(m_releaseInfo.date);
+	m_releaseInfoDlg->setAvatar(m_releaseInfo.avatar);
+	m_releaseInfoDlg->setLogin(m_releaseInfo.login);
+	m_releaseInfoDlg->setDlUrl(QUrl(u));
+	m_releaseInfoDlg->show();
 }
 
 void MainWindowPrivate::apiProgress(qint64 bytesReceived, qint64 bytesTotal) {
@@ -2109,4 +2105,33 @@ void MainWindowPrivate::showPlayerNameSelectMenu(const QPoint &p) {
 #endif
 
 	m_playerNameMenu->popup(m_ui->localPlayerDock->mapToGlobal(p));
+}
+
+void MainWindowPrivate::sourceBallProgress(qint64 bytesReceived, qint64 bytesTotal) {
+
+	qApp->processEvents();
+
+	if(m_sourceBallDownloadProgress) {
+
+		if(bytesTotal >= 0) {
+			m_sourceBallDownloadProgress->setMaximum(bytesTotal);
+			m_sourceBallDownloadProgress->setValue(bytesReceived);
+		} else {
+			m_sourceBallDownloadProgress->setMaximum(0);
+		}
+
+		if(bytesReceived > 0 && !m_sourceBallDownloadProgress->isVisible()) {
+			m_sourceBallDownloadProgress->show();
+		}
+	}
+}
+
+void MainWindowPrivate::sourceBallError(const QString &e) {
+
+	if(m_sourceBallDownloadProgress) m_sourceBallDownloadProgress->reset();
+
+	qApp->processEvents();
+
+	Q_Q(MainWindow);
+	NetMauMauMessageBox::critical(q, tr("Error while downloading"), e);
 }

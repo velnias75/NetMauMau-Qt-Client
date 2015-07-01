@@ -23,12 +23,15 @@
 #include <QUrl>
 #include <QLabel>
 #include <QDateTime>
+#include <QFileDialog>
 #include <QBasicTimer>
 #include <QStandardItemModel>
 
 #ifdef HAVE_NOTIFICATION_H
 #include <notify-qt/Notification.h>
 #endif
+
+#include <qgithubreleaseapi.h>
 
 #include "client.h"
 
@@ -46,6 +49,7 @@ class ServerDialog;
 class QSplashScreen;
 class QProgressDialog;
 class JackChooseDialog;
+class ReleaseInfoDialog;
 class QGitHubReleaseAPI;
 class LaunchServerDialog;
 class LocalServerOutputView;
@@ -167,6 +171,9 @@ private slots:
 	void filterMyCards(bool);
 	void setOpenCard(const QByteArray &);
 
+	void sourceBallProgress(qint64 bytesReceived, qint64 bytesTotal);
+	void sourceBallError(const QString &);
+
 private:
 	CardWidget *getFirstSeven() const;
 
@@ -180,6 +187,7 @@ public:
 	Ui::MainWindow *m_ui;
 	ServerDialog *m_serverDlg;
 	LocalServerOutputView *m_lsov;
+	ReleaseInfoDialog *m_releaseInfoDlg;
 	LaunchServerDialog *m_launchDlg;
 	QStandardItemModel m_model;
 	JackChooseDialog *m_jackChooseDialog;
