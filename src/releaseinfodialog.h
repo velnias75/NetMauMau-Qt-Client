@@ -73,7 +73,7 @@ private:
 	QProgressDialog **createProgressDialog();
 	void deleteProgressDialog();
 
-	template<int (QGitHubReleaseAPI::*BALLFN)(QFile &, int) const>
+	template<qint64 (QGitHubReleaseAPI::*BALLFN)(QFile &, int) const>
 	void downloadSourceBall(const QString &suffix, const QString &filter,
 							const QString &progressWindowTitle, const QString &progressLabelText) {
 
