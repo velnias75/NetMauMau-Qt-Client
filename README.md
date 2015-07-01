@@ -13,7 +13,7 @@ It requires Qt in at least version 4.4 or Qt5
 
 * [QJson](http://qjson.sourceforge.net/) for parsing the release information from the GitHub API (*optionally, resp.* **not** *needed for Qt5*)
 * [Discount](https://github.com/Orc/discount) for parsing and displaying the release information Markdown (*optionally*)
-* for the speech support you'll need [eSpeak](http://espeak.sourceforge.net)
+* [eSpeak](http://espeak.sourceforge.net) for the speech support (**optionally**)
 
 Building
 --------
