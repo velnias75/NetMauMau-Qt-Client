@@ -30,7 +30,9 @@
 #ifdef Q_OS_WIN
 #include <QSettings>
 #else
+#ifndef HAVE_SYSTEM_QTSINGLEAPPLICATION
 #include "singleapplock.h"
+#endif
 #include "netmaumaumessagebox.h"
 #endif
 
@@ -77,10 +79,13 @@ int main(int argc, char *argv[]) {
 
 #if !defined(Q_OS_WIN)
 
+#ifdef HAVE_SYSTEM_QTSINGLEAPPLICATION
+	if(a.isRunning()) {
+#else
 	SingleAppLock lock;
 
 	if(lock.isLocked()) {
-
+#endif
 		NetMauMauMessageBox mb(QApplication::translate("main", "Warning"),
 							   QApplication::translate("main", "NetMauMau is already running!"),
 							   QApplication::style()->standardIcon(QStyle::SP_MessageBoxWarning).

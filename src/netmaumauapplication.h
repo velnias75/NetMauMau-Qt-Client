@@ -20,16 +20,22 @@
 #ifndef NETMAUMAUAPPLICATION_H
 #define NETMAUMAUAPPLICATION_H
 
+#ifdef HAVE_SYSTEM_QTSINGLEAPPLICATION
+#include <QtSingleApplication>
+#else
 #include <QApplication>
+#endif
 
+#ifdef HAVE_SYSTEM_QTSINGLEAPPLICATION
+class NetMauMauApplication : public QtSingleApplication {
+#else
 class NetMauMauApplication : public QApplication {
+#endif
 	Q_OBJECT
 	Q_DISABLE_COPY(NetMauMauApplication)
 public:
 	explicit NetMauMauApplication(int &argc, char **argv);
-
 	virtual bool notify(QObject *receiver, QEvent *e);
-
 };
 
 #endif // NETMAUMAUAPPLICATION_H

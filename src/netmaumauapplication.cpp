@@ -21,7 +21,12 @@
 
 #include "netmaumauapplication.h"
 
-NetMauMauApplication::NetMauMauApplication(int &ac, char **av) : QApplication(ac, av) {}
+NetMauMauApplication::NetMauMauApplication(int &ac, char **av)
+#ifdef HAVE_SYSTEM_QTSINGLEAPPLICATION
+	: QtSingleApplication(ac, av) {}
+#else
+	: QApplication(ac, av) {}
+#endif
 
 bool NetMauMauApplication::notify(QObject *receiver, QEvent *e) {
 	try {
