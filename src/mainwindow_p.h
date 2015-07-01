@@ -192,6 +192,7 @@ public:
 	QAbstractItemDelegate *m_messageItemDelegate;
 	const QString m_aboutTxt;
 	QProgressDialog *m_receivingPlayerImageProgress;
+	QProgressDialog *m_sourceBallDownloadProgress;
 	QLabel m_timeLabel;
 	QBasicTimer m_playTimer;
 	const QDialog *m_licenseDialog;
@@ -199,6 +200,7 @@ public:
 	mutable GameState *m_gameState;
 	ScoresDialog *m_scoresDialog;
 	const QGitHubReleaseAPI *m_gitHubReleaseAPI;
+	const char *m_userAgent;
 	const QImage m_defaultPlayerImage;
 	QMenu *m_playerNameMenu;
 	QMovie *m_animLogo;

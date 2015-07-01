@@ -17,30 +17,38 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QFileDialog>
-#include <QProgressDialog>
-
-#include <qgithubreleaseapi.h>
-
 #include "releaseinfodialog.h"
 #include "netmaumaumessagebox.h"
 
-ReleaseInfoDialog::ReleaseInfoDialog(const QGitHubReleaseAPI *api, QWidget *p) : NetMauMauDialog(p),
-	m_login(), m_progress(new QProgressDialog(this)), m_api(api), m_hasError(false) {
+ReleaseInfoDialog::ReleaseInfoDialog(const QGitHubReleaseAPI *api, QProgressDialog *pgd,
+									 QWidget *p) : NetMauMauDialog(p), m_login(), m_progress(pgd),
+	m_api(api), m_hasError(false) {
 
 	setupUi(this);
 
-	m_progress->setMinimum(0);
-	m_progress->setModal(true);
-	m_progress->setAutoClose(true);
-	m_progress->setAutoReset(true);
-	m_progress->setCancelButton(0L);
-	m_progress->setMinimumDuration(50);
+	if(m_progress) {
 
-	Qt::WindowFlags wf(m_progress->windowFlags());
-	wf &= ~Qt::WindowContextHelpButtonHint;
-	wf &= ~Qt::WindowSystemMenuHint;
-	m_progress->setWindowFlags(wf);
+		QIcon icon;
+		icon.addFile(QString::fromUtf8(":/nmm_qt_client.png"), QSize(), QIcon::Normal, QIcon::Off);
+
+		m_progress->setMinimum(0);
+		m_progress->setModal(false);
+		m_progress->setAutoClose(true);
+		m_progress->setAutoReset(true);
+		m_progress->setWindowIcon(icon);
+		m_progress->setCancelButton(0L);
+		m_progress->setMinimumDuration(1000);
+		m_progress->setAttribute(Qt::WA_QuitOnClose, false);
+
+		Qt::WindowFlags wf(m_progress->windowFlags());
+		wf &= ~Qt::WindowContextHelpButtonHint;
+		wf &= ~Qt::WindowMinMaxButtonsHint;
+		wf &= ~Qt::WindowCloseButtonHint;
+		wf &= ~Qt::WindowSystemMenuHint;
+		wf |= Qt::WindowStaysOnTopHint;
+		wf |= Qt::CustomizeWindowHint | Qt::WindowTitleHint;
+		m_progress->setWindowFlags(wf);
+	}
 
 	QObject::connect(api, SIGNAL(progress(qint64,qint64)), this, SLOT(progress(qint64,qint64)));
 	QObject::connect(api, SIGNAL(error(QString)), this, SLOT(error(QString)));
@@ -52,86 +60,41 @@ ReleaseInfoDialog::ReleaseInfoDialog(const QGitHubReleaseAPI *api, QWidget *p) :
 
 void ReleaseInfoDialog::progress(qint64 bytesReceived, qint64 bytesTotal) {
 
-	if(bytesTotal >= 0) {
-		m_progress->setMaximum(bytesTotal);
-		m_progress->setValue(bytesReceived);
-	} else {
-		m_progress->setMaximum(0);
-	}
-
 	qApp->processEvents();
 
-	if(!m_progress->isVisible()) m_progress->show();
+	if(m_progress) {
+
+		if(bytesTotal >= 0) {
+			m_progress->setMaximum(bytesTotal);
+			m_progress->setValue(bytesReceived);
+		} else {
+			m_progress->setMaximum(0);
+		}
+
+		if(bytesReceived > 0 && !m_progress->isVisible()) m_progress->show();
+	}
 }
 
 void ReleaseInfoDialog::error(const QString &e) {
 
-	m_progress->reset();
+	if(m_progress) m_progress->reset();
+
 	m_hasError = true;
-	qApp->restoreOverrideCursor();
 	qApp->processEvents();
 
 	NetMauMauMessageBox::critical(this, tr("Error while downloading"), e);
 }
 
 void ReleaseInfoDialog::downloadZip() {
-
-	m_hasError = false;
-	m_progress->setWindowTitle(tr("Zipball download"));
-	m_progress->setLabelText(tr("Downloading zipball..."));
-	dlZip->setEnabled(false);
-	qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
-	QByteArray ba(m_api->zipBall());
-	ba.squeeze();
-	m_progress->setMinimum(0);
-	m_progress->reset();
-	dlZip->setEnabled(true);
-	qApp->restoreOverrideCursor();
-
-	if(!m_hasError) save(m_api->tagName() + ".zip", "Zipball (*.zip)", ba);
+	downloadSourceBall<&QGitHubReleaseAPI::zipBall>(".zip", "Zipball (*.zip)",
+													tr("Zipball download"),
+													tr("Downloading zipball..."));
 }
 
 void ReleaseInfoDialog::downloadTar() {
-
-	m_hasError = false;
-	m_progress->setWindowTitle(tr("Tarball download"));
-	m_progress->setLabelText(tr("Downloading tarball..."));
-	dlTar->setEnabled(false);
-	qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
-	QByteArray ba(m_api->tarBall());
-	ba.squeeze();
-	m_progress->setMinimum(0);
-	m_progress->reset();
-	dlTar->setEnabled(true);
-	qApp->restoreOverrideCursor();
-
-	if(!m_hasError) save(m_api->tagName() + ".tar.gz", "Tarball (*.tar.gz)", ba);
-}
-
-void ReleaseInfoDialog::save(const QString &fn, const QString &filter, const QByteArray &ba) {
-
-	qApp->processEvents();
-
-	QString cfn(QFileDialog::getSaveFileName(this, tr("Choose where to save %1...").arg(fn), fn,
-											 filter));
-	if(!cfn.isEmpty()) {
-
-		QFile f(cfn);
-
-		qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
-
-		if(f.open(QFile::WriteOnly)) {
-			if(f.write(ba) == -1) {
-				qApp->restoreOverrideCursor();
-				NetMauMauMessageBox::critical(this, tr("Error saving %1").arg(fn), f.errorString());
-			}
-		} else {
-			qApp->restoreOverrideCursor();
-			NetMauMauMessageBox::critical(this, tr("Error saving %1").arg(fn), f.errorString());
-		}
-
-		qApp->restoreOverrideCursor();
-	}
+	downloadSourceBall<&QGitHubReleaseAPI::tarBall>(".tar.gz", "Tarball (*.tar.gz)",
+													tr("Tarball download"),
+													tr("Downloading tarball..."));
 }
 
 QString ReleaseInfoDialog::releaseText() const {

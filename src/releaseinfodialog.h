@@ -20,6 +20,11 @@
 #ifndef RELEASEINFODIALOG_H
 #define RELEASEINFODIALOG_H
 
+#include <QFileDialog>
+#include <QProgressDialog>
+
+#include <qgithubreleaseapi.h>
+
 #include "netmaumaudialog.h"
 
 #include "ui_releaseinfodialog.h"
@@ -36,7 +41,8 @@ class ReleaseInfoDialog : public NetMauMauDialog, private Ui::ReleaseInfoDialog 
 	Q_PROPERTY(QImage avatar READ avatar WRITE setAvatar)
 	Q_PROPERTY(QString login READ login WRITE setLogin)
 public:
-	explicit ReleaseInfoDialog(const QGitHubReleaseAPI *api, QWidget *parent = 0);
+	explicit ReleaseInfoDialog(const QGitHubReleaseAPI *api, QProgressDialog *pgd,
+							   QWidget *parent = 0);
 
 	QString releaseText() const;
 	void setReleaseText(const QString &releaseText);
@@ -60,7 +66,35 @@ private slots:
 	void downloadTar();
 
 private:
-	void save(const QString &fn, const QString &filter, const QByteArray &ba);
+	template<int (QGitHubReleaseAPI::*BALLFN)(QFile &, int) const>
+	void downloadSourceBall(const QString &suffix, const QString &filter,
+							const QString &progressWindowTitle, const QString &progressLabelText) {
+
+		QString sfn(m_api->tagName() + suffix);
+		QString cfn(QFileDialog::getSaveFileName(this, tr("Choose where to save %1...").arg(sfn),
+												 sfn, filter));
+		if(!cfn.isEmpty()) {
+
+			if(m_progress) {
+				m_progress->setWindowTitle(progressWindowTitle);
+				m_progress->setLabelText(progressLabelText);
+			}
+
+			dlTar->setEnabled(false);
+			dlZip->setEnabled(false);
+
+			QFile f(cfn);
+			if((m_api->*BALLFN)(f, 0) == -1) f.remove();
+
+			if(m_progress) {
+				m_progress->setMinimum(0);
+				m_progress->reset();
+			}
+
+			dlTar->setEnabled(true);
+			dlZip->setEnabled(true);
+		}
+	}
 
 private:
 	QString m_login;

@@ -89,12 +89,14 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 			   .arg(VERSION_MAJ(Client::getClientLibraryVersion()))
 			   .arg(VERSION_MIN(Client::getClientLibraryVersion()))
 			   .arg(VERSION_REL(Client::getClientLibraryVersion()))),
-	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(p)), m_timeLabel(), m_playTimer(),
+	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(p)),
+	m_sourceBallDownloadProgress(new QProgressDialog(p)), m_timeLabel(), m_playTimer(),
 	m_licenseDialog(new LicenseDialog(p)), m_aceRoundLabel(), m_gameState(0L),
 	m_scoresDialog(new ScoresDialog(m_serverDlg, p)), m_gitHubReleaseAPI(0L),
-	m_defaultPlayerImage(QImage::fromData
-						 (QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
-									 NetMauMau::Common::DefaultPlayerImage.length()))),
+	m_userAgent(qstrdup(QString(PACKAGE_NAME).append(" v").append(PACKAGE_VERSION).
+						toLatin1().constData())),
+	m_defaultPlayerImage(QImage::fromData(QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
+													 NetMauMau::Common::DefaultPlayerImage.length()))),
 	m_playerNameMenu(0L), m_animLogo(new QMovie(":/anim-logo.gif")), m_playerNamesActionGroup(0L)
   #ifdef USE_ESPEAK
   , m_volumeDialog(new ESpeakVolumeDialog())
@@ -151,8 +153,9 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	m_updateAvailableNotification.setAutoDelete(false);
 #endif
 
-	QGitHubReleaseAPI::setUserAgent(QCoreApplication::applicationName().toLatin1().constData());
+	QGitHubReleaseAPI::setUserAgent(m_userAgent);
 	m_gitHubReleaseAPI = new QGitHubReleaseAPI(GITUSER, GITREPO);
+
 	qDebug("API-URL: %s", m_gitHubReleaseAPI->apiUrl().toString().toStdString().c_str());
 
 	QObject::connect(m_gitHubReleaseAPI, SIGNAL(available(QGitHubReleaseAPI)),
@@ -341,12 +344,14 @@ MainWindowPrivate::~MainWindowPrivate() {
 	delete m_turnItemDelegate;
 	delete m_messageItemDelegate;
 	delete m_receivingPlayerImageProgress;
+	delete m_sourceBallDownloadProgress;
 	delete m_gitHubReleaseAPI;
 	delete m_playerNameMenu;
 	delete m_gameState;
 	delete m_animLogo;
 	delete m_playerNamesActionGroup;
 	delete m_lsov;
+	delete [] m_userAgent;
 #ifdef USE_ESPEAK
 	delete m_volumeDialog;
 #endif
@@ -1939,7 +1944,6 @@ void MainWindowPrivate::about() {
 
 void MainWindowPrivate::notifyClientUpdate(const QGitHubReleaseAPI &api) {
 
-	qDebug("Url: %s", api.avatarUrl().toString().toLatin1().constData());
 	qDebug("RateLimit: %u", api.rateLimit());
 	qDebug("RateLimitRem: %u", api.rateLimitRemaining());
 	qDebug("RateLimitRes: %s", api.rateLimitReset().toString().
@@ -2018,7 +2022,7 @@ void MainWindowPrivate::notifyClientUpdateError(const QString &err) {
 void MainWindowPrivate::updateLinkActivated(const QString &u) {
 
 	Q_Q(MainWindow);
-	ReleaseInfoDialog rid(m_gitHubReleaseAPI, q);
+	ReleaseInfoDialog rid(m_gitHubReleaseAPI, m_sourceBallDownloadProgress, q);
 
 	rid.setWindowTitle(m_releaseInfo.name);
 	rid.setReleaseText(m_releaseInfo.html);
