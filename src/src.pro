@@ -60,6 +60,14 @@ isEmpty(QMAKE_LRELEASE) {
 	else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
 }
 
+CONFIG(system_qtsingleapplication) {
+	DEFINES += HAVE_SYSTEM_QTSINGLEAPPLICATION
+	CONFIG += qtsingleapplication
+} else {
+	unix:SOURCES += singleapplock.cpp
+	unix:HEADERS += singleapplock.h
+}
+
 CONFIG(espeak) {
 	DEFINES += USE_ESPEAK
 	unix:INCLUDEPATH += /usr/include/espeak
@@ -186,8 +194,6 @@ SOURCES += \
 	suitradiobutton.cpp \
 	util.cpp
 
-unix:SOURCES += singleapplock.cpp
-
 espeak:SOURCES += espeak.cpp espeakvolumedialog.cpp
 
 HEADERS += \
@@ -240,8 +246,6 @@ HEADERS += \
 	suitlabel.h \
 	suitradiobutton.h \
 	util.h
-
-unix:HEADERS += singleapplock.h
 
 espeak:HEADERS += espeak.h espeakvolumedialog.h
 
