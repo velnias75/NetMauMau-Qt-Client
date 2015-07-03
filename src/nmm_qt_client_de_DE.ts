@@ -1302,12 +1302,12 @@ Spieldauer: %1</translation>
 <context>
     <name>NetMauMauApplication</name>
     <message>
-        <location filename="netmaumauapplication.cpp" line="30"/>
+        <location filename="netmaumauapplication.cpp" line="35"/>
         <source>Severe error</source>
         <translation>Schwerer Fehler</translation>
     </message>
     <message>
-        <location filename="netmaumauapplication.cpp" line="30"/>
+        <location filename="netmaumauapplication.cpp" line="35"/>
         <source>Unhandled exception caught:
 %1</source>
         <translation>Unbehandelte Ausnahme abgefangen:
@@ -1357,22 +1357,22 @@ Spieldauer: %1</translation>
         <translation>Quellarchive von GitHub</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="101"/>
+        <location filename="releaseinfodialog.cpp" line="103"/>
         <source>Zipball download</source>
         <translation>Herunterladen des Zip-Archivs</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="102"/>
+        <location filename="releaseinfodialog.cpp" line="104"/>
         <source>Downloading zipball...</source>
         <translation>Lade Zip-Archiv herunter...</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="107"/>
+        <location filename="releaseinfodialog.cpp" line="119"/>
         <source>Tarball download</source>
         <translation>Herunterladen des Tar-Archivs</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="108"/>
+        <location filename="releaseinfodialog.cpp" line="120"/>
         <source>Downloading tarball...</source>
         <translation>Lade Tar-Archiv herunter...</translation>
     </message>
@@ -1382,7 +1382,7 @@ Spieldauer: %1</translation>
         <translation>Wähle wohin %1 gesichert werden soll...</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="151"/>
+        <location filename="releaseinfodialog.cpp" line="168"/>
         <source>Brought to you by %1</source>
         <translation>Zur Verfügung gestellt von %1</translation>
     </message>
@@ -1778,12 +1778,12 @@ Der Server akzeptiert Klienten von mindestens Version %2</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="main.cpp" line="84"/>
+        <location filename="main.cpp" line="89"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="85"/>
+        <location filename="main.cpp" line="90"/>
         <source>NetMauMau is already running!</source>
         <translation>NetMauMau läuft bereits!</translation>
     </message>

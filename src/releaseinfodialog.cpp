@@ -29,9 +29,6 @@ ReleaseInfoDialog::ReleaseInfoDialog(const QGitHubReleaseAPI *api, QProgressDial
 
 	setupUi(this);
 
-	QObject::connect(api, SIGNAL(progress(qint64,qint64)), p,
-					 SLOT(sourceBallProgress(qint64,qint64)));
-	QObject::connect(api, SIGNAL(error(QString)), p, SLOT(sourceBallError(QString)));
 	QObject::connect(dlTar, SIGNAL(clicked()), this, SLOT(downloadTar()));
 	QObject::connect(dlZip, SIGNAL(clicked()), this, SLOT(downloadZip()));
 
@@ -97,15 +94,35 @@ void ReleaseInfoDialog::canceled() {
 }
 
 void ReleaseInfoDialog::downloadZip() {
+
+	QObject::connect(m_api, SIGNAL(progress(qint64,qint64)),
+					 m_mainWindow, SLOT(sourceBallProgress(qint64,qint64)));
+	QObject::connect(m_api, SIGNAL(error(QString)), m_mainWindow, SLOT(sourceBallError(QString)));
+
 	downloadSourceBall<&QGitHubReleaseAPI::zipBall>(".zip", "Zipball (*.zip)",
 													tr("Zipball download"),
 													tr("Downloading zipball..."));
+
+	QObject::disconnect(m_api, SIGNAL(progress(qint64,qint64)),
+						m_mainWindow, SLOT(sourceBallProgress(qint64,qint64)));
+	QObject::disconnect(m_api, SIGNAL(error(QString)),
+						m_mainWindow, SLOT(sourceBallError(QString)));
 }
 
 void ReleaseInfoDialog::downloadTar() {
+
+	QObject::connect(m_api, SIGNAL(progress(qint64,qint64)),
+					 m_mainWindow, SLOT(sourceBallProgress(qint64,qint64)));
+	QObject::connect(m_api, SIGNAL(error(QString)), m_mainWindow, SLOT(sourceBallError(QString)));
+
 	downloadSourceBall<&QGitHubReleaseAPI::tarBall>(".tar.gz", "Tarball (*.tar.gz)",
 													tr("Tarball download"),
 													tr("Downloading tarball..."));
+
+	QObject::disconnect(m_api, SIGNAL(progress(qint64,qint64)),
+						m_mainWindow, SLOT(sourceBallProgress(qint64,qint64)));
+	QObject::disconnect(m_api, SIGNAL(error(QString)),
+						m_mainWindow, SLOT(sourceBallError(QString)));
 }
 
 QString ReleaseInfoDialog::releaseText() const {
