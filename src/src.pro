@@ -44,7 +44,7 @@ unix:exists(/usr/include/notify-qt/Notification.h) {
 	unix:LIBS += -lnotify-qt
 }
 
-VERSION = 0.23
+VERSION = 0.24
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
 DEFINES += _GLIBCXX_VISIBILITY=0 QT_NO_CAST_FROM_BYTEARRAY QT_NO_CAST_TO_ASCII \
