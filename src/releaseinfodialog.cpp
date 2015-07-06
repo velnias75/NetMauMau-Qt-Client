@@ -29,8 +29,14 @@ ReleaseInfoDialog::ReleaseInfoDialog(const QGitHubReleaseAPI *api, QProgressDial
 
 	setupUi(this);
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 5, 0)
 	QObject::connect(dlTar, SIGNAL(clicked()), this, SLOT(downloadTar()));
 	QObject::connect(dlZip, SIGNAL(clicked()), this, SLOT(downloadZip()));
+#else
+	// currently this works not on QGitHubReleaseAPI compiled for Qt < 4.5
+	dlTar->setEnabled(false);
+	dlZip->setEnabled(false);
+#endif
 
 	avatarLabel->setVisible(false);
 }
@@ -68,7 +74,9 @@ QProgressDialog **ReleaseInfoDialog::createProgressDialog() {
 		Qt::WindowFlags wf((*m_progress)->windowFlags());
 		wf &= ~Qt::WindowContextHelpButtonHint;
 		wf &= ~Qt::WindowMinMaxButtonsHint;
+#if QT_VERSION >= QT_VERSION_CHECK(4, 5, 0)
 		wf &= ~Qt::WindowCloseButtonHint;
+#endif
 		wf &= ~Qt::WindowSystemMenuHint;
 		wf |= Qt::WindowStaysOnTopHint;
 		wf |= Qt::CustomizeWindowHint | Qt::WindowTitleHint;
