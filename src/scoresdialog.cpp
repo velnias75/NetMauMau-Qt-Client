@@ -197,7 +197,7 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 			m_server = QString::null;
 
 		} catch(const NetMauMau::Common::Exception::SocketException &e) {
-			qWarning("Get server score for %s: %s", host.toLocal8Bit().constData(), e.what());
+			qWarning("Get server score for %s: %s", qPrintable(host), e.what());
 			m_model.removeRows(0, m_model.rowCount());
 		}
 

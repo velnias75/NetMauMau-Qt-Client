@@ -165,13 +165,13 @@ void QGitHubReleasePrivate::downloaded() {
 	m_errorString = ok.errorString();
 
 	if(ok.error != QJsonParseError::NoError) {
-		qWarning("QJson: %s", m_errorString.toStdString().c_str());
+		qWarning("QJson: %s", qPrintable(m_errorString));
 #else
 
 	m_errorString = parser.errorString();
 
 	if(!ok) {
-		qWarning("QJson: %s", m_errorString.toStdString().c_str());
+		qWarning("QJson: %s", qPrintable(m_errorString));
 #endif
 		emit error(m_errorString);
 	} else if(!dld.isEmpty()) {

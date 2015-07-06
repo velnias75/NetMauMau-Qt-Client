@@ -73,8 +73,7 @@ void SuitRadioButton::styleSuit() {
 
 	} else {
 
-		qDebug("No suit symbols in font %s, using fallback images",
-			   font().family().toLocal8Bit().constData());
+		qDebug("No suit symbols in font %s, using fallback images", qPrintable(font().family()));
 
 		setText(QString::null);
 

@@ -47,7 +47,7 @@ FileDownloader::~FileDownloader() {}
 void FileDownloader::fileDownloaded(QNetworkReply *pReply) {
 
 	if(pReply->error() != QNetworkReply::NoError) {
-		qWarning("%s", pReply->errorString().toStdString().c_str());
+		qWarning("%s", qPrintable(pReply->errorString()));
 	}
 
 	m_DownloadedData = pReply->readAll();

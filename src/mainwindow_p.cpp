@@ -2008,7 +2008,7 @@ void MainWindowPrivate::notifyClientUpdate() {
 }
 
 void MainWindowPrivate::notifyClientUpdateError(const QString &err) {
-	qWarning("%s", err.toStdString().c_str());
+	qWarning("%s", qPrintable(err));
 }
 
 #if JSONMKDIO
