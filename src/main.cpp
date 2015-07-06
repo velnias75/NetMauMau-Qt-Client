@@ -24,7 +24,7 @@
 #include <QStyle>
 
 #ifdef HAVE_NOTIFICATION_H
-#include <notify-qt/Notification.h>
+#include <Notification.h>
 #endif
 
 #ifdef Q_OS_WIN

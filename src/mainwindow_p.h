@@ -28,7 +28,7 @@
 #include <QStandardItemModel>
 
 #ifdef HAVE_NOTIFICATION_H
-#include <notify-qt/Notification.h>
+#include <Notification.h>
 #endif
 
 #include <qgithubreleaseapi.h>

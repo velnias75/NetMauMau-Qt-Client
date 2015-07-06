@@ -8,12 +8,6 @@ CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
 
-unix:exists(/usr/include/notify-qt/Notification.h) {
-	message("Found libnotify-qt")
-	unix:DEFINES += HAVE_NOTIFICATION_H
-	unix:LIBS += -lnotify-qt
-}
-
 VERSION = 0.24
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
@@ -78,7 +72,7 @@ CONFIG(debug, debug|release) {
 			../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
 			../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
-	CONFIG += qgithubreleaseapi
+	CONFIG += libnotify-qt qgithubreleaseapi
 	unix:PKGCONFIG += netmaumau
 	UI_DIR = release-ui
 	RCC_DIR = release-rcc
@@ -87,7 +81,7 @@ CONFIG(debug, debug|release) {
 	QMAKE_DISTCLEAN = $$UI_DIR/* $$RCC_DIR/* $$MOC_DIR/* $$OBJECTS_DIR/*
 	TARGET = nmm-qt-client
 	win32:CONFIG += static
-	DEFINES += NDEBUG QT_NO_DEBUG_OUTPUT
+	DEFINES += NDEBUG QT_NO_DEBUG_OUTPUT HAVE_NOTIFICATION_H
 	unix:target.path = /usr/bin
 	qmfiles.commands = $$QMAKE_LRELEASE -compress -nounfinished -removeidentical -silent src.pro
 	qmfiles.path = /usr/share/nmm-qt-client
