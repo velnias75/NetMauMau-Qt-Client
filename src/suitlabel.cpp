@@ -75,7 +75,7 @@ void SuitLabel::styleSuit() {
 			} else {
 
 				qDebug("No suit symbols in font %s, using fallback images",
-					   font().family().toLocal8Bit().constData());
+					   qPrintable(font().family()));
 
 				setText(QString::null);
 				setPixmap(QPixmap());

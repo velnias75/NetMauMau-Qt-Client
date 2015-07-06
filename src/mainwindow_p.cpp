@@ -155,7 +155,7 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	m_gitHubReleaseAPI = new QGitHubReleaseAPI(GITUSER, GITREPO);
 	m_releaseInfoDlg = new ReleaseInfoDialog(m_gitHubReleaseAPI, &m_sourceBallDownloadProgress, q);
 
-	qDebug("API-URL: %s", m_gitHubReleaseAPI->apiUrl().toString().toStdString().c_str());
+	qDebug("API-URL: %s", qPrintable(m_gitHubReleaseAPI->apiUrl().toString()));
 
 	QObject::connect(m_gitHubReleaseAPI, SIGNAL(available(QGitHubReleaseAPI)),
 					 this, SLOT(notifyClientUpdate(QGitHubReleaseAPI)));
@@ -1946,8 +1946,7 @@ void MainWindowPrivate::notifyClientUpdate(const QGitHubReleaseAPI &api) {
 
 	qDebug("RateLimit: %u", api.rateLimit());
 	qDebug("RateLimitRem: %u", api.rateLimitRemaining());
-	qDebug("RateLimitRes: %s", api.rateLimitReset().toString().
-		   toStdString().c_str());
+	qDebug("RateLimitRes: %s", qPrintable(api.rateLimitReset().toString()));
 
 	if(api.entries() > 0) {
 
@@ -2016,7 +2015,7 @@ void MainWindowPrivate::notifyClientUpdate(const QGitHubReleaseAPI &api) {
 }
 
 void MainWindowPrivate::notifyClientUpdateError(const QString &err) {
-	qWarning("%s", err.toStdString().c_str());
+	qWarning("%s", qPrintable(err));
 }
 
 void MainWindowPrivate::updateLinkActivated(const QString &u) {

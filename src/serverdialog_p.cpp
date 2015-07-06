@@ -194,7 +194,7 @@ ServerDialogPrivate::ServerDialogPrivate(QSplashScreen *splash, ServerDialog *p)
 							 this, SLOT(updateOnline(bool,int)));
 			++j;
 		} else {
-			qWarning("\"%s\" is no valid host name", tHost.toUtf8().constData());
+			qWarning("\"%s\" is no valid host name", qPrintable(tHost));
 		}
 	}
 
