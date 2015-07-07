@@ -135,4 +135,14 @@ void MainWindow::dropEvent(QDropEvent *evt) {
 	}
 }
 
+void MainWindow::sourceBallProgress(qint64 bytesReceived, qint64 bytesTotal) {
+	Q_D(MainWindow);
+	d->sourceBallProgress(bytesReceived, bytesTotal);
+}
+
+void MainWindow::sourceBallError(const QString &e) {
+	Q_D(MainWindow);
+	d->sourceBallError(e);
+}
+
 // kate: indent-mode cstyle; indent-width 4; replace-tabs off; tab-width 4;

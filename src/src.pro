@@ -1,4 +1,4 @@
-QT += svg network
+QT += svg
 
 greaterThan(QT_MAJOR_VERSION, 4) {
 	QT += widgets
@@ -8,50 +8,14 @@ CONFIG += debug_and_release
 CONFIG += rtti exceptions
 unix:CONFIG += link_pkgconfig
 
-greaterThan(QT_MAJOR_VERSION, 4) || packagesExist(QJson) {
-
-	lessThan(QT_MAJOR_VERSION, 5) {
-		message("Found QJson")
-		unix:DEFINES += HAVE_QJSON
-		unix:PKGCONFIG += QJson
-	}
-
-	MKDIO_H_MULTILIB = $$(MULTILIB)
-
-	isEmpty(MKDIO_H_MULTILIB) {
-		MKDIO_H_LOC="/usr/include/mkdio.h"
-	} else {
-		MKDIO_H_LOC="/usr/include/$$(MULTILIB)/mkdio.h"
-	}
-
-	exists($$MKDIO_H_LOC) {
-		message("Found $$MKDIO_H_LOC, will enable markdown support")
-		unix:DEFINES += HAVE_MKDIO_H
-		unix:LIBS += -lmarkdown
-		unix:FORMS += releaseinfodialog.ui
-		unix:SOURCES += releaseinfodialog.cpp
-		unix:HEADERS += releaseinfodialog.h
-	} else {
-		unix:error("No mkdio.h (part of the discount package) found on the system")
-	}
-} else {
-   unix:error("No QJson found on the system")
-}
-
-unix:exists(/usr/include/notify-qt/Notification.h) {
-	message("Found libnotify-qt")
-	unix:DEFINES += HAVE_NOTIFICATION_H
-	unix:LIBS += -lnotify-qt
-}
-
 VERSION = 0.24
 
 DEFINES += "PACKAGE_NAME=\"\\\"NetMauMau Qt Client\\\"\"" "PACKAGE_VERSION=\"\\\"$$VERSION\\\"\""
 DEFINES += _GLIBCXX_VISIBILITY=0 QT_NO_CAST_FROM_BYTEARRAY QT_NO_CAST_TO_ASCII \
 		   QT_USE_FAST_OPERATOR_PLUS QT_USE_FAST_CONCATENATION QT_NO_WHATSTHIS \
 		   QT_STRICT_ITERATORS QT_NO_URL_CAST_FROM_STRING
-DEFINES += "DLURL=\"\\\"https://sourceforge.net/projects/netmaumau/\\\"\"" \
-		   "APIURL=\"\\\"https://api.github.com/repos/velnias75/NetMauMau-Qt-Client/releases?per_page=1\\\"\""
+DEFINES += "DLURL=\"\\\"https://sourceforge.net/projects/netmaumau/\\\"\""
+DEFINES += GITREPO=\"\\\"NetMauMau-Qt-Client\\\"\" GITUSER=\"\\\"velnias75\\\"\"
 
 QMAKE_RESOURCE_FLAGS += -compress 9
 
@@ -94,7 +58,8 @@ CONFIG(debug, debug|release) {
 	OBJECTS_DIR = debug-obj
 	QMAKE_DISTCLEAN = $$UI_DIR/* $$RCC_DIR/* $$MOC_DIR/* $$OBJECTS_DIR/*
 	TARGET = nmm-qt-client-debug
-	INCLUDEPATH += "../../netmaumau/src/include"
+	INCLUDEPATH += "../../netmaumau/src/include" "../../QGitHubReleaseAPI/src" \
+				   "../../QGitHubReleaseAPI/build"
 	QMAKE_CXXFLAGS += -g3 -O0 -fstrict-aliasing -ftrapv -fno-inline -Wcast-align -Wcast-qual \
 	-Wctor-dtor-privacy -Wdisabled-optimization -Wdouble-promotion -Wextra -Wformat=2 \
 	-Wformat-nonliteral -Wformat-security -Wimport -Winit-self -Winline -Wlogical-op \
@@ -103,9 +68,11 @@ CONFIG(debug, debug|release) {
 	-Wold-style-cast -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wreturn-type -Wshadow \
 	-Wsign-compare -Wstrict-null-sentinel -Wstrict-overflow=5 -Wtrampolines -Wuninitialized \
 	-Wunreachable-code -Wunused -Wvariadic-macros
-	LIBS += ../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
+	LIBS += -L../../QGitHubReleaseAPI/build -lqgithubreleaseapi \
+			../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
 			../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
+	CONFIG += libnotify-qt qgithubreleaseapi
 	unix:PKGCONFIG += netmaumau
 	UI_DIR = release-ui
 	RCC_DIR = release-rcc
@@ -114,7 +81,7 @@ CONFIG(debug, debug|release) {
 	QMAKE_DISTCLEAN = $$UI_DIR/* $$RCC_DIR/* $$MOC_DIR/* $$OBJECTS_DIR/*
 	TARGET = nmm-qt-client
 	win32:CONFIG += static
-	DEFINES += NDEBUG QT_NO_DEBUG_OUTPUT
+	DEFINES += NDEBUG QT_NO_DEBUG_OUTPUT HAVE_NOTIFICATION_H
 	unix:target.path = /usr/bin
 	qmfiles.commands = $$QMAKE_LRELEASE -compress -nounfinished -removeidentical -silent src.pro
 	qmfiles.path = /usr/share/nmm-qt-client
@@ -161,7 +128,6 @@ SOURCES += \
 	connectionlogdialog.cpp \
 	countmessageitemdelegate.cpp \
 	deleteserversdialog.cpp \
-	filedownloader.cpp \
 	gamestate.cpp \
 	imagedelegate.cpp \
 	jackchoosedialog.cpp \
@@ -183,8 +149,7 @@ SOURCES += \
 	playerimagelineedit.cpp \
 	playerimageprogressdialog.cpp \
 	portspin.cpp \
-	qgithubrelease.cpp \
-	qgithubrelease_p.cpp \
+	releaseinfodialog.cpp \
 	scoresdialog.cpp \
 	serverdialog.cpp \
 	serverdialog_p.cpp \
@@ -215,7 +180,6 @@ HEADERS += \
 	connectionlogdialog.h \
 	countmessageitemdelegate.h \
 	deleteserversdialog.h \
-	filedownloader.h \
 	gamestate.h \
 	imagedelegate.h \
 	jackchoosedialog.h \
@@ -236,8 +200,7 @@ HEADERS += \
 	playerimagelineedit.h \
 	playerimageprogressdialog.h \
 	portspin.h \
-	qgithubrelease.h \
-	qgithubrelease_p.h \
+	releaseinfodialog.h \
 	scoresdialog.h \
 	serverdialog.h \
 	serverdialog_p.h \
@@ -262,6 +225,7 @@ FORMS += \
 	localserveroutputsettingsdialog.ui \
 	localserveroutputview.ui \
 	mainwindow.ui \
+	releaseinfodialog.ui \
 	scoresdialog.ui \
 	serverdialog.ui \
 	suitlabel.ui \

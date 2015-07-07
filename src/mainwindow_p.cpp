@@ -43,8 +43,8 @@
 #include "scoresdialog.h"
 #include "licensedialog.h"
 #include "ui_mainwindow.h"
-#include "qgithubrelease.h"
 #include "jackchoosedialog.h"
+#include "releaseinfodialog.h"
 #include "launchserverdialog.h"
 #include "netmaumaumessagebox.h"
 #include "connectionlogdialog.h"
@@ -54,15 +54,7 @@
 #include "countmessageitemdelegate.h"
 #include "playerimageprogressdialog.h"
 
-#if JSONMKDIO
-#include "releaseinfodialog.h"
-#endif
-
 namespace {
-
-#if !(QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON))
-const char *TAGNAME = "\"tag_name\":";
-#endif
 
 const QUrl RDLURL(DLURL);
 
@@ -80,7 +72,7 @@ struct scoresPlayer : public std::binary_function<Client::SCORE, std::string, bo
 
 MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QObject(p), q_ptr(p),
 	m_client(0L), m_ui(new Ui::MainWindow), m_serverDlg(new ServerDialog(splash, p)),
-	m_lsov(new LocalServerOutputView()),
+	m_lsov(new LocalServerOutputView()), m_releaseInfoDlg(0L),
 	m_launchDlg(new LaunchServerDialog(m_lsov, m_serverDlg, p)), m_model(0, 5, p),
 	m_jackChooseDialog(new JackChooseDialog(p)), m_connectionLogDlg(new ConnectionLogDialog(0L)),
 	m_remotePlayersHeader(0L), m_playerImageDelegate(new PlayerImageDelegate(&m_model, p)),
@@ -95,19 +87,19 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 			   .arg(VERSION_MAJ(Client::getClientLibraryVersion()))
 			   .arg(VERSION_MIN(Client::getClientLibraryVersion()))
 			   .arg(VERSION_REL(Client::getClientLibraryVersion()))),
-	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(p)), m_timeLabel(), m_playTimer(),
+	m_receivingPlayerImageProgress(new PlayerImageProgressDialog(p)),
+	m_sourceBallDownloadProgress(0L), m_timeLabel(), m_playTimer(),
 	m_licenseDialog(new LicenseDialog(p)), m_aceRoundLabel(), m_gameState(0L),
 	m_scoresDialog(new ScoresDialog(m_serverDlg, p)), m_gitHubReleaseAPI(0L),
-	m_defaultPlayerImage(QImage::fromData
-						 (QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
-									 NetMauMau::Common::DefaultPlayerImage.length()))),
+	m_userAgent(qstrdup(QString(PACKAGE_NAME).append(" v").append(PACKAGE_VERSION).
+						toLatin1().constData())),
+	m_defaultPlayerImage(QImage::fromData(QByteArray(NetMauMau::Common::DefaultPlayerImage.c_str(),
+													 NetMauMau::Common::DefaultPlayerImage.length()))),
 	m_playerNameMenu(0L), m_animLogo(new QMovie(":/anim-logo.gif")), m_playerNamesActionGroup(0L)
   #ifdef USE_ESPEAK
   , m_volumeDialog(new ESpeakVolumeDialog())
   #endif
-  #if JSONMKDIO
   , m_releaseInfo()
-  #endif
   #ifdef HAVE_NOTIFICATION_H
   , m_updateAvailableNotification(QCoreApplication::applicationName())
   #endif
@@ -155,11 +147,22 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	q->setWindowTitle(QCoreApplication::applicationName() + " " +
 					  QCoreApplication::applicationVersion());
 
-	m_gitHubReleaseAPI = new QGitHubRelease(QUrl(APIURL));
+#ifdef HAVE_NOTIFICATION_H
+	m_updateAvailableNotification.setAutoDelete(false);
+#endif
 
-	QObject::connect(m_gitHubReleaseAPI, SIGNAL(available()), this, SLOT(notifyClientUpdate()));
+	QGitHubReleaseAPI::setUserAgent(m_userAgent);
+	m_gitHubReleaseAPI = new QGitHubReleaseAPI(GITUSER, GITREPO);
+	m_releaseInfoDlg = new ReleaseInfoDialog(m_gitHubReleaseAPI, &m_sourceBallDownloadProgress, q);
+
+	qDebug("API-URL: %s", qPrintable(m_gitHubReleaseAPI->apiUrl().toString()));
+
+	QObject::connect(m_gitHubReleaseAPI, SIGNAL(available(QGitHubReleaseAPI)),
+					 this, SLOT(notifyClientUpdate(QGitHubReleaseAPI)));
 	QObject::connect(m_gitHubReleaseAPI, SIGNAL(error(QString)),
 					 this, SLOT(notifyClientUpdateError(QString)));
+	QObject::connect(m_gitHubReleaseAPI, SIGNAL(progress(qint64,qint64)),
+					 this, SLOT(apiProgress(qint64,qint64)));
 
 	QObject::connect(m_ui->actionConnectionlog, SIGNAL(toggled(bool)),
 				 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -182,13 +185,8 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 	QObject::connect(m_ui->actionLicense, SIGNAL(triggered()), m_licenseDialog, SLOT(exec()));
 	QObject::connect(m_ui->actionHallOfFame, SIGNAL(triggered()),
 					 m_scoresDialog, SLOT(exec()));
-
-#if JSONMKDIO
 	QObject::connect(m_ui->actionReleaseInformation, SIGNAL(triggered()),
 					 this, SLOT(showReleaseInformation()));
-#else
-	m_ui->menu_Help->removeAction(m_ui->actionReleaseInformation);
-#endif
 
 	m_lsov->addLaunchAction(m_ui->actionLaunchServer);
 
@@ -345,15 +343,18 @@ MainWindowPrivate::~MainWindowPrivate() {
 	delete m_turnItemDelegate;
 	delete m_messageItemDelegate;
 	delete m_receivingPlayerImageProgress;
+	delete m_sourceBallDownloadProgress;
 	delete m_gitHubReleaseAPI;
 	delete m_playerNameMenu;
 	delete m_gameState;
 	delete m_animLogo;
 	delete m_playerNamesActionGroup;
 	delete m_lsov;
+	delete [] m_userAgent;
 #ifdef USE_ESPEAK
 	delete m_volumeDialog;
 #endif
+	delete m_releaseInfoDlg;
 	delete m_ui;
 }
 
@@ -1941,17 +1942,25 @@ void MainWindowPrivate::about() {
 	QMessageBox::about(q, QCoreApplication::applicationName(), m_aboutTxt);
 }
 
-void MainWindowPrivate::notifyClientUpdate() {
-#if JSONMKDIO
-	if(m_gitHubReleaseAPI->entries() > 0) {
+void MainWindowPrivate::notifyClientUpdate(const QGitHubReleaseAPI &api) {
 
-		m_releaseInfo.date = m_gitHubReleaseAPI->publishedAt();
-		m_releaseInfo.name = m_gitHubReleaseAPI->name();
-		m_releaseInfo.html = m_gitHubReleaseAPI->body();
+	qDebug("RateLimit: %u", api.rateLimit());
+	qDebug("RateLimitRem: %u", api.rateLimitRemaining());
+	qDebug("RateLimitRes: %s", qPrintable(api.rateLimitReset().toString()));
+
+	if(api.entries() > 0) {
+
+		m_releaseInfo.date    = api.publishedAt();
+		m_releaseInfo.name    = api.name();
+		m_releaseInfo.html    = api.body();
+		m_releaseInfo.avatar  = api.avatar();
+		m_releaseInfo.login   = api.login();
+		m_releaseInfo.tarBall = api.tarBallUrl();
+		m_releaseInfo.zipBall = api.zipBallUrl();
 
 		m_ui->actionReleaseInformation->setEnabled(true);
 
-		const QString &relTag(m_gitHubReleaseAPI->tagName());
+		const QString &relTag(api.tagName());
 		const QString &rel(!relTag.isEmpty() ? relTag.mid(1) : "0.0");
 
 		const uint32_t sactual = Client::parseProtocolVersion(PACKAGE_VERSION),
@@ -1962,12 +1971,11 @@ void MainWindowPrivate::notifyClientUpdate() {
 										 VERSION_REL(savail));
 
 		if(avail > actual) {
-//		if(1) { // for testing
+			//		if(1) { // for testing
 
 #ifdef HAVE_NOTIFICATION_H
 			if(Notification::isInitted()) {
 
-				m_updateAvailableNotification.setAutoDelete(false);
 				m_updateAvailableNotification.setIconName("dialog-information");
 				m_updateAvailableNotification.setBody(tr("Version %1 is available!").arg(rel));
 				m_updateAvailableNotification.addAction("more_info", tr("More info"));
@@ -2004,26 +2012,25 @@ void MainWindowPrivate::notifyClientUpdate() {
 				   VERSION_REL(avail), avail);
 		}
 	}
-#endif
 }
 
 void MainWindowPrivate::notifyClientUpdateError(const QString &err) {
 	qWarning("%s", qPrintable(err));
 }
 
-#if JSONMKDIO
 void MainWindowPrivate::updateLinkActivated(const QString &u) {
 
-	Q_Q(MainWindow);
+	m_releaseInfoDlg->setWindowTitle(m_releaseInfo.name);
+	m_releaseInfoDlg->setReleaseText(m_releaseInfo.html);
+	m_releaseInfoDlg->setReleaseDate(m_releaseInfo.date);
+	m_releaseInfoDlg->setAvatar(m_releaseInfo.avatar);
+	m_releaseInfoDlg->setLogin(m_releaseInfo.login);
+	m_releaseInfoDlg->setDlUrl(QUrl(u));
+	m_releaseInfoDlg->show();
+}
 
-	ReleaseInfoDialog rid(q);
-
-	rid.setWindowTitle(m_releaseInfo.name);
-	rid.setReleaseText(m_releaseInfo.html);
-	rid.setReleaseDate(m_releaseInfo.date);
-	rid.setDlUrl(QUrl(u));
-
-	rid.exec();
+void MainWindowPrivate::apiProgress(qint64 bytesReceived, qint64 bytesTotal) {
+	qDebug("Received %lld/%lld bytes", bytesReceived, bytesTotal);
 }
 
 void MainWindowPrivate::showReleaseInformation() {
@@ -2034,7 +2041,6 @@ void MainWindowPrivate::showReleaseInformation() {
 
 	updateLinkActivated(RDLURL.toString());
 }
-#endif
 
 void MainWindowPrivate::changePlayerName(QAction *act) {
 	if(!(act == m_ui->actionShowCardTooltips ||
@@ -2098,4 +2104,33 @@ void MainWindowPrivate::showPlayerNameSelectMenu(const QPoint &p) {
 #endif
 
 	m_playerNameMenu->popup(m_ui->localPlayerDock->mapToGlobal(p));
+}
+
+void MainWindowPrivate::sourceBallProgress(qint64 bytesReceived, qint64 bytesTotal) {
+
+	qApp->processEvents();
+
+	if(m_sourceBallDownloadProgress) {
+
+		if(bytesTotal >= 0) {
+			m_sourceBallDownloadProgress->setMaximum(bytesTotal);
+			m_sourceBallDownloadProgress->setValue(bytesReceived);
+		} else {
+			m_sourceBallDownloadProgress->setMaximum(0);
+		}
+
+		if(bytesReceived > 0 && !m_sourceBallDownloadProgress->isVisible()) {
+			m_sourceBallDownloadProgress->show();
+		}
+	}
+}
+
+void MainWindowPrivate::sourceBallError(const QString &e) {
+
+	if(m_sourceBallDownloadProgress) m_sourceBallDownloadProgress->reset();
+
+	qApp->processEvents();
+
+	Q_Q(MainWindow);
+	NetMauMauMessageBox::critical(q, tr("Error while downloading"), e);
 }

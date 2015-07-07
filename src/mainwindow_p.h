@@ -20,19 +20,20 @@
 #ifndef MAINWINDOWPRIVATE_H
 #define MAINWINDOWPRIVATE_H
 
+#include <QUrl>
 #include <QLabel>
 #include <QDateTime>
+#include <QFileDialog>
 #include <QBasicTimer>
 #include <QStandardItemModel>
 
 #ifdef HAVE_NOTIFICATION_H
-#include <notify-qt/Notification.h>
+#include <Notification.h>
 #endif
 
-#include "client.h"
+#include <qgithubreleaseapi.h>
 
-#define JSONMKDIO \
-	(QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) || defined(HAVE_QJSON)) && defined(HAVE_MKDIO_H)
+#include "client.h"
 
 namespace Ui {
 class MainWindow;
@@ -46,9 +47,10 @@ class QActionGroup;
 class ScoresDialog;
 class ServerDialog;
 class QSplashScreen;
-class QGitHubRelease;
 class QProgressDialog;
 class JackChooseDialog;
+class ReleaseInfoDialog;
+class QGitHubReleaseAPI;
 class LaunchServerDialog;
 class LocalServerOutputView;
 class QAbstractItemDelegate;
@@ -114,13 +116,11 @@ private slots:
 	void unmau();
 	void unborderCards();
 
-	void notifyClientUpdate();
+	void notifyClientUpdate(const QGitHubReleaseAPI &);
 	void notifyClientUpdateError(const QString &err);
-
-#if JSONMKDIO
 	void updateLinkActivated(const QString &);
 	void showReleaseInformation();
-#endif
+	void apiProgress(qint64 bytesReceived, qint64 bytesTotal);
 
 	void gameOver();
 	void serverAccept();
@@ -171,6 +171,9 @@ private slots:
 	void filterMyCards(bool);
 	void setOpenCard(const QByteArray &);
 
+	void sourceBallProgress(qint64 bytesReceived, qint64 bytesTotal);
+	void sourceBallError(const QString &);
+
 private:
 	CardWidget *getFirstSeven() const;
 
@@ -184,6 +187,7 @@ public:
 	Ui::MainWindow *m_ui;
 	ServerDialog *m_serverDlg;
 	LocalServerOutputView *m_lsov;
+	ReleaseInfoDialog *m_releaseInfoDlg;
 	LaunchServerDialog *m_launchDlg;
 	QStandardItemModel m_model;
 	JackChooseDialog *m_jackChooseDialog;
@@ -196,13 +200,15 @@ public:
 	QAbstractItemDelegate *m_messageItemDelegate;
 	const QString m_aboutTxt;
 	QProgressDialog *m_receivingPlayerImageProgress;
+	QProgressDialog *m_sourceBallDownloadProgress;
 	QLabel m_timeLabel;
 	QBasicTimer m_playTimer;
 	const QDialog *m_licenseDialog;
 	QLabel m_aceRoundLabel;
 	mutable GameState *m_gameState;
 	ScoresDialog *m_scoresDialog;
-	const QGitHubRelease *m_gitHubReleaseAPI;
+	const QGitHubReleaseAPI *m_gitHubReleaseAPI;
+	const char *m_userAgent;
 	const QImage m_defaultPlayerImage;
 	QMenu *m_playerNameMenu;
 	QMovie *m_animLogo;
@@ -210,15 +216,17 @@ public:
 #ifdef USE_ESPEAK
 	ESpeakVolumeDialog *m_volumeDialog;
 #endif
-#if JSONMKDIO
 	typedef struct {
 		QString name;
 		QString html;
 		QDateTime date;
+		QImage avatar;
+		QString login;
+		QUrl tarBall;
+		QUrl zipBall;
 	} RELEASEINFO;
 
 	RELEASEINFO m_releaseInfo;
-#endif
 #ifdef HAVE_NOTIFICATION_H
 	Notification m_updateAvailableNotification;
 #endif

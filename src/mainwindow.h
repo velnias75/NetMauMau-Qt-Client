@@ -43,6 +43,10 @@ protected:
 	virtual void dragEnterEvent(QDragEnterEvent *event);
 	virtual void dropEvent(QDropEvent *event);
 
+public slots:
+	void sourceBallProgress(qint64 bytesReceived, qint64 bytesTotal);
+	void sourceBallError(const QString &);
+
 signals:
 	void disconnectNow() const;
 	void confirmLostWon(int) const;
