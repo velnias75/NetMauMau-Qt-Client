@@ -73,19 +73,19 @@ CONFIG(debug, debug|release) {
 	-Wold-style-cast -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wreturn-type -Wshadow \
 	-Wsign-compare -Wstrict-null-sentinel -Wstrict-overflow=5 -Wtrampolines -Wuninitialized \
 	-Wunreachable-code -Wunused -Wvariadic-macros
-	LIBS += -L../../QGitHubReleaseAPI/build -lqgithubreleaseapi \
+	unix:LIBS += -L../../QGitHubReleaseAPI/build -lqgithubreleaseapi \
 			../../netmaumau/debug/src/client/.libs/libnetmaumauclient.a \
 			../../netmaumau/debug/src/common/.libs/libnetmaumaucommon.a -lmagic
 } else {
-	CONFIG += qgithubreleaseapi
 	unix:PKGCONFIG += netmaumau
+	CONFIG += qgithubreleaseapi
+	win32:CONFIG += static
 	UI_DIR = release-ui
 	RCC_DIR = release-rcc
 	MOC_DIR = release-moc
 	OBJECTS_DIR = release-obj
 	QMAKE_DISTCLEAN = $$UI_DIR/* $$RCC_DIR/* $$MOC_DIR/* $$OBJECTS_DIR/*
 	TARGET = nmm-qt-client
-	win32:CONFIG += static
 	DEFINES += NDEBUG QT_NO_DEBUG_OUTPUT
 	unix:target.path = /usr/bin
 	qmfiles.commands = $$QMAKE_LRELEASE -compress -nounfinished -removeidentical -silent src.pro
@@ -97,7 +97,7 @@ CONFIG(debug, debug|release) {
 	unix:icon.files = nmm_qt_client.png
 	unix:INSTALLS += qmfiles desktop icon target
 	win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
-	win32:DEFINES += _WIN32_WINNT=0x0500 CLIENTVERSION=15 HAVE_MKDIO_H HAVE_QJSON QJSON_STATIC
+	win32:DEFINES += _WIN32_WINNT=0x0500 CLIENTVERSION=15
 	devrelease:DEFINES -= NDEBUG QT_NO_DEBUG_OUTPUT
 	devrelease:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing \
 	-Wformat -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \
@@ -108,9 +108,7 @@ CONFIG(debug, debug|release) {
 	-ftree-slp-vectorize -fvect-cost-model -ftree-partial-pre -fipa-cp-clone -std=gnu++98 \
 	-fvisibility=internal -fvisibility-inlines-hidden -fstrict-aliasing -fexceptions -mthreads
 	win32:LIBS += -lsecur32 /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
-							/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a \
-							/usr/i686-pc-mingw32/usr/lib/libqjson.a \
-							/usr/i686-pc-mingw32/usr/lib/libmarkdown_windows_x86.a
+							/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
 	win32:QMAKE_LFLAGS += -Wl,--gc-sections -Wl,-O1 -Wl,--sort-common
 }
 
@@ -237,10 +235,6 @@ FORMS += \
 	suitradiobutton.ui
 
 espeak:FORMS += espeakvolumedialog.ui
-
-win32:FORMS   += releaseinfodialog.ui
-win32:SOURCES += releaseinfodialog.cpp
-win32:HEADERS += releaseinfodialog.h
 
 RESOURCES += \
 	cards.qrc \

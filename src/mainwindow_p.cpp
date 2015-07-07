@@ -2030,7 +2030,12 @@ void MainWindowPrivate::updateLinkActivated(const QString &u) {
 }
 
 void MainWindowPrivate::apiProgress(qint64 bytesReceived, qint64 bytesTotal) {
+#if !defined(Q_OS_WIN)
 	qDebug("Received %lld/%lld bytes", bytesReceived, bytesTotal);
+#else
+	Q_UNUSED(bytesReceived)
+	Q_UNUSED(bytesTotal)
+#endif
 }
 
 void MainWindowPrivate::showReleaseInformation() {
