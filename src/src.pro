@@ -107,9 +107,10 @@ CONFIG(debug, debug|release) {
 	-Wsuggest-attribute=pure -Wsuggest-attribute=const -Wsuggest-attribute=noreturn \
 	-Wdisabled-optimization -Wuninitialized
 	win32:QMAKE_CXXFLAGS_RELEASE = -Os -g0 -Wall -Wextra -march=i586 -mtune=generic -s \
-	-fomit-frame-pointer -frename-registers -momit-leaf-frame-pointer -finline-functions \
-	-funswitch-loops -fpredictive-commoning -fgcse-after-reload -ftree-loop-distribute-patterns \
-	-ftree-slp-vectorize -fvect-cost-model -ftree-partial-pre -fipa-cp-clone -std=gnu++98 \
+	-fomit-frame-pointer -fgcse-after-reload -fipa-cp-clone \
+	-foptimize-strlen -fpredictive-commoning -ftree-loop-distribute-patterns \
+	-ftree-partial-pre -ftree-vectorize -funswitch-loops -fvect-cost-model \
+	-frename-registers -momit-leaf-frame-pointer -std=gnu++98 \
 	-fvisibility=internal -fvisibility-inlines-hidden -fstrict-aliasing -fexceptions -mthreads
 	win32:LIBS += -lsecur32 /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
 							/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
