@@ -78,7 +78,6 @@ int main(int argc, char *argv[]) {
 	a.processEvents();
 
 #if !defined(Q_OS_WIN)
-
 #ifdef HAVE_SYSTEM_QTSINGLEAPPLICATION
 	if(a.isRunning()) {
 #else

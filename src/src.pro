@@ -19,6 +19,9 @@ DEFINES += GITREPO=\"\\\"NetMauMau-Qt-Client\\\"\" GITUSER=\"\\\"velnias75\\\"\"
 
 QMAKE_RESOURCE_FLAGS += -compress 9
 
+QMAKE_CXXFLAGS += -ffast-math
+QMAKE_LFLAGS += -funsafe-math-optimizations
+
 isEmpty(QMAKE_LRELEASE) {
 	win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\\lrelease.exe
 	else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
@@ -65,9 +68,9 @@ CONFIG(debug, debug|release) {
 	TARGET = nmm-qt-client-debug
 	INCLUDEPATH += "../../netmaumau/src/include" "../../QGitHubReleaseAPI/src" \
 				   "../../QGitHubReleaseAPI/build"
-	QMAKE_CXXFLAGS += -g3 -O0 -fstrict-aliasing -ftrapv -fno-inline -Wcast-align -Wcast-qual \
-	-Wctor-dtor-privacy -Wdisabled-optimization -Wdouble-promotion -Wextra -Wformat=2 \
-	-Wformat-nonliteral -Wformat-security -Wimport -Winit-self -Winline -Wlogical-op \
+	QMAKE_CXXFLAGS_DEBUG = -Wall -Wextra -g3 -O0 -fstrict-aliasing -ftrapv -fno-inline \
+	-Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wdouble-promotion \
+	-Wformat=2 -Wformat-nonliteral -Wformat-security -Wimport -Winit-self -Winline -Wlogical-op \
 	-Wmissing-format-attribute -Wmissing-include-dirs -Wmissing-noreturn -Wmultichar -Wnoexcept \
 	-Wnon-virtual-dtor -Wno-packed-bitfield-compat -Wno-unused-label -Wno-unused-parameter \
 	-Wold-style-cast -Woverloaded-virtual -Wpointer-arith -Wredundant-decls -Wreturn-type -Wshadow \
@@ -99,9 +102,10 @@ CONFIG(debug, debug|release) {
 	win32:INCLUDEPATH += "/usr/i686-pc-mingw32/usr/include/netmaumau"
 	win32:DEFINES += _WIN32_WINNT=0x0500 CLIENTVERSION=15
 	devrelease:DEFINES -= NDEBUG QT_NO_DEBUG_OUTPUT
-	devrelease:QMAKE_CXXFLAGS += -O3 -g -fno-omit-frame-pointer -march=native -fstrict-aliasing \
-	-Wformat -Wformat-security -Wno-packed-bitfield-compat -Wsuggest-attribute=pure \
-	-Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wdisabled-optimization -Wuninitialized
+	devrelease:QMAKE_CXXFLAGS_RELEASE = -O3 -g -fno-omit-frame-pointer -march=native \
+	-fstrict-aliasing -Wextra -Wformat -Wformat-security -Wno-packed-bitfield-compat \
+	-Wsuggest-attribute=pure -Wsuggest-attribute=const -Wsuggest-attribute=noreturn \
+	-Wdisabled-optimization -Wuninitialized
 	win32:QMAKE_CXXFLAGS_RELEASE = -Os -g0 -Wall -Wextra -march=i586 -mtune=generic -s \
 	-fomit-frame-pointer -frename-registers -momit-leaf-frame-pointer -finline-functions \
 	-funswitch-loops -fpredictive-commoning -fgcse-after-reload -ftree-loop-distribute-patterns \

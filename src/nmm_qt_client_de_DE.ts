@@ -1148,12 +1148,12 @@ Spieldauer: %2</translation>
         <translation>Spieler &lt;span style=&quot;color:%1;&quot;&gt;%2&lt;/span&gt; ist dem Spiel beigetreten</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1982"/>
+        <location filename="mainwindow_p.cpp" line="1981"/>
         <source>More info</source>
         <translation>Mehr Infos</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="2136"/>
+        <location filename="mainwindow_p.cpp" line="2140"/>
         <source>Error while downloading</source>
         <translation>Fehler beim Herunterladen</translation>
     </message>
@@ -1293,8 +1293,8 @@ Spieldauer: %1</translation>
         <translation>%1 beendet</translation>
     </message>
     <message>
-        <location filename="mainwindow_p.cpp" line="1981"/>
-        <location filename="mainwindow_p.cpp" line="1993"/>
+        <location filename="mainwindow_p.cpp" line="1980"/>
+        <location filename="mainwindow_p.cpp" line="1992"/>
         <source>Version %1 is available!</source>
         <translation>Version %1 ist verfügbar!</translation>
     </message>
@@ -1357,22 +1357,22 @@ Spieldauer: %1</translation>
         <translation>Quellarchive von GitHub</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="103"/>
+        <location filename="releaseinfodialog.cpp" line="111"/>
         <source>Zipball download</source>
         <translation>Herunterladen des Zip-Archivs</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="104"/>
+        <location filename="releaseinfodialog.cpp" line="112"/>
         <source>Downloading zipball...</source>
         <translation>Lade Zip-Archiv herunter...</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="119"/>
+        <location filename="releaseinfodialog.cpp" line="127"/>
         <source>Tarball download</source>
         <translation>Herunterladen des Tar-Archivs</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="120"/>
+        <location filename="releaseinfodialog.cpp" line="128"/>
         <source>Downloading tarball...</source>
         <translation>Lade Tar-Archiv herunter...</translation>
     </message>
@@ -1382,7 +1382,7 @@ Spieldauer: %1</translation>
         <translation>Wähle wohin %1 gesichert werden soll...</translation>
     </message>
     <message>
-        <location filename="releaseinfodialog.cpp" line="168"/>
+        <location filename="releaseinfodialog.cpp" line="176"/>
         <source>Brought to you by %1</source>
         <translation>Zur Verfügung gestellt von %1</translation>
     </message>
@@ -1778,12 +1778,12 @@ Der Server akzeptiert Klienten von mindestens Version %2</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="main.cpp" line="89"/>
+        <location filename="main.cpp" line="88"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="90"/>
+        <location filename="main.cpp" line="89"/>
         <source>NetMauMau is already running!</source>
         <translation>NetMauMau läuft bereits!</translation>
     </message>
