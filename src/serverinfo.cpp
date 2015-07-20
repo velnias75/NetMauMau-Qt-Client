@@ -93,8 +93,7 @@ void ServerInfo::run() {
 
 				if(wurl != caps.end()) {
 					server->setData(QString::fromUtf8(wurl->second.c_str()), URL);
-					serverTooltip += "<a href=\"" + server->data(URL).toString() + "\">" +
-									 server->data(URL).toString() + "</a><br />";
+					serverTooltip += server->data(URL).toString() + "<br />";
 				} else {
 					server->setData(QVariant(QString::null), URL);
 				}

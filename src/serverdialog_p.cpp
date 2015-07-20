@@ -17,6 +17,7 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QUrl>
 #include <QMenu>
 #include <QBuffer>
 #include <QSettings>
@@ -26,6 +27,7 @@
 #include <QMessageBox>
 #include <QImageReader>
 #include <QSplashScreen>
+#include <QDesktopServices>
 
 #if !defined(Q_OS_WIN) && (_POSIX_C_SOURCE >= 1 || _XOPEN_SOURCE || _BSD_SOURCE || _SVID_SOURCE \
 	|| _POSIX_SOURCE)
@@ -55,7 +57,8 @@ ServerDialogPrivate::ServerDialogPrivate(QSplashScreen *splash, ServerDialog *p)
 	m_nameRexValidator(new NameValidator(this)), m_playerImage(), m_autoRefresh(this),
 	m_mutex(), m_blockAutoRefresh(false), m_splash(splash), m_lastPlayerName(QString::null),
 	m_imageFormats(), m_addServerDialog(new AddServerDialog(p)), m_ctxPopup(new QMenu(p)),
-	m_ctxIndex(), m_direction(GameState::NONE) {
+	m_ctxIndex(), m_direction(GameState::NONE), m_webUrlAction(new QAction(tr("View status page"),
+																		   m_ctxPopup)) {
 
 	Q_Q(ServerDialog);
 
@@ -75,9 +78,14 @@ ServerDialogPrivate::ServerDialogPrivate(QSplashScreen *splash, ServerDialog *p)
 
 	m_ctxPopup->addAction(q->actionAddServer);
 	m_ctxPopup->addAction(q->actionDeleteServer);
+	m_ctxPopup->addSeparator();
+	m_ctxPopup->addAction(m_webUrlAction);
+
+	m_webUrlAction->setDisabled(true);
 
 	QObject::connect(q->actionAddServer, SIGNAL(triggered()), m_addServerDialog, SLOT(exec()));
 	QObject::connect(q->actionDeleteServer, SIGNAL(triggered()), this, SLOT(removeServer()));
+	QObject::connect(m_webUrlAction, SIGNAL(triggered()), this, SLOT(openUrl()));
 
 	QList<QByteArray> sif(QImageReader::supportedImageFormats());
 	QStringList ssif;
@@ -168,7 +176,9 @@ ServerDialogPrivate::ServerDialogPrivate(QSplashScreen *splash, ServerDialog *p)
 					 this, SLOT(enableRemoveAndOkButton(QItemSelection,QItemSelection)));
 
 	for(int i = 0, j = 0; i < servers.size(); ++i) {
+
 		const QString &tHost(servers[i].trimmed());
+
 		if(!tHost.simplified().isEmpty() &&
 				q->serverAdd->getHostRex().exactMatch(tHost.left(tHost.indexOf(':')))) {
 
@@ -193,6 +203,7 @@ ServerDialogPrivate::ServerDialogPrivate(QSplashScreen *splash, ServerDialog *p)
 			QObject::connect(m_serverInfoThreads.back(), SIGNAL(online(bool,int)),
 							 this, SLOT(updateOnline(bool,int)));
 			++j;
+
 		} else {
 			qWarning("\"%s\" is no valid host name", qPrintable(tHost));
 		}
@@ -471,12 +482,15 @@ void ServerDialogPrivate::updateOnline(bool enabled, int row) {
 	Q_Q(ServerDialog);
 
 	if(enabled && server->data(ServerInfo::HOST).toString() == m_lastServer) {
+
 		const QModelIndex &idx(m_model.index(row, ServerInfo::SERVER));
+
 		if(!q->isVisible()) {
 			q->availServerView->selectionModel()->select(idx, QItemSelectionModel::ClearAndSelect|
 														 QItemSelectionModel::Rows);
 			q->availServerView->scrollTo(idx);
 		}
+
 		emit q->reconnectAvailable(m_lastServer);
 	}
 }
@@ -530,10 +544,28 @@ void ServerDialogPrivate::deleteRows(const QList<int> &rows) {
 }
 
 void ServerDialogPrivate::serverViewContext(const QPoint &p) {
+
 	Q_Q(const ServerDialog);
+
 	m_ctxIndex = q->availServerView->indexAt(p);
-	q->actionDeleteServer->setEnabled(m_ctxIndex.isValid());
+
+	if(m_ctxIndex.isValid()) {
+
+		q->actionDeleteServer->setEnabled(true);
+
+		const QString &url(m_model.item(m_ctxIndex.row())->data(ServerInfo::URL).toString());
+		m_webUrlAction->setDisabled(url.isEmpty());
+		m_webUrlAction->setData(url);
+
+	} else {
+		q->actionDeleteServer->setEnabled(true);
+	}
+
 	m_ctxPopup->popup(q->availServerView->mapToGlobal(p));
+}
+
+void ServerDialogPrivate::openUrl() {
+	QDesktopServices::openUrl(QUrl(m_webUrlAction->data().toString()));
 }
 
 void ServerDialogPrivate::setLastServer(const QString &ls) {

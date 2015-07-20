@@ -1543,82 +1543,87 @@ Spieldauer: %1</translation>
 <context>
     <name>ServerDialogPrivate</name>
     <message>
-        <location filename="serverdialog_p.cpp" line="49"/>
+        <location filename="serverdialog_p.cpp" line="51"/>
         <source>n/a</source>
         <translation>n.V.</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="89"/>
+        <location filename="serverdialog_p.cpp" line="60"/>
+        <source>View status page</source>
+        <translation>Zeige Statusseite</translation>
+    </message>
+    <message>
+        <location filename="serverdialog_p.cpp" line="97"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="89"/>
+        <location filename="serverdialog_p.cpp" line="97"/>
         <source>Version</source>
         <translation>Version</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="89"/>
+        <location filename="serverdialog_p.cpp" line="97"/>
         <source>AI</source>
         <translation>KI</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="89"/>
+        <location filename="serverdialog_p.cpp" line="97"/>
         <source>Players</source>
         <translation>Spieler</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="368"/>
+        <location filename="serverdialog_p.cpp" line="379"/>
         <source>Choose a player image</source>
         <translation>Wähle ein Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="370"/>
+        <location filename="serverdialog_p.cpp" line="381"/>
         <source>Images (%1)</source>
         <translation>Bilder (%1)</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="412"/>
-        <location filename="serverdialog_p.cpp" line="429"/>
+        <location filename="serverdialog_p.cpp" line="423"/>
+        <location filename="serverdialog_p.cpp" line="440"/>
         <source>Connect</source>
         <translation>Verbinde</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="412"/>
+        <location filename="serverdialog_p.cpp" line="423"/>
         <source>%1 is already in use!</source>
         <translation>%1 wird bereits verwendet!</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="429"/>
+        <location filename="serverdialog_p.cpp" line="440"/>
         <source>Please fill in player name</source>
         <translation>Bitte fülle den Spielernamen aus</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="498"/>
+        <location filename="serverdialog_p.cpp" line="512"/>
         <source>Delete server</source>
         <translation>Server löschen</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="499"/>
+        <location filename="serverdialog_p.cpp" line="513"/>
         <source>&lt;html&gt;&lt;body&gt;Really delete server
 &lt;b&gt;%1&lt;/b&gt;?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Server &lt;b&gt;%1&lt;/b&gt; wirklich löschen?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="588"/>
-        <location filename="serverdialog_p.cpp" line="608"/>
+        <location filename="serverdialog_p.cpp" line="620"/>
+        <location filename="serverdialog_p.cpp" line="640"/>
         <source>Player image</source>
         <translation>Spielerbild</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="589"/>
+        <location filename="serverdialog_p.cpp" line="621"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or of an unsupported image format.</source>
         <translation>Das ausgewählte Bild wird vom Server nicht akzeptiert werden.
 Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
     </message>
     <message>
-        <location filename="serverdialog_p.cpp" line="608"/>
+        <location filename="serverdialog_p.cpp" line="640"/>
         <source>Cannot open %1</source>
         <translation>Kann %1 nicht öffnen</translation>
     </message>
@@ -1631,46 +1636,46 @@ Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
         <translation>n.V.</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="114"/>
+        <location filename="serverinfo.cpp" line="113"/>
         <source>Server version: %1
 Server accepts clients of at least version %2</source>
         <translation>Serverversion: %1
 Der Server akzeptiert Klienten von mindestens Version %2</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="121"/>
+        <location filename="serverinfo.cpp" line="120"/>
         <source>You&apos;ll play against AI &quot;%1&quot;</source>
         <translation>Du wirst gegen KI &quot;%1&quot; spielen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="123"/>
+        <location filename="serverinfo.cpp" line="122"/>
         <source>The server has only human players</source>
         <translation>Auf dem Server befinden sich nur menschliche Spieler</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="128"/>
+        <location filename="serverinfo.cpp" line="127"/>
         <source>You&apos;ll play with %1</source>
         <oldsource>You&apos;ll play with ace rounds</oldsource>
         <translation>Du wirst mit %1 spielen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="130"/>
-        <location filename="serverinfo.cpp" line="134"/>
+        <location filename="serverinfo.cpp" line="129"/>
+        <location filename="serverinfo.cpp" line="133"/>
         <source>ace rounds</source>
         <translation>Assrunden</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="131"/>
+        <location filename="serverinfo.cpp" line="130"/>
         <source>queen rounds</source>
         <translation>Damenrunden</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="133"/>
+        <location filename="serverinfo.cpp" line="132"/>
         <source>king rounds</source>
         <translation>Königsrunden</translation>
     </message>
     <message numerus="yes">
-        <location filename="serverinfo.cpp" line="145"/>
+        <location filename="serverinfo.cpp" line="144"/>
         <source>You&apos;ll start with %n card(s)</source>
         <translation>
             <numerusform>Du wirst mit %n Karte beginnen</numerusform>
@@ -1678,17 +1683,17 @@ Der Server akzeptiert Klienten von mindestens Version %2</translation>
         </translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="154"/>
+        <location filename="serverinfo.cpp" line="153"/>
         <source>You can change directions</source>
         <translation>Du kannst die Richtungen ändern</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="159"/>
+        <location filename="serverinfo.cpp" line="158"/>
         <source>%1/%2</source>
         <translation>%1/%2</translation>
     </message>
     <message numerus="yes">
-        <location filename="serverinfo.cpp" line="160"/>
+        <location filename="serverinfo.cpp" line="159"/>
         <source>Waiting for %n more player(s)</source>
         <oldsource>Waiting for %1 more players</oldsource>
         <translation>
@@ -1697,33 +1702,33 @@ Der Server akzeptiert Klienten von mindestens Version %2</translation>
         </translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="163"/>
+        <location filename="serverinfo.cpp" line="162"/>
         <source>The server accepts no more players</source>
         <oldsource>The server is too old for this client</oldsource>
         <translation>Der Server akzeptiert keine weitere Spieler</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="171"/>
+        <location filename="serverinfo.cpp" line="170"/>
         <source>This client is too old for the server</source>
         <translation>Dieser Klient ist zu alt für den Server</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="181"/>
+        <location filename="serverinfo.cpp" line="180"/>
         <source>Couldn&apos;t get capabilities from server</source>
         <translation>Konnte die Fähigkeiten nicht vom Server beziehen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="190"/>
+        <location filename="serverinfo.cpp" line="189"/>
         <source>Server timed out while getting capabilities</source>
         <translation>Zeitüberschreitung auf dem Server während des Abholen der Fähigkeiten</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="203"/>
+        <location filename="serverinfo.cpp" line="202"/>
         <source>Trying to query the server. Attempt: %1</source>
         <translation>Versuche den Server abzufragen. Versuch: %1</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="224"/>
+        <location filename="serverinfo.cpp" line="223"/>
         <source>The server is ready and waiting</source>
         <translation>Der Server ist verfügbar und wartet</translation>
     </message>

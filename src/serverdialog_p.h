@@ -27,6 +27,7 @@
 #include "gamestate.h"
 
 class QMenu;
+class QAction;
 class ServerInfo;
 class ServerDialog;
 class QSplashScreen;
@@ -71,6 +72,9 @@ public slots:
 	void itemChanged(QStandardItem *);
 	void serverViewContext(const QPoint &);
 
+private slots:
+	void openUrl();
+
 public:
 	ServerDialog *const q_ptr;
 	Q_DECLARE_PUBLIC(ServerDialog)
@@ -93,6 +97,7 @@ public:
 	QMenu *m_ctxPopup;
 	QModelIndex m_ctxIndex;
 	mutable GameState::DIR m_direction;
+	QAction *m_webUrlAction;
 };
 
 #endif // SERVERDIALOGPRIVATE_H
