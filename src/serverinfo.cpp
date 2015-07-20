@@ -55,7 +55,7 @@ void ServerInfo::run() {
 		if(!(server && version && ai && players)) return;
 
 		const QString host(server->data(HOST).toString());
-		QString serverTooltip("<html><body><em>" + host + "</em><br /><br />");
+		QString serverTooltip("<html><body><em>" + host + "</em><br />");
 
 		version->setToolTip(QString::null);
 
@@ -88,6 +88,18 @@ void ServerInfo::run() {
 				const Client::CAPABILITIES::const_iterator &ultimate(caps.find("ULTIMATE"));
 				server->setData(ultimate != caps.end() ? (ultimate->second == "true" ?
 															  true : false) : false, ULTIMATE);
+
+				const Client::CAPABILITIES::const_iterator &wurl(caps.find("WEBSERVER_URL"));
+
+				if(wurl != caps.end()) {
+					server->setData(QString::fromUtf8(wurl->second.c_str()), URL);
+					serverTooltip += "<a href=\"" + server->data(URL).toString() + "\">" +
+									 server->data(URL).toString() + "</a><br />";
+				} else {
+					server->setData(QVariant(QString::null), URL);
+				}
+
+				serverTooltip += "<br />";
 
 				const std::string &sVer(caps.find("SERVER_VERSION")->second);
 				version->setText(QString::fromStdString(sVer));

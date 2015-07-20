@@ -21,6 +21,7 @@
 #include <QTimer>
 #include <QBuffer>
 #include <QSettings>
+#include <QMutexLocker>
 #include <QSplashScreen>
 
 #include <cardtools.h>
@@ -55,6 +56,8 @@
 #include "playerimageprogressdialog.h"
 
 namespace {
+
+QMutex clientLock;
 
 const QUrl RDLURL(DLURL);
 
@@ -995,133 +998,142 @@ void MainWindowPrivate::serverAccept() {
 						  p != -1 ? as.mid(p + 1).toUInt() : Client::getDefaultPort(),
 						  m_serverDlg->getPlayerImage());
 
-	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(forceRefreshServers(bool)));
-	QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(destroyClientOffline(bool)));
-	QObject::connect(m_client, SIGNAL(offline(bool)),
-					 m_ui->actionDisconnect, SLOT(setDisabled(bool)));
+	if(m_client) {
 
-	QObject::connect(m_client, SIGNAL(receivingPlayerImage(QString)),
-					 this, SLOT(receivingPlayerImage(QString)));
-	QObject::connect(m_client, SIGNAL(receivedPlayerImage(QString)),
-					 this, SLOT(receivedPlayerImage(QString)));
+		QMutexLocker ml(&clientLock);
 
-	m_ui->localPlayerDock->
-			setWindowTitle(QString::fromUtf8(m_client->getPlayerName().c_str()));
+		QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(forceRefreshServers(bool)));
+		QObject::connect(m_client, SIGNAL(offline(bool)), this, SLOT(destroyClientOffline(bool)));
+		QObject::connect(m_client, SIGNAL(offline(bool)),
+						 m_ui->actionDisconnect, SLOT(setDisabled(bool)));
 
-	try {
+		QObject::connect(m_client, SIGNAL(receivingPlayerImage(QString)),
+						 this, SLOT(receivingPlayerImage(QString)));
+		QObject::connect(m_client, SIGNAL(receivedPlayerImage(QString)),
+						 this, SLOT(receivedPlayerImage(QString)));
 
-		QObject::connect(m_client, SIGNAL(cPlayCard(Client::CARDS,std::size_t)),
-						 this, SLOT(clientPlayCardRequest(Client::CARDS,std::size_t)));
-		QObject::connect(m_client, SIGNAL(cGetJackSuitChoice()),
-						 this, SLOT(clientChooseJackSuitRequest()));
-		QObject::connect(m_client, SIGNAL(cGetAceRoundChoice()),
-						 this, SLOT(clientChooseAceRoundRequest()));
+		m_ui->localPlayerDock->
+				setWindowTitle(QString::fromUtf8(m_client->getPlayerName().c_str()));
 
-		QObject::connect(m_client, SIGNAL(cError(QString,bool)),
-						 this, SLOT(clientError(QString,bool)));
-		QObject::connect(m_client, SIGNAL(cMessage(QString)),
-						 this, SLOT(clientMessage(QString)));
-		QObject::connect(m_client, SIGNAL(cCardSet(Client::CARDS)),
-						 this, SLOT(clientCardSet(Client::CARDS)));
-		QObject::connect(m_client, SIGNAL(cEnableSuspend(bool)),
-						 m_ui->suspendButton, SLOT(setEnabled(bool)));
-		QObject::connect(m_client, SIGNAL(cTurn(std::size_t)),
-						 this, SLOT(clientTurn(std::size_t)));
-		QObject::connect(m_client, SIGNAL(cPlayerJoined(QString,QImage)),
-						 this, SLOT(clientPlayerJoined(QString,QImage)));
-		QObject::connect(m_client, SIGNAL(cStats(Client::STATS)),
-						 this, SLOT(clientStats(Client::STATS)));
-		QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(gameOver()));
-		QObject::connect(q, SIGNAL(confirmLostWon(int)), this, SLOT(lostWinConfirmed(int)));
-		QObject::connect(m_client, SIGNAL(cInitialCard(QByteArray)),
-						 this, SLOT(setOpenCard(QByteArray)));
-		QObject::connect(m_client, SIGNAL(cOpenCard(QByteArray,QString)),
-						 this, SLOT(clientOpenCard(QByteArray,QString)));
-		QObject::connect(m_client, SIGNAL(ctalonShuffled()), this, SLOT(clientTalonShuffled()));
-		QObject::connect(m_client, SIGNAL(cCardRejected(QString,QByteArray)),
-						 this, SLOT(clientCardRejected(QString,QByteArray)));
-		QObject::connect(m_client, SIGNAL(cCardAccepted(QByteArray)),
-						 this, SLOT(clientCardAccepted(QByteArray)));
-		QObject::connect(m_client, SIGNAL(cPlayerSuspends(QString)),
-						 this, SLOT(clientPlayerSuspends(QString)));
-		QObject::connect(m_client, SIGNAL(cplayerWins(QString,std::size_t)),
-						 this, SLOT(clientPlayerWins(QString,std::size_t)));
-		QObject::connect(m_client, SIGNAL(cplayerLost(QString,std::size_t,std::size_t)),
-						 this, SLOT(clientPlayerLost(QString,std::size_t,std::size_t)));
-		QObject::connect(m_client, SIGNAL(cPlayerPicksCard(QString,std::size_t)),
-						 this, SLOT(clientPlayerPicksCard(QString,std::size_t)));
-		QObject::connect(m_client, SIGNAL(cPlayerPicksCard(QString)),
-						 this, SLOT(clientPlayerPicksCard(QString)));
-		QObject::connect(m_client, SIGNAL(cJackSuit(NetMauMau::Common::ICard::SUIT)),
-						 this, SLOT(clientJackSuit(NetMauMau::Common::ICard::SUIT)));
-		QObject::connect(m_client, SIGNAL(cPlayedCard(QString,QByteArray)),
-						 this, SLOT(clientPlayedCard(QString,QByteArray)));
-		QObject::connect(m_client, SIGNAL(cNextPlayer(QString)),
-						 this, SLOT(clientNextPlayer(QString)));
-		QObject::connect(m_client, SIGNAL(cAceRoundStarted(QString)),
-						 this, SLOT(clientAceRoundStarted(QString)));
-		QObject::connect(m_client, SIGNAL(cAceRoundEnded(QString)),
-						 this, SLOT(clientAceRoundEnded(QString)));
-		QObject::connect(m_client, SIGNAL(cDirectionChanged()),
-						 this, SLOT(clientDirectionChanged()));
+		try {
 
-		q->centralWidget()->setEnabled(true);
-		takeCardsMark(false);
+			QObject::connect(m_client, SIGNAL(cPlayCard(Client::CARDS,std::size_t)),
+							 this, SLOT(clientPlayCardRequest(Client::CARDS,std::size_t)));
+			QObject::connect(m_client, SIGNAL(cGetJackSuitChoice()),
+							 this, SLOT(clientChooseJackSuitRequest()));
+			QObject::connect(m_client, SIGNAL(cGetAceRoundChoice()),
+							 this, SLOT(clientChooseAceRoundRequest()));
 
-		gs->setAceRoundRank(m_serverDlg->getAceRoundRank());
-		gs->setInGame(true);
+			QObject::connect(m_client, SIGNAL(cError(QString,bool)),
+							 this, SLOT(clientError(QString,bool)));
+			QObject::connect(m_client, SIGNAL(cMessage(QString)),
+							 this, SLOT(clientMessage(QString)));
+			QObject::connect(m_client, SIGNAL(cCardSet(Client::CARDS)),
+							 this, SLOT(clientCardSet(Client::CARDS)));
+			QObject::connect(m_client, SIGNAL(cEnableSuspend(bool)),
+							 m_ui->suspendButton, SLOT(setEnabled(bool)));
+			QObject::connect(m_client, SIGNAL(cTurn(std::size_t)),
+							 this, SLOT(clientTurn(std::size_t)));
+			QObject::connect(m_client, SIGNAL(cPlayerJoined(QString,QImage)),
+							 this, SLOT(clientPlayerJoined(QString,QImage)));
+			QObject::connect(m_client, SIGNAL(cStats(Client::STATS)),
+							 this, SLOT(clientStats(Client::STATS)));
+			QObject::connect(m_client, SIGNAL(cGameOver()), this, SLOT(gameOver()));
+			QObject::connect(q, SIGNAL(confirmLostWon(int)), this, SLOT(lostWinConfirmed(int)));
+			QObject::connect(m_client, SIGNAL(cInitialCard(QByteArray)),
+							 this, SLOT(setOpenCard(QByteArray)));
+			QObject::connect(m_client, SIGNAL(cOpenCard(QByteArray,QString)),
+							 this, SLOT(clientOpenCard(QByteArray,QString)));
+			QObject::connect(m_client, SIGNAL(ctalonShuffled()), this, SLOT(clientTalonShuffled()));
+			QObject::connect(m_client, SIGNAL(cCardRejected(QString,QByteArray)),
+							 this, SLOT(clientCardRejected(QString,QByteArray)));
+			QObject::connect(m_client, SIGNAL(cCardAccepted(QByteArray)),
+							 this, SLOT(clientCardAccepted(QByteArray)));
+			QObject::connect(m_client, SIGNAL(cPlayerSuspends(QString)),
+							 this, SLOT(clientPlayerSuspends(QString)));
+			QObject::connect(m_client, SIGNAL(cplayerWins(QString,std::size_t)),
+							 this, SLOT(clientPlayerWins(QString,std::size_t)));
+			QObject::connect(m_client, SIGNAL(cplayerLost(QString,std::size_t,std::size_t)),
+							 this, SLOT(clientPlayerLost(QString,std::size_t,std::size_t)));
+			QObject::connect(m_client, SIGNAL(cPlayerPicksCard(QString,std::size_t)),
+							 this, SLOT(clientPlayerPicksCard(QString,std::size_t)));
+			QObject::connect(m_client, SIGNAL(cPlayerPicksCard(QString)),
+							 this, SLOT(clientPlayerPicksCard(QString)));
+			QObject::connect(m_client, SIGNAL(cJackSuit(NetMauMau::Common::ICard::SUIT)),
+							 this, SLOT(clientJackSuit(NetMauMau::Common::ICard::SUIT)));
+			QObject::connect(m_client, SIGNAL(cPlayedCard(QString,QByteArray)),
+							 this, SLOT(clientPlayedCard(QString,QByteArray)));
+			QObject::connect(m_client, SIGNAL(cNextPlayer(QString)),
+							 this, SLOT(clientNextPlayer(QString)));
+			QObject::connect(m_client, SIGNAL(cAceRoundStarted(QString)),
+							 this, SLOT(clientAceRoundStarted(QString)));
+			QObject::connect(m_client, SIGNAL(cAceRoundEnded(QString)),
+							 this, SLOT(clientAceRoundEnded(QString)));
+			QObject::connect(m_client, SIGNAL(cDirectionChanged()),
+							 this, SLOT(clientDirectionChanged()));
 
-		if(gs->getDirection() != GameState::NONE) {
-			m_model.horizontalHeaderItem(MainWindowPrivate::PLAYERPIC)->
-					setData(QApplication::style()->standardIcon(QStyle::SP_ArrowDown),
-							Qt::DisplayRole);
-		}
+			q->centralWidget()->setEnabled(true);
+			takeCardsMark(false);
 
-		m_ui->awidget->setGameState(gs);
+			gs->setAceRoundRank(m_serverDlg->getAceRoundRank());
+			gs->setInGame(true);
 
-		m_ui->actionServer->setEnabled(false);
-		m_ui->suspendButton->setEnabled(true);
-		m_ui->actionReconnect->setToolTip(reconnectToolTip());
-		m_ui->remoteGroup->setTitle(tr("%1 on %2 (%3)").arg(m_ui->remoteGroup->title()).
-									arg(alias).arg(version));
+			if(gs->getDirection() != GameState::NONE) {
+				m_model.horizontalHeaderItem(MainWindowPrivate::PLAYERPIC)->
+						setData(QApplication::style()->standardIcon(QStyle::SP_ArrowDown),
+								Qt::DisplayRole);
+			}
 
-		m_connectionLogDlg->clear();
+			m_ui->awidget->setGameState(gs);
 
-		const Client::PLAYERINFOS &pl(m_client->playerList(true));
+			m_ui->actionServer->setEnabled(false);
+			m_ui->suspendButton->setEnabled(true);
+			m_ui->actionReconnect->setToolTip(reconnectToolTip());
+			m_ui->remoteGroup->setTitle(tr("%1 on %2 (%3)").arg(m_ui->remoteGroup->title()).
+										arg(alias).arg(version));
 
-		foreach(const NetMauMau::Client::Connection::PLAYERINFO &i, pl) {
+			m_connectionLogDlg->clear();
 
-			const QString &pName(QString::fromUtf8(i.name.c_str()));
+			const Client::PLAYERINFOS &pl(m_client->playerList(true));
 
-			clientPlayerJoined(pName, i.pngDataLen ?  QImage::fromData(i.pngData,
-																	   i.pngDataLen) : QImage());
-			delete [] i.pngData;
-		}
+			foreach(const NetMauMau::Client::Connection::PLAYERINFO &i, pl) {
 
-		updatePlayerScores(gs, pl);
+				const QString &pName(QString::fromUtf8(i.name.c_str()));
 
-		gs->setPlayTime(0, 0, 0);
-		m_timeLabel.setText(gs->playTime().toString("HH:mm:ss"));
-		m_timeLabel.show();
+				clientPlayerJoined(pName, i.pngDataLen ?  QImage::fromData(i.pngData,
+																		   i.pngDataLen) :
+														  QImage());
+				delete [] i.pngData;
+			}
 
-		m_client->start(QThread::LowestPriority);
+			updatePlayerScores(gs, pl);
 
-		m_serverDlg->setLastServer(as);
-		m_serverDlg->blockAutoRefresh(true);
+			gs->setPlayTime(0, 0, 0);
+			m_timeLabel.setText(gs->playTime().toString("HH:mm:ss"));
+			m_timeLabel.show();
 
-		m_scoresDialog->setServer(as);
+			m_client->start(QThread::LowestPriority);
 
-	} catch(const NetMauMau::Client::Exception::ScoresException &) {
-		clientError(tr("Couldn't get scores from server"));
-	} catch(const NetMauMau::Client::Exception::PlayerlistException &) {
-		clientError(tr("Couldn't get player list from server"));
-	} catch(const NetMauMau::Common::Exception::SocketException &e) {
-		clientError(tr("While connecting to <b>%1</b>: <i>%2</i>")
+			m_serverDlg->setLastServer(as);
+			m_serverDlg->blockAutoRefresh(true);
+
+			m_scoresDialog->setServer(as);
+
+		} catch(const NetMauMau::Client::Exception::ScoresException &) {
+			clientError(tr("Couldn't get scores from server"));
+		} catch(const NetMauMau::Client::Exception::PlayerlistException &) {
+			clientError(tr("Couldn't get player list from server"));
+		} catch(const NetMauMau::Common::Exception::SocketException &e) {
+			clientError(tr("While connecting to <b>%1</b>: <i>%2</i>")
 			#if !defined(Q_OS_WIN)
-					.arg(as).arg(QString::fromUtf8(e.what())));
+						.arg(as).arg(QString::fromUtf8(e.what())));
 #else
-					.arg(as).arg(QString::fromLocal8Bit(e.what())));
+						.arg(as).arg(QString::fromLocal8Bit(e.what())));
 #endif
+		}
+
+	} else {
+		clientError(tr("Couldn't create a client"));
 	}
 }
 

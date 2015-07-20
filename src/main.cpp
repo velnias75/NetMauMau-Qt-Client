@@ -39,7 +39,13 @@
 #include "netmaumauapplication.h"
 #include "mainwindow.h"
 
+//#include <sys/time.h>
+//#include <sys/resource.h>
+
 int main(int argc, char *argv[]) {
+
+//	struct rlimit rl = { RLIM_INFINITY, RLIM_INFINITY };
+//	setrlimit(RLIMIT_CORE, &rl);
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 	qRegisterMetaType<QVector<int> >("QVector<int>");
