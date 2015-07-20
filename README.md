@@ -4,7 +4,7 @@ Qt client for NetMauMau
 Notice
 ------
 
-Since the client apparently seems to be a total and complete failure (and I **admit** my strength surely is **far away** from UI design/usability), I'm considering to give up at least the client and offer to hand over the code to somebody who wants to create a usable client for the [NetMauMau server](https://github.com/velnias75/NetMauMau).
+Since the client apparently seems to be a total and complete failure _(and I **admit** my strength surely is **far away** from UI design/usability)_, I'm considering to give up at least the client and offer to hand over the code to somebody who wants to create a usable client for the [NetMauMau server](https://github.com/velnias75/NetMauMau).
 
 It was originally developed as *proof of concept*, but since nobody was willing to write a client for the [NetMauMau server](https://github.com/velnias75/NetMauMau), I tried to at least release this crap. Sorry :cry:
 
