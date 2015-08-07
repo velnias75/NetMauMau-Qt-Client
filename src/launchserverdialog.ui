@@ -505,8 +505,17 @@ Don't close the client while a game is running, because it will disconnect the r
        <string>Net&amp;work</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinAndMaxSize</enum>
+       </property>
        <item>
         <widget class="AddServerWidget" name="addServerWidget" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>118</height>
+          </size>
+         </property>
          <property name="portVisible" stdset="0">
           <bool>true</bool>
          </property>
@@ -522,50 +531,44 @@ Don't close the client while a game is running, because it will disconnect the r
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="webserver">
-         <property name="title">
-          <string>Webserver</string>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMaximumSize</enum>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QCheckBox" name="startWebserver">
-              <property name="text">
-               <string>Start &amp;webserver at port:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="PortSpin" name="webserverPort">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
+         <item>
+          <widget class="QCheckBox" name="startWebserver">
+           <property name="text">
+            <string>Start &amp;webserver at port:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="PortSpin" name="webserverPort">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -696,6 +699,11 @@ Don't close the client while a game is running, because it will disconnect the r
  </widget>
  <customwidgets>
   <customwidget>
+   <class>PortSpin</class>
+   <extends>QSpinBox</extends>
+   <header>portspin.h</header>
+  </customwidget>
+  <customwidget>
    <class>AddServerWidget</class>
    <extends>QWidget</extends>
    <header>addserverwidget.h</header>
@@ -706,11 +714,6 @@ Don't close the client while a game is running, because it will disconnect the r
    <extends>QWidget</extends>
    <header>ainamewidget.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PortSpin</class>
-   <extends>QSpinBox</extends>
-   <header>portspin.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

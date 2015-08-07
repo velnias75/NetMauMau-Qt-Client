@@ -456,62 +456,57 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>&amp;Netzwerk</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="520"/>
+        <location filename="launchserverdialog.ui" line="529"/>
         <source>My local server</source>
         <translation>Mein lokaler Server</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="527"/>
-        <source>Webserver</source>
-        <translation>Webserver</translation>
-    </message>
-    <message>
-        <location filename="launchserverdialog.ui" line="535"/>
+        <location filename="launchserverdialog.ui" line="541"/>
         <source>Start &amp;webserver at port:</source>
         <translation>Starte &amp;Webserver an Port:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="577"/>
+        <location filename="launchserverdialog.ui" line="580"/>
         <source>Executable</source>
         <translation>Ausführbare Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="586"/>
+        <location filename="launchserverdialog.ui" line="589"/>
         <source>Pat&amp;h:</source>
         <translation>&amp;Pfad:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="601"/>
+        <location filename="launchserverdialog.ui" line="604"/>
         <source>Path to the server executable</source>
         <translation>Pfad zu der auführbaren Datei des Servers</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="623"/>
+        <location filename="launchserverdialog.ui" line="626"/>
         <source>Browse for a path to the server executable</source>
         <translation>Suche nach einen Pfad zu der ausführbaren Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="638"/>
+        <location filename="launchserverdialog.ui" line="641"/>
         <source>Op&amp;tions:</source>
         <translation>&amp;Optionen:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="648"/>
+        <location filename="launchserverdialog.ui" line="651"/>
         <source>The options the server will be started with</source>
         <translation>Die Optionen mit denen der Server gestartet wird</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="676"/>
+        <location filename="launchserverdialog.ui" line="679"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbruch</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="683"/>
+        <location filename="launchserverdialog.ui" line="686"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to launch the server.&lt;/p&gt;&lt;p&gt;The server will be available at &lt;tt&gt;localhost&lt;/tt&gt; and the given port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Versucht den Server zu starten.&lt;/p&gt;&lt;p&gt;Der Server wird unter &lt;tt&gt;localhost&lt;/tt&gt; und dem angegeben Port verfügbar sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="686"/>
+        <location filename="launchserverdialog.ui" line="689"/>
         <source>&amp;Launch</source>
         <translation>&amp;Starten</translation>
     </message>

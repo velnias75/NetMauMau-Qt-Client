@@ -36,6 +36,10 @@ public:
 
 	bool isLocked() const _PURE;
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+	void lock();
+#endif
+
 private:
 #if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
 	QFile m_lockFile;

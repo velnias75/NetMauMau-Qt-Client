@@ -30,7 +30,7 @@ SingleAppLock::SingleAppLock() : m_lockFile("/tmp/" + QCoreApplication::applicat
 #if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
 	m_locked = m_lockFile.open(QFile::ReadWrite) && lockf(m_lockFile.handle(), F_TLOCK, 0) == -1;
 #else
-	m_locked = m_lockFile.lock();
+	if(!(m_locked = !m_lockFile.tryLock())) m_lockFile.unlock();
 #endif
 }
 
@@ -40,10 +40,12 @@ SingleAppLock::~SingleAppLock() {
 #endif
 }
 
-bool SingleAppLock::isLocked() const {
-#if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
-	return m_locked;
-#else
-	return m_lockFile.isLocked();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+void SingleAppLock::lock() {
+	m_locked = m_lockFile.lock();
+}
 #endif
+
+bool SingleAppLock::isLocked() const {
+	return m_locked;
 }

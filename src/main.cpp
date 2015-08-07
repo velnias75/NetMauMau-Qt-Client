@@ -44,8 +44,8 @@
 
 int main(int argc, char *argv[]) {
 
-//	struct rlimit rl = { RLIM_INFINITY, RLIM_INFINITY };
-//	setrlimit(RLIMIT_CORE, &rl);
+	//	struct rlimit rl = { RLIM_INFINITY, RLIM_INFINITY };
+	//	setrlimit(RLIMIT_CORE, &rl);
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 	qRegisterMetaType<QVector<int> >("QVector<int>");
@@ -100,7 +100,9 @@ int main(int argc, char *argv[]) {
 
 		if(mb.exec() == QMessageBox::Cancel) exit(0);
 	}
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+	else lock.lock();
+#endif
 #endif
 
 	QSplashScreen splash(QPixmap(":/splash.png"), Qt::WindowStaysOnTopHint);

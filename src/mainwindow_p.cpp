@@ -1090,7 +1090,7 @@ void MainWindowPrivate::serverAccept() {
 			m_ui->suspendButton->setEnabled(true);
 			m_ui->actionReconnect->setToolTip(reconnectToolTip());
 			m_ui->remoteGroup->setTitle(tr("%1 on %2 (%3)").arg(m_ui->remoteGroup->title()).
-										arg(alias).arg(version));
+										arg(QString(alias).replace("&", "&&")).arg(version));
 
 			m_connectionLogDlg->clear();
 
