@@ -19,19 +19,31 @@
 
 #include <QCoreApplication>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
 #include <unistd.h>
+#endif
 
 #include "singleapplock.h"
 
 SingleAppLock::SingleAppLock() : m_lockFile("/tmp/" + QCoreApplication::applicationName() + "_" +
 											qgetenv("USER") + ".lck"), m_locked(false) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
 	m_locked = m_lockFile.open(QFile::ReadWrite) && lockf(m_lockFile.handle(), F_TLOCK, 0) == -1;
+#else
+	m_locked = m_lockFile.lock();
+#endif
 }
 
 SingleAppLock::~SingleAppLock() {
+#if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
 	m_lockFile.remove();
+#endif
 }
 
 bool SingleAppLock::isLocked() const {
+#if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
 	return m_locked;
+#else
+	return m_lockFile.isLocked();
+#endif
 }

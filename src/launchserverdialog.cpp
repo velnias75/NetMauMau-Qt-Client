@@ -63,6 +63,9 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, ServerDialog
 	QObject::connect(aiEnabled4, SIGNAL(toggled(bool)), this, SLOT(adjustLimits()));
 	QObject::connect(delaySpin, SIGNAL(valueChanged(double)), this, SLOT(updateOptions()));
 	QObject::connect(addServerWidget, SIGNAL(portChanged(uint)), this, SLOT(updateOptions()));
+	QObject::connect(startWebserver, SIGNAL(toggled(bool)), webserverPort, SLOT(setEnabled(bool)));
+	QObject::connect(startWebserver, SIGNAL(toggled(bool)), this, SLOT(updateOptions()));
+	QObject::connect(webserverPort, SIGNAL(valueChanged(int)), this, SLOT(updateOptions()));
 	QObject::connect(launchButton, SIGNAL(clicked()), this, SLOT(launch()));
 	QObject::connect(&m_process, SIGNAL(started()), this, SLOT(launched()));
 	QObject::connect(&m_process, SIGNAL(error(QProcess::ProcessError)),
@@ -95,6 +98,8 @@ LaunchServerDialog::LaunchServerDialog(LocalServerOutputView *lsov, ServerDialog
 	pathEdit->setText(settings.value("serverExe",
 									 QString::fromUtf8(NetMauMau::Common::getServerExe()))
 					  .toString());
+	startWebserver->setChecked(settings.value("webserverStart", false).toBool());
+	webserverPort->setValue(settings.value("webserverPort", 9000).toInt());
 	settings.endGroup();
 
 	m_process.setProcessChannelMode(QProcess::MergedChannels);
@@ -124,6 +129,8 @@ LaunchServerDialog::~LaunchServerDialog() {
 	settings.setValue("aiDelay", delaySpin->value());
 	settings.setValue("port", addServerWidget->getPort().toUInt());
 	settings.setValue("serverExe", pathEdit->text());
+	settings.setValue("webserverStart", startWebserver->isChecked());
+	settings.setValue("webserverPort", webserverPort->value());
 	settings.endGroup();
 
 	QObject::disconnect(&m_process, 0, this, 0);
@@ -162,6 +169,10 @@ bool LaunchServerDialog::launchAtStartup() const {
 void LaunchServerDialog::updateOptions(int) {
 
 	QString opt;
+
+	if(startWebserver->isChecked()) {
+		opt.append("--webserver=").append(QString::number(webserverPort->value())).append(" ");
+	}
 
 	if(addServerWidget->port() != Client::getDefaultPort()) {
 		opt.append("--port=").append(QString::number(addServerWidget->port())).append(" ");
@@ -286,6 +297,10 @@ void LaunchServerDialog::launch() {
 #if !defined(Q_OS_WIN)
 
 	QStringList args;
+
+	if(startWebserver->isChecked()) {
+		args << QString("--webserver=").append(QString::number(webserverPort->value()));
+	}
 
 	if(addServerWidget->port() != Client::getDefaultPort()) {
 		args << QString("--port=").append(QString::number(addServerWidget->port()));

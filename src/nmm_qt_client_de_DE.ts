@@ -136,45 +136,51 @@
 <context>
     <name>Client</name>
     <message>
-        <location filename="client.cpp" line="77"/>
+        <location filename="client.cpp" line="78"/>
         <source>Lost connection to a player.</source>
         <translation>Es ist eine Verbindung zu einem Spieler verloren gegangen.</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="79"/>
+        <location filename="client.cpp" line="80"/>
         <source>There is already a game running on this server</source>
         <translation>Es läuft bereits ein Spiel auf diesem Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="81"/>
+        <location filename="client.cpp" line="82"/>
+        <source>Server had problems in communication with %1: %2</source>
+        <translation>Der Server hatte Probleme mit der Kommunikation mit %1:
+%2</translation>
+    </message>
+    <message>
+        <location filename="client.cpp" line="85"/>
         <source>Player name %1 is already in use</source>
         <translation>Der Spielername %1 wird bereits verwendet</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="83"/>
+        <location filename="client.cpp" line="87"/>
         <source>A timeout occurred while connection to the server</source>
         <oldsource>A timeout occured while connection to the server</oldsource>
         <translation>Zeitüberschreitung während des Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="85"/>
+        <location filename="client.cpp" line="89"/>
         <source>An protocol error occurred while connection to the server</source>
         <oldsource>An protocol error occured while connection to the server</oldsource>
         <translation>Es gab einen Protokollfehler beim
 Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="87"/>
+        <location filename="client.cpp" line="91"/>
         <source>The server rejected the connection</source>
         <translation>Der Server hat die Verbindung zurückgewiesen</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="89"/>
+        <location filename="client.cpp" line="93"/>
         <source>The remote host seems not to be a NetMauMau server</source>
         <translation>Die Gegenstelle scheint kein NetMauMau-Server zu sein</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="91"/>
+        <location filename="client.cpp" line="95"/>
         <source>The server is in the progress of shutting down.
 Try again later or contact the server administrator.</source>
         <oldsource>The server is in the progress of a shutdown</oldsource>
@@ -182,7 +188,7 @@ Try again later or contact the server administrator.</source>
 Versuche es später nochmals oder kontaktiere den Serveradministrator.</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="94"/>
+        <location filename="client.cpp" line="98"/>
         <source>Client (version %1.%2) not supported.
 Server accepts at maximum version %3.%4</source>
         <translation>Klient (Version %1.%2) wird nicht unterstützt.
@@ -450,73 +456,83 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
         <translation>&amp;Netzwerk</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="526"/>
+        <location filename="launchserverdialog.ui" line="520"/>
         <source>My local server</source>
         <translation>Mein lokaler Server</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="537"/>
+        <location filename="launchserverdialog.ui" line="527"/>
+        <source>Webserver</source>
+        <translation>Webserver</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="535"/>
+        <source>Start &amp;webserver at port:</source>
+        <translation>Starte &amp;Webserver an Port:</translation>
+    </message>
+    <message>
+        <location filename="launchserverdialog.ui" line="577"/>
         <source>Executable</source>
         <translation>Ausführbare Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="546"/>
+        <location filename="launchserverdialog.ui" line="586"/>
         <source>Pat&amp;h:</source>
         <translation>&amp;Pfad:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="561"/>
+        <location filename="launchserverdialog.ui" line="601"/>
         <source>Path to the server executable</source>
         <translation>Pfad zu der auführbaren Datei des Servers</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="583"/>
+        <location filename="launchserverdialog.ui" line="623"/>
         <source>Browse for a path to the server executable</source>
         <translation>Suche nach einen Pfad zu der ausführbaren Datei</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="598"/>
+        <location filename="launchserverdialog.ui" line="638"/>
         <source>Op&amp;tions:</source>
         <translation>&amp;Optionen:</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="608"/>
+        <location filename="launchserverdialog.ui" line="648"/>
         <source>The options the server will be started with</source>
         <translation>Die Optionen mit denen der Server gestartet wird</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="636"/>
+        <location filename="launchserverdialog.ui" line="676"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbruch</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="643"/>
+        <location filename="launchserverdialog.ui" line="683"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to launch the server.&lt;/p&gt;&lt;p&gt;The server will be available at &lt;tt&gt;localhost&lt;/tt&gt; and the given port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Versucht den Server zu starten.&lt;/p&gt;&lt;p&gt;Der Server wird unter &lt;tt&gt;localhost&lt;/tt&gt; und dem angegeben Port verfügbar sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.ui" line="646"/>
+        <location filename="launchserverdialog.ui" line="686"/>
         <source>&amp;Launch</source>
         <translation>&amp;Starten</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="252"/>
+        <location filename="launchserverdialog.cpp" line="263"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="252"/>
-        <location filename="launchserverdialog.cpp" line="354"/>
+        <location filename="launchserverdialog.cpp" line="263"/>
+        <location filename="launchserverdialog.cpp" line="369"/>
         <source>Failed to start %1</source>
         <translation>Starten von %1 gescheitert</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="369"/>
+        <location filename="launchserverdialog.cpp" line="384"/>
         <source>Find NetMauMau server executable</source>
         <translation>Finde die ausführbare Datei von NetMauMau</translation>
     </message>
     <message>
-        <location filename="launchserverdialog.cpp" line="394"/>
+        <location filename="launchserverdialog.cpp" line="409"/>
         <source>Server terminated</source>
         <translation>Server beendet</translation>
     </message>

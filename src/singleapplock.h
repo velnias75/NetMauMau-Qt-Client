@@ -20,7 +20,11 @@
 #ifndef SINGLEAPPLOCK_H
 #define SINGLEAPPLOCK_H
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
 #include <QFile>
+#else
+#include <QLockFile>
+#endif
 
 #include "linkercontrol.h"
 
@@ -33,7 +37,11 @@ public:
 	bool isLocked() const _PURE;
 
 private:
+#if QT_VERSION < QT_VERSION_CHECK(5, 1, 0)
 	QFile m_lockFile;
+#else
+	QLockFile m_lockFile;
+#endif
 	bool m_locked;
 };
 

@@ -504,14 +504,8 @@ Don't close the client while a game is running, because it will disconnect the r
       <attribute name="title">
        <string>Net&amp;work</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_4">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::ExpandingFieldsGrow</enum>
-       </property>
-       <property name="horizontalSpacing">
-        <number>0</number>
-       </property>
-       <item row="0" column="1">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
         <widget class="AddServerWidget" name="addServerWidget" native="true">
          <property name="portVisible" stdset="0">
           <bool>true</bool>
@@ -525,6 +519,52 @@ Don't close the client while a game is running, because it will disconnect the r
          <property name="alias" stdset="0">
           <string>My local server</string>
          </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="webserver">
+         <property name="title">
+          <string>Webserver</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QCheckBox" name="startWebserver">
+              <property name="text">
+               <string>Start &amp;webserver at port:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="PortSpin" name="webserverPort">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -667,6 +707,11 @@ Don't close the client while a game is running, because it will disconnect the r
    <header>ainamewidget.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>PortSpin</class>
+   <extends>QSpinBox</extends>
+   <header>portspin.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>optionsGroup</tabstop>
@@ -681,6 +726,8 @@ Don't close the client while a game is running, because it will disconnect the r
   <tabstop>aiEnabled3</tabstop>
   <tabstop>aiEnabled4</tabstop>
   <tabstop>delaySpin</tabstop>
+  <tabstop>startWebserver</tabstop>
+  <tabstop>webserverPort</tabstop>
   <tabstop>pathEdit</tabstop>
   <tabstop>execChooseButton</tabstop>
   <tabstop>optionsEdit</tabstop>

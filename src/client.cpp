@@ -22,6 +22,7 @@
 #include <shutdownexception.h>
 #include <playerlistexception.h>
 #include <gamerunningexception.h>
+#include <remoteplayerexception.h>
 #include <protocolerrorexception.h>
 #include <lostconnectionexception.h>
 #include <versionmismatchexception.h>
@@ -77,6 +78,9 @@ void Client::run() {
 		emit cError(tr("Lost connection to a player."));
 	} catch(const NetMauMau::Client::Exception::GameRunningException &) {
 		emit cError(tr("There is already a game running on this server"));
+	} catch(const NetMauMau::Client::Exception::RemotePlayerException &e) {
+		emit cError(tr("Server had problems in communication with %1: %2").
+					arg(QString::fromUtf8(e.player().c_str())).arg(QString::fromUtf8(e.what())));
 	} catch(const NetMauMau::Client::Exception::PlayerlistException &e) {
 		emit cError(tr("Player name %1 is already in use").arg(QString::fromUtf8(e.what())), false);
 	} catch(const NetMauMau::Client::Exception::TimeoutException &e) {
