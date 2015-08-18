@@ -32,7 +32,7 @@ class ServerInfo : public QObject, public QRunnable {
 public:
 	typedef enum { SERVER = 0, VERSION, AI, PLAYERS, VERREL, ULTIMATE, URL } COLS;
 	typedef enum { ACEROUNDRANK = Qt::UserRole + 1, HAVESCORES, HOST, DIRCHANGE, INIT,
-				   ATTEMPTS} DATAROLES;
+				   ATTEMPTS, ONLINE} DATAROLES;
 
 	explicit ServerInfo(const QStandardItemModel *model, int row, QObject *parent = 0);
 	virtual ~ServerInfo();

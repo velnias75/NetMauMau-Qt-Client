@@ -89,6 +89,15 @@ ScoresDialog::~ScoresDialog() {
 
 void ScoresDialog::showEvent(QShowEvent *evt) {
 	refresh();
+
+	for(int r = 0; r < m_model.rowCount(); ++r) {
+
+		QStandardItem *i = m_model.item(r);
+
+		if(i && i->data(ServerInfo::ONLINE).toBool() && i->data(ServerInfo::HAVESCORES).toBool()
+				&& !i->isEnabled()) i->setEnabled(true);
+	}
+
 	NetMauMauDialog::showEvent(evt);
 }
 
@@ -149,10 +158,10 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 		const long attempts = qMin(1L,
 								   serverCombo->itemData(serverCombo->currentIndex(),
-														 ServerInfo::ATTEMPTS).isValid()
-								   ? serverCombo->itemData(serverCombo->currentIndex(),
-														   ServerInfo::ATTEMPTS).
-									 value<long>() : 1L);
+														 ServerInfo::ATTEMPTS).isValid() ?
+									   serverCombo->itemData(serverCombo->currentIndex(),
+															 ServerInfo::ATTEMPTS).
+									   value<long>() : 1L);
 
 		const QString &host(serverCombo->itemData(serverCombo->currentIndex(), ServerInfo::HOST).
 							toString());
@@ -168,10 +177,10 @@ void ScoresDialog::currentIndexChanged(const QString &txt) {
 
 			const Client::SCORES &scores((Client(0L, 0L, QString::null,
 												 std::string(srv.toStdString()),
-												 static_cast<uint16_t>(port))).getScores(
-											 relativeCheck->isChecked() ?
-												 Client::SCORE_TYPE::ABS :
-												 Client::SCORE_TYPE::NORM, 0, &tv));
+												 static_cast<uint16_t>(port)))
+										 .getScores(relativeCheck->isChecked() ?
+														Client::SCORE_TYPE::ABS :
+														Client::SCORE_TYPE::NORM, 0, &tv));
 
 			m_model.removeRows(0, m_model.rowCount());
 

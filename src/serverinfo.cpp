@@ -66,7 +66,8 @@ void ServerInfo::run() {
 										 QString::number(Client::getDefaultPort()))).toUInt();
 
 		bool retry = true;
-		long attempt = server->data(ATTEMPTS).isValid() ? server->data(ATTEMPTS).value<long>() : 0L;
+		long attempt =
+				server->data(ATTEMPTS).isValid() ? server->data(ATTEMPTS).value<long>() : 0L;
 
 		do {
 
@@ -189,6 +190,7 @@ void ServerInfo::run() {
 							 serverTooltip + tr("Server timed out while getting capabilities") +
 							 "</body></html>");
 
+					server->setData(false, ONLINE);
 					emit online(false, m_row);
 					return;
 
@@ -214,6 +216,7 @@ void ServerInfo::run() {
 						 QString::fromLocal8Bit(e.what()) + "</body></html>");
 #endif
 
+				server->setData(false, ONLINE);
 				emit online(false, m_row);
 				return;
 			}
@@ -223,6 +226,7 @@ void ServerInfo::run() {
 		server->setToolTip(serverTooltip + tr("The server is ready and waiting") +
 						   "</body></html>");
 
+		server->setData(true, ONLINE);
 		emit online(true, m_row);
 	}
 }

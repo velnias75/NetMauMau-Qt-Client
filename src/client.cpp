@@ -17,6 +17,10 @@
  * along with NetMauMau Qt Client.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#if !defined(Q_OS_WIN)
+#include <cstring>
+#endif
+
 #include <cardtools.h>
 #include <timeoutexception.h>
 #include <shutdownexception.h>
@@ -79,7 +83,7 @@ void Client::run() {
 	} catch(const NetMauMau::Client::Exception::GameRunningException &) {
 		emit cError(tr("There is already a game running on this server"));
 	} catch(const NetMauMau::Client::Exception::RemotePlayerException &e) {
-		emit cError(tr("Server had problems in communication with %1: %2").
+		emit cError(tr("Server had problems in communication with <i>%1</i>:\n%2").
 					arg(QString::fromUtf8(e.player().c_str())).arg(QString::fromUtf8(e.what())));
 	} catch(const NetMauMau::Client::Exception::PlayerlistException &e) {
 		emit cError(tr("Player name %1 is already in use").arg(QString::fromUtf8(e.what())), false);
@@ -102,7 +106,7 @@ void Client::run() {
 					.arg(VERSION_MIN(e.getServerVersion())), false);
 	} catch(const NetMauMau::Common::Exception::SocketException &e) {
 #if !defined(Q_OS_WIN)
-		emit cError(QString::fromUtf8(e.what()));
+		emit cError(QString::fromUtf8(e.error() ? std::strerror(e.error()) : e.what()));
 #else
 		emit cError(QString::fromLocal8Bit(e.what()));
 #endif

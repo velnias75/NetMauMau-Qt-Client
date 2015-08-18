@@ -136,51 +136,52 @@
 <context>
     <name>Client</name>
     <message>
-        <location filename="client.cpp" line="78"/>
+        <location filename="client.cpp" line="82"/>
         <source>Lost connection to a player.</source>
         <translation>Es ist eine Verbindung zu einem Spieler verloren gegangen.</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="80"/>
+        <location filename="client.cpp" line="84"/>
         <source>There is already a game running on this server</source>
         <translation>Es läuft bereits ein Spiel auf diesem Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="82"/>
-        <source>Server had problems in communication with %1: %2</source>
-        <translation>Der Server hatte Probleme mit der Kommunikation mit %1:
+        <location filename="client.cpp" line="86"/>
+        <source>Server had problems in communication with &lt;i&gt;%1&lt;/i&gt;:
+%2</source>
+        <translation>Der Server hatte Probleme mit der Kommunikation mit &lt;i&gt;%1&lt;/i&gt;:
 %2</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="85"/>
+        <location filename="client.cpp" line="89"/>
         <source>Player name %1 is already in use</source>
         <translation>Der Spielername %1 wird bereits verwendet</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="87"/>
+        <location filename="client.cpp" line="91"/>
         <source>A timeout occurred while connection to the server</source>
         <oldsource>A timeout occured while connection to the server</oldsource>
         <translation>Zeitüberschreitung während des Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="89"/>
+        <location filename="client.cpp" line="93"/>
         <source>An protocol error occurred while connection to the server</source>
         <oldsource>An protocol error occured while connection to the server</oldsource>
         <translation>Es gab einen Protokollfehler beim
 Verbindungsaufbau zum Server</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="91"/>
+        <location filename="client.cpp" line="95"/>
         <source>The server rejected the connection</source>
         <translation>Der Server hat die Verbindung zurückgewiesen</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="93"/>
+        <location filename="client.cpp" line="97"/>
         <source>The remote host seems not to be a NetMauMau server</source>
         <translation>Die Gegenstelle scheint kein NetMauMau-Server zu sein</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="95"/>
+        <location filename="client.cpp" line="99"/>
         <source>The server is in the progress of shutting down.
 Try again later or contact the server administrator.</source>
         <oldsource>The server is in the progress of a shutdown</oldsource>
@@ -188,7 +189,7 @@ Try again later or contact the server administrator.</source>
 Versuche es später nochmals oder kontaktiere den Serveradministrator.</translation>
     </message>
     <message>
-        <location filename="client.cpp" line="98"/>
+        <location filename="client.cpp" line="102"/>
         <source>Client (version %1.%2) not supported.
 Server accepts at maximum version %3.%4</source>
         <translation>Klient (Version %1.%2) wird nicht unterstützt.
@@ -1647,46 +1648,46 @@ Es ist entweder zu groß oder in keinem unterstützten Bildformat.</translation>
         <translation>n.V.</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="113"/>
+        <location filename="serverinfo.cpp" line="114"/>
         <source>Server version: %1
 Server accepts clients of at least version %2</source>
         <translation>Serverversion: %1
 Der Server akzeptiert Klienten von mindestens Version %2</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="120"/>
+        <location filename="serverinfo.cpp" line="121"/>
         <source>You&apos;ll play against AI &quot;%1&quot;</source>
         <translation>Du wirst gegen KI &quot;%1&quot; spielen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="122"/>
+        <location filename="serverinfo.cpp" line="123"/>
         <source>The server has only human players</source>
         <translation>Auf dem Server befinden sich nur menschliche Spieler</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="127"/>
+        <location filename="serverinfo.cpp" line="128"/>
         <source>You&apos;ll play with %1</source>
         <oldsource>You&apos;ll play with ace rounds</oldsource>
         <translation>Du wirst mit %1 spielen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="129"/>
-        <location filename="serverinfo.cpp" line="133"/>
+        <location filename="serverinfo.cpp" line="130"/>
+        <location filename="serverinfo.cpp" line="134"/>
         <source>ace rounds</source>
         <translation>Assrunden</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="130"/>
+        <location filename="serverinfo.cpp" line="131"/>
         <source>queen rounds</source>
         <translation>Damenrunden</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="132"/>
+        <location filename="serverinfo.cpp" line="133"/>
         <source>king rounds</source>
         <translation>Königsrunden</translation>
     </message>
     <message numerus="yes">
-        <location filename="serverinfo.cpp" line="144"/>
+        <location filename="serverinfo.cpp" line="145"/>
         <source>You&apos;ll start with %n card(s)</source>
         <translation>
             <numerusform>Du wirst mit %n Karte beginnen</numerusform>
@@ -1694,17 +1695,17 @@ Der Server akzeptiert Klienten von mindestens Version %2</translation>
         </translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="153"/>
+        <location filename="serverinfo.cpp" line="154"/>
         <source>You can change directions</source>
         <translation>Du kannst die Richtungen ändern</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="158"/>
+        <location filename="serverinfo.cpp" line="159"/>
         <source>%1/%2</source>
         <translation>%1/%2</translation>
     </message>
     <message numerus="yes">
-        <location filename="serverinfo.cpp" line="159"/>
+        <location filename="serverinfo.cpp" line="160"/>
         <source>Waiting for %n more player(s)</source>
         <oldsource>Waiting for %1 more players</oldsource>
         <translation>
@@ -1713,33 +1714,33 @@ Der Server akzeptiert Klienten von mindestens Version %2</translation>
         </translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="162"/>
+        <location filename="serverinfo.cpp" line="163"/>
         <source>The server accepts no more players</source>
         <oldsource>The server is too old for this client</oldsource>
         <translation>Der Server akzeptiert keine weitere Spieler</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="170"/>
+        <location filename="serverinfo.cpp" line="171"/>
         <source>This client is too old for the server</source>
         <translation>Dieser Klient ist zu alt für den Server</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="180"/>
+        <location filename="serverinfo.cpp" line="181"/>
         <source>Couldn&apos;t get capabilities from server</source>
         <translation>Konnte die Fähigkeiten nicht vom Server beziehen</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="189"/>
+        <location filename="serverinfo.cpp" line="190"/>
         <source>Server timed out while getting capabilities</source>
         <translation>Zeitüberschreitung auf dem Server während des Abholen der Fähigkeiten</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="202"/>
+        <location filename="serverinfo.cpp" line="203"/>
         <source>Trying to query the server. Attempt: %1</source>
         <translation>Versuche den Server abzufragen. Versuch: %1</translation>
     </message>
     <message>
-        <location filename="serverinfo.cpp" line="223"/>
+        <location filename="serverinfo.cpp" line="224"/>
         <source>The server is ready and waiting</source>
         <translation>Der Server ist verfügbar und wartet</translation>
     </message>
