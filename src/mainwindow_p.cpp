@@ -115,6 +115,11 @@ MainWindowPrivate::MainWindowPrivate(QSplashScreen *splash, MainWindow *p) : QOb
 
 	m_ui->setupUi(q);
 
+#if QT_VERSION >= QT_VERSION_CHECK(4, 6, 0)
+	q->setToolButtonStyle(Qt::ToolButtonFollowStyle);
+	m_ui->toolBar->setToolButtonStyle(Qt::ToolButtonFollowStyle);
+#endif
+
 	m_ui->myCardsScrollArea->installEventFilter(q);
 	m_ui->takeCardsButton->installEventFilter(q);
 	m_ui->suspendButton->installEventFilter(q);

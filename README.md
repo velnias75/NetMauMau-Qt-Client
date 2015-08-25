@@ -15,10 +15,7 @@ A Qt client for the [NetMauMau server](https://github.com/velnias75/NetMauMau).
 Requirements
 ------------
 
-It requires Qt in at least version 4.4 or Qt5
-
-(for Qt versions < 4.6 in `mainwindow.ui` you'll need to replace all occurences of 
-`Qt::ToolButtonFollowStyle` to `Qt::ToolButtonTextUnderIcon`)
+It requires Qt in at least version 4.4 or Qt5.
 
 * [QGitHubReleaseAPI](https://github.com/velnias75/QGitHubReleaseAPI) for parsing the retrieving release information from the GitHub API
 * [libnotify-qt](https://github.com/velnias75/libnotify-qt) for *desktop-notifications* on new releases (**optionally**)

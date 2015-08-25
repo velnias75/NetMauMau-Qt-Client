@@ -25,7 +25,7 @@
    <bool>true</bool>
   </property>
   <property name="toolButtonStyle">
-   <enum>Qt::ToolButtonFollowStyle</enum>
+   <enum>Qt::ToolButtonTextUnderIcon</enum>
   </property>
   <property name="animated">
    <bool>false</bool>
@@ -177,7 +177,7 @@
     <string>Toolbar</string>
    </property>
    <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonFollowStyle</enum>
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
    </property>
    <property name="floatable">
     <bool>false</bool>
@@ -962,8 +962,8 @@ possible cards</string>
   <tabstop>suspendButton</tabstop>
  </tabstops>
  <resources>
-  <include location="nuoveXT2.qrc"/>
   <include location="icons.qrc"/>
+  <include location="nuoveXT2.qrc"/>
  </resources>
  <connections>
   <connection>
