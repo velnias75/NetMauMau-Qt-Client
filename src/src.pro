@@ -113,7 +113,8 @@ CONFIG(debug, debug|release) {
 	-frename-registers -momit-leaf-frame-pointer -std=gnu++98 \
 	-fvisibility=internal -fvisibility-inlines-hidden -fstrict-aliasing -fexceptions -mthreads
 	win32:LIBS += -lsecur32 /usr/i686-pc-mingw32/usr/lib/libnetmaumauclient.a \
-							/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a
+							/usr/i686-pc-mingw32/usr/lib/libnetmaumaucommon.a \
+							/usr/i686-pc-mingw32/usr/lib/libpthreadGC2.a
 	win32:QMAKE_LFLAGS += -Wl,--gc-sections -Wl,-O1 -Wl,--sort-common
 }
 
