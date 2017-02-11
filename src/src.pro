@@ -257,7 +257,7 @@ QMAKE_DISTCLEAN += *.gz *.xz
 
 CODECFORTR = UTF-8
 
-TRANSLATIONS += nmm_qt_client_de_DE.ts
+TRANSLATIONS += nmm_qt_client_de_DE.ts nmm_qt_client_nl.ts
 
 DIST_NAME = $$TARGET-$$VERSION
 

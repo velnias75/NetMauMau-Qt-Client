@@ -23,3 +23,5 @@ src/release-moc/
 src/release-obj/
 src/release-rcc/
 src/release-ui/
+debug-obj
+release-obj
