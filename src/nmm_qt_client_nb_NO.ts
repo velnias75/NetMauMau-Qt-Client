@@ -6,17 +6,17 @@
     <message>
         <location filename="ainamewidget.ui" line="33"/>
         <source>Strength of the AI Player</source>
-        <translation type="unfinished"></translation>
+        <translation>Maskinspillerens vanskelighetsgrad</translation>
     </message>
     <message>
         <location filename="ainamewidget.ui" line="37"/>
         <source>Easy</source>
-        <translation type="unfinished"></translation>
+        <translation>Lett</translation>
     </message>
     <message>
         <location filename="ainamewidget.ui" line="42"/>
         <source>Hard</source>
-        <translation type="unfinished"></translation>
+        <translation>Vanskelig</translation>
     </message>
 </context>
 <context>
@@ -24,7 +24,7 @@
     <message>
         <location filename="addserverdialog.ui" line="14"/>
         <source>Add server</source>
-        <translation type="unfinished"></translation>
+        <translation>Legg til tjener</translation>
     </message>
 </context>
 <context>
@@ -32,42 +32,42 @@
     <message>
         <location filename="addserverwidget.ui" line="12"/>
         <source>Add server</source>
-        <translation type="unfinished"></translation>
+        <translation>Legg til tjener</translation>
     </message>
     <message>
         <location filename="addserverwidget.ui" line="18"/>
         <source>&amp;Server:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tjener:</translation>
     </message>
     <message>
         <location filename="addserverwidget.ui" line="31"/>
         <source>The server you want to add</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjeneren du ønsker å legge til</translation>
     </message>
     <message>
         <location filename="addserverwidget.ui" line="43"/>
         <source>The port to connect to</source>
-        <translation type="unfinished"></translation>
+        <translation>Porten å koble til</translation>
     </message>
     <message>
         <location filename="addserverwidget.ui" line="72"/>
         <source>Add server to list</source>
-        <translation type="unfinished"></translation>
+        <translation>Legg til tjeneren i listen</translation>
     </message>
     <message>
         <location filename="addserverwidget.ui" line="89"/>
         <source>Po&amp;rt:</source>
-        <translation type="unfinished"></translation>
+        <translation>Po&amp;rt:</translation>
     </message>
     <message>
         <location filename="addserverwidget.ui" line="99"/>
         <source>A&amp;lias:</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;lias:</translation>
     </message>
     <message>
         <location filename="addserverwidget.ui" line="109"/>
         <source>An optional alias name for the server</source>
-        <translation type="unfinished"></translation>
+        <translation>Et valgfritt tjeneralias:</translation>
     </message>
 </context>
 <context>
@@ -75,56 +75,54 @@
     <message>
         <location filename="cardwidget.cpp" line="141"/>
         <source>Hearts</source>
-        <translation type="unfinished"></translation>
+        <translation>Hjerter</translation>
     </message>
     <message>
         <location filename="cardwidget.cpp" line="143"/>
         <source>Diamonds</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruter</translation>
     </message>
     <message>
         <location filename="cardwidget.cpp" line="145"/>
         <source>Clubs</source>
-        <translation type="unfinished"></translation>
+        <translation>Kløver</translation>
     </message>
     <message>
         <location filename="cardwidget.cpp" line="147"/>
         <source>Spades</source>
-        <translation type="unfinished"></translation>
+        <translation>Spar</translation>
     </message>
     <message>
         <location filename="cardwidget.cpp" line="164"/>
         <source>Jack</source>
-        <translation type="unfinished"></translation>
+        <translation>Knekt</translation>
     </message>
     <message>
         <location filename="cardwidget.cpp" line="166"/>
         <source>Queen</source>
-        <translation type="unfinished"></translation>
+        <translation>Dronning</translation>
     </message>
     <message>
         <location filename="cardwidget.cpp" line="168"/>
         <source>King</source>
-        <translation type="unfinished"></translation>
+        <translation>Konge</translation>
     </message>
     <message>
         <location filename="cardwidget.cpp" line="170"/>
         <source>Ace</source>
-        <translation type="unfinished"></translation>
+        <translation>Ess</translation>
     </message>
     <message>
         <location filename="cardwidget.cpp" line="175"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 av %2</translation>
     </message>
     <message numerus="yes">
         <location filename="cardwidget.cpp" line="178"/>
         <source>%n point(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
+        <translation type="unfinished"><numerusform>%n poeng</numerusform>
+        <numerusform>%n poeng</numerusform>
+        </translation></message>
     <message>
         <location filename="cardwidget.cpp" line="186"/>
         <source>Illegal card</source>
@@ -136,12 +134,12 @@
     <message>
         <location filename="client.cpp" line="82"/>
         <source>Lost connection to a player.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mistet tilkoblingen til en spiller.</translation>
     </message>
     <message>
         <location filename="client.cpp" line="84"/>
         <source>There is already a game running on this server</source>
-        <translation type="unfinished"></translation>
+        <translation>Det er allerede et spill underveis på denne tjeneren</translation>
     </message>
     <message>
         <location filename="client.cpp" line="86"/>
@@ -152,7 +150,7 @@
     <message>
         <location filename="client.cpp" line="89"/>
         <source>Player name %1 is already in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Spillernavn %1 allerede i bruk</translation>
     </message>
     <message>
         <location filename="client.cpp" line="91"/>
@@ -197,7 +195,7 @@ Server accepts at maximum version %3.%4</source>
     <message>
         <location filename="connectionlogdialog.ui" line="120"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Kopier</translation>
     </message>
 </context>
 <context>
@@ -205,17 +203,17 @@ Server accepts at maximum version %3.%4</source>
     <message>
         <location filename="deleteserversdialog.ui" line="14"/>
         <source>Delete servers</source>
-        <translation type="unfinished"></translation>
+        <translation>Slett tjenere</translation>
     </message>
     <message>
         <location filename="deleteserversdialog.ui" line="25"/>
         <source>Select servers to delete:</source>
-        <translation type="unfinished"></translation>
+        <translation>Velg tjenere å slette:</translation>
     </message>
     <message>
         <location filename="deleteserversdialog.ui" line="32"/>
         <source>Select the servers you want to delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Velg tjenerne du ønsker å slette</translation>
     </message>
 </context>
 <context>
@@ -223,17 +221,17 @@ Server accepts at maximum version %3.%4</source>
     <message>
         <location filename="espeakvolumedialog.ui" line="14"/>
         <source>Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Lydstyrke</translation>
     </message>
     <message>
         <location filename="espeakvolumedialog.ui" line="24"/>
         <source>Speech volume:</source>
-        <translation type="unfinished"></translation>
+        <translation>Talelydstyrke:</translation>
     </message>
     <message>
         <location filename="espeakvolumedialog.ui" line="78"/>
         <source>&amp;Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fortstum</translation>
     </message>
 </context>
 <context>
@@ -256,22 +254,22 @@ Server accepts at maximum version %3.%4</source>
     <message>
         <location filename="jackchoosedialog.cpp" line="47"/>
         <source>Hearts</source>
-        <translation type="unfinished"></translation>
+        <translation>Hjerter</translation>
     </message>
     <message>
         <location filename="jackchoosedialog.cpp" line="49"/>
         <source>Diamonds</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruter</translation>
     </message>
     <message>
         <location filename="jackchoosedialog.cpp" line="51"/>
         <source>Clubs</source>
-        <translation type="unfinished"></translation>
+        <translation>Kløver</translation>
     </message>
     <message>
         <location filename="jackchoosedialog.cpp" line="53"/>
         <source>Spades</source>
-        <translation type="unfinished"></translation>
+        <translation>Spar</translation>
     </message>
 </context>
 <context>
@@ -279,17 +277,17 @@ Server accepts at maximum version %3.%4</source>
     <message>
         <location filename="launchserverdialog.ui" line="20"/>
         <source>Launch local server</source>
-        <translation type="unfinished"></translation>
+        <translation>Start lokal tjener</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="43"/>
         <source>&amp;General</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Hovedinnstillinger</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="58"/>
         <source>&amp;Players:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Spillere:</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="80"/>
@@ -332,7 +330,7 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="launchserverdialog.ui" line="219"/>
         <source>&amp;Direction change:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Retningsendring:</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="235"/>
@@ -357,17 +355,17 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="launchserverdialog.ui" line="283"/>
         <source>Ace</source>
-        <translation type="unfinished"></translation>
+        <translation>Ess</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="288"/>
         <source>Queen</source>
-        <translation type="unfinished"></translation>
+        <translation>Dronning</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="293"/>
         <source>King</source>
-        <translation type="unfinished"></translation>
+        <translation>Konge</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="317"/>
@@ -434,57 +432,57 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="launchserverdialog.ui" line="488"/>
         <source> seconds</source>
-        <translation type="unfinished"></translation>
+        <translation> sekunder</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="505"/>
         <source>Net&amp;work</source>
-        <translation type="unfinished"></translation>
+        <translation>Nett&amp;verk</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="529"/>
         <source>My local server</source>
-        <translation type="unfinished"></translation>
+        <translation>Min lokale tjener</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="541"/>
         <source>Start &amp;webserver at port:</source>
-        <translation type="unfinished"></translation>
+        <translation>Start &amp;vevtjener på port:</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="580"/>
         <source>Executable</source>
-        <translation type="unfinished"></translation>
+        <translation>Kjørbar</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="589"/>
         <source>Pat&amp;h:</source>
-        <translation type="unfinished"></translation>
+        <translation>Program&amp;fiks:</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="604"/>
         <source>Path to the server executable</source>
-        <translation type="unfinished"></translation>
+        <translation>Sti til kjørbar fil til tjener</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="626"/>
         <source>Browse for a path to the server executable</source>
-        <translation type="unfinished"></translation>
+        <translation>Bla gjennom og finn en sti til kjørbar fil for tjener</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="641"/>
         <source>Op&amp;tions:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Valg:</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="651"/>
         <source>The options the server will be started with</source>
-        <translation type="unfinished"></translation>
+        <translation>Valgene tjeneren startes med</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="679"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Avbryt</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="686"/>
@@ -494,18 +492,18 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="launchserverdialog.ui" line="689"/>
         <source>&amp;Launch</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Kjør</translation>
     </message>
     <message>
         <location filename="launchserverdialog.cpp" line="263"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>Advarsel</translation>
     </message>
     <message>
         <location filename="launchserverdialog.cpp" line="263"/>
         <location filename="launchserverdialog.cpp" line="369"/>
         <source>Failed to start %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Klarte ikke å starte %1</translation>
     </message>
     <message>
         <location filename="launchserverdialog.cpp" line="384"/>
@@ -523,7 +521,7 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="licensedialog.ui" line="17"/>
         <source>License</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisens</translation>
     </message>
 </context>
 <context>
@@ -531,42 +529,42 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="localserveroutputsettingsdialog.ui" line="17"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Innstillinger</translation>
     </message>
     <message>
         <location filename="localserveroutputsettingsdialog.ui" line="26"/>
         <source>&amp;Font:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Skrift:</translation>
     </message>
     <message>
         <location filename="localserveroutputsettingsdialog.ui" line="36"/>
         <source>Choose the text font</source>
-        <translation type="unfinished"></translation>
+        <translation>Velg tekstskrift</translation>
     </message>
     <message>
         <location filename="localserveroutputsettingsdialog.ui" line="54"/>
         <source>Colors:</source>
-        <translation type="unfinished"></translation>
+        <translation>Farger:</translation>
     </message>
     <message>
         <location filename="localserveroutputsettingsdialog.ui" line="63"/>
         <source>Choose the background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Velg bakgrunnsfargen</translation>
     </message>
     <message>
         <location filename="localserveroutputsettingsdialog.ui" line="66"/>
         <source>&amp;Background</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Bakgrunn</translation>
     </message>
     <message>
         <location filename="localserveroutputsettingsdialog.ui" line="80"/>
         <source>Choose the text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Velg tekstfarge</translation>
     </message>
     <message>
         <location filename="localserveroutputsettingsdialog.ui" line="83"/>
         <source>&amp;Text</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tekst</translation>
     </message>
 </context>
 <context>
@@ -579,22 +577,22 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="localserveroutputview.ui" line="31"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fil</translation>
     </message>
     <message>
         <location filename="localserveroutputview.ui" line="141"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Lukk</translation>
     </message>
     <message>
         <location filename="localserveroutputview.ui" line="144"/>
         <source>Close window</source>
-        <translation type="unfinished"></translation>
+        <translation>Lukk vindu</translation>
     </message>
     <message>
         <location filename="localserveroutputview.ui" line="154"/>
         <source>&amp;Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Innstillinger…</translation>
     </message>
     <message>
         <location filename="localserveroutputview.ui" line="162"/>
@@ -604,7 +602,7 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="localserveroutputview.ui" line="170"/>
         <source>Start &amp;automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Start &amp;automatisk</translation>
     </message>
 </context>
 <context>
@@ -612,32 +610,32 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="mainwindow.ui" line="18"/>
         <source>NetMauMau Client</source>
-        <translation type="unfinished"></translation>
+        <translation>NetMauMau-klient</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="56"/>
         <source>Players</source>
-        <translation type="unfinished"></translation>
+        <translation>Spillere</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="136"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fil</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="148"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Hjelp</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="158"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vis</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="177"/>
         <source>Toolbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Verktøyslinje</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="211"/>
@@ -657,7 +655,7 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="mainwindow.ui" line="395"/>
         <source>Shuffling</source>
-        <translation type="unfinished"></translation>
+        <translation>Stokker</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="424"/>
@@ -667,18 +665,18 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="mainwindow.ui" line="469"/>
         <source>Local player</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokal spiller</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="509"/>
         <location filename="mainwindow.ui" line="515"/>
         <source>My cards</source>
-        <translation type="unfinished"></translation>
+        <translation>Mine kort</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="587"/>
         <source>Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Handlinger</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="606"/>
@@ -744,17 +742,17 @@ possible cards</source>
     <message>
         <location filename="mainwindow.ui" line="737"/>
         <source>&amp;Servers...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tjenere…</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="740"/>
         <source>Show available servers</source>
-        <translation type="unfinished"></translation>
+        <translation>Vis tilgjengelige tjenere</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="753"/>
         <source>E&amp;xit</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;vslutt</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="756"/>
@@ -764,7 +762,7 @@ possible cards</source>
     <message>
         <location filename="mainwindow.ui" line="767"/>
         <source>About &amp;Qt</source>
-        <translation type="unfinished"></translation>
+        <translation>Om &amp;Qt</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="770"/>
@@ -774,7 +772,7 @@ possible cards</source>
     <message>
         <location filename="mainwindow.ui" line="780"/>
         <source>&amp;About %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Om %1</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="792"/>
@@ -789,52 +787,52 @@ possible cards</source>
     <message>
         <location filename="mainwindow.ui" line="806"/>
         <source>Connection &amp;log</source>
-        <translation type="unfinished"></translation>
+        <translation>Tilkoblings&amp;logg</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="809"/>
         <source>Show the connection log</source>
-        <translation type="unfinished"></translation>
+        <translation>Vis tilkoblingsloggføringen</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="820"/>
         <source>&amp;Launch local server...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Start opp lokal tjener…</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="823"/>
         <source>Launch a local server</source>
-        <translation type="unfinished"></translation>
+        <translation>Start opp en lokal tjener</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="834"/>
         <source>&amp;NetMauMau server output</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;NetMauMau-tjenerutdata</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="837"/>
         <source>Show the local server output</source>
-        <translation type="unfinished"></translation>
+        <translation>Vis lokal tjenerutdata</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="856"/>
         <source>&amp;Disconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Koble fra</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="859"/>
         <source>Disconnect from server</source>
-        <translation type="unfinished"></translation>
+        <translation>Koble fra tjener</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="867"/>
         <source>License</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisens</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="870"/>
         <source>Show the license</source>
-        <translation type="unfinished"></translation>
+        <translation>Vis lisensen</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="875"/>
@@ -844,7 +842,7 @@ possible cards</source>
     <message>
         <location filename="mainwindow.ui" line="878"/>
         <source>Show the scores</source>
-        <translation type="unfinished"></translation>
+        <translation>Vis poengsummer</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="889"/>
@@ -854,7 +852,7 @@ possible cards</source>
     <message>
         <location filename="mainwindow.ui" line="905"/>
         <source>&amp;Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Lydstyrke</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="908"/>
@@ -864,7 +862,7 @@ possible cards</source>
     <message>
         <location filename="mainwindow.ui" line="919"/>
         <source>&amp;Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Forstum</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="922"/>
@@ -892,12 +890,12 @@ possible cards</source>
     <message>
         <location filename="mainwindow_p.cpp" line="255"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Navn</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="256"/>
         <source>Cards</source>
-        <translation type="unfinished"></translation>
+        <translation>Kort</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="257"/>
@@ -907,42 +905,42 @@ possible cards</source>
     <message>
         <location filename="mainwindow_p.cpp" line="258"/>
         <source>Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Melding</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="487"/>
         <source>Your score: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Din poengsum: %1</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="498"/>
         <source>First rank</source>
-        <translation type="unfinished"></translation>
+        <translation>Førsteplass</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="499"/>
         <source>Second rank</source>
-        <translation type="unfinished"></translation>
+        <translation>Andreplass</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="500"/>
         <source>Third rank</source>
-        <translation type="unfinished"></translation>
+        <translation>Tredjeplass</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="501"/>
         <source>Fourth rank</source>
-        <translation type="unfinished"></translation>
+        <translation>Fjerdeplass</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="502"/>
         <source>Fifth rank</source>
-        <translation type="unfinished"></translation>
+        <translation>Femteplass</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="503"/>
         <source>%1. rank</source>
-        <translation type="unfinished"></translation>
+        <translation>%1.-plass</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="506"/>
@@ -986,7 +984,7 @@ possible cards</source>
     <message>
         <location filename="mainwindow_p.cpp" line="614"/>
         <source>Shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Snarvei</translation>
     </message>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="663"/>
@@ -1057,12 +1055,12 @@ possible cards</source>
     <message>
         <location filename="mainwindow_p.cpp" line="1128"/>
         <source>Couldn&apos;t get scores from server</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke hente poengsummer fra tjeneren</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1130"/>
         <source>Couldn&apos;t get player list from server</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke hente spillerliste fra tjeneren</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1132"/>
@@ -1072,20 +1070,20 @@ possible cards</source>
     <message>
         <location filename="mainwindow_p.cpp" line="1141"/>
         <source>Couldn&apos;t create a client</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunne ikke opprette en klient</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1158"/>
         <location filename="mainwindow_p.cpp" line="1161"/>
         <location filename="mainwindow_p.cpp" line="1165"/>
         <source>Server Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjenerfeil</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1290"/>
         <location filename="mainwindow_p.cpp" line="1294"/>
         <source>Card rejected</source>
-        <translation type="unfinished"></translation>
+        <translation>Kort avslått</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1290"/>
@@ -1148,7 +1146,7 @@ Playing time: %2</source>
     <message>
         <location filename="mainwindow_p.cpp" line="1420"/>
         <source>Congratulations</source>
-        <translation type="unfinished"></translation>
+        <translation>Gratulerer</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1421"/>
@@ -1178,7 +1176,7 @@ Playing time: %2</source>
     <message>
         <location filename="mainwindow_p.cpp" line="1476"/>
         <source>You %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Du %1</translation>
     </message>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="1476"/>
@@ -1192,7 +1190,7 @@ Playing time: %2</source>
     <message>
         <location filename="mainwindow_p.cpp" line="1484"/>
         <source>plays %1</source>
-        <translation type="unfinished"></translation>
+        <translation>spiller %1</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1530"/>
@@ -1210,12 +1208,12 @@ Playing time: %2</source>
     <message>
         <location filename="mainwindow_p.cpp" line="1575"/>
         <source>Play your card...</source>
-        <translation type="unfinished"></translation>
+        <translation>Spill kortet ditt…</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1590"/>
         <source>Dra&amp;w</source>
-        <translation type="unfinished"></translation>
+        <translation>Tr&amp;ekk</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1590"/>
@@ -1225,17 +1223,17 @@ Playing time: %2</source>
     <message>
         <location filename="mainwindow_p.cpp" line="1653"/>
         <source>Continue current %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Fortsett nåværende %1?</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1654"/>
         <source>Start %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Start %1?</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1767"/>
         <source>Game Over</source>
-        <translation type="unfinished"></translation>
+        <translation>Spill over</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1767"/>
@@ -1247,7 +1245,7 @@ Playing time: %1</source>
     <message>
         <location filename="mainwindow_p.cpp" line="1848"/>
         <source>Players</source>
-        <translation type="unfinished"></translation>
+        <translation>Spillere</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1889"/>
@@ -1258,7 +1256,7 @@ Playing time: %1</source>
         <location filename="mainwindow_p.cpp" line="1912"/>
         <location filename="mainwindow_p.cpp" line="1915"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 av %2</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1935"/>
@@ -1274,17 +1272,17 @@ Playing time: %1</source>
         <location filename="mainwindow_p.cpp" line="1997"/>
         <location filename="mainwindow_p.cpp" line="2009"/>
         <source>Version %1 is available!</source>
-        <translation type="unfinished"></translation>
+        <translation>Versjon %1 tilgjengelig!</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1998"/>
         <source>More info</source>
-        <translation type="unfinished"></translation>
+        <translation>Mer info</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="2157"/>
         <source>Error while downloading</source>
-        <translation type="unfinished"></translation>
+        <translation>Feil under nedlasting</translation>
     </message>
 </context>
 <context>
@@ -1292,7 +1290,7 @@ Playing time: %1</source>
     <message>
         <location filename="netmaumauapplication.cpp" line="35"/>
         <source>Severe error</source>
-        <translation type="unfinished"></translation>
+        <translation>Omfattende feil</translation>
     </message>
     <message>
         <location filename="netmaumauapplication.cpp" line="35"/>
@@ -1319,17 +1317,17 @@ Playing time: %1</source>
     <message>
         <location filename="releaseinfodialog.ui" line="23"/>
         <source>Release information</source>
-        <translation type="unfinished"></translation>
+        <translation>Utgivelsesinformasjon</translation>
     </message>
     <message>
         <location filename="releaseinfodialog.ui" line="44"/>
         <source>Release date:</source>
-        <translation type="unfinished"></translation>
+        <translation>Utgivelsesdato:</translation>
     </message>
     <message>
         <location filename="releaseinfodialog.ui" line="79"/>
         <source>Download:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nedlastning:</translation>
     </message>
     <message>
         <location filename="releaseinfodialog.ui" line="146"/>
@@ -1382,7 +1380,7 @@ Playing time: %1</source>
     <message>
         <location filename="scoresdialog.ui" line="26"/>
         <source>Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjener</translation>
     </message>
     <message>
         <location filename="scoresdialog.ui" line="34"/>
@@ -1407,17 +1405,17 @@ Playing time: %1</source>
     <message>
         <location filename="scoresdialog.ui" line="80"/>
         <source>Scores</source>
-        <translation type="unfinished"></translation>
+        <translation>Poengsummer</translation>
     </message>
     <message>
         <location filename="scoresdialog.cpp" line="45"/>
         <source>Player</source>
-        <translation type="unfinished"></translation>
+        <translation>Spiller</translation>
     </message>
     <message>
         <location filename="scoresdialog.cpp" line="45"/>
         <source>Score</source>
-        <translation type="unfinished"></translation>
+        <translation>Poengsum</translation>
     </message>
     <message>
         <location filename="scoresdialog.cpp" line="219"/>
@@ -1430,13 +1428,13 @@ Playing time: %1</source>
     <message>
         <location filename="serverdialog.ui" line="32"/>
         <source>Servers</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjenere</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="43"/>
         <location filename="serverdialog.ui" line="52"/>
         <source>Available servers</source>
-        <translation type="unfinished"></translation>
+        <translation>Tilgjengelige tjenere</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="116"/>
@@ -1446,27 +1444,27 @@ Playing time: %1</source>
     <message>
         <location filename="serverdialog.ui" line="143"/>
         <source>Remove server from list</source>
-        <translation type="unfinished"></translation>
+        <translation>Fjern tjeneren fra listen</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="180"/>
         <source>Delete servers</source>
-        <translation type="unfinished"></translation>
+        <translation>Slett tjenere</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="218"/>
         <source>Player</source>
-        <translation type="unfinished"></translation>
+        <translation>Spiller</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="224"/>
         <source>&amp;Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Navn:</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="240"/>
         <source>Your player name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ditt spillernavn</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="250"/>
@@ -1491,27 +1489,27 @@ Playing time: %1</source>
     <message>
         <location filename="serverdialog.ui" line="346"/>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Avbryt</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="356"/>
         <source>C&amp;onnect</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Koble til</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="373"/>
         <source>Add server...</source>
-        <translation type="unfinished"></translation>
+        <translation>Legg til tjener…</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="376"/>
         <source>Add server</source>
-        <translation type="unfinished"></translation>
+        <translation>Legg til tjener</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="386"/>
         <source>Delete server...</source>
-        <translation type="unfinished"></translation>
+        <translation>Slett tjener…</translation>
     </message>
     <message>
         <location filename="serverdialog.cpp" line="26"/>
@@ -1529,27 +1527,27 @@ Playing time: %1</source>
     <message>
         <location filename="serverdialog_p.cpp" line="60"/>
         <source>View status page</source>
-        <translation type="unfinished"></translation>
+        <translation>Vis statusside</translation>
     </message>
     <message>
         <location filename="serverdialog_p.cpp" line="97"/>
         <source>Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjener</translation>
     </message>
     <message>
         <location filename="serverdialog_p.cpp" line="97"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Versjon</translation>
     </message>
     <message>
         <location filename="serverdialog_p.cpp" line="97"/>
         <source>AI</source>
-        <translation type="unfinished"></translation>
+        <translation>Maskinspiller</translation>
     </message>
     <message>
         <location filename="serverdialog_p.cpp" line="97"/>
         <source>Players</source>
-        <translation type="unfinished"></translation>
+        <translation>Spillere</translation>
     </message>
     <message>
         <location filename="serverdialog_p.cpp" line="379"/>
@@ -1565,7 +1563,7 @@ Playing time: %1</source>
         <location filename="serverdialog_p.cpp" line="423"/>
         <location filename="serverdialog_p.cpp" line="440"/>
         <source>Connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Koble til</translation>
     </message>
     <message>
         <location filename="serverdialog_p.cpp" line="423"/>
@@ -1575,12 +1573,12 @@ Playing time: %1</source>
     <message>
         <location filename="serverdialog_p.cpp" line="440"/>
         <source>Please fill in player name</source>
-        <translation type="unfinished"></translation>
+        <translation>Fyll inn spillernavn</translation>
     </message>
     <message>
         <location filename="serverdialog_p.cpp" line="512"/>
         <source>Delete server</source>
-        <translation type="unfinished"></translation>
+        <translation>Slett tjener</translation>
     </message>
     <message>
         <location filename="serverdialog_p.cpp" line="513"/>
@@ -1666,7 +1664,7 @@ Server accepts clients of at least version %2</source>
     <message>
         <location filename="serverinfo.cpp" line="159"/>
         <source>%1/%2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1/%2</translation>
     </message>
     <message numerus="yes">
         <location filename="serverinfo.cpp" line="160"/>
@@ -1713,50 +1711,50 @@ Server accepts clients of at least version %2</source>
         <location filename="util.cpp" line="46"/>
         <location filename="util.cpp" line="54"/>
         <source>Diamonds</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruter</translation>
     </message>
     <message>
         <location filename="util.cpp" line="47"/>
         <location filename="util.cpp" line="53"/>
         <source>Hearts</source>
-        <translation type="unfinished"></translation>
+        <translation>Hjerter</translation>
     </message>
     <message>
         <location filename="util.cpp" line="48"/>
         <location filename="util.cpp" line="51"/>
         <source>Spades</source>
-        <translation type="unfinished"></translation>
+        <translation>Spar</translation>
     </message>
     <message>
         <location filename="util.cpp" line="49"/>
         <location filename="util.cpp" line="52"/>
         <source>Clubs</source>
-        <translation type="unfinished"></translation>
+        <translation>Kløver</translation>
     </message>
     <message>
         <location filename="util.cpp" line="70"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 av %2</translation>
     </message>
     <message>
         <location filename="util.cpp" line="75"/>
         <source>King</source>
-        <translation type="unfinished"></translation>
+        <translation>Konge</translation>
     </message>
     <message>
         <location filename="util.cpp" line="76"/>
         <source>Queen</source>
-        <translation type="unfinished"></translation>
+        <translation>Dronning</translation>
     </message>
     <message>
         <location filename="util.cpp" line="77"/>
         <source>Jack</source>
-        <translation type="unfinished"></translation>
+        <translation>Knekt</translation>
     </message>
     <message>
         <location filename="util.cpp" line="78"/>
         <source>Ace</source>
-        <translation type="unfinished"></translation>
+        <translation>Ess</translation>
     </message>
 </context>
 <context>
@@ -1764,12 +1762,12 @@ Server accepts clients of at least version %2</source>
     <message>
         <location filename="main.cpp" line="94"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>Advarsel</translation>
     </message>
     <message>
         <location filename="main.cpp" line="95"/>
         <source>NetMauMau is already running!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">NetMauMau kjører allerede!</translation>
     </message>
 </context>
 </TS>
