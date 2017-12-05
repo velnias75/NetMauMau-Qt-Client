@@ -155,34 +155,36 @@
     <message>
         <location filename="client.cpp" line="91"/>
         <source>A timeout occurred while connection to the server</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidsavbrudd under tilkobling til tjener</translation>
     </message>
     <message>
         <location filename="client.cpp" line="93"/>
         <source>An protocol error occurred while connection to the server</source>
-        <translation type="unfinished"></translation>
+        <translation>Protokollfeil under tilkobling til tjener</translation>
     </message>
     <message>
         <location filename="client.cpp" line="95"/>
         <source>The server rejected the connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjeneren avslo tilkoblingen</translation>
     </message>
     <message>
         <location filename="client.cpp" line="97"/>
         <source>The remote host seems not to be a NetMauMau server</source>
-        <translation type="unfinished"></translation>
+        <translation>Verten annensteds hen ser ikke ut til å være en NetMauMau-tjener</translation>
     </message>
     <message>
         <location filename="client.cpp" line="99"/>
         <source>The server is in the progress of shutting down.
 Try again later or contact the server administrator.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjeneren er i ferd med å skru seg av.
+Prøv igjen senere eller kontakt tjeneradministratoren.</translation>
     </message>
     <message>
         <location filename="client.cpp" line="102"/>
         <source>Client (version %1.%2) not supported.
 Server accepts at maximum version %3.%4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Klient (versjon %1%2) støttes ikke.
+TJeneren godtar høyest versjon %3.%4</translation>
     </message>
 </context>
 <context>
@@ -190,7 +192,7 @@ Server accepts at maximum version %3.%4</source>
     <message>
         <location filename="connectionlogdialog.ui" line="14"/>
         <source>Connection Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Tilkoblingslogg</translation>
     </message>
     <message>
         <location filename="connectionlogdialog.ui" line="120"/>
