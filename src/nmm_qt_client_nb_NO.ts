@@ -247,12 +247,12 @@ TJeneren godtar høyest versjon %3.%4</translation>
     <message>
         <location filename="jackchoosedialog.ui" line="38"/>
         <source>Choose suit</source>
-        <translation type="unfinished"></translation>
+        <translation>Velg farge</translation>
     </message>
     <message>
         <location filename="jackchoosedialog.ui" line="166"/>
         <source>&amp;Ok</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;OK</translation>
     </message>
     <message>
         <location filename="jackchoosedialog.cpp" line="47"/>
@@ -295,32 +295,32 @@ TJeneren godtar høyest versjon %3.%4</translation>
     <message>
         <location filename="launchserverdialog.ui" line="80"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of players.&lt;/p&gt;&lt;p&gt;If set to &lt;tt&gt;1&lt;/tt&gt; you&apos;ll play against the AI.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Antall spillere.&lt;/p&gt;&lt;p&gt;Hvis satt til &lt;tt&gt;1&lt;/tt&gt; vil du spille mot robotspilleren.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="102"/>
         <source>&amp;Initial cards:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Startkort:</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="124"/>
         <source>The amount of initial cards a player gets at game start</source>
-        <translation type="unfinished"></translation>
+        <translation>Antall startkort en spiller får ved spillets start</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="146"/>
         <source>Card dec&amp;ks:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kortsto&amp;kker:</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="168"/>
         <source>The amount of card decks to use</source>
-        <translation type="unfinished"></translation>
+        <translation>Antall kortstokker å bruke</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="184"/>
         <source>&amp;Watch mode:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Observasjonsmodus:</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="200"/>
@@ -328,7 +328,10 @@ TJeneren godtar høyest versjon %3.%4</translation>
 
 If you have won before the game ended, you&apos;ll watch the game.
 Don&apos;t close the client while a game is running, because it will disconnect the remaining players.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hvis valgt, fullføres spillet når den siste spilleren har vunnet.
+
+Hvis du har vunnet før spillets slutt, vil du observere spillet.
+Ikke lukk klienten mens spillet kjører, fordi det vil koble fra gjenstående spillere.</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="219"/>
@@ -338,22 +341,22 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="launchserverdialog.ui" line="235"/>
         <source>if checked than playing a &lt;i&gt;nine&lt;/i&gt; will cause a change of direction</source>
-        <translation type="unfinished"></translation>
+        <translation>hvis valgt vil det å spille en &lt;i&gt;nier&lt;/i&gt; snu spillretningen</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="251"/>
         <source>Ace &amp;round:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ess&amp;runde:</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="269"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enables &lt;span style=&quot; font-weight:600;&quot;&gt;Ace rounds&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;In an &lt;span style=&quot; font-weight:600;&quot;&gt;Ace round&lt;/span&gt; players are only allowed to play &lt;span style=&quot; font-style:italic;&quot;&gt;Aces.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;NOTE:&lt;/span&gt; enabling this option forces other player&apos;s clients to be at least of version 0.7&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Skrur på &lt;span style=&quot; font-weight:600;&quot;&gt;essrunder&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;I en &lt;span style=&quot; font-weight:600;&quot;&gt;essrunde&lt;/span&gt; kan spillere kun spille &lt;span style=&quot; font-style:italic;&quot;&gt;ess.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic; color:#ff0000;&quot;&gt;Merk:&lt;/span&gt; å skru på dette valget krever at andre spillere har minst versjon 0.7&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="279"/>
         <source>Choose the rank to play the round with</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Velg farge å spille runden med</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="283"/>
@@ -490,7 +493,7 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="launchserverdialog.ui" line="686"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tries to launch the server.&lt;/p&gt;&lt;p&gt;The server will be available at &lt;tt&gt;localhost&lt;/tt&gt; and the given port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Prøver å starte tjeneren.&lt;/p&gt;&lt;p&gt;Tjeneren vil være tilgjengelig på &lt;tt&gt;localhost&lt;/tt&gt; og gitt port.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="689"/>
@@ -511,12 +514,12 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="launchserverdialog.cpp" line="384"/>
         <source>Find NetMauMau server executable</source>
-        <translation type="unfinished"></translation>
+        <translation>Finn kjørbar NetMauMau-tjenerfil</translation>
     </message>
     <message>
         <location filename="launchserverdialog.cpp" line="409"/>
         <source>Server terminated</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjener avsluttet</translation>
     </message>
 </context>
 <context>
@@ -575,7 +578,7 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="localserveroutputview.ui" line="14"/>
         <source>NetMauMau server output</source>
-        <translation type="unfinished"></translation>
+        <translation>NetMauMau-tjenerutdata</translation>
     </message>
     <message>
         <location filename="localserveroutputview.ui" line="31"/>
@@ -600,7 +603,7 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="localserveroutputview.ui" line="162"/>
         <source>&amp;Terminate server</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Avslutt tjener</translation>
     </message>
     <message>
         <location filename="localserveroutputview.ui" line="170"/>
@@ -643,12 +646,12 @@ Don&apos;t close the client while a game is running, because it will disconnect 
     <message>
         <location filename="mainwindow.ui" line="211"/>
         <source>Talon</source>
-        <translation type="unfinished"></translation>
+        <translation>Bunken</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="230"/>
         <source>Turn</source>
-        <translation type="unfinished"></translation>
+        <translation>Tur</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="254"/>
@@ -736,12 +739,12 @@ spillbare kort</translation>
     <message>
         <location filename="mainwindow.ui" line="718"/>
         <source>Suspend your turn and take one card</source>
-        <translation type="unfinished"></translation>
+        <translation>Avslutt turen din og ta ett kort</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="721"/>
         <source>&amp;Suspend</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Avslutt</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="737"/>
@@ -841,7 +844,7 @@ spillbare kort</translation>
     <message>
         <location filename="mainwindow.ui" line="875"/>
         <source>Hall of Fame</source>
-        <translation type="unfinished"></translation>
+        <translation>Æresgalleri</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="878"/>
@@ -851,7 +854,7 @@ spillbare kort</translation>
     <message>
         <location filename="mainwindow.ui" line="889"/>
         <source>Show &amp;card tooltips</source>
-        <translation type="unfinished"></translation>
+        <translation>Vis &amp;kortverktøystips</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="905"/>
@@ -861,7 +864,7 @@ spillbare kort</translation>
     <message>
         <location filename="mainwindow.ui" line="908"/>
         <source>Set the speech volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Sett talelydstyrken</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="919"/>
@@ -871,7 +874,7 @@ spillbare kort</translation>
     <message>
         <location filename="mainwindow.ui" line="922"/>
         <source>Mute speech output</source>
-        <translation type="unfinished"></translation>
+        <translation>Forstum taleutdata</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="933"/>
@@ -951,7 +954,7 @@ spillbare kort</translation>
         <location filename="mainwindow_p.cpp" line="1346"/>
         <location filename="mainwindow_p.cpp" line="1446"/>
         <source>Sorry</source>
-        <translation type="unfinished"></translation>
+        <translation>Beklager</translation>
     </message>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="534"/>
@@ -962,27 +965,21 @@ spillbare kort</translation>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="537"/>
         <source>Take %n cards. Or play another SEVEN</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
+        <translation><numerusform>Ta ett kort. Eller spillet et SYVERKORT til</numerusform>
+        <numerusform>Ta %n kort. Eller spillet et SYVERKORT til</numerusform>
+        </translation></message>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="542"/>
         <source>You have no &lt;i&gt;Seven&lt;/i&gt; to play over. You must take %n card(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
+        <translation><numerusform>Du har ikke noe &lt;i&gt;syverkort&lt;/i&gt; å spille over. Du må ta ett kort</numerusform>
+        <numerusform>Du har ikke noe &lt;i&gt;syverkort&lt;/i&gt; å spille over. Du må ta %n kort</numerusform>
+        </translation></message>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="545"/>
         <source>Take %n cards</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
+        <translation><numerusform>Ta ett kort</numerusform>
+        <numerusform>Ta %n kort</numerusform>
+        </translation></message>
     <message>
         <location filename="mainwindow_p.cpp" line="614"/>
         <source>Shortcut</source>
@@ -1089,38 +1086,38 @@ spillbare kort</translation>
         <location filename="mainwindow_p.cpp" line="1290"/>
         <location filename="mainwindow_p.cpp" line="1294"/>
         <source>You cannot play card %1!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Du kan ikke spille kort %1!</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1322"/>
         <source>suspended the turn</source>
-        <translation type="unfinished"></translation>
+        <translation>avsluttet turen</translation>
     </message>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="1329"/>
         <source>&lt;span style=&quot;color:%1;&quot;&gt;loses&lt;/span&gt; with &lt;span style=&quot;font:oblique bold&quot;&gt;%n&lt;/span&gt; point(s) at hand</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
+        <translation><numerusform>&lt;span style=&quot;color:%1;&quot;&gt;taper&lt;/span&gt; med &lt;span style=&quot;font:oblique bold&quot;&gt;ett&lt;/span&gt; poeng på handen</numerusform>
+        <numerusform>&lt;span style=&quot;color:%1;&quot;&gt;taper&lt;/span&gt; med &lt;span style=&quot;font:oblique bold&quot;&gt;%n&lt;/span&gt; poeng på handen</numerusform>
+        </translation></message>
     <message>
         <location filename="mainwindow_p.cpp" line="1347"/>
         <source>You have lost!
 %1
 Playing time: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Du har tapt!
+%1
+Spilletid: %2</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1349"/>
         <source>Your deduction of points: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ditt poengtrekk: %1</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1362"/>
         <location filename="mainwindow_p.cpp" line="1428"/>
         <source>Try &amp;again</source>
-        <translation type="unfinished"></translation>
+        <translation>Prøv &amp;igjen</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1377"/>
@@ -1198,11 +1195,9 @@ Spilletid: %2</translation>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="1543"/>
         <source>Waiting for %n more player(s)...</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
+        <translation><numerusform>Venter på én spiller til…</numerusform>
+        <numerusform>Venter på %n spillere til…</numerusform>
+        </translation></message>
     <message>
         <location filename="mainwindow_p.cpp" line="1575"/>
         <source>Play your card...</source>
@@ -1216,7 +1211,7 @@ Spilletid: %2</translation>
     <message>
         <location filename="mainwindow_p.cpp" line="1590"/>
         <source>&amp;Suspend</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Avslutt</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1653"/>
@@ -1250,7 +1245,7 @@ Spilletid: %1</translation>
     <message>
         <location filename="mainwindow_p.cpp" line="1889"/>
         <source>starts a %1</source>
-        <translation type="unfinished"></translation>
+        <translation>begynner en %1</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1912"/>
@@ -1261,12 +1256,12 @@ Spilletid: %1</translation>
     <message>
         <location filename="mainwindow_p.cpp" line="1935"/>
         <source>ends a %1</source>
-        <translation type="unfinished"></translation>
+        <translation>sluttfører en %1</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1938"/>
         <source>%1 finished</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 fullført</translation>
     </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1997"/>
@@ -1296,7 +1291,8 @@ Spilletid: %1</translation>
         <location filename="netmaumauapplication.cpp" line="35"/>
         <source>Unhandled exception caught:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Uhåndtert unntak fanget:
+%1</translation>
     </message>
 </context>
 <context>
@@ -1337,37 +1333,37 @@ Spilletid: %1</translation>
     <message>
         <location filename="releaseinfodialog.ui" line="172"/>
         <source> Source balls from GitHub</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"> Kildekodeballer fra GitHub</translation>
     </message>
     <message>
         <location filename="releaseinfodialog.cpp" line="111"/>
         <source>Zipball download</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ZIP-ballnedlasting</translation>
     </message>
     <message>
         <location filename="releaseinfodialog.cpp" line="112"/>
         <source>Downloading zipball...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Laster ned ZIP-ball…</translation>
     </message>
     <message>
         <location filename="releaseinfodialog.cpp" line="127"/>
         <source>Tarball download</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjæreball-nedlasting</translation>
     </message>
     <message>
         <location filename="releaseinfodialog.cpp" line="128"/>
         <source>Downloading tarball...</source>
-        <translation type="unfinished"></translation>
+        <translation>Laster ned tjæreball…</translation>
     </message>
     <message>
         <location filename="releaseinfodialog.cpp" line="176"/>
         <source>Brought to you by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Har kommet deg i hende fra %1</translation>
     </message>
     <message>
         <location filename="releaseinfodialog.h" line="81"/>
         <source>Choose where to save %1...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Velg hvor du vil lagre %1…</translation>
     </message>
 </context>
 <context>
@@ -1375,7 +1371,7 @@ Spilletid: %1</translation>
     <message>
         <location filename="scoresdialog.ui" line="14"/>
         <source>Hall of Fame</source>
-        <translation type="unfinished"></translation>
+        <translation>Æresgalleri</translation>
     </message>
     <message>
         <location filename="scoresdialog.ui" line="26"/>
@@ -1385,7 +1381,7 @@ Spilletid: %1</translation>
     <message>
         <location filename="scoresdialog.ui" line="34"/>
         <source>Choose the server to show the scores</source>
-        <translation type="unfinished"></translation>
+        <translation>Velg tjeneren som skal vise poengsummene</translation>
     </message>
     <message>
         <location filename="scoresdialog.ui" line="47"/>
@@ -1479,12 +1475,12 @@ Spilletid: %1</translation>
     <message>
         <location filename="serverdialog.ui" line="281"/>
         <source>Choose your player image file</source>
-        <translation type="unfinished"></translation>
+        <translation>Velg din spillerbildefil</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="303"/>
         <source>Revert your player image to the default image</source>
-        <translation type="unfinished"></translation>
+        <translation>Tilbakestill ditt spillerbilde til forvalg</translation>
     </message>
     <message>
         <location filename="serverdialog.ui" line="346"/>
@@ -1584,24 +1580,26 @@ Spilletid: %1</translation>
         <location filename="serverdialog_p.cpp" line="513"/>
         <source>&lt;html&gt;&lt;body&gt;Really delete server
 &lt;b&gt;%1&lt;/b&gt;?&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;body&gt;Vil du virkelig slette tjeneren
+&lt;b&gt;%1&lt;/b&gt;?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="serverdialog_p.cpp" line="620"/>
         <location filename="serverdialog_p.cpp" line="640"/>
         <source>Player image</source>
-        <translation type="unfinished"></translation>
+        <translation>Spillerbilde</translation>
     </message>
     <message>
         <location filename="serverdialog_p.cpp" line="621"/>
         <source>The chosen image won&apos;t be accepted by the server.
 It is either too large or of an unsupported image format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valgt bilde vil ikke bli godtatt av tjeneren.
+Det er enten for stort, eller i et ustøttet bildeformat.</translation>
     </message>
     <message>
         <location filename="serverdialog_p.cpp" line="640"/>
         <source>Cannot open %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kan ikke åpne %1</translation>
     </message>
 </context>
 <context>
@@ -1609,23 +1607,24 @@ It is either too large or of an unsupported image format.</source>
     <message>
         <location filename="serverinfo.cpp" line="30"/>
         <source>n/a</source>
-        <translation type="unfinished"></translation>
+        <translation>i/t</translation>
     </message>
     <message>
         <location filename="serverinfo.cpp" line="114"/>
         <source>Server version: %1
 Server accepts clients of at least version %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjenerversjon: %1
+Tjeneren godtar klienter minst på versjon %2</translation>
     </message>
     <message>
         <location filename="serverinfo.cpp" line="121"/>
         <source>You&apos;ll play against AI &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Du vil spille mot robotspilleren &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="serverinfo.cpp" line="123"/>
         <source>The server has only human players</source>
-        <translation type="unfinished"></translation>
+        <translation>Tjeneren har kun menneskelige spillere</translation>
     </message>
     <message>
         <location filename="serverinfo.cpp" line="128"/>
@@ -1651,11 +1650,9 @@ Server accepts clients of at least version %2</source>
     <message numerus="yes">
         <location filename="serverinfo.cpp" line="145"/>
         <source>You&apos;ll start with %n card(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
-    </message>
+        <translation><numerusform>Du starter med ett kort</numerusform>
+        <numerusform>Du starter med %n kort</numerusform>
+        </translation></message>
     <message>
         <location filename="serverinfo.cpp" line="154"/>
         <source>You can change directions</source>
