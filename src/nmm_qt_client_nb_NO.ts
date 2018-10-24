@@ -242,7 +242,7 @@ TJeneren godtar høyest versjon %3.%4</translation>
     <message>
         <location filename="jackchoosedialog.ui" line="20"/>
         <source>Jack suit</source>
-        <translation type="unfinished"></translation>
+        <translation>Fargevalg</translation>
     </message>
     <message>
         <location filename="jackchoosedialog.ui" line="38"/>
@@ -656,7 +656,7 @@ Ikke lukk klienten mens spillet kjører, fordi det vil koble fra gjenstående sp
     <message>
         <location filename="mainwindow.ui" line="254"/>
         <source>Open card</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Åpne kort</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="395"/>
