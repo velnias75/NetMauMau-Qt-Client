@@ -120,9 +120,11 @@
     <message numerus="yes">
         <location filename="cardwidget.cpp" line="178"/>
         <source>%n point(s)</source>
-        <translation type="unfinished"><numerusform>%n poeng</numerusform>
-        <numerusform>%n poeng</numerusform>
-        </translation></message>
+        <translation type="unfinished">
+            <numerusform>%n poeng</numerusform>
+            <numerusform>%n poeng</numerusform>
+        </translation>
+    </message>
     <message>
         <location filename="cardwidget.cpp" line="186"/>
         <source>Illegal card</source>
@@ -959,27 +961,35 @@ spillbare kort</translation>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="534"/>
         <source>You can play another &lt;i&gt;Seven&lt;/i&gt; or take %n card(s)</source>
-        <translation><numerusform>Du kan spille &lt;i&gt;syv&lt;/i&gt;til, eller ta %n kort</numerusform>
-        <numerusform>Du kan spille &lt;i&gt;syv&lt;/i&gt;til, eller ta %n kort</numerusform>
-        </translation></message>
+        <translation>
+            <numerusform>Du kan spille &lt;i&gt;syv&lt;/i&gt;til, eller ta %n kort</numerusform>
+            <numerusform>Du kan spille &lt;i&gt;syv&lt;/i&gt;til, eller ta %n kort</numerusform>
+        </translation>
+    </message>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="537"/>
         <source>Take %n cards. Or play another SEVEN</source>
-        <translation><numerusform>Ta ett kort. Eller spillet et SYVERKORT til</numerusform>
-        <numerusform>Ta %n kort. Eller spillet et SYVERKORT til</numerusform>
-        </translation></message>
+        <translation>
+            <numerusform>Ta ett kort. Eller spillet et SYVERKORT til</numerusform>
+            <numerusform>Ta %n kort. Eller spillet et SYVERKORT til</numerusform>
+        </translation>
+    </message>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="542"/>
         <source>You have no &lt;i&gt;Seven&lt;/i&gt; to play over. You must take %n card(s)</source>
-        <translation><numerusform>Du har ikke noe &lt;i&gt;syverkort&lt;/i&gt; å spille over. Du må ta ett kort</numerusform>
-        <numerusform>Du har ikke noe &lt;i&gt;syverkort&lt;/i&gt; å spille over. Du må ta %n kort</numerusform>
-        </translation></message>
+        <translation>
+            <numerusform>Du har ikke noe &lt;i&gt;syverkort&lt;/i&gt; å spille over. Du må ta ett kort</numerusform>
+            <numerusform>Du har ikke noe &lt;i&gt;syverkort&lt;/i&gt; å spille over. Du må ta %n kort</numerusform>
+        </translation>
+    </message>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="545"/>
         <source>Take %n cards</source>
-        <translation><numerusform>Ta ett kort</numerusform>
-        <numerusform>Ta %n kort</numerusform>
-        </translation></message>
+        <translation>
+            <numerusform>Ta ett kort</numerusform>
+            <numerusform>Ta %n kort</numerusform>
+        </translation>
+    </message>
     <message>
         <location filename="mainwindow_p.cpp" line="614"/>
         <source>Shortcut</source>
@@ -988,9 +998,11 @@ spillbare kort</translation>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="663"/>
         <source>%n card(s)</source>
-        <translation><numerusform>%n kort</numerusform>
-        <numerusform>%n kort</numerusform>
-        </translation></message>
+        <translation type="unfinished">
+            <numerusform>ett kort</numerusform>
+            <numerusform>%n kort</numerusform>
+        </translation>
+    </message>
     <message>
         <location filename="mainwindow_p.cpp" line="703"/>
         <source>Current score: %1</source>
@@ -1096,9 +1108,11 @@ spillbare kort</translation>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="1329"/>
         <source>&lt;span style=&quot;color:%1;&quot;&gt;loses&lt;/span&gt; with &lt;span style=&quot;font:oblique bold&quot;&gt;%n&lt;/span&gt; point(s) at hand</source>
-        <translation><numerusform>&lt;span style=&quot;color:%1;&quot;&gt;taper&lt;/span&gt; med &lt;span style=&quot;font:oblique bold&quot;&gt;ett&lt;/span&gt; poeng på handen</numerusform>
-        <numerusform>&lt;span style=&quot;color:%1;&quot;&gt;taper&lt;/span&gt; med &lt;span style=&quot;font:oblique bold&quot;&gt;%n&lt;/span&gt; poeng på handen</numerusform>
-        </translation></message>
+        <translation>
+            <numerusform>&lt;span style=&quot;color:%1;&quot;&gt;taper&lt;/span&gt; med &lt;span style=&quot;font:oblique bold&quot;&gt;ett&lt;/span&gt; poeng på handen</numerusform>
+            <numerusform>&lt;span style=&quot;color:%1;&quot;&gt;taper&lt;/span&gt; med &lt;span style=&quot;font:oblique bold&quot;&gt;%n&lt;/span&gt; poeng på handen</numerusform>
+        </translation>
+    </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1347"/>
         <source>You have lost!
@@ -1167,9 +1181,11 @@ Spilletid: %2</translation>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="1472"/>
         <source>picks up %n card(s)</source>
-        <translation><numerusform>plukker opp %n kort</numerusform>
-        <numerusform>plukker opp %n kort</numerusform>
-        </translation></message>
+        <translation>
+            <numerusform>plukker opp ett kort</numerusform>
+            <numerusform>plukker opp %n kort</numerusform>
+        </translation>
+    </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1476"/>
         <source>You %1</source>
@@ -1179,9 +1195,11 @@ Spilletid: %2</translation>
         <location filename="mainwindow_p.cpp" line="1476"/>
         <source>picked up %n card(s)</source>
         <comment>playerPick</comment>
-        <translation><numerusform>plukket opp %n kort</numerusform>
-        <numerusform>plukket opp %n kort</numerusform>
-        </translation></message>
+        <translation>
+            <numerusform>plukket opp ett kort</numerusform>
+            <numerusform>plukket opp %n kort</numerusform>
+        </translation>
+    </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1484"/>
         <source>plays %1</source>
@@ -1195,9 +1213,11 @@ Spilletid: %2</translation>
     <message numerus="yes">
         <location filename="mainwindow_p.cpp" line="1543"/>
         <source>Waiting for %n more player(s)...</source>
-        <translation><numerusform>Venter på én spiller til…</numerusform>
-        <numerusform>Venter på %n spillere til…</numerusform>
-        </translation></message>
+        <translation>
+            <numerusform>Venter på én spiller til…</numerusform>
+            <numerusform>Venter på %n spillere til…</numerusform>
+        </translation>
+    </message>
     <message>
         <location filename="mainwindow_p.cpp" line="1575"/>
         <source>Play your card...</source>
@@ -1650,9 +1670,11 @@ Tjeneren godtar klienter minst på versjon %2</translation>
     <message numerus="yes">
         <location filename="serverinfo.cpp" line="145"/>
         <source>You&apos;ll start with %n card(s)</source>
-        <translation><numerusform>Du starter med ett kort</numerusform>
-        <numerusform>Du starter med %n kort</numerusform>
-        </translation></message>
+        <translation>
+            <numerusform>Du starter med ett kort</numerusform>
+            <numerusform>Du starter med %n kort</numerusform>
+        </translation>
+    </message>
     <message>
         <location filename="serverinfo.cpp" line="154"/>
         <source>You can change directions</source>
@@ -1666,9 +1688,11 @@ Tjeneren godtar klienter minst på versjon %2</translation>
     <message numerus="yes">
         <location filename="serverinfo.cpp" line="160"/>
         <source>Waiting for %n more player(s)</source>
-        <translation><numerusform>Venter på %n spiller</numerusform>
-        <numerusform>Venter på %n spillere til</numerusform>
-        </translation></message>
+        <translation>
+            <numerusform>Venter på %n spiller</numerusform>
+            <numerusform>Venter på %n spillere til</numerusform>
+        </translation>
+    </message>
     <message>
         <location filename="serverinfo.cpp" line="163"/>
         <source>The server accepts no more players</source>
