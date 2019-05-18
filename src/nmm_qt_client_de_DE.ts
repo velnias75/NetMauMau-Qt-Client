@@ -370,7 +370,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="launchserverdialog.ui" line="168"/>
         <source>The amount of card decks to use</source>
-        <translation>Die Anzahl der zu verwendenden Kartensätze </translation>
+        <translation>Die Anzahl der zu verwendenden Kartensätze</translation>
     </message>
     <message>
         <location filename="launchserverdialog.ui" line="323"/>
@@ -698,7 +698,7 @@ Schließe den Klienten deshalb nicht, denn sonst werden die verbleibenden Spiele
     <message>
         <location filename="mainwindow.ui" line="606"/>
         <source>Drag a card and drop it on the card to move it right to it</source>
-        <translation>Ziehe eine Karte und lasse sie auf eine Karte fallen um sie rechts davon zu setzen </translation>
+        <translation>Ziehe eine Karte und lasse sie auf eine Karte fallen um sie rechts davon zu setzen</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="609"/>
@@ -1371,7 +1371,7 @@ Spieldauer: %1</translation>
     <message>
         <location filename="releaseinfodialog.ui" line="172"/>
         <source> Source balls from GitHub</source>
-        <translation>Quellarchive von GitHub</translation>
+        <translation> Quellarchive von GitHub</translation>
     </message>
     <message>
         <location filename="releaseinfodialog.cpp" line="111"/>
